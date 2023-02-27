@@ -1,68 +1,120 @@
 import React, {Component, useEffect, useState} from "react";
 import {connect, useDispatch} from "react-redux";
 import apiService from "../../lib/api-service";
-import {ACTIONS, METHOD, STATUS, urls} from "../../lib/static";
-import {hideLoader, showLoader} from "../../lib/redux-store/reducer/component";
-import {Loader} from "../../components";
+import {ACTIONS, device, METHOD, STATUS, urls} from "../../lib/static";
 import Loader2 from "../../components/Loader/loader2";
+
+import {setrestaurantData} from "../../lib/redux-store/reducer/restaurant-data";
+import {useHistory} from "react-router-dom";
 
 const Index = (props:any) => {
     const {accesscode} = props.match?.params || {}
+    const {restaurantDetail} = props;
 
-    const [connecting,setConnecting]:any = useState(false)
+    const dispatch = useDispatch()
+    const history = useHistory();
 
     const getWorkspace = async () => {
         await apiService({
             method: METHOD.GET,
-            action: ACTIONS.INIT,
+            action: ACTIONS.CODE,
             queryString:{code:accesscode},
+            workspace:'dev',
             other: {url: urls.posUrl},
         }).then(async (result) => {
-            if (result.status === STATUS.SUCCESS) {
-                setConnecting(true)
+            if (result.status === STATUS.SUCCESS && Boolean(result?.data)) {
+                const {workspace,tableid}:any = result.data;
+                getRestaurantDetail(workspace,tableid).then()
+            }
+            else{
+                dispatch(setrestaurantData({legalname:'notfound'}))
+                console.log('no workspace found')
             }
         });
     }
 
+    const getRestaurantDetail = async (workspace:any,tableid:any) => {
+        device.workspace = workspace
+        await apiService({
+            method: METHOD.GET,
+            action: ACTIONS.INIT,
+            queryString:{tableid:tableid},
+            workspace:workspace,
+            other: {url: urls.posUrl},
+        }).then(async (result) => {
+            if (result.status === STATUS.SUCCESS && Boolean(result?.data)) {
+                dispatch(setrestaurantData({...result.data,workspace:workspace}))
+            }
+        });
+    }
+
+
+
+
     useEffect(()=>{
         getWorkspace().then()
-    },[])
+    },[accesscode])
 
-
-    if(!connecting){
-        return <section  className="section">
-            <div className="container">
-                <div className="col-12  text-center  mt-5">
-                    Please wait connecting
-                </div>
-            </div>
-        </section>
-    }
+    const {legalname,logo:{download_url},tabledetail:{tablename,locationid}}:any = restaurantDetail
 
     return(
 
         <>
-            <section  className="section">
-                <div className="container">
-                    <div className="col-12  text-center  mt-5">
-                        <div>
-                            <img className="img-fluid"
-                                 src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQVWEW-wbu966Ql9WDzdT8suz8ohJEK9ax7TGZ-WOP7o67m_nJiqgOOlZ70T_e4fx10q0I&usqp=CAU" alt="demo"/>
+            <section  className="h-100 restaurant-bg" >
+
+                    <div className={'h-100'} style={{backgroundColor:'#00000090'}}>
+
+                        <div className="container h-100" >
+
+                            <div className="col-12  text-center pt-5">
+
+                                {
+                                   Boolean(legalname) ? <>
+
+                                           {Boolean(legalname !== 'notfound') ?  <>
+                                                <div>
+                                                    <img style={{borderRadius: 10, width: 100}} className="img-fluid"
+                                                         src={`https://${download_url}`}
+                                                         alt="demo"/>
+                                                </div>
+
+                                                <div className="section-heading section-heading--center">
+                                                    <h6 className="__subtitle text-white"> Hi ! </h6>
+                                                    <h2
+                                                    className="__title text-white">Welcome to <div
+                                                    style={{color: '#ffdb00'}}>{legalname}</div></h2>
+                                                    {Boolean(tablename) && <h6 className="__subtitle text-white"> {tablename} </h6>}
+                                                </div>
+
+                                                <button className="custom-btn custom-btn--medium custom-btn--style-4" onClick={() => {
+                                                    history.push(`${locationid}/items`)
+                                                }} type="button" role="button">
+                                                    Explore Menu
+                                                </button>
+                                       </> : <>
+                                               <div className="section-heading section-heading--center">
+                                                    <h2
+                                                   className="__title text-white">Opps!  <div
+                                                   style={{color: '#ff0000'}}>Something went wrong</div></h2>
+                                               </div>
+                                           </>}
+
+                                    </> :
+
+                                    <>
+                                        <div className="col-12  text-white  mt-5 pt-5">
+                                            <Loader2 show={true}/>
+                                            Please wait connecting
+                                        </div>
+                                    </>
+                                }
+
+                            </div>
+
                         </div>
-
-                        <div className="section-heading section-heading--center">
-                            <h6 className="__subtitle"> Hi! </h6> <h2 className="__title">Welcome to <span>{'{Restaurant name}'}</span></h2>
-                        </div>
-
-                        <button className="custom-btn custom-btn--medium custom-btn--style-4" onClick={()=>{
-
-                        }} type="button" role="button">
-                            Explore Menu
-                        </button>
-
 
                     </div>
-                </div>
+
             </section>
         </>
 
@@ -70,15 +122,10 @@ const Index = (props:any) => {
     );
 }
 
-const mapStateToProps = (state:any) => {
+const mapStateToProps = (state: any) => {
     return {
-
+        restaurantDetail: state.restaurantDetail
     }
-};
+}
 
-const mapDispatchToProps = (dispatch:any) => ({
-
-});
-
-
-export default connect(mapStateToProps, mapDispatchToProps)(Index);
+export default connect(mapStateToProps)(Index);

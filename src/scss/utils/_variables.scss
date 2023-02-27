@@ -1,0 +1,66 @@
+/* main colors */
+$primary-color   : #DAEDEC !default;
+$secondary-color : #1D2C4B !default;
+$menu-color : #fff !default;
+$secondary-textcolor : #1D2C4B !default;
+$secondary-light : #F8F9FA !default;
+$button-color : #3174de !default;
+$button-textcolor : #0747a6 !default;
+$sticky-color : #1D2C4B !default;
+$text-light : #5e6c84 !default;
+
+
+/*$primary-color   : #DAEDEC !default;
+$secondary-color : #1D7960 !default;
+$menu-color : #313c42 !default;
+$secondary-textcolor : #333 !default;
+$secondary-light : #f5f5f5 !default;
+$button-color : #f8971d !default;
+$button-textcolor : #3275ff !default;
+$sticky-color : #313c42 !default;
+$text-light : #888 !default;*/
+
+
+
+/* main fonts */
+$fontSize-root: 10px !default;
+$fontSize-base: 18px !default;
+
+$fontFamily-primary: 'myriad-pro', sans-serif !default;
+$fontFamily-secondary: 'myriad-pro', sans-serif !default;
+
+$fontFamily-base: $fontFamily-primary !default;
+
+/* main breakpoint */
+$xl-width: 1200px !default;
+$lg-width: 992px !default;
+$md-width: 768px !default;
+$sm-width: 560px !default;
+
+$container-max-widths: (
+  sm: 540px,
+  md: 720px,
+  lg: 960px,
+  xl: 1170px
+) !default;
+
+$spacer: 1rem;
+$spacers: ();
+$spacers: map-merge(
+	(
+		0:  0,
+		1:  ($spacer * .5),
+		2:   $spacer,
+		3:  ($spacer * 1.5),
+		4:  ($spacer * 2),
+		5:  ($spacer * 2.5),
+		6:  ($spacer * 3),
+		7:  ($spacer * 3.5),
+		8:  ($spacer * 4),
+		9:  ($spacer * 4.5),
+		10: ($spacer * 5),
+		11: ($spacer * 5.5),
+		12: ($spacer * 6),
+	),
+	$spacers
+);
