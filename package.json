@@ -19,7 +19,7 @@
     "is-touch-device": "^1.0.1",
     "jquery": "^3.5.1",
     "mobile-device-detect": "^0.4.3",
-    "node-sass": "^4.14.1",
+    "node-sass": "^7.0.0",
     "react": "^18.2.0",
     "react-anchor-link-smooth-scroll": "^1.0.12",
     "react-color": "^2.17.3",
