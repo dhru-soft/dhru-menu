@@ -2,18 +2,13 @@ import $ from "jquery";
 import React from "react";
 
 
-function gtag() {
-    window.dataLayer.push(arguments);
-}
 
 window.dataLayer = window.dataLayer || [];
-gtag('js', new Date());
-gtag('config', 'UA-25117220-1');
 
 export const scrollToTop = () => {
     let path = window.location.pathname;
     let page = path.split("/").pop();
-    gtag('config', 'UA-1234567-89', {'page_path': `/${page}`});
+
 
     window.scrollTo(0, 0);
 }
@@ -204,4 +199,17 @@ export const wait = (time, signal) => {
             reject();
         });
     });
+}
+
+
+export const shortName = (str) => {
+
+    if (Boolean(str)) {
+        const firstLetters = str
+            .split(' ')
+            .map((word) => word[0])
+            .join('');
+        return firstLetters.substring(0, 2).toUpperCase();
+    }
+    return
 }

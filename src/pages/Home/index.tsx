@@ -1,17 +1,15 @@
 import React, {Component, Fragment} from "react";
-import {NavLink as Link, useHistory} from "react-router-dom";
+import {NavLink as Link, useNavigate, useParams} from "react-router-dom";
 
 import { Form, Field } from 'react-final-form'
 import {required} from "../../lib/static";
-import {NavLink} from "reactstrap";
-import LogoDark from "../../theme/images/logos/logo.svg";
+
 
 const Index = () => {
 
-    const history = useHistory();
-
+    const navigate = useNavigate();
     const onSubmit = (values:any) => {
-        history.push(`/${values.accesscode}`);
+        navigate(`/${values.accesscode}`);
     }
 
 
@@ -26,9 +24,7 @@ const Index = () => {
 
                         <div className="section-heading section-heading--center">
 
-                            <img className="img-fluid  rounded mb-5" src={LogoDark}  alt="Logo" style={{width:'120px'}}/>
-
-                            <h2 className="__title">Access Code, Please !</h2>
+                            <h4>Enter QR code id to continue</h4>
                         </div>
 
                         <Form
@@ -57,7 +53,7 @@ const Index = () => {
                                                 handleSubmit(values)
 
                                             }} type="button" role="button">
-                                                Submit
+                                                Continue
                                             </button>
                                         </div>
 

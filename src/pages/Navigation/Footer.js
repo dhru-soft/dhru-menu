@@ -7,7 +7,7 @@ export class Footer extends Component {
 
         return (
             <Fragment>
-                 <section className="section--no-pt section--no-pb">
+                 {/*<section className="section--no-pt section--no-pb">
                     <footer className="footer footer--s3 footer--color-dark">
                         <div className="footer__line footer__line--first">
                             <div className="container">
@@ -27,7 +27,7 @@ export class Footer extends Component {
                             </div>
                         </div>
                     </footer>
-                </section>
+                </section>*/}
             </Fragment>
         );
     }

@@ -5,14 +5,18 @@ import {ACTIONS, device, METHOD, STATUS, urls} from "../../lib/static";
 import Loader2 from "../../components/Loader/loader2";
 
 import {setrestaurantData} from "../../lib/redux-store/reducer/restaurant-data";
-import {useHistory} from "react-router-dom";
+import {useNavigate, useParams} from "react-router-dom";
+import {isEmpty} from "../../lib/functions";
 
 const Index = (props:any) => {
-    const {accesscode} = props.match?.params || {}
+
+    const params = useParams();
+
+    const {accesscode} = params || {}
     const {restaurantDetail} = props;
 
     const dispatch = useDispatch()
-    const history = useHistory();
+    const navigate = useNavigate();
 
     const getWorkspace = async () => {
         await apiService({
@@ -55,7 +59,9 @@ const Index = (props:any) => {
         getWorkspace().then()
     },[accesscode])
 
-    const {legalname,logo:{download_url},tabledetail:{tablename,locationid}}:any = restaurantDetail
+    const {legalname,logo:{download_url},location,tabledetail:{tablename,locationid}}:any = restaurantDetail
+
+    console.log('location',location)
 
     return(
 
@@ -64,33 +70,55 @@ const Index = (props:any) => {
 
                     <div className={'h-100'} style={{backgroundColor:'#00000090'}}>
 
-                        <div className="container h-100" >
+                        <div className="container h-100" style={{overflow:"scroll"}}>
 
-                            <div className="col-12  text-center pt-5">
+                            <div className="col-12   pt-5 pb-6">
 
                                 {
                                    Boolean(legalname) ? <>
 
                                            {Boolean(legalname !== 'notfound') ?  <>
-                                                <div>
+                                                <div className={'text-center'}>
                                                     <img style={{borderRadius: 10, width: 100}} className="img-fluid"
                                                          src={`https://${download_url}`}
                                                          alt="demo"/>
                                                 </div>
 
                                                 <div className="section-heading section-heading--center">
-                                                    <h6 className="__subtitle text-white"> Hi ! </h6>
+                                                    {/*<h6 className="__subtitle text-white"> Hi ! </h6>*/}
                                                     <h2
-                                                    className="__title text-white">Welcome to <div
+                                                    className="__title text-white"> <div
                                                     style={{color: '#ffdb00'}}>{legalname}</div></h2>
                                                     {Boolean(tablename) && <h6 className="__subtitle text-white"> {tablename} </h6>}
                                                 </div>
 
-                                                <button className="custom-btn custom-btn--medium custom-btn--style-4" onClick={() => {
-                                                    history.push(`${locationid}/items`)
+                                               <>
+
+                                                   {!isEmpty(location) && <div className={'px-5'}>
+                                                       {
+                                                           Object.keys(location).map((key)=>{
+                                                               const {name,address1,address2,city} = location[key]
+                                                               return <div key={key} className={'mb-2'}>
+                                                                   <div onClick={() => {
+                                                                       navigate(`/groups/${key}`)
+                                                                   }} className={'text-white border p-3'} style={{borderRadius:5}}>
+                                                                       <h5 className={'text-white'}>{name}</h5>
+                                                                       <small>{address1} {address2} {city}</small>
+                                                                   </div>
+                                                               </div>
+                                                           })
+                                                       }
+                                                   </div>}
+
+                                               </>
+
+
+
+                                               {isEmpty(location) && <div className={'text-center'}> <button className="custom-btn custom-btn--medium custom-btn--style-4" onClick={() => {
+                                                    navigate(`/groups/${locationid}`)
                                                 }} type="button" role="button">
                                                     Explore Menu
-                                                </button>
+                                                </button></div> }
                                        </> : <>
                                                <div className="section-heading section-heading--center">
                                                     <h2
@@ -103,7 +131,7 @@ const Index = (props:any) => {
 
                                     <>
                                         <div className="col-12  text-white  mt-5 pt-5">
-                                            <Loader2 show={true}/>
+                                            {/*<Loader2 show={true}/>*/}
                                             Please wait connecting
                                         </div>
                                     </>

@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import {Provider} from 'react-redux';
-import {Router} from "react-router-dom";
+import {BrowserRouter} from "react-router-dom";
 import * as serviceWorker from './serviceWorker';
 import store from "./lib/redux-store/store";
 import Loader from "./components/Loader/loader"
@@ -23,14 +23,16 @@ const JSX = () => {
 
     return (
         <Provider store={store}>
-            <Router history={history}>
-                <div className={'h-100 d-flex flex-column'}>
-                    <Header location={history.location} />
-                    <RoutingComponent />
-                    <Footer/>
-                </div>
-                <Dialog/>
-            </Router>
+            <BrowserRouter history={history}>
+
+                    <div className={'h-100 d-flex flex-column'}>
+                        <Header location={history.location} />
+                        <RoutingComponent />
+                        <Footer/>
+                    </div>
+                    <Dialog/>
+
+            </BrowserRouter>
             <Loader/>
         </Provider>
     )
