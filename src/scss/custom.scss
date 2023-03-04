@@ -853,3 +853,28 @@ b, strong {
     background: url('../assets/images/res-bg.jpg') fixed no-repeat center;
     position: relative;
 }
+
+.tags{
+    .btn{
+        white-space: nowrap;
+        margin-right:5px;
+        font-size: 12px;
+    }
+}
+
+.backgroundImage{
+    background-position: center;
+    height: 100px;
+    h5{
+        background: #00000050;
+        height: 100%;
+        border-radius: 5px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+}
+
+.form input.textfield {
+    height: 45px;
+}

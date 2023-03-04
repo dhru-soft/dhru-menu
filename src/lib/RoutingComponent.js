@@ -13,14 +13,10 @@ class RouterComponent extends Component {
         return (<Fragment>
             <Routes >
                 <Route exact path="/" element={<Home />}/>
+                <Route exact path="/qrcode/:accesscode" element={<Restaurant />} />
+                <Route exact path="/groups" element={<GroupList/>}/>
+                <Route exact path="/items" element={<ItemList/>}/>
 
-                <Route exact path="/:accesscode" element={<Restaurant />} />
-                <Route exact path="/groups/:locationid" element={<GroupList/>}/>
-                <Route exact path="/items/:locationid/:groupid" element={<ItemList/>}/>
-
-                {/*<Route path="/" exact={true} render={(props) => { return <Home key={props.match.url}   {...props}/>;}}/>
-                <Route path="/:accesscode" exact={true} render={(props) => {return <Restaurant key={props.match.url}   {...props}/>;}}/>
-                <Route path="/:locationid/items" exact={true} render={(props) => {return <ItemList key={props.match.url}   {...props}/>;}}/>*/}
             </Routes>
         </Fragment>)
     }

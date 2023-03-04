@@ -8,6 +8,8 @@ import restaurantDetail from "./reducer/restaurant-data";
 import groupList from "./reducer/group-list";
 import itemList from "./reducer/item-list";
 
+import selectedData from "./reducer/selected-data";
+
 export default configureStore({
     reducer: {
 
@@ -15,6 +17,7 @@ export default configureStore({
 
         component,
         restaurantDetail,
+        selectedData,
 
         groupList,
         itemList,

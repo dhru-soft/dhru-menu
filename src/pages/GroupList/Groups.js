@@ -1,43 +1,42 @@
-import React, {Component, useEffect, useState} from "react";
+import React from "react";
 import {connect, useDispatch} from "react-redux";
-import Avatar from "../../components/Avatar"
-import {useNavigate, useParams} from "react-router-dom";
-import apiService from "../../lib/api-service";
-import {ACTIONS, METHOD, STATUS, urls} from "../../lib/static";
-
-import {isEmpty} from "../../lib/functions";
+import {setSelected} from "../../lib/redux-store/reducer/selected-data";
 
 
 const Index = (props) => {
 
-    const params = useParams();
-    const navigate = useNavigate();
-    const {locationid} = params || {}
+
+    const dispatch = useDispatch()
     const {groupList} = props
 
-    console.log('groupList',groupList)
+
+    return (
+        <>
+            <div className="row">
+
+                {
+                    Object.values(groupList).filter((group) => {
+                        return group?.itemgroupmid === '0'
+                    }).map((item, index) => {
+                        return <div key={index} className="text-center col-sm-4 col-lg-2 col-md-3 col-6 mb-3"
+                                    onClick={() => {
+                                        dispatch(setSelected({groupids: [item?.itemgroupid]}))
+                                    }}>
+                            <div className="__item __item--rounded text-center border  backgroundImage" style={{
+                                borderRadius: 5,
+                                backgroundImage: `url("https://b.zmtcdn.com/data/o2_assets/8dc39742916ddc369ebeb91928391b931632716660.png")`
+                            }}>
+                                <h5 className="__title text-center text-white  p-3">{item.itemgroupname} </h5>
+                            </div>
+                        </div>
+                    })
+                }
+
+            </div>
 
 
-        return (
-
-                    <div className="row">
-
-                        {
-                            Object.values(groupList).map((item,index)=>{
-                                return   <div key={index} className="text-center col-sm-4 col-lg-2 col-md-3 col-4 mb-3" onClick={() => {
-                                    navigate(`/items/${locationid}/${item.itemgroupid}`)
-                                }}>
-                                    <div className={'border m-auto'} style={{width:60,borderRadius:50}}>
-                                        <Avatar   src={'b.zmtcdn.com/data/o2_assets/52eb9796bb9bcf0eba64c643349e97211634401116.png?fit=around|120:120&crop=120:120;*,*'}/>
-                                    </div>
-                                    <div className={''}>{item.itemgroupname}</div>
-                                </div>
-                            })
-                        }
-
-                    </div>
-
-        )
+        </>
+    )
 
 }
 

@@ -5,20 +5,25 @@ import {useNavigate, useParams} from "react-router-dom";
 import apiService from "../../lib/api-service";
 import {ACTIONS, METHOD, STATUS, urls} from "../../lib/static";
 
-import {isEmpty} from "../../lib/functions";
+import {checkLocation, isEmpty} from "../../lib/functions";
 import Groups from "./Groups";
 import {setGroupList} from "../../lib/redux-store/reducer/group-list";
+
+import CompanyDetail from "../Navigation/CompanyDetail";
+import ItemList from "../ItemList";
+import Filters from "../ItemList/Filters";
+
 
 
 const Index = (props) => {
 
     const dispatch = useDispatch()
-    const params = useParams();
+    const navigate = useNavigate()
 
-    const {locationid} = params || {}
     const [groups,setGroups] = useState({})
 
-    const {restaurantDetail:{workspace,legalname,logo:{download_url},location},itemList} = props
+    const {workspace,groupids,locationid} = props;
+
 
     const getGroups = async () => {
         await apiService({
@@ -38,41 +43,53 @@ const Index = (props) => {
     }
 
     useEffect(() => {
-        getGroups().then()
-
+        if(checkLocation()) {
+            getGroups().then()
+        }
+        else{
+            navigate('/')
+        }
     }, [])
 
     if(isEmpty(groups)){
         return <></>
     }
 
+
         return (
             <section>
 
-                <div  className="container">
+                <div  className="container-fluide">
 
-                    <div className={'p-3 border-bottom'}>
-                        <div className="row align-items-center no-gutters">
-                            <div className={'col-auto'}>
-                                <img style={{width: 30}} className="img-fluid"
-                                     src={`https://${download_url}`}
-                                     alt="demo"/>
-                            </div>
-                            <div className={'col'}>
-                                <h4>{legalname}</h4>
-                            </div>
-                        </div>
-                    </div>
+                    <CompanyDetail/>
 
 
-                    <div className={'col-12  mt-4'}>
+                    <div className={'col-12'}>
+
+
                         <div>
                             <div className="container">
-                                <div>
+
+                                <Filters  />
+
+
+
+                                {!Boolean(groupids) &&  <div>
                                     <Groups/>
-                                </div>
+                                </div>}
+
+
+                                {Boolean(groupids) &&  <div>
+                                    <ItemList/>
+                                </div>}
+
                             </div>
                         </div>
+
+
+
+
+
                     </div>
 
 
@@ -88,7 +105,8 @@ const Index = (props) => {
 
 const mapStateToProps = (state) => {
     return {
-        restaurantDetail: state.restaurantDetail
+        workspace: state.restaurantDetail.workspace,
+        ...state.selectedData
     }
 }
 

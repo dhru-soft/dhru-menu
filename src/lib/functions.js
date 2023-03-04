@@ -1,5 +1,10 @@
 import $ from "jquery";
 import React from "react";
+import apiService from "./api-service";
+import {ACTIONS, METHOD, STATUS, urls} from "./static";
+import {setrestaurantData} from "./redux-store/reducer/restaurant-data";
+import store from "./redux-store/store";
+import {useNavigate} from "react-router-dom";
 
 
 
@@ -212,4 +217,43 @@ export const shortName = (str) => {
         return firstLetters.substring(0, 2).toUpperCase();
     }
     return
+}
+
+export const checkLocation = () => {
+     let locationid = store.getState().selectedData.locationid;
+     if(!Boolean(locationid)){
+         return false
+     }
+     return true
+}
+
+export const getWorkspace = async (accesscode) => {
+    await apiService({
+        method: METHOD.GET,
+        action: ACTIONS.CODE,
+        queryString:{code:accesscode},
+        workspace:'dev',
+        other: {url: urls.posUrl},
+    }).then(async (result) => {
+        if (result.status === STATUS.SUCCESS && Boolean(result?.data)) {
+
+            const {workspace,tableid} = result.data;
+
+            await apiService({
+                method: METHOD.GET,
+                action: ACTIONS.INIT,
+                queryString:{tableid:tableid},
+                workspace:workspace,
+                other: {url: urls.posUrl},
+            }).then(async (result) => {
+                if (result.status === STATUS.SUCCESS && Boolean(result?.data)) {
+                    store.dispatch(setrestaurantData({...result.data,workspace:workspace}))
+                }
+            });
+        }
+        else{
+            store.dispatch(setrestaurantData({legalname:'notfound'}))
+            console.log('no workspace found')
+        }
+    });
 }

@@ -3,20 +3,29 @@ import {NavLink as Link, useNavigate, useParams} from "react-router-dom";
 
 import { Form, Field } from 'react-final-form'
 import {required} from "../../lib/static";
+import {getWorkspace} from "../../lib/functions";
+import {connect} from "react-redux";
+import Restaurant from "../Restaurant";
 
 
-const Index = () => {
+const Index = (props:any) => {
 
     const navigate = useNavigate();
     const onSubmit = (values:any) => {
-        navigate(`/${values.accesscode}`);
+        getWorkspace(values.accesscode).then()
+
+    }
+
+    const {restaurantDetail:{legalname}} = props;
+
+
+    if(Boolean(legalname)){
+        return <Restaurant/>
     }
 
 
     return (
         <>
-
-
             <div className="position-relative   h-100">
                 <div className={'container'}>
                     <div className="row justify-content-xl-between pt-5">
@@ -73,23 +82,14 @@ const Index = () => {
     )
 
 
-    return (
-        <section  className="h-100 restaurant-bg" >
-
-            <div className={'h-100'} style={{backgroundColor:'#00000090'}}>
-
-                <div className="container h-100" >
-
-
-
-                </div>
-            </div>
-
-        </section>
-    )
-
 
 }
 
 
-export default Index;
+const mapStateToProps = (state: any) => {
+    return {
+        restaurantDetail: state.restaurantDetail
+    }
+}
+
+export default connect(mapStateToProps)(Index);
