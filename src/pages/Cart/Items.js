@@ -3,17 +3,26 @@ import {connect, useDispatch} from "react-redux";
 import {ACTIONS, METHOD, STATUS, urls} from "../../lib/static";
 import apiService from "../../lib/api-service";
 
-import {setItemList} from "../../lib/redux-store/reducer/item-list";
 import {useNavigate, useParams} from "react-router-dom";
 import {checkLocation, isEmpty} from "../../lib/functions";
 import Avatar from "../../components/Avatar";
+import {setModal} from "../../lib/redux-store/reducer/component";
+import ItemDetails from "./ItemDetails";
 
 
 
 export const ItemBox = ({item}) => {
+    const dispatch = useDispatch()
     const {itemname,itemimage,price} = item;
     return (
-        <div   className="col-12 col-sm-6 col-xl-3 mb-3 ">
+        <div   className="col-12 col-sm-6 col-xl-3 mb-3 " onClick={()=>{
+            dispatch(setModal({
+                show: true,
+                title:itemname,
+                height: '80%',
+                component: () => <><ItemDetails item={item}/></>
+            }))
+        }}>
             <div className="__item __item--rounded  border d-flex h-100 p-3 "  style={{borderRadius:10}}>
                 <div className={'row'}>
                     <div className="col-auto" style={{width:65}}>
@@ -30,20 +39,20 @@ export const ItemBox = ({item}) => {
     )
 }
 
-const Index = (props) => {
+const Items = (props) => {
 
     const dispatch = useDispatch()
     const navigate = useNavigate();
 
     const [items,setItems] = useState({})
 
-    const {workspace,groupids,locationid} = props;
+    const {workspace,groupids,selectedtags,searchitem,locationid} = props;
 
     const getItems = async () => {
         await apiService({
             method: METHOD.GET,
             action: ACTIONS.ITEMS,
-            queryString: {locationid: locationid,itemgroupid:groupids[groupids.length - 1]},
+            queryString: {locationid: locationid,itemgroupid:groupids[groupids.length - 1]}, //search:searchitem,tags:selectedtags.toString()
             workspace: workspace || 'development',
             other: {url: urls.posUrl},
         }).then(async (result) => {
@@ -116,6 +125,6 @@ const mapStateToProps = (state) => {
     }
 }
 
-export default connect(mapStateToProps)(Index);
+export default connect(mapStateToProps)(Items);
 
 

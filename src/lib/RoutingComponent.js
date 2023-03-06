@@ -4,8 +4,8 @@ import {Routes,Route} from "react-router-dom";
 
 import Home from "../pages/Home/index";
 import Restaurant from "../pages/Restaurant";
-import ItemList from "../pages/ItemList";
-import GroupList from "../pages/GroupList";
+
+import Cart from "../pages/Cart";
 
 class RouterComponent extends Component {
 
@@ -14,8 +14,7 @@ class RouterComponent extends Component {
             <Routes >
                 <Route exact path="/" element={<Home />}/>
                 <Route exact path="/qrcode/:accesscode" element={<Restaurant />} />
-                <Route exact path="/groups" element={<GroupList/>}/>
-                <Route exact path="/items" element={<ItemList/>}/>
+                <Route exact path="/groups" element={<Cart/>}/>
 
             </Routes>
         </Fragment>)
