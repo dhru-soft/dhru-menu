@@ -11,7 +11,7 @@ import ItemDetails from "./ItemDetails";
 
 
 
-export const ItemBox = ({item}) => {
+export const ItemBox = ({item,itemid}) => {
     const dispatch = useDispatch()
     const {itemname,itemimage,price} = item;
     return (
@@ -49,10 +49,33 @@ const Items = (props) => {
     const {workspace,groupids,selectedtags,searchitem,locationid} = props;
 
     const getItems = async () => {
+
+       const selectedDiat = Boolean(selectedtags?.length > 0) && selectedtags?.map((tag)=>{ return tag.label})?.toString() || '';
+       let queryString = {locationid: locationid};
+       let itemgroupid = Boolean(groupids) && groupids[groupids?.length - 1];
+       if(Boolean(searchitem)){
+           queryString = {
+               ...queryString,
+               search:searchitem
+           }
+       }
+        if(Boolean(selectedDiat)){
+            queryString = {
+                ...queryString,
+                tags:selectedDiat
+            }
+        }
+        if(Boolean(itemgroupid)){
+            queryString = {
+                ...queryString,
+                itemgroupid:itemgroupid
+            }
+        }
+
         await apiService({
             method: METHOD.GET,
             action: ACTIONS.ITEMS,
-            queryString: {locationid: locationid,itemgroupid:groupids[groupids.length - 1]}, //search:searchitem,tags:selectedtags.toString()
+            queryString: queryString,
             workspace: workspace || 'development',
             other: {url: urls.posUrl},
         }).then(async (result) => {
@@ -70,7 +93,7 @@ const Items = (props) => {
         else{
             navigate('/')
         }
-    }, [groupids,locationid])
+    }, [groupids,selectedtags,locationid,searchitem])
 
     if(isEmpty(items)){
         return <></>
@@ -87,8 +110,8 @@ const Items = (props) => {
 
                     <div className="row mt-3" style={{marginBottom:100}}>
                         {
-                            Object.values(items).map((item, index) => {
-                                return <ItemBox key={index} item={item} />
+                            Object.keys(items).map((key) => {
+                                return <ItemBox key={key} item={{...items[key],itemid:key}}  />
                             })
                         }
                     </div>

@@ -37,7 +37,7 @@ const Index = (props:any) => {
                         </div>
 
                         <Form
-                            initialValues={{accesscode:'asdf12fas'}}
+                            initialValues={{accesscode:'111111'}}
                             onSubmit={onSubmit}
                             render={({ handleSubmit,values }) => (
                                 <form onSubmit={handleSubmit}>
