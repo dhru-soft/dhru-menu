@@ -4,8 +4,9 @@ import {NavLink as Link, useNavigate, useParams} from "react-router-dom";
 import { Form, Field } from 'react-final-form'
 import {required} from "../../lib/static";
 import {getWorkspaceName, postQrCode} from "../../lib/functions";
-import {connect} from "react-redux";
+import {connect, useDispatch} from "react-redux";
 import Restaurant from "../Restaurant";
+import {setSelected} from "../../lib/redux-store/reducer/selected-data";
 
 
 const Index = (props:any) => {
@@ -22,7 +23,7 @@ const Index = (props:any) => {
 
 
     if(Boolean(legalname) || Boolean(workspace)){
-        return <Restaurant workspace={workspace}/>
+        return <Restaurant  />
     }
 
 
@@ -54,7 +55,7 @@ const Index = (props:any) => {
                                             <Field name="accesscode"  validate={required}>
                                                 {({ input, meta }) => (
                                                     <div  className="input-wrp">
-                                                        <input  className="textfield textfield--grey" type="text" {...input} placeholder="Access Code" />
+                                                        <input  className="textfield" type="text" {...input} placeholder="Access Code" />
                                                         {meta.touched && meta.error && <span>Access Code {meta.error}</span>}
                                                     </div>
                                                 )}

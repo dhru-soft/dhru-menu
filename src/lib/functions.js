@@ -220,6 +220,7 @@ export const shortName = (str) => {
 }
 
 export const checkLocation = () => {
+
      let locationid = store.getState().selectedData.locationid;
      if(!Boolean(locationid)){
          return false
@@ -237,7 +238,7 @@ export const postQrCode = async (accesscode) => {
     }).then(async (result) => {
         if (result.status === STATUS.SUCCESS && Boolean(result?.data)) {
             const {workspace,tableid,locationid} = result.data;
-            window.location.href=`${location.protocol}//${workspace}.${location.host.replace('www','')}/location/${locationid}?table=${tableid}`
+            window.location.href=`${location.protocol}//${workspace}.${location.host.replace('www','')}/location/${locationid}/?table=${tableid}`
             //await getInit(workspace, tableid);
         }
         else{
@@ -247,11 +248,15 @@ export const postQrCode = async (accesscode) => {
     });
 }
 
-export const getInit = async (workspace,tableid='') => {
+export const getInit = async (workspace) => {
+
+    const urlSearchParams = new URLSearchParams(window.location.search);
+    const params = Object.fromEntries(urlSearchParams.entries());
+
     await apiService({
         method: METHOD.GET,
         action: ACTIONS.INIT,
-        queryString:{tableid:tableid},
+        queryString:{tableid:params?.table?params.table:''},
         workspace:workspace,
         other: {url: urls.posUrl},
     }).then(async (result) => {

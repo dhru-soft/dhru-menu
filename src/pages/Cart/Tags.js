@@ -9,13 +9,13 @@ const Index = (props) => {
     const dispatch = useDispatch()
     const {hidetag,selectedtags} = props;
     const [tags,setTags] = useState(selectedtags || [
-        {label:'Veg',selected:false},
-        {label:'Non Veg',selected:false},
-        {label:'Egg',selected:false},
-        {label:'Jain',selected:false},
+        {label:'Veg',selected:false,icon:'leaf',color:'green'},
+        {label:'Non Veg',selected:false,icon:'meat',color:'red'},
+        {label:'Egg',selected:false,icon:'egg',color:'gray'},
+        /*{label:'Jain',selected:false},
         {label:'Swaminarayan',selected:false},
         {label:'Gluten Free',selected:false},
-        {label:'Lactose Free',selected:false},
+        {label:'Lactose Free',selected:false},*/
     ]);
 
 
@@ -23,7 +23,7 @@ const Index = (props) => {
 
 
     return (
-        <div className={'p-3'}>
+        <div className={'col-12'}>
 
             <div>
                 <div className="">
@@ -44,7 +44,7 @@ const Index = (props) => {
                                         })
                                         dispatch(setSelected({selectedtags: isEmpty(selected)?'':selected}))
 
-                                    }} className={`btn ${tag.selected?'btn-primary':'btn-light'}`}> {tag.selected && <i className={'fa fa-check'}></i>} <span>{tag.label}</span>  </button>
+                                    }} className={`border rounded-4 px-4 btn ${tag.selected?'btn-danger':'bg-white'}`} > {tag.selected ? <i className={'fa fa-check'}></i> : <i style={{color:tag.color}} className={`fa fa-${tag.icon}`}></i>} <span>{tag.label}</span>  </button>
                                 })
                             }
                         </div>

@@ -15,7 +15,7 @@ const Index = (props) => {
 
 
     return (
-        <div className={'col-3'}>
+        <div className={'col-12'}>
 
             <div>
                 <div className="">

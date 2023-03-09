@@ -33,10 +33,10 @@ const Search = (props: any) => {
 
     return (
         <div>
-
-            <input className="textfield textfield--grey" placeholder="Search for item" defaultValue={searchQuery} onSubmit={() => props?.handleSearch(searchQuery.trim())} onChange={(e)=>{
+          <div className={'position-absolute p-4'}>  <i className={'fa fa-search'}></i> </div>
+            <input className="textfield"   placeholder="Search for item" defaultValue={searchQuery} onSubmit={() => props?.handleSearch(searchQuery.trim())} onChange={(e)=>{
                 onChangeSearch(e)
-            }}  name="search" type="text" style={{borderRadius:5}}/>
+            }}   name="search" type="text" style={{borderRadius:10,paddingLeft:40,borderColor:'#E6E8F0',borderWidth:1}}/>
 
         </div>
     );

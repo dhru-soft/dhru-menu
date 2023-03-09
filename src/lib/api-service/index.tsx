@@ -1,4 +1,4 @@
-import {wait} from "../functions";
+import {getWorkspaceName, wait} from "../functions";
 import {ACTIONS, device, METHOD, STATUS} from "../static";
 import store from "../redux-store/store";
 import {hideLoader, setAlert, showLoader} from "../redux-store/reducer/component";
@@ -52,8 +52,8 @@ const apiService = async (config: configData) => {
 
 
     if (config.other) {
-        if (Boolean(config.workspace)) {
-            apiPath = `https://${config.workspace}${config.other.url}`;
+        if (Boolean(config.workspace) || getWorkspaceName()) {
+            apiPath = `https://${config.workspace || getWorkspaceName()}${config.other.url}`;
         } else {
             apiPath = `${config.other.url}`;
         }

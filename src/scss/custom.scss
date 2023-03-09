@@ -4,6 +4,7 @@ body{
 }
 html,body{
     height: 100%;
+    background: #F4F5FA;
 }
 @font-face {
   font-family: "myriad-pro";
@@ -859,8 +860,15 @@ b, strong {
         white-space: nowrap;
         margin-right:5px;
         font-size: 14px;
+        background: white;
+        borderColor:'gray';
+        &.btn-danger{
+            border-color: #FDDBDC !important;
+            background: #FEF5F6;
+            color:black
+        }
         i{
-            font-size: 10px;
+            font-size: 14px;
             margin-right: 5px;
         }
     }
@@ -870,21 +878,31 @@ b, strong {
     font-size: 14px;
 }
 
-.backgroundImage{
+.backgroundImage,.backgroundNoImage{
     background-position: center;
-    height: 160px;
+    height: 100px;
     h5{
-        background: #00000080;
+        background: rgb(0,0,0);
+        background: linear-gradient(180deg, rgba(0,0,0,0) 0%, rgba(0,0,0,0.7903536414565826) 100%);
         height: 100%;
-        border-radius: 5px;
+        border-radius: 10px;
         display: flex;
-        justify-content: left;
-        align-items: end;
+        justify-content: center;
+        align-items: center;
+    }
+}
+
+.backgroundNoImage{
+    h5{
+        background: white !important;
+        color:black;
     }
 }
 
 .form input.textfield {
     height: 45px;
+    border-color: rgb(230, 232, 240);
+    border-width: 1px;
 }
 
 .breadcrumb-item{
@@ -900,4 +918,10 @@ b, strong {
     &:hover {
         box-shadow: 0 0 10px #e2e2e2;
     }
+}
+
+
+.company-detail{
+    background: rgb(92,147,63);
+    background: linear-gradient(129deg, rgba(92,147,63,1) 0%, rgba(199,227,176,1) 100%);
 }
