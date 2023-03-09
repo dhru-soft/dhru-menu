@@ -238,7 +238,7 @@ export const postQrCode = async (accesscode) => {
     }).then(async (result) => {
         if (result.status === STATUS.SUCCESS && Boolean(result?.data)) {
             const {workspace,tableid,locationid} = result.data;
-            window.location.href=`${location.protocol}//${workspace}.${location.host.replace('www','')}/location/${locationid}/?table=${tableid}`
+            window.location.href=`${window.location.protocol}//${workspace}.${window.location.host.replace('www','')}/location/${locationid}/?table=${tableid}`
             //await getInit(workspace, tableid);
         }
         else{
