@@ -3,9 +3,10 @@ import React, { useEffect, useState} from "react";
 import {connect} from "react-redux";
 import { clone, findObject,} from "../../lib/functions";
 import {v4 as uuid} from "uuid";
+import restaurantDetail from "../../lib/redux-store/reducer/restaurant-data";
 
 
-const Index = ({itemDetail}) => {
+const Index = ({itemDetail,unit}) => {
 
     const {itemaddon,addons,addon,settings} = itemDetail
 
@@ -37,7 +38,7 @@ const Index = ({itemDetail}) => {
             productqnt = productqnt - 1
         }
 
-        let unittype = settings.unit[moreaddon[key]?.itemunit]
+        let unittype = unit[moreaddon[key]?.itemunit]
         let uuidn = uuid();
         moreaddon[key] = {
             ...moreaddon[key],
@@ -96,6 +97,8 @@ const Index = ({itemDetail}) => {
 
                 <h6>Addons</h6>
 
+                <div className={'border p-3 rounded-3'}>
+
                 {
                     addonid?.map((addon, key) => {
 
@@ -106,11 +109,11 @@ const Index = ({itemDetail}) => {
                         const baseprice = pricing?.price?.default[0][pricingtype]?.baseprice || 0;
 
                         return (
-                            <div className={'border-bottom py-3'} key={key}>
+                            <div className={`${key!== 0 && 'border-top'} py-3`} key={key}>
                                 <div  key={key}  className={'d-flex justify-content-between'}>
 
                                     <div>
-                                        <div style={{width: 150}}><span>{`${itemname}`}</span></div>
+                                        <div style={{width: 150}}><span>{`${itemname}`} </span></div>
                                         <div>
 
                                         </div>
@@ -125,6 +128,7 @@ const Index = ({itemDetail}) => {
                         )
                     })
                 }
+                </div>
             </>}
         </div>
     )
@@ -134,6 +138,7 @@ const Index = ({itemDetail}) => {
 
 const mapStateToProps = (state) => ({
     itemDetail: state.itemDetail,
+    unit:state.restaurantDetail?.unit
 })
 
 export default connect(mapStateToProps)(Index);

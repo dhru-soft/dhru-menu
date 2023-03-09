@@ -41,14 +41,14 @@ const Index = (props) => {
         <div className={'col-12'}>
 
             <div>
-                <div className="container">
+                <div className="">
 
-                    {Boolean(groupids) &&  <div className={'p-2'}>
-                        <nav aria-label="breadcrumb">
-                            <ol className="breadcrumb">
+                    {Boolean(groupids) &&  <div className={'py-4'}>
+                        <nav>
+                            <ol className="breadcrumb mb-0">
                                 <li className="breadcrumb-item"><span onClick={()=>{
                                     dispatch(setSelected({groupids:''}))
-                                }}><i className={'fa fa-home'}></i></span></li>
+                                }}><i className={'fa fa-home'}></i> Category </span></li>
 
                                 {
                                      groupids?.map((gid,index)=>{
@@ -83,7 +83,7 @@ const Index = (props) => {
                                         <div>
                                             <div className="__item __item--rounded text-center border  backgroundImage" style={{
                                                 borderRadius: 5,
-                                                height:50,
+                                                height:120,
                                                 backgroundImage: `url("https://b.zmtcdn.com/data/o2_assets/8dc39742916ddc369ebeb91928391b931632716660.png")`
                                             }}>
                                                 <h5 className="__title text-center text-white  p-3">{group.itemgroupname} </h5>

@@ -11,6 +11,8 @@ import Tags from "./Tags";
 
 const Index = (props) => {
 
+    console.log('props',props)
+
     const {groupids, selectedtags, searchitem} = props
 
 
@@ -26,9 +28,11 @@ const Index = (props) => {
                     <div>
                         <div className="container">
 
-                            <Search/>
+                            <div className={'d-flex justify-content-between'}>
+                                <Search/>
 
-                            <Tags/>
+                                <Tags/>
+                            </div>
 
                             <Bredcrumb/>
 

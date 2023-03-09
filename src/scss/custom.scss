@@ -40,7 +40,7 @@ html,body{
 }
 
 body{
-    font-size: 1.4rem;
+    font-size: 1.5rem;
     line-height: 1.2;
 }
 
@@ -858,23 +858,46 @@ b, strong {
     .btn{
         white-space: nowrap;
         margin-right:5px;
-        font-size: 12px;
+        font-size: 14px;
+        i{
+            font-size: 10px;
+            margin-right: 5px;
+        }
     }
+}
+
+.btn{
+    font-size: 14px;
 }
 
 .backgroundImage{
     background-position: center;
-    height: 100px;
+    height: 160px;
     h5{
-        background: #00000050;
+        background: #00000080;
         height: 100%;
         border-radius: 5px;
         display: flex;
-        justify-content: center;
-        align-items: center;
+        justify-content: left;
+        align-items: end;
     }
 }
 
 .form input.textfield {
     height: 45px;
+}
+
+.breadcrumb-item{
+    font-weight:bold;
+    cursor: pointer;
+}
+
+.item-hover{
+    border-radius: 10px;
+    &:nth-child(2n+1){
+        box-shadow: 0 0 10px #e2e2e2;
+    }
+    &:hover {
+        box-shadow: 0 0 10px #e2e2e2;
+    }
 }

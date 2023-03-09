@@ -15,10 +15,10 @@ const Index = (props) => {
 
 
     return (
-        <div className={'col-12'}>
+        <div className={'col-3'}>
 
             <div>
-                <div className="container">
+                <div className="">
                     <div className={'form'}>
                         <div className="my-3">
                             <SearchBox handleSearch={handleSearch}/>

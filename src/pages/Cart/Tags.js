@@ -23,10 +23,10 @@ const Index = (props) => {
 
 
     return (
-        <div className={'col-12'}>
+        <div className={'p-3'}>
 
             <div>
-                <div className="container">
+                <div className="">
 
 
                     {!hidetag &&  <div>
@@ -44,7 +44,7 @@ const Index = (props) => {
                                         })
                                         dispatch(setSelected({selectedtags: isEmpty(selected)?'':selected}))
 
-                                    }} className={'btn border'}> {tag.selected && <i className={'fa fa-check'}></i>} <span>{tag.label}</span>  </button>
+                                    }} className={`btn ${tag.selected?'btn-primary':'btn-light'}`}> {tag.selected && <i className={'fa fa-check'}></i>} <span>{tag.label}</span>  </button>
                                 })
                             }
                         </div>

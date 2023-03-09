@@ -1,16 +1,13 @@
 import React, {useEffect, useState} from "react";
-import {Caption, Chip, Paragraph, Text, withTheme} from "react-native-paper";
 
 import {connect, useDispatch} from "react-redux";
-import {TouchableOpacity, div} from "react-native";
-
-import {appLog, clone, findObject} from "../../lib/functions";
+import {clone} from "../../lib/functions";
 
 
 
-const Index = ({itemDetail,itemDetail: {tags:{inittags}, notes, itemtags}}) => {
+const Index = ({tag,itemDetail:  {tags,notes,itemtags,updateProduct}}) => {
 
-    console.log('itemDetail',itemDetail)
+    const inittags = tag
 
     const [selectedTag,setSelectedTag] = useState(0);
     let [temptags,setTempTags] = useState(clone(itemtags));
@@ -32,14 +29,13 @@ const Index = ({itemDetail,itemDetail: {tags:{inittags}, notes, itemtags}}) => {
     },[temptags])
 
 
-
-    return (
+     return (
 
         <>
-            {Boolean(temptags?.length) && <div>
+            {Boolean(temptags?.length) && <div className={'mt-5'}>
                 <h6>Tags</h6>
 
-                <div>
+                <div className={'border p-3 rounded-3'}>
                 {
                     temptags.map((tag, key) => {
                         const {taggroupname} = tag;
@@ -51,23 +47,28 @@ const Index = ({itemDetail,itemDetail: {tags:{inittags}, notes, itemtags}}) => {
                         }
                     })
                 }
-                </div>
+
 
                 {
                     temptags?.map((tags, tagid) => {
                         {
                             return (
                                 <div key={tagid}  >
-                                    {<div>
-                                        <div>{tag.name+''}</div>
-                                        {/*{
+                                    {<div className={'d-flex mt-3'}>
+
+                                        {
                                            tags?.taglist.map((tag, key) => {
-                                                return (<Chip key={key} style={[tag.selected?styles.bg_light_blue:styles.light.color,styles.m_2,styles.p_3]}     icon={tag.selected?'check':'stop'} onPress={() => {
-                                                    tag.selected = !Boolean(tag?.selected)
-                                                    setTempTags(clone(temptags))
-                                                }}><div style={[styles.p_5]}>{tag.name+''}</div></Chip>)
+                                               return (
+                                                   <div className={'pe-3'} key={key}>
+                                                       <button type="button" className={`btn btn-${tag.selected?'primary':'light'}`} onClick={() => {
+                                                           tag.selected = !Boolean(tag?.selected)
+                                                           setTempTags(clone(temptags))
+                                                       }}>{tag.name+''}</button>
+                                                   </div>
+                                               )
+
                                             })
-                                        }*/}
+                                        }
                                     </div>}
                                 </div>
                             )
@@ -75,19 +76,21 @@ const Index = ({itemDetail,itemDetail: {tags:{inittags}, notes, itemtags}}) => {
                     })
                 }
 
+                </div>
+
             </div>}
 
 
-            <div>
-                {/*<InputBox
+            {/*<div>
+               {<InputBox
                     defaultValue={notes}
                     label={'Notes'}
                     autoFocus={false}
                     onChange={(value) => {
                         updateProduct({notes:value})
                     }}
-                />*/}
-            </div>
+                />}
+            </div>*/}
 
 
         </>
@@ -100,6 +103,7 @@ const Index = ({itemDetail,itemDetail: {tags:{inittags}, notes, itemtags}}) => {
 
 const mapStateToProps = (state) => ({
     itemDetail : state.itemDetail,
+    tag:state.restaurantDetail?.tag
 })
 
-export default connect(mapStateToProps)(withTheme(Index));
+export default connect(mapStateToProps)(Index);

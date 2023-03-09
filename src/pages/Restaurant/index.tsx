@@ -2,7 +2,7 @@ import React, {Component, useEffect, useState} from "react";
 import {connect, useDispatch} from "react-redux";
 
 import {useNavigate, useParams} from "react-router-dom";
-import {getWorkspace, isEmpty} from "../../lib/functions";
+import {getInit, isEmpty, postQrCode} from "../../lib/functions";
 import {setSelected} from "../../lib/redux-store/reducer/selected-data";
 
 const Index = (props:any) => {
@@ -10,14 +10,21 @@ const Index = (props:any) => {
     const params = useParams();
 
     const {accesscode} = params || {}
-    const {restaurantDetail} = props;
+    const {restaurantDetail,workspace} = props;
+
+    console.log('workspace',workspace)
 
     const dispatch = useDispatch()
     const navigate = useNavigate();
 
 
     useEffect(()=>{
-        Boolean(accesscode) && getWorkspace(accesscode).then()
+        if(workspace){
+            getInit(workspace)
+        }
+        else {
+            Boolean(accesscode) && postQrCode(accesscode).then()
+        }
     },[accesscode])
 
     const {legalname,logo:{download_url},location,tabledetail:{tablename,locationid}}:any = restaurantDetail
@@ -60,7 +67,7 @@ const Index = (props:any) => {
                                                                return <div key={key} className={'mb-2'}>
                                                                    <div onClick={() => {
                                                                        dispatch(setSelected({locationid:key}))
-                                                                       navigate(`/groups`)
+                                                                       navigate(`/location/${key}`)
                                                                    }} className={'text-white border p-3'} style={{borderRadius:5}}>
                                                                        <h5 className={'text-white'}>{name}</h5>
                                                                        <small>{address1} {address2} {city}</small>
@@ -76,7 +83,7 @@ const Index = (props:any) => {
 
                                                {isEmpty(location) && <div className={'text-center'}> <button className="custom-btn custom-btn--medium custom-btn--style-4" onClick={() => {
                                                    dispatch(setSelected({locationid:locationid}))
-                                                    navigate(`/groups`)
+                                                    navigate(`/location/${locationid}`)
                                                 }} type="button" role="button">
                                                     Explore Menu
                                                 </button></div> }
@@ -93,7 +100,8 @@ const Index = (props:any) => {
                                     <>
                                         <div className="col-12  text-white text-center mt-5 pt-5">
                                             {/*<Loader2 show={true}/>*/}
-                                            Please wait connecting
+                                            <h1 className={'text-white'}>404</h1>
+                                             Invalid URl
                                         </div>
                                     </>
                                 }

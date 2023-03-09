@@ -15,7 +15,7 @@ export const ItemBox = ({item,itemid}) => {
     const dispatch = useDispatch()
     const {itemname,itemimage,price} = item;
     return (
-        <div   className="col-12 col-sm-6 col-xl-3 mb-3 " onClick={()=>{
+        <div   className="col-12 col-sm-4 col-xl-3 mb-3 item-hover  p-2" onClick={()=>{
             dispatch(setModal({
                 show: true,
                 title:itemname,
@@ -23,15 +23,18 @@ export const ItemBox = ({item,itemid}) => {
                 component: () => <><ItemDetails item={item}/></>
             }))
         }}>
-            <div className="__item __item--rounded  border d-flex h-100 p-3 "  style={{borderRadius:10}}>
-                <div className={'row'}>
-                    <div className="col-auto" style={{width:65}}>
+            <div className="d-flex p-2 h-100">
+                <div className={'w-100 d-flex flex-column'}>
+                    {/*<div className="col-auto" style={{width:65}}>
                         <Avatar src={itemimage} label={itemname} />
-                    </div>
-                    <div className={'col'}>
-                        <h5 className="__title">{itemname} </h5>
-                        <div> DESCRIPTION </div>
-                        <div> {price} </div>
+                    </div>*/}
+                    {itemimage &&  <img className={'w-100 rounded-3'} src={`https://${itemimage}`}/>}
+                    <div className={'p-2 mt-auto'}>
+                        <div className={'d-flex justify-content-between flex-nowrap'}>
+                            <h5 className="__title">{itemname} </h5>
+                            <div> {price} </div>
+                        </div>
+                        <small> DESCRIPTION </small>
                     </div>
                 </div>
             </div>
@@ -96,7 +99,7 @@ const Items = (props) => {
     }, [groupids,selectedtags,locationid,searchitem])
 
     if(isEmpty(items)){
-        return <></>
+        return <div className={'text-center p-5'}>No items found</div>
     }
 
 
@@ -104,18 +107,17 @@ const Items = (props) => {
         <>
             <section>
 
-                <div  className="container">
+                <div  className="">
 
 
 
-                    <div className="row mt-3" style={{marginBottom:100}}>
+                  <div className="row" style={{marginBottom:100}}>
                         {
                             Object.keys(items).map((key) => {
                                 return <ItemBox key={key} item={{...items[key],itemid:key}}  />
                             })
                         }
                     </div>
-
 
 
                     {/*<div className={'text-center position-fixed'} style={{zIndex:99,bottom:20,left:0,right:0}}>

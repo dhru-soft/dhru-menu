@@ -1,9 +1,9 @@
-import React, {Component, Fragment} from "react";
+import React, {Component, Fragment, useEffect} from "react";
 import {NavLink as Link, useNavigate, useParams} from "react-router-dom";
 
 import { Form, Field } from 'react-final-form'
 import {required} from "../../lib/static";
-import {getWorkspace} from "../../lib/functions";
+import {getWorkspaceName, postQrCode} from "../../lib/functions";
 import {connect} from "react-redux";
 import Restaurant from "../Restaurant";
 
@@ -11,17 +11,22 @@ import Restaurant from "../Restaurant";
 const Index = (props:any) => {
 
     const navigate = useNavigate();
-    const onSubmit = (values:any) => {
-        getWorkspace(values.accesscode).then()
 
+    const onSubmit = (values:any) => {
+        postQrCode(values.accesscode).then()
     }
 
     const {restaurantDetail:{legalname}} = props;
+    const workspace = getWorkspaceName();
 
 
-    if(Boolean(legalname)){
-        return <Restaurant/>
+
+    if(Boolean(legalname) || Boolean(workspace)){
+        return <Restaurant workspace={workspace}/>
     }
+
+
+
 
 
     return (

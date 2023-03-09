@@ -49,7 +49,8 @@ const Index = (props) => {
 
 
     return (
-        <>
+        <div>
+
             <div className="row">
 
                 {
@@ -73,7 +74,7 @@ const Index = (props) => {
             </div>
 
 
-        </>
+        </div>
     )
 
 }

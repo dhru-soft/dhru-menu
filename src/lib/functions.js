@@ -227,7 +227,7 @@ export const checkLocation = () => {
      return true
 }
 
-export const getWorkspace = async (accesscode) => {
+export const postQrCode = async (accesscode) => {
     await apiService({
         method: METHOD.GET,
         action: ACTIONS.CODE,
@@ -236,20 +236,9 @@ export const getWorkspace = async (accesscode) => {
         other: {url: urls.posUrl},
     }).then(async (result) => {
         if (result.status === STATUS.SUCCESS && Boolean(result?.data)) {
-
-            const {workspace,tableid} = result.data;
-
-            await apiService({
-                method: METHOD.GET,
-                action: ACTIONS.INIT,
-                queryString:{tableid:tableid},
-                workspace:workspace,
-                other: {url: urls.posUrl},
-            }).then(async (result) => {
-                if (result.status === STATUS.SUCCESS && Boolean(result?.data)) {
-                    store.dispatch(setrestaurantData({...result.data,workspace:workspace}))
-                }
-            });
+            const {workspace,tableid,locationid} = result.data;
+            window.location.href=`${location.protocol}//${workspace}.${location.host.replace('www','')}/location/${locationid}?table=${tableid}`
+            //await getInit(workspace, tableid);
         }
         else{
             store.dispatch(setrestaurantData({legalname:'notfound'}))
@@ -258,5 +247,35 @@ export const getWorkspace = async (accesscode) => {
     });
 }
 
+export const getInit = async (workspace,tableid='') => {
+    await apiService({
+        method: METHOD.GET,
+        action: ACTIONS.INIT,
+        queryString:{tableid:tableid},
+        workspace:workspace,
+        other: {url: urls.posUrl},
+    }).then(async (result) => {
+        if (result.status === STATUS.SUCCESS && Boolean(result?.data)) {
+            store.dispatch(setrestaurantData({...result.data,workspace:workspace}))
+           //
+        }
+    });
+}
+
+export const getDomainName = () => {
+    let workspace = window.location.hostname.split(".")
+    if (workspace === "localhost" || workspace === "dhru"  ||  workspace === "menu" || workspace === "www") {
+        workspace = ""
+    }
+    return workspace
+}
+
+export const getWorkspaceName = () => {
+    let workspace = window.location.hostname.split(".")[0]
+    if (workspace === "localhost" || workspace === "dhru"  ||  workspace === "menu" || workspace === "www") {
+        workspace = ""
+    }
+    return workspace
+}
 
 
