@@ -7,7 +7,7 @@ import {GroupBox} from "./Groups";
 
 const Index = (props) => {
 
-    const {groupList,groupids} = props;
+    const {groupList,groupids,searchitem,selectedtags} = props;
     const [subgroup, setSubGroup] = useState([]);
 
 
@@ -37,6 +37,24 @@ const Index = (props) => {
         dispatch(setSelected({groupids: groupids.slice(0, index + 1)}))
     }
 
+    if(Boolean(searchitem) || Boolean(selectedtags)){
+
+        let searchtags = ''
+        if(Boolean(selectedtags.length > 0)){
+            searchtags = selectedtags?.map((tag)=>{ return tag.label})?.toString() || ''
+        }
+
+        return (
+            <div className={'pt-3 pb-3 mt-3'}>
+                <nav>
+                    <ol className="breadcrumb mb-0">
+                        <li className="breadcrumb-item ps-2"><span> Search Result '{searchitem} {searchtags}'</span></li>
+                    </ol>
+                </nav>
+            </div>
+        )
+    }
+
 
     return (
         <div className={'col-12'}>
@@ -44,7 +62,7 @@ const Index = (props) => {
             <div>
                 <div className="">
 
-                    {<div className={'pt-3 pb-4'}>
+                    {<div className={'pt-3 pb-3 mt-3'}>
                         <nav>
                             <ol className="breadcrumb mb-0">
                                 {Boolean(groupids)  ?  <>
