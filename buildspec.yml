@@ -5,7 +5,9 @@ phases:
       - node -v
       - npm -v
       - echo Installing dependencies...
-      - npm install
+      - npm config set "@fortawesome:registry" https://npm.fontawesome.com/
+      - npm config set "//npm.fontawesome.com/:_authToken" 6732C8AA-0A3D-4BC0-8A35-94068BDBA900
+      - npm install --loglevel=error
   build:
     commands:
       - echo Building...
@@ -15,3 +17,6 @@ artifacts:
     - "**/*"
   discard-paths: no
   base-directory: ./build
+cache:
+  paths:
+    - 'node_modules/**/*'
