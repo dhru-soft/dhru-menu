@@ -44,23 +44,26 @@ const Index = (props) => {
             <div>
                 <div className="">
 
-                    {Boolean(groupids) &&  <div className={'pt-3 pb-4'}>
+                    {<div className={'pt-3 pb-4'}>
                         <nav>
                             <ol className="breadcrumb mb-0">
-                                <li className="breadcrumb-item"><span onClick={()=>{
-                                    dispatch(setSelected({groupids:''}))
-                                }}><i className={'fa fa-chevron-left'}></i> Back </span></li>
+                                {Boolean(groupids)  ?  <>
+                                    <li className="breadcrumb-item"><span onClick={()=>{
+                                        dispatch(setSelected({groupids:''}))
+                                    }}><i className={'fa fa-chevron-left'}></i> Back </span></li>
 
-                                {
-                                     groupids?.map((gid,index)=>{
-                                        return (
-                                            <li key={index} className="breadcrumb-item" onClick={()=>{
-                                                setCurrentGroup(gid)
-                                            }}><span>{groupList[gid]?.itemgroupname}</span></li>
-                                        )
-                                    })
-                                }
-
+                                    {
+                                         groupids?.map((gid,index)=>{
+                                            return (
+                                                <li key={index} className="breadcrumb-item" onClick={()=>{
+                                                    setCurrentGroup(gid)
+                                                }}><span>{groupList[gid]?.itemgroupname}</span></li>
+                                            )
+                                        })
+                                    }
+                                </> : <>
+                                    <li className="breadcrumb-item"><span> Collections </span></li>
+                                </> }
                             </ol>
                         </nav>
                     </div> }
