@@ -6,6 +6,8 @@ import apiService from "../../lib/api-service";
 import {useNavigate, useParams} from "react-router-dom";
 import {checkLocation, isEmpty, numberFormat} from "../../lib/functions";
 import ReactReadMoreReadLess from "react-read-more-read-less";
+import ItemDetails from "./ItemDetails";
+import {setModal} from "../../lib/redux-store/reducer/component";
 
 
 
@@ -50,14 +52,14 @@ export const ItemBox = ({item,itemid}) => {
                     <div style={{minHeight:50}}>
                         {itemimage &&  <img className={'w-100 rounded-3'} src={`https://${itemimage}`}/>}
                     </div>
-                    <div className={'mt-3'}>
+                    {/*<div className={'mt-3'}>
                         <button className="w-100 company-detail btn text-white border-0 p-2" onClick={()=>{
 
                         }} type="button" role="button">
                            + Add
                         </button>
 
-                    </div>
+                    </div>*/}
 
                 </div>
             </div>

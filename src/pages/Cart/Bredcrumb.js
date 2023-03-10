@@ -48,7 +48,7 @@ const Index = (props) => {
                         <nav>
                             <ol className="breadcrumb mb-0">
                                 {Boolean(groupids)  ?  <>
-                                    <li className="breadcrumb-item"><span onClick={()=>{
+                                    <li className="breadcrumb-item ps-2"><span onClick={()=>{
                                         dispatch(setSelected({groupids:''}))
                                     }}><i className={'fa fa-chevron-left'}></i> Back </span></li>
 
@@ -62,7 +62,7 @@ const Index = (props) => {
                                         })
                                     }
                                 </> : <>
-                                    <li className="breadcrumb-item"><span> Collections </span></li>
+                                    <li className="breadcrumb-item ps-2"><span> Menu </span></li>
                                 </> }
                             </ol>
                         </nav>
