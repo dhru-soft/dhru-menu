@@ -45,10 +45,12 @@ const Index = (props) => {
                     <div>
                         <div className="container">
 
-                            <div>
+                            <div className={'bg-white p-4 rounded-4 mt-3'}>
+                                <div>
                                 <Search/>
 
                                 <Tags/>
+                                </div>
                             </div>
 
                             <Bredcrumb/>

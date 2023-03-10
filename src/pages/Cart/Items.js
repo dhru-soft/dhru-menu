@@ -128,7 +128,7 @@ const Items = (props) => {
     }, [groupids,selectedtags,locationid,searchitem])
 
     if(isEmpty(items)){
-        return  <div className={'text-center text-muted p-5'}>No items found</div>
+        return  <div className={'text-center bg-white rounded-4 text-muted p-5'}>No items found</div>
     }
 
 

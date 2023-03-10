@@ -33,7 +33,7 @@ const Index = (props) => {
 
 
                     {!hidetag &&  <div>
-                        <div className={'overflow-auto d-flex tags   pb-4'}>
+                        <div className={'overflow-auto d-flex tags'}>
                             {
                                 tags?.map((tag,index)=>{
                                     return <button key={index} type="button" onClick={()=>{

@@ -20,7 +20,7 @@ const Index = (props) => {
             <div>
                 <div className="">
                     <div className={'form'}>
-                        <div className="my-3">
+                        <div className="mb-3">
                             <SearchBox handleSearch={handleSearch}/>
                         </div>
                     </div>
