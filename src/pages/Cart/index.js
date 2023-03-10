@@ -36,7 +36,7 @@ const Index = (props) => {
 
             <Init/>
 
-            <div className="container-fluide">
+            <div className="">
 
                 <CompanyDetail/>
 

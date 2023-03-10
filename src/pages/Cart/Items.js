@@ -13,7 +13,7 @@ export const ItemBox = ({item,itemid}) => {
     const dispatch = useDispatch()
     const {itemname,itemimage,price,itemdescription,veg} = item
 
-    const diat = {veg:{color:'green',icon:'leaf'},nonveg:{color:'red',icon:'meat'},egg:{color:'gray',icon:'egg'}}
+    const diat = {veg:{color:'#659a4a',icon:'leaf'},nonveg:{color:'#ee4c4c',icon:'meat'},egg:{color:'gray',icon:'egg'}}
 
     return (
         <div   className="col-12 col-sm-4 col-xl-3  item-hover  p-2 py-4" onClick={()=>{
@@ -106,11 +106,12 @@ const Items = (props) => {
             other: {url: urls.posUrl},
         }).then(async (result) => {
 
-            console.log('result?.data',result?.data)
-
             if (result.status === STATUS.SUCCESS && Boolean(result?.data)) {
                 const {items} = result?.data;
                 setItems(items);
+            }
+            else{
+                setItems({})
             }
         });
     }
@@ -125,7 +126,7 @@ const Items = (props) => {
     }, [groupids,selectedtags,locationid,searchitem])
 
     if(isEmpty(items)){
-        return <div className={'text-center p-5'}>No items found</div>
+        return  <div className={'text-center text-muted p-5'}>No items found</div>
     }
 
 
@@ -133,7 +134,7 @@ const Items = (props) => {
         <>
             <section>
 
-                <div  className="container bg-white rounded-3">
+                <div  className="container bg-white rounded-4">
 
 
 
