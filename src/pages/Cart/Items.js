@@ -21,7 +21,7 @@ export const ItemBox = ({item,itemid}) => {
 
     return (
         <div   className="col-12 col-sm-4 col-xl-3  item-hover  p-2 py-4">
-            <div className="d-flex p-2 h-100 align-items-center">
+            <div className="d-flex p-2 h-100">
                 <div className={'w-100'}>
 
                     <div className={'p-2 mt-auto '}>
