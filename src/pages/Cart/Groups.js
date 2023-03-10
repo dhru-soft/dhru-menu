@@ -2,10 +2,10 @@ import React, {useEffect, useState} from "react";
 import {connect, useDispatch} from "react-redux";
 import {setSelected} from "../../lib/redux-store/reducer/selected-data";
 import apiService from "../../lib/api-service";
-import {ACTIONS, METHOD, STATUS, urls} from "../../lib/static";
+import {ACTIONS, device, METHOD, STATUS, urls} from "../../lib/static";
 import {setGroupList} from "../../lib/redux-store/reducer/group-list";
 import {checkLocation} from "../../lib/functions";
-import {useNavigate} from "react-router-dom";
+import {useNavigate, useParams} from "react-router-dom";
 
 
 export const GroupBox = ({item}) => {
@@ -31,14 +31,16 @@ const Index = (props) => {
 
 
 
-    const {workspace,groupList,locationid} = props;
+    const {workspace,groupList} = props;
+    const params = useParams()
 
 
     const getGroups = async () => {
         await apiService({
             method: METHOD.GET,
             action: ACTIONS.ITEMS,
-            queryString: {locationid: locationid},
+            queryString: {locationid: device.locationid},
+            hideLoader:true,
             workspace: workspace,
             other: {url: urls.posUrl},
         }).then(async (result) => {
@@ -51,12 +53,7 @@ const Index = (props) => {
     }
 
     useEffect(() => {
-        if(checkLocation()) {
-            getGroups().then()
-        }
-        else{
-            navigate('/')
-        }
+        getGroups().then()
     }, [])
 
 

@@ -32,8 +32,11 @@ const JSX = () => {
                     </div>
                     <Dialog/>
 
+                    <Loader/>
             </BrowserRouter>
-            <Loader/>
+
+
+
         </Provider>
     )
 };

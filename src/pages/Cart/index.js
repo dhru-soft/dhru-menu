@@ -10,22 +10,24 @@ import Tags from "./Tags";
 import {useParams} from "react-router-dom";
 import {setSelected} from "../../lib/redux-store/reducer/selected-data";
 import Init from "../Home/Init";
+import {device} from "../../lib/static";
 
 const Index = (props) => {
 
     const params = useParams()
     const dispatch = useDispatch()
 
-    const {locationid} = props;
+    device.locationid = params?.locationid;
+    //const {locationid} = props;
 
 
-    useEffect(()=>{
-        dispatch(setSelected({locationid:params.locationid}))
-    },[])
+    /*useEffect(()=>{
+        dispatch(setSelected({locationid: params.locationid}))
+    },[locationid])*/
 
-    if(!Boolean(locationid)){
+    /*if(!Boolean(locationid)){
         return <></>
-    }
+    }*/
 
 
     const {groupids, selectedtags, searchitem} = props
@@ -55,7 +57,7 @@ const Index = (props) => {
 
                             <Bredcrumb/>
 
-                            {(!Boolean(groupids) && !Boolean(selectedtags) && !Boolean(searchitem)) ? <div>
+                            {(!Boolean(groupids)  && !Boolean(searchitem)) ? <div>
                                 <Groups/>
                             </div> : <div>
                                 <ItemList/>

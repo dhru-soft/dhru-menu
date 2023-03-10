@@ -1,6 +1,6 @@
 import {getType} from "@reduxjs/toolkit";
 
-export const device:any = {tablet: true, db: '', token: '', global_token: '', navigation: '',uniqueid:'',workspace:''}
+export const device:any = {tablet: true, db: '', token: '', global_token: '', navigation: '',uniqueid:'',workspace:'',locationid:''}
 
 export const urls = {posUrl:'.api.dhru.io/menu/v1/',adminUrl:'',localserver:''}
 

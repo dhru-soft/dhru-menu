@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from "react";
 import {connect, useDispatch} from "react-redux";
-import {ACTIONS, METHOD, STATUS, urls} from "../../lib/static";
+import {ACTIONS, device, METHOD, STATUS, urls} from "../../lib/static";
 import apiService from "../../lib/api-service";
 
 import {useNavigate, useParams} from "react-router-dom";
@@ -8,6 +8,8 @@ import {checkLocation, isEmpty, numberFormat} from "../../lib/functions";
 import ReactReadMoreReadLess from "react-read-more-read-less";
 import ItemDetails from "./ItemDetails";
 import {setModal} from "../../lib/redux-store/reducer/component";
+import Loader2 from "../../components/Loader/loader2";
+import Loader3 from "../../components/Loader/Loader3";
 
 
 
@@ -18,14 +20,7 @@ export const ItemBox = ({item,itemid}) => {
     const diat = {veg:{color:'#659a4a',icon:'leaf'},nonveg:{color:'#ee4c4c',icon:'meat'},egg:{color:'gray',icon:'egg'}}
 
     return (
-        <div   className="col-12 col-sm-4 col-xl-3  item-hover  p-2 py-4" onClick={()=>{
-            dispatch(setModal({
-                show: true,
-                title:itemname,
-                height: '80%',
-                component: () => <><ItemDetails item={item}/></>
-            }))
-        }}>
+        <div   className="col-12 col-sm-4 col-xl-3  item-hover  p-2 py-4">
             <div className="d-flex p-2 h-100 align-items-center">
                 <div className={'w-100'}>
 
@@ -48,7 +43,14 @@ export const ItemBox = ({item,itemid}) => {
                         </div>
                     </div>
                 </div>
-                <div className={'border border-light  rounded-3  p-3'} style={{width:150}}>
+                <div className={'border border-light  rounded-3  p-3'} style={{width:150}} onClick={()=>{
+                    dispatch(setModal({
+                        show: true,
+                        title:itemname,
+                        height: '80%',
+                        component: () => <><ItemDetails item={item}/></>
+                    }))
+                }}>
                     <div style={{minHeight:50}}>
                         {itemimage &&  <img className={'w-100 rounded-3'} src={`https://${itemimage}`}/>}
                     </div>
@@ -69,18 +71,19 @@ export const ItemBox = ({item,itemid}) => {
 
 const Items = (props) => {
 
-    const dispatch = useDispatch()
-    const navigate = useNavigate();
 
     const [items,setItems] = useState({})
+    const [loader,setLoader] = useState(false)
 
-    const {workspace,groupids,selectedtags,searchitem,locationid} = props;
+    const {workspace,groupids,selectedtags,searchitem} = props;
 
     const getItems = async () => {
 
-       const selectedDiat = Boolean(selectedtags?.length > 0) && selectedtags?.map((tag)=>{ return tag.label})?.toString() || '';
-       let queryString = {locationid: locationid};
+       const selectedDiat = Boolean(selectedtags?.length > 0) && selectedtags?.map((tag)=>{ return tag.value})?.toString() || '';
+       let queryString = {locationid: device.locationid};
        let itemgroupid = Boolean(groupids) && groupids[groupids?.length - 1];
+
+
        if(Boolean(searchitem)){
            queryString = {
                ...queryString,
@@ -104,7 +107,8 @@ const Items = (props) => {
             method: METHOD.GET,
             action: ACTIONS.ITEMS,
             queryString: queryString,
-            workspace: workspace || 'development',
+            hideLoader:true,
+            workspace: workspace,
             other: {url: urls.posUrl},
         }).then(async (result) => {
 
@@ -115,17 +119,17 @@ const Items = (props) => {
             else{
                 setItems({})
             }
+            setLoader(true)
         });
     }
 
     useEffect(() => {
-        if(checkLocation()) {
-            getItems().then()
-        }
-        else{
-            navigate('/')
-        }
-    }, [groupids,selectedtags,locationid,searchitem])
+        getItems().then()
+    }, [groupids,selectedtags,searchitem])
+
+    if(!loader){
+        return  <Loader3/>
+    }
 
     if(isEmpty(items)){
         return  <div className={'text-center bg-white rounded-4 text-muted p-5'}>No items found</div>

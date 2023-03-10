@@ -1,26 +1,33 @@
 import React, {Component, useEffect, useState} from "react";
 import {connect, useDispatch} from "react-redux";
 import apiService from "../../lib/api-service";
-import {ACTIONS, METHOD, STATUS, urls} from "../../lib/static";
+import {ACTIONS, device, METHOD, STATUS, urls} from "../../lib/static";
 import Addons from "./Addons";
 import {setItemDetail} from "../../lib/redux-store/reducer/item-detail";
 import TagsNotes from "./TagsNotes";
+import {numberFormat} from "../../lib/functions";
+import Loader3 from "../../components/Loader/Loader3";
 
 
 const Index = (props) => {
 
     const dispatch = useDispatch()
-    const {item: {itemimage,itemid, price,description, itemname,}} = props;
+
+    const {item: {itemimage,itemid, price,itemdescription, itemname,}} = props;
     const [loader,setLoader] = useState(false)
 
      const getItemDetails = async () => {
 
-        const {workspace,locationid} = props;
+        const {workspace} = props;
+
+
+
         await apiService({
             method: METHOD.GET,
             action: ACTIONS.ITEMS,
-            queryString: {locationid:locationid,itemid:itemid},
-            workspace: workspace || 'development',
+            queryString: {locationid:device.locationid,itemid:itemid},
+            hideLoader:true,
+            workspace: workspace,
             other: {url: urls.posUrl},
         }).then(async (result) => {
             if (result.status === STATUS.SUCCESS && Boolean(result?.data)) {
@@ -35,7 +42,7 @@ const Index = (props) => {
     },[])
 
     if(!loader){
-        return <></>
+        return  <Loader3/>
     }
 
     return (
@@ -46,12 +53,12 @@ const Index = (props) => {
 
                     {Boolean(itemimage) &&   <img src={`https://${itemimage}`} className={'w-100'} style={{borderRadius:5}} />}
 
-                    <h4 className={'text-bold'}>Price : {price}</h4>
+                    <h4 className={'text-bold'}>Price : { numberFormat(price)}</h4>
 
 
                         <div>
 
-                            <div>{description}</div>
+                            <div>{itemdescription}</div>
                         </div>
 
 

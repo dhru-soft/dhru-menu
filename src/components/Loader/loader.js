@@ -1,25 +1,36 @@
 import React, {Component} from 'react';
 import {connect} from "react-redux";
 
-class Index extends Component {
-    render() {
-        const {show} =  this.props;
-        return ( <div>
-            { show &&  <div className="h-100 w-100 bg-transparent position-fixed fixed-top"  style={{zIndex:'9999'}}>
-                <div className="loader"></div>
-            </div> }
-        </div>)
+const Index = (props) => {
+
+    const {loader} = props;
+
+
+    if(!loader) {
+        return <></>
     }
+
+    return ( <div>
+        {<div className="h-100 d-flex justify-content-center align-items-center  w-100 bg-transparent position-fixed fixed-top"  style={{zIndex:'9999'}}>
+            <div className={'text-center d-flex justify-content-center align-items-center h-100'}>
+                <div className={'bg-white  p-5'} style={{
+                    opacity: 1,
+                    borderRadius: 100,
+                }}>
+                <div className="spinner-border" role="status">
+                    <span className="sr-only">Loading...</span>
+                </div>
+                </div>
+            </div>
+        </div> }
+    </div>)
+
 }
 
-Index.defaultProps = {
-    show:false,
-};
 
-const mapStateToProps = (state) => {
-    return{
-        ...state.component.loader
-    }
-};
+const mapStateToProps = (state) => ({
+    loader: state.component.loader
+});
+
 
 export default connect(mapStateToProps)(Index);

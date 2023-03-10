@@ -12,9 +12,9 @@ const Index = (props) => {
 
 
     const [tags,setTags] = useState(selectedtags || [
-        {label:'Veg',selected:false,icon:'leaf',color:'#659a4a'},
-        {label:'Non Veg',selected:false,icon:'meat',color:'#ee4c4c'},
-        {label:'Egg',selected:false,icon:'egg',color:'gray'},
+        {label:'Veg',value:'veg',selected:false,icon:'leaf',color:'#659a4a'},
+        {label:'Non Veg',value:'nonveg',selected:false,icon:'meat',color:'#ee4c4c'},
+        {label:'Egg',value:'egg',selected:false,icon:'egg',color:'gray'},
         /*{label:'Jain',selected:false},
         {label:'Swaminarayan',selected:false},
         {label:'Gluten Free',selected:false},

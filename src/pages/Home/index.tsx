@@ -48,15 +48,14 @@ const Index = (props:any) => {
                             render={({ handleSubmit,values }) => (
                                 <form onSubmit={handleSubmit}>
 
-
                                     <div className={'form'}>
 
                                         <div>
                                             <Field name="accesscode"  validate={required}>
                                                 {({ input, meta }) => (
                                                     <div  className="input-wrp">
-                                                        <input  className="textfield" type="text" {...input} placeholder="Access Code" />
-                                                        {meta.touched && meta.error && <span>Access Code {meta.error}</span>}
+                                                        <input  className="textfield" type="text" {...input} placeholder="QR ID" />
+                                                        {meta.touched && meta.error && <div className={'text-center text-danger  mt-2'}>QR ID {meta.error}</div>}
                                                     </div>
                                                 )}
                                             </Field>

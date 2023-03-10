@@ -1,15 +1,15 @@
 import React, {Component, Fragment} from "react";
 import {connect} from "react-redux";
 import {NavLink} from "reactstrap";
+import {useParams} from "react-router-dom";
+import {device} from "../../lib/static";
 
 const Index = (props) => {
 
-    let {restaurantDetail,locationid,restaurantDetail:{logo:{download_url},tabledetail:{tablename,locationname,address1,address2,}}} = props;
-
-    console.log('restaurantDetail',restaurantDetail)
+    let {restaurantDetail,restaurantDetail:{logo:{download_url},tabledetail:{tablename,locationname,address1,address2,}}} = props;
 
     if(!Boolean(locationname) && Boolean(restaurantDetail?.legalname)){
-        const {address1 : ad1,address2 : ad2,name} = restaurantDetail?.location[locationid];
+        const {address1 : ad1,address2 : ad2,name} = restaurantDetail?.location[device?.locationid];
         download_url = restaurantDetail.logo.download_url;
         locationname = name;
         address1 = ad1;

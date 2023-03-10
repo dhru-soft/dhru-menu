@@ -229,14 +229,13 @@ export const shortName = (str) => {
     return
 }
 
-export const checkLocation = () => {
-
-     let locationid = store.getState().selectedData.locationid;
-     if(!Boolean(locationid)){
+/*export const checkLocation = () => {
+        const params = useParams()
+     if(!Boolean(params?.locationid)){
          return false
      }
      return true
-}
+}*/
 
 export const postQrCode = async (accesscode) => {
     await apiService({
