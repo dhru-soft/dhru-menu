@@ -1,5 +1,5 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
+import {createRoot} from 'react-dom/client';
 import {Provider} from 'react-redux';
 import {BrowserRouter} from "react-router-dom";
 import * as serviceWorker from './serviceWorker';
@@ -11,7 +11,7 @@ import {createBrowserHistory} from "history";
 import Header from "./pages/Navigation/Header";
 import Footer from "./pages/Navigation/Footer";
 import './scss/index.scss';
-import {Modal} from "./components";
+
 
 
 export const history = createBrowserHistory({
@@ -42,7 +42,7 @@ const JSX = () => {
 console.clear();
 
 
-export const render = () => ReactDOM.render(<JSX/>, document.getElementById('root'));
+export const render = () => createRoot(document.getElementById('root')).render(<JSX/>);
 render();
 serviceWorker.unregister();
 

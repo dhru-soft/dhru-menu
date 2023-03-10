@@ -19,12 +19,12 @@ export const ItemBox = ({item,itemid}) => {
 
     return (
         <div   className="col-12 col-sm-4 col-xl-3  item-hover  p-2 py-4" onClick={()=>{
-            /*dispatch(setModal({
+            dispatch(setModal({
                 show: true,
                 title:itemname,
                 height: '80%',
                 component: () => <><ItemDetails item={item}/></>
-            }))*/
+            }))
         }}>
             <div className="d-flex p-2 h-100 align-items-center">
                 <div className={'w-100'}>
