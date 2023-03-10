@@ -18,7 +18,7 @@ const Index = (props) => {
 
 
         return (
-            <Fragment>
+            <div className="container p-0">
 
                 <div className={'p-4 border-bottom company-detail'} style={{borderBottomLeftRadius:20,borderBottomRightRadius:20}}>
                     <div className={'bg-white p-4 rounded-5'}>
@@ -26,13 +26,14 @@ const Index = (props) => {
 
                             <div>
 
-                        <div >
-                            <h4>{locationname}</h4>
-                            <small>{address1} {address2}</small>
-                        </div>
-                        {tablename &&  <div className={'mt-3'}>
-                           Table :  {tablename}
-                        </div>}
+                            <div>
+                                <h4>{locationname}</h4>
+                                <small>{address1} {address2}</small>
+                            </div>
+
+                            {tablename &&  <div className={'mt-3'}>
+                               Table :  {tablename}
+                            </div>}
 
                             </div>
 
@@ -45,7 +46,7 @@ const Index = (props) => {
                     </div>
                 </div>
 
-            </Fragment>
+            </div>
         );
 
 }

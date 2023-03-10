@@ -4,38 +4,63 @@ import {ACTIONS, METHOD, STATUS, urls} from "../../lib/static";
 import apiService from "../../lib/api-service";
 
 import {useNavigate, useParams} from "react-router-dom";
-import {checkLocation, isEmpty} from "../../lib/functions";
-import Avatar from "../../components/Avatar";
-import {setModal} from "../../lib/redux-store/reducer/component";
+import {checkLocation, isEmpty, numberFormat} from "../../lib/functions";
+import ReactReadMoreReadLess from "react-read-more-read-less";
 import ItemDetails from "./ItemDetails";
+import {setModal} from "../../lib/redux-store/reducer/component";
 
 
 
 export const ItemBox = ({item,itemid}) => {
     const dispatch = useDispatch()
-    const {itemname,itemimage,price} = item;
+    const {itemname,itemimage,price,itemdescription,veg} = item
+
+    const diat = {veg:{color:'#659a4a',icon:'leaf'},nonveg:{color:'#ee4c4c',icon:'meat'},egg:{color:'gray',icon:'egg'}}
+
     return (
-        <div   className="col-12 col-sm-4 col-xl-3 mb-3 item-hover  p-2" onClick={()=>{
-            dispatch(setModal({
+        <div   className="col-12 col-sm-4 col-xl-3  item-hover  p-2 py-4" onClick={()=>{
+            /*dispatch(setModal({
                 show: true,
                 title:itemname,
                 height: '80%',
                 component: () => <><ItemDetails item={item}/></>
-            }))
+            }))*/
         }}>
-            <div className="d-flex p-2 h-100">
-                <div className={'w-100 d-flex flex-column'}>
-                    {/*<div className="col-auto" style={{width:65}}>
-                        <Avatar src={itemimage} label={itemname} />
-                    </div>*/}
-                    {itemimage &&  <img className={'w-100 rounded-3'} src={`https://${itemimage}`}/>}
-                    <div className={'p-2 mt-auto'}>
-                        <div className={'d-flex justify-content-between flex-nowrap'}>
-                            <h5 className="__title">{itemname} </h5>
-                            <div> {price} </div>
+            <div className="d-flex p-2 h-100 align-items-center">
+                <div className={'w-100'}>
+
+                    <div className={'p-2 mt-auto '}>
+                        <div className={'flex-nowrap'}>
+                            {veg &&  <div> <i style={{color:diat[veg].color}} className={`fa fa-${diat[veg].icon}`}></i> </div>}
+                            <h4 className="__title">{itemname} </h4>
+                            <h5 className={'mb-2'}> {numberFormat(price)} </h5>
                         </div>
-                        <small> DESCRIPTION </small>
+                        <div className={'text-muted mt-3'}>
+                            <ReactReadMoreReadLess
+                                charLimit={50}
+                                readMoreText={"Read more"}
+                                readLessText={""}
+                                readMoreStyle={{color:'black'}}
+                            >
+                                {itemdescription}
+                            </ReactReadMoreReadLess>
+
+                        </div>
                     </div>
+                </div>
+                <div className={'border border-light  rounded-3  p-3'} style={{width:150}}>
+                    <div style={{minHeight:50}}>
+                        {itemimage &&  <img className={'w-100 rounded-3'} src={`https://${itemimage}`}/>}
+                    </div>
+                    {/*<div className={'mt-3'}>
+                        <button className="w-100 company-detail btn text-white border-0 p-2" onClick={()=>{
+
+                        }} type="button" role="button">
+                           + Add
+                        </button>
+
+                    </div>*/}
+
                 </div>
             </div>
         </div>
@@ -82,9 +107,13 @@ const Items = (props) => {
             workspace: workspace || 'development',
             other: {url: urls.posUrl},
         }).then(async (result) => {
+
             if (result.status === STATUS.SUCCESS && Boolean(result?.data)) {
                 const {items} = result?.data;
                 setItems(items);
+            }
+            else{
+                setItems({})
             }
         });
     }
@@ -99,7 +128,7 @@ const Items = (props) => {
     }, [groupids,selectedtags,locationid,searchitem])
 
     if(isEmpty(items)){
-        return <div className={'text-center p-5'}>No items found</div>
+        return  <div className={'text-center text-muted p-5'}>No items found</div>
     }
 
 
@@ -107,11 +136,11 @@ const Items = (props) => {
         <>
             <section>
 
-                <div  className="">
+                <div  className="container bg-white rounded-4">
 
 
 
-                  <div className="row" style={{marginBottom:100}}>
+                  <div className="row" >
                         {
                             Object.keys(items).map((key) => {
                                 return <ItemBox key={key} item={{...items[key],itemid:key}}  />

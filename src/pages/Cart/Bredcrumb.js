@@ -2,6 +2,7 @@ import React, {Component, useEffect, useState} from "react";
 import {connect, useDispatch} from "react-redux";
 import {clone} from "../../lib/functions";
 import {setSelected} from "../../lib/redux-store/reducer/selected-data";
+import {GroupBox} from "./Groups";
 
 
 const Index = (props) => {
@@ -43,23 +44,26 @@ const Index = (props) => {
             <div>
                 <div className="">
 
-                    {Boolean(groupids) &&  <div className={'pt-3 pb-4'}>
+                    {<div className={'pt-3 pb-4'}>
                         <nav>
                             <ol className="breadcrumb mb-0">
-                                <li className="breadcrumb-item"><span onClick={()=>{
-                                    dispatch(setSelected({groupids:''}))
-                                }}><i className={'fa fa-chevron-left'}></i> Back </span></li>
+                                {Boolean(groupids)  ?  <>
+                                    <li className="breadcrumb-item ps-2"><span onClick={()=>{
+                                        dispatch(setSelected({groupids:''}))
+                                    }}><i className={'fa fa-chevron-left'}></i> Back </span></li>
 
-                                {
-                                     groupids?.map((gid,index)=>{
-                                        return (
-                                            <li key={index} className="breadcrumb-item" onClick={()=>{
-                                                setCurrentGroup(gid)
-                                            }}><span>{groupList[gid]?.itemgroupname}</span></li>
-                                        )
-                                    })
-                                }
-
+                                    {
+                                         groupids?.map((gid,index)=>{
+                                            return (
+                                                <li key={index} className="breadcrumb-item" onClick={()=>{
+                                                    setCurrentGroup(gid)
+                                                }}><span>{groupList[gid]?.itemgroupname}</span></li>
+                                            )
+                                        })
+                                    }
+                                </> : <>
+                                    <li className="breadcrumb-item ps-2"><span> Menu </span></li>
+                                </> }
                             </ol>
                         </nav>
                     </div> }
@@ -80,18 +84,7 @@ const Index = (props) => {
                                     dispatch(setSelected({groupids: groups}))
                                 }}  className="text-center col-sm-4 col-lg-2 col-md-3 col-6 mb-3">
 
-                                    {Boolean(group.itemgroupimage) ? <div className="__item __item--rounded text-center border  backgroundImage" style={{
-                                            borderRadius: 10,
-                                            backgroundImage: `url("https://${group.itemgroupimage}")`
-                                        }}>
-                                            <h5 className="__title text-center text-white  p-3">{group.itemgroupname} </h5>
-                                        </div>
-                                        :
-                                        <div className="__item __item--rounded text-center border  backgroundNoImage" style={{
-                                            borderRadius: 10,
-                                        }}>
-                                            <h5 className="__title text-center  p-3">{group.itemgroupname} </h5>
-                                        </div>}
+                                    <GroupBox item={group}/>
 
 
                                 </div>

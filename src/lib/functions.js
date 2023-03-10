@@ -4,7 +4,7 @@ import apiService from "./api-service";
 import {ACTIONS, METHOD, STATUS, urls} from "./static";
 import {setrestaurantData} from "./redux-store/reducer/restaurant-data";
 import store from "./redux-store/store";
-import {useNavigate} from "react-router-dom";
+var ls = require('local-storage');
 
 
 
@@ -56,12 +56,21 @@ export const _accordion = () => {
 };
 
 
-export const numberFormat = (value) =>
-    new Intl.NumberFormat('en-US', {
-        style: 'currency',
-        currency: 'USD'
-    }).format(value);
+export const getDefaultCurrency = () => {
+    const {currency} = store.getState().restaurantDetail.settings;
+    const code = Object.keys(currency).find((k) => currency[k]?.rate === "1") || {}
+    return {...currency[code],code};
+}
 
+export const numberFormat = (value) => {
+
+    const {decimalplace,code} = getDefaultCurrency()
+
+    return new Intl.NumberFormat('en-US', {
+        style: 'currency',
+        currency: code,
+    }).format(value);
+}
 export const scrollTo = (hash) => {
     const scrollToAnchor = () => {
         const hashParts = hash.split('#');
@@ -194,6 +203,7 @@ export function isEmpty(obj) {
 }
 
 
+
 export const wait = (time, signal) => {
     return new Promise((resolve, reject) => {
         const timeoutId = setTimeout(() => {
@@ -284,3 +294,40 @@ export const getWorkspaceName = () => {
 }
 
 
+export const storeData = async (key, value) => {
+    try {
+        ls.set(key, JSON.stringify(value));
+        return true
+    } catch (error) {
+        return false;
+    }
+};
+
+export const retrieveData = async (key) => {
+    return await ls.get(key).then((data) => {
+        return JSON.parse(data);
+    });
+};
+
+export const saveLocalSettings = async (key, setting) => {
+    await retrieveData(`fusion-dhru-menu-settings`).then(async (data) => {
+        data = {
+            ...data,
+            [key]: setting
+        }
+        await storeData('settings',data)
+    })
+}
+
+
+export const getLocalSettings = async (key) => {
+    return new Promise(async resolve => {
+        await retrieveData(`fusion-dhru-menu-settings`).then(async (data) => {
+            if (Boolean(data) && Boolean(data[key])) {
+                resolve(data[key])
+            } else {
+                resolve(false)
+            }
+        })
+    })
+}

@@ -1,6 +1,6 @@
 import React, {Component, useEffect, useState} from "react";
 import {connect, useDispatch} from "react-redux";
-import {clone, isEmpty} from "../../lib/functions";
+import {clone, isEmpty, saveLocalSettings} from "../../lib/functions";
 import {setSelected} from "../../lib/redux-store/reducer/selected-data";
 
 
@@ -8,9 +8,12 @@ const Index = (props) => {
 
     const dispatch = useDispatch()
     const {hidetag,selectedtags} = props;
+
+
+
     const [tags,setTags] = useState(selectedtags || [
-        {label:'Veg',selected:false,icon:'leaf',color:'green'},
-        {label:'Non Veg',selected:false,icon:'meat',color:'red'},
+        {label:'Veg',selected:false,icon:'leaf',color:'#659a4a'},
+        {label:'Non Veg',selected:false,icon:'meat',color:'#ee4c4c'},
         {label:'Egg',selected:false,icon:'egg',color:'gray'},
         /*{label:'Jain',selected:false},
         {label:'Swaminarayan',selected:false},
@@ -43,7 +46,6 @@ const Index = (props) => {
                                             return  tag.selected
                                         })
                                         dispatch(setSelected({selectedtags: isEmpty(selected)?'':selected}))
-
                                     }} className={`border rounded-4 px-4 btn ${tag.selected?'btn-danger':'bg-white'}`} > {tag.selected ? <i className={'fa fa-check'}></i> : <i style={{color:tag.color}} className={`fa fa-${tag.icon}`}></i>} <span>{tag.label}</span>  </button>
                                 })
                             }

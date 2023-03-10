@@ -8,6 +8,20 @@ import {checkLocation} from "../../lib/functions";
 import {useNavigate} from "react-router-dom";
 
 
+export const GroupBox = ({item}) => {
+    const withimage = Boolean(item.itemgroupimage);
+    return (
+        <>
+            <div className={`__item __item--rounded text-center border ${withimage?'backgroundImage':'backgroundNoImage'}`} style={{
+                borderRadius: 10,
+                backgroundImage: withimage ? `url("https://${item.itemgroupimage}")` :''
+            }}>
+                <h5 className={`__title text-center ${withimage?'text-white':''} p-3`}>{item.itemgroupname} </h5>
+            </div>
+        </>
+    )
+}
+
 const Index = (props) => {
 
 
@@ -58,25 +72,11 @@ const Index = (props) => {
                         return group?.itemgroupmid === '0'
                     }).map((item, index) => {
 
-                        console.log('item',item)
-
                         return <div key={index} className="text-center col-sm-4 col-lg-2 col-md-3 col-6 mb-3"
                                     onClick={() => {
                                         dispatch(setSelected({groupids: [item?.itemgroupid]}))
                                     }}>
-                            {Boolean(item.itemgroupimage) ? <div className="__item __item--rounded text-center border  backgroundImage" style={{
-                                borderRadius: 10,
-                                backgroundImage: `url("https://${item.itemgroupimage}")`
-                            }}>
-                                <h5 className="__title text-center text-white  p-3">{item.itemgroupname} </h5>
-                            </div>
-:
-                            <div className="__item __item--rounded text-center border  backgroundNoImage" style={{
-                                borderRadius: 10,
-                            }}>
-                                <h5 className="__title text-center  p-3">{item.itemgroupname} </h5>
-                            </div>}
-
+                             <GroupBox item={item}/>
                         </div>
                     })
                 }

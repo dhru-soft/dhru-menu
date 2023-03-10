@@ -15,7 +15,7 @@ export class Footer extends Component {
                                 <div className="row">
                                     <div className="col-12 text-center">
                                         <div>
-                                            <span className="__bullet">Powered by Dhru ERP</span>
+                                            <small className="text-muted">Powered by Dhru ERP</small>
 
                                         </div>
                                       </div>

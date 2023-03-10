@@ -20,7 +20,7 @@ const Index = (props:any) => {
 
     useEffect(()=>{
         if(workspace){
-            getInit(workspace)
+            getInit(workspace).then()
         }
         else {
             Boolean(accesscode) && postQrCode(accesscode).then()
@@ -28,6 +28,20 @@ const Index = (props:any) => {
     },[accesscode])
 
     const {legalname,logo:{download_url},location,tabledetail:{tablename,locationid}}:any = restaurantDetail
+
+    if(!Boolean(legalname)){
+        return (
+            <div className="col-12   text-center mt-5 pt-5">
+                {workspace ?  <>
+                    <h1>404</h1>
+                    Invalid URl
+                </> : <>
+                    Please Wait
+                </>}
+            </div>
+        )
+    }
+
 
     return(
 
@@ -41,18 +55,16 @@ const Index = (props:any) => {
 
                             <div className="col-12   pt-5 pb-6">
 
-                                {
-                                   Boolean(legalname) ? <>
+                                 <>
 
                                            {Boolean(legalname !== 'notfound') ?  <>
                                                 <div className={'text-center'}>
                                                     <img style={{borderRadius: 10, width: 100}} className="img-fluid"
                                                          src={`https://${download_url}`}
-                                                         alt="demo"/>
+                                                          />
                                                 </div>
 
                                                 <div className="section-heading section-heading--center">
-                                                    {/*<h6 className="__subtitle text-white"> Hi ! </h6>*/}
                                                     <h2
                                                     className="__title text-white"> <div
                                                     style={{color: '#ffdb00'}}>{legalname}</div></h2>
@@ -96,16 +108,7 @@ const Index = (props:any) => {
                                                </div>
                                            </>}
 
-                                    </> :
-
-                                    <>
-                                        <div className="col-12  text-white text-center mt-5 pt-5">
-                                            {/*<Loader2 show={true}/>*/}
-                                            <h1 className={'text-white'}>404</h1>
-                                             Invalid URl
-                                        </div>
                                     </>
-                                }
 
                             </div>
 
