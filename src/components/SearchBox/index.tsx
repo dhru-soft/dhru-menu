@@ -38,6 +38,7 @@ const Search = (props: any) => {
                 onChangeSearch(e)
             }}   name="search" type="text" style={{borderRadius:10,paddingLeft:40,borderColor:'#E6E8F0',borderWidth:1}}/>
 
+            {/*<div className={'position-absolute p-4'} style={{right:0,top:0}}>  <i className={'fa fa-times'}></i> </div>*/}
         </div>
     );
 };
