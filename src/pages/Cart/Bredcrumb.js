@@ -2,6 +2,7 @@ import React, {Component, useEffect, useState} from "react";
 import {connect, useDispatch} from "react-redux";
 import {clone} from "../../lib/functions";
 import {setSelected} from "../../lib/redux-store/reducer/selected-data";
+import {GroupBox} from "./Groups";
 
 
 const Index = (props) => {
@@ -80,18 +81,7 @@ const Index = (props) => {
                                     dispatch(setSelected({groupids: groups}))
                                 }}  className="text-center col-sm-4 col-lg-2 col-md-3 col-6 mb-3">
 
-                                    {Boolean(group.itemgroupimage) ? <div className="__item __item--rounded text-center border  backgroundImage" style={{
-                                            borderRadius: 10,
-                                            backgroundImage: `url("https://${group.itemgroupimage}")`
-                                        }}>
-                                            <h5 className="__title text-center text-white  p-3">{group.itemgroupname} </h5>
-                                        </div>
-                                        :
-                                        <div className="__item __item--rounded text-center border  backgroundNoImage" style={{
-                                            borderRadius: 10,
-                                        }}>
-                                            <h5 className="__title text-center  p-3">{group.itemgroupname} </h5>
-                                        </div>}
+                                    <GroupBox item={group}/>
 
 
                                 </div>

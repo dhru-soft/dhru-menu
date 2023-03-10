@@ -56,12 +56,21 @@ export const _accordion = () => {
 };
 
 
-export const numberFormat = (value) =>
-    new Intl.NumberFormat('en-US', {
-        style: 'currency',
-        currency: 'USD'
-    }).format(value);
+export const getDefaultCurrency = () => {
+    const {currency} = store.getState().restaurantDetail.settings;
+    const code = Object.keys(currency).find((k) => currency[k]?.rate === "1") || {}
+    return {...currency[code],code};
+}
 
+export const numberFormat = (value) => {
+
+    const {decimalplace,code} = getDefaultCurrency()
+
+    return new Intl.NumberFormat('en-US', {
+        style: 'currency',
+        currency: code,
+    }).format(value);
+}
 export const scrollTo = (hash) => {
     const scrollToAnchor = () => {
         const hashParts = hash.split('#');
@@ -192,6 +201,7 @@ export function isEmpty(obj) {
 
     return true;
 }
+
 
 
 export const wait = (time, signal) => {

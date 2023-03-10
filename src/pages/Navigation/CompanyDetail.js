@@ -26,13 +26,14 @@ const Index = (props) => {
 
                             <div>
 
-                        <div >
-                            <h4>{locationname}</h4>
-                            <small>{address1} {address2}</small>
-                        </div>
-                        {tablename &&  <div className={'mt-3'}>
-                           Table :  {tablename}
-                        </div>}
+                            <div>
+                                <h4>{locationname}</h4>
+                                <small>{address1} {address2}</small>
+                            </div>
+
+                            {tablename &&  <div className={'mt-3'}>
+                               Table :  {tablename}
+                            </div>}
 
                             </div>
 

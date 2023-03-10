@@ -1,5 +1,5 @@
 body{
-    color: $text-light;
+    color: $yiq-text-dark;
     overflow-x: hidden;
 }
 html,body{
@@ -880,7 +880,7 @@ b, strong {
 
 .backgroundImage,.backgroundNoImage{
     background-position: center;
-    height: 100px;
+    height: 80px;
     h5{
         background: rgb(0,0,0);
         background: linear-gradient(180deg, rgba(0,0,0,0) 0%, rgba(0,0,0,0.7903536414565826) 100%);
@@ -911,12 +911,15 @@ b, strong {
 }
 
 .item-hover{
-    border-radius: 10px;
+    border-bottom: dashed 1px #ddd;
     &:nth-child(2n+1){
-        box-shadow: 0 0 10px #e2e2e2;
+
+    }
+    &:last-child{
+        border:none;
     }
     &:hover {
-        box-shadow: 0 0 10px #e2e2e2;
+        /*box-shadow: 0 0 10px #e2e2e2;*/
     }
 }
 
