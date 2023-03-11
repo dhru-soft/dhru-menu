@@ -67,6 +67,7 @@ export const cartData = createSlice({
 
             const {itemIndex, item} = action.payload;
             state.invoiceitems[itemIndex] = clone({...state.invoiceitems[itemIndex], ...item});
+
            // state.vouchertotaldisplay = voucherTotal(state.invoiceitems,state.vouchertaxtype),
                 state.updatecart = true;
             return state

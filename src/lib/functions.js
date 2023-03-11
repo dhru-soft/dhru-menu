@@ -5,11 +5,13 @@ import {ACTIONS, device, METHOD, STATUS, urls} from "./static";
 import {setrestaurantData} from "./redux-store/reducer/restaurant-data";
 import store from "./redux-store/store";
 import moment from "moment";
-import {setCartItems} from "./redux-store/reducer/cart-data";
+import {setCartItems, updateCartField, updateCartItems} from "./redux-store/reducer/cart-data";
 import {v4 as uuid} from "uuid";
 import {setItemDetail} from "./redux-store/reducer/item-detail";
 import promise from "promise";
 import {getProductData} from "./item-calculation";
+import {setModal} from "./redux-store/reducer/component";
+import ItemDetails from "../pages/Cart/ItemDetails";
 var ls = require('local-storage');
 
 
@@ -466,6 +468,25 @@ export const voucherTotal = (items, vouchertaxtype) => {
     return vouchertotaldisplay
 }*/
 
+
+export const removeItem = async (unique) => {
+    const invoiceitems = store.getState().cartData.invoiceitems || {}
+    try {
+        const filtered = invoiceitems?.filter((item) => {
+            return item.key !== unique
+        })
+
+        if (Boolean(filtered?.length > 0)) {
+            await store.dispatch(updateCartItems(clone(filtered)));
+        } else {
+            await store.dispatch(updateCartField({invoiceitems: []}))
+        }
+    } catch (e) {
+        console.log('e', e)
+    }
+}
+
+
 export const setItemRowData = (data) => {
 
     try {
@@ -555,6 +576,7 @@ export const setItemRowData = (data) => {
             ...getProductData(data, defaultCurrency, defaultCurrency, undefined, undefined, isInward, pricingTemplate)
         }
 
+
         additem.key = key;
         additem.change = true;
         additem.newitem = true;
@@ -587,18 +609,36 @@ export const getItemById = async (itemid) => {
 
 }
 
+export const addItem =  async (item) =>{
+    const {hasextra,itemname} = item
+    if(hasextra) {
+        store.dispatch(setItemDetail(item));
+        store.dispatch(setModal({
+            show: true,
+            title: itemname,
+            height: '80%',
+            component: () => <><ItemDetails   /></>
+        }))
+    }
+    else{
+        addToCart(item).then(r => { })
+    }
+}
+
+
 export const addToCart = async (item) => {
 
+    let getdetail = {};
     if(Boolean(item.price)){
-        item = await getItemById(item.itemid)
+        getdetail = await getItemById(item.itemid)
     }
 
     try {
-
         item = {
             ...item,
+            ...getdetail,
             added: true,
-            key: uuid(),
+            productqnt:1,
             deviceid:'browser'
         }
 

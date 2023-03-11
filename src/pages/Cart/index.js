@@ -1,5 +1,5 @@
-import React, {useEffect} from "react";
-import {connect, useDispatch} from "react-redux";
+import React from "react";
+import {connect} from "react-redux";
 import Groups from "./Groups";
 
 import CompanyDetail from "../Navigation/CompanyDetail";
@@ -8,10 +8,8 @@ import Search from "./Search";
 import Bredcrumb from "./Bredcrumb";
 import Diet from "./Diet";
 import {useParams} from "react-router-dom";
-import {setSelected} from "../../lib/redux-store/reducer/selected-data";
 import Init from "../Home/Init";
 import {device} from "../../lib/static";
-import {numberFormat} from "../../lib/functions";
 import CartTotal from "./CartTotal";
 
 const Index = (props) => {
@@ -47,17 +45,16 @@ const Index = (props) => {
 
                             <Bredcrumb/>
 
-                            {(!Boolean(groupids)  && !Boolean(searchitem)) ? <div>
+                            {(!Boolean(groupids) && !Boolean(searchitem)) ? <div>
                                 <Groups/>
                             </div> : <div>
                                 <ItemList/>
                             </div>}
 
 
-                             <CartTotal/>
+                            <CartTotal/>
 
                         </div>
-
 
 
                     </div>

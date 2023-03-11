@@ -6,6 +6,7 @@ import {addToCart, getItemById, numberFormat} from "../../lib/functions";
 import {setModal} from "../../lib/redux-store/reducer/component";
 import {setItemDetail} from "../../lib/redux-store/reducer/item-detail";
 import Loader3 from "../../components/Loader/Loader3";
+import AddButton from "./AddButton";
 
 
 const Index = (props) => {
@@ -60,6 +61,7 @@ const Index = (props) => {
                         </div>
 
                         <div>
+
                             <button className="custom-btn custom-btn--medium custom-btn--style-4" onClick={() => {
                                 addToCart(props?.itemDetail).then(r => {
                                     dispatch(setModal({show: false}))

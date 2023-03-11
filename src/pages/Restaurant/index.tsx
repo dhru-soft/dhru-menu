@@ -58,9 +58,9 @@ const Index = (props: any) => {
 
                                 {Boolean(legalname !== 'notfound') ? <>
                                     <div className={'text-center'}>
-                                        <img style={{borderRadius: 10, width: 100}} className="img-fluid"
+                                        {Boolean(logo?.download_url) && <img style={{borderRadius: 10, width: 100}} className="img-fluid"
                                              src={`https://${logo?.download_url}`}
-                                        />
+                                        />}
                                     </div>
 
                                     <div className="section-heading section-heading--center">
