@@ -4,12 +4,11 @@ import apiService from "./api-service";
 import {ACTIONS, device, METHOD, STATUS, urls} from "./static";
 import {setrestaurantData} from "./redux-store/reducer/restaurant-data";
 import store from "./redux-store/store";
-import moment from "moment";
+/*import moment from "moment";
 import {setCartItems} from "./redux-store/reducer/cart-data";
 import {v4 as uuid} from "uuid";
 import {setItemDetail} from "./redux-store/reducer/item-detail";
-import promise from "promise";
-import {getProductData} from "./item-calculation";
+import {getProductData} from "./item-calculation";*/
 var ls = require('local-storage');
 
 
@@ -345,6 +344,13 @@ export const getDefaultPayment = () => {
     return [{paymentby: "Pay Later", label: "Pay Later"}];
 }
 
+
+export const currencyRate = (currencyName) => {
+    const currency = getFromSetting('currency');
+    const rate = currency[currencyName].rate
+    return parseFloat(rate);
+}
+
 /* export const voucherData = (voucherKey, isPayment = true, isTaxInvoice= false) => {
 
     let {initData, licenseData, staffData, localSettingsData, loginuserData} = localredux;
@@ -465,7 +471,7 @@ export const voucherTotal = (items, vouchertaxtype) => {
     })
     return vouchertotaldisplay
 }*/
-
+/*
 export const setItemRowData = (data) => {
 
     try {
@@ -614,15 +620,10 @@ export const addToCart = async (item) => {
 }
 
 
-
-export const currencyRate = (currencyName) => {
-    const currency = getFromSetting('currency');
-    const rate = currency[currencyName].rate
-    return parseFloat(rate);
-}
+*/
 
 export const getFloatValue = (value, fraxtionDigits = 4, notConvert = true, isLog = false) => {
-    if (!Boolean(fraxtionDigits)) {
+    /*if (!Boolean(fraxtionDigits)) {
         fraxtionDigits = 4;
     }
     let returnValue  = 0;
@@ -635,7 +636,7 @@ export const getFloatValue = (value, fraxtionDigits = 4, notConvert = true, isLo
             }).format(value)
         returnValue = parseFloat(newstring.replaceAll(",", ""))
     }
-    return returnValue;
+    return returnValue;*/
 }
 
 export const getFromSetting = (key) => {

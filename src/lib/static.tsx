@@ -2,7 +2,11 @@ import {getType} from "@reduxjs/toolkit";
 
 export const device:any = {tablet: true, db: '', token: '', global_token: '', navigation: '',uniqueid:'',workspace:'',locationid:''}
 
-export const urls = {posUrl:'.api.dhru.com/menu/v1/',adminUrl:'',localserver:''}
+
+export const isDevelopment = process.env.NODE_ENV === "development";
+
+
+export const urls = {posUrl:`.api.dhru.${isDevelopment?'io':'com'}/menu/v1/`,adminUrl:'',localserver:''}
 
 
 export enum STATUS {
