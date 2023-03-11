@@ -472,7 +472,8 @@ export const setItemRowData = (data) => {
 
         let isInward  = false;
 
-        let {cartData, restaurantDetail:{unit}} = store.getState();
+        let {cartData} = store.getState();
+        const unit = getFromSetting('unit')
 
         let unittype = unit[data?.itemunit]
 
@@ -514,6 +515,7 @@ export const setItemRowData = (data) => {
             pricing.price.default?.length > 0) {
             recurring = Object.keys(pricing.price.default[0])[0];
         }
+
         if (Boolean(salesunit)) {
             productqntunitid = salesunit;
         }
@@ -561,7 +563,7 @@ export const setItemRowData = (data) => {
 
 
     } catch (e) {
-
+        console.log('e',e)
     }
 
 }
@@ -587,13 +589,17 @@ export const getItemById = async (itemid) => {
 
 export const addToCart = async (item) => {
 
+    if(Boolean(item.price)){
+        item = await getItemById(item.itemid)
+    }
+
     try {
 
         item = {
             ...item,
             added: true,
             key: uuid(),
-            deviceid:'broswer'
+            deviceid:'browser'
         }
 
         const itemRowData = setItemRowData(item);

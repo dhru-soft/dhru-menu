@@ -1,10 +1,22 @@
-import React from "react";
-import {connect} from "react-redux";
-import {numberFormat} from "../../lib/functions";
+import React, {useEffect} from "react";
+import {connect, useDispatch} from "react-redux";
+import {clone, numberFormat} from "../../lib/functions";
+import {setCartData, setUpdateCart} from "../../lib/redux-store/reducer/cart-data";
+import {itemTotalCalculation} from "../../lib/item-calculation";
 
 const Index = (props) => {
 
-    const {cartData:{vouchertotaldisplay,invoiceitems}} = props
+    const dispatch = useDispatch()
+
+    const {cartData,cartData:{vouchertotaldisplay,invoiceitems}} = props;
+
+   /* useEffect(()=>{
+        let data = itemTotalCalculation(clone(cartData), undefined, undefined, undefined, undefined, 2, 2, false, false);
+        dispatch(setCartData(clone(data)));
+        dispatch(setUpdateCart());
+    },[cartData])
+
+    console.log('vouchertotaldisplay',vouchertotaldisplay)*/
 
     if(!Boolean(vouchertotaldisplay)){
         return <></>

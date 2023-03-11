@@ -1,17 +1,37 @@
-import React from "react";
+import React, {useEffect, useState} from "react";
 import {connect, useDispatch} from "react-redux";
 import Addons from "./Addons";
 import TagsNotes from "./TagsNotes";
-import {addToCart, numberFormat} from "../../lib/functions";
+import {addToCart, getItemById, numberFormat} from "../../lib/functions";
 import {setModal} from "../../lib/redux-store/reducer/component";
+import {setItemDetail} from "../../lib/redux-store/reducer/item-detail";
+import Loader3 from "../../components/Loader/Loader3";
 
 
 const Index = (props) => {
 
     const dispatch = useDispatch()
 
-    const {itemimage, itemdescription, price} = props?.itemDetail;
+    const {itemimage,itemid, itemdescription,pricing} = props?.itemDetail;
+    const pricingtype = pricing?.type;
+    const baseprice = pricing?.price?.default[0][pricingtype]?.baseprice || 0;
 
+    const [loader,setLoader] = useState(false)
+
+    const getItemDetails = async () => {
+        await getItemById(itemid).then((data)=>{
+            dispatch(setItemDetail(data))
+        });
+        setLoader(true)
+    }
+
+    useEffect(()=>{
+        getItemDetails().then()
+    },[])
+
+    if(!loader){
+        return  <Loader3/>
+    }
 
     return (
         <div className={'col-12'}>
@@ -22,7 +42,7 @@ const Index = (props) => {
                     {Boolean(itemimage) &&
                         <img src={`https://${itemimage}`} className={'w-100'} style={{borderRadius: 5}}/>}
 
-                    <h4 className={'text-bold'}>Price : {numberFormat(price)}</h4>
+                    <h4 className={'text-bold'}>Price : {numberFormat(baseprice)}</h4>
 
 
                     <div>
@@ -34,7 +54,7 @@ const Index = (props) => {
                     <TagsNotes/>
 
 
-                    {/*<div className={'d-flex justify-content-between align-items-center'}>
+                    <div className={'d-flex justify-content-between align-items-center'}>
                         <div>
                             Item Qnt
                         </div>
@@ -48,7 +68,7 @@ const Index = (props) => {
                                 Add
                             </button>
                         </div>
-                    </div>*/}
+                    </div>
 
                 </div>
             </div>
