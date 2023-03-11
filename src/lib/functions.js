@@ -1,9 +1,15 @@
 import $ from "jquery";
 import React from "react";
 import apiService from "./api-service";
-import {ACTIONS, METHOD, STATUS, urls} from "./static";
+import {ACTIONS, device, METHOD, STATUS, urls} from "./static";
 import {setrestaurantData} from "./redux-store/reducer/restaurant-data";
 import store from "./redux-store/store";
+import moment from "moment";
+import {setCartItems} from "./redux-store/reducer/cart-data";
+import {v4 as uuid} from "uuid";
+import {setItemDetail} from "./redux-store/reducer/item-detail";
+import promise from "promise";
+import {getProductData} from "./item-calculation";
 var ls = require('local-storage');
 
 
@@ -57,9 +63,12 @@ export const _accordion = () => {
 
 
 export const getDefaultCurrency = () => {
-    const {currency} = store.getState().restaurantDetail.settings;
-    const code = Object.keys(currency).find((k) => currency[k]?.rate === "1") || {}
-    return {...currency[code],code};
+    const currency = getFromSetting('currency');
+    if(!isEmpty(currency)) {
+        const code = Object.keys(currency)?.find((k) => currency[k]?.rate === "1") || {}
+        return {...currency[code], code};
+    }
+    return   {decimalplace:3,code:'USD'}
 }
 
 export const numberFormat = (value) => {
@@ -329,4 +338,310 @@ export const getLocalSettings = async (key) => {
             }
         })
     })
+}
+
+
+export const getDefaultPayment = () => {
+    return [{paymentby: "Pay Later", label: "Pay Later"}];
+}
+
+/* export const voucherData = (voucherKey, isPayment = true, isTaxInvoice= false) => {
+
+    let {initData, licenseData, staffData, localSettingsData, loginuserData} = localredux;
+
+    let payment = getDefaultPayment()
+
+    let paymentmethod = Object.keys(initData?.paymentgateway).find((key) => {
+        let data1 = Object.keys(initData?.paymentgateway[key]).filter((k1) => k1 !== "settings");
+        return isEmpty(data1) ? false : data1[0] === 'cash'
+    })
+
+    if (paymentmethod) {
+        let paymentby = initData?.paymentgateway[paymentmethod]["cash"].find(({input}) => input === "displayname")
+        payment = [{paymentmethod, paymentby: paymentby?.value, type: "cash"}]
+    }
+
+    if (Boolean(localSettingsData?.taxInvoice)) {
+        let taxVoucherKey = getVoucherKey("vouchertypename", "Tax Invoices");
+        if (taxVoucherKey) {
+            voucherKey = taxVoucherKey;
+            payment = [{paymentby: "Pay Later"}]
+        }
+    }
+
+    let voucherTypeData = initData?.voucher[voucherKey]
+
+    const utcDate = moment().format("YYYY-MM-DD HH:mm:ss")
+
+    let date = getDateWithFormat(utcDate, "YYYY-MM-DD"),
+        vouchercreatetime = getDateWithFormat(utcDate, 'HH:mm:ss')
+
+    let currencyData = getCurrencyData();
+
+    let local = utcDate;
+
+    const {state} = initData.general
+
+    let data = {
+        localdatetime: local,
+        date,
+        voucherdate: date,
+        duedate: local,
+        vouchercreatetime,
+        time: moment(utcDate).unix(),
+        currency: currencyData.__key,
+        currentDecimalPlace: currencyData?.decimalplace || 2,
+        locationid: licenseData?.data?.location_id,
+        terminalid: localredux?.licenseData?.data?.terminal_id,
+        terminalname: localredux?.licenseData?.data?.terminal_name,
+        staffid: parseInt(loginuserData?.adminid),
+        staffname: loginuserData?.username,
+        vouchercurrencyrate: currencyData.rate,
+        vouchertaxtype: voucherTypeData?.defaulttaxtype || Object.keys(taxTypes)[0],
+        roundoffselected: voucherTypeData?.voucherroundoff,
+        voucherdiscountplace: voucherTypeData?.discountplace,
+        vouchertransitionaldiscount: Boolean(voucherTypeData?.vouchertransitionaldiscount) || voucherTypeData?.vouchertransitionaldiscount === "1",
+        canchangediscoutnaccount: Boolean(voucherTypeData?.vouchertransitionaldiscount) || voucherTypeData?.vouchertransitionaldiscount === "1",
+        discountaccunt: voucherTypeData?.defaultdiscountaccount,
+        vouchertypeid: voucherTypeData?.vouchertypeid,
+        vouchertype: voucherTypeData?.vouchertype,
+        vouchernotes: voucherTypeData?.defaultcustomernotes,
+        toc: voucherTypeData?.defaultterms,
+        selectedtemplate: voucherTypeData?.printtemplate,
+        paymentmethod: payment[0]?.paymentmethod,
+        payment: payment,
+        edit: true,
+        paxes: 1,
+        deviceid:device.uniqueid,
+        "placeofsupply": state,
+        "updatecart": false,
+        "debugPrint": true,
+        "shifttable": false,
+        "taxInvoice": false,
+    }
+
+    return data;
+}
+
+export const voucherTotal = (items, vouchertaxtype) => {
+    let vouchertotaldisplay = 0;
+
+    let taxesList = localredux.initData.tax;
+
+
+    const taxCalculation = (tax, taxableValue, qnt) => {
+        let totalTax = 0;
+        if (!isEmpty(tax?.taxes)) {
+            tax?.taxes?.forEach((tx) => {
+                let taxpriceDisplay = tx?.taxpercentage * taxableValue;
+                taxpriceDisplay = getFloatValue(taxpriceDisplay / 100);
+                totalTax += getFloatValue(taxpriceDisplay * qnt, 4);
+            })
+        }
+        return totalTax;
+    }
+
+    items.forEach((item) => {
+
+        const {productratedisplay, productqnt, itemtaxgroupid} = item;
+
+        vouchertotaldisplay += productratedisplay * productqnt;
+
+        if (!isEmpty(taxesList) && !isEmpty(taxesList[itemtaxgroupid]) && vouchertaxtype === 'exclusive') {
+            vouchertotaldisplay += taxCalculation(taxesList[itemtaxgroupid], productratedisplay, productqnt)
+        }
+
+        if (Boolean(item?.itemaddon?.length)) {
+            item?.itemaddon?.forEach(({pricing, productqnt, itemtaxgroupid}) => {
+                const pricingtype = pricing?.type;
+                const baseprice = pricing?.price?.default[0][pricingtype]?.baseprice || 0;
+                vouchertotaldisplay += baseprice * productqnt
+                if (!isEmpty(taxesList) && !isEmpty(taxesList[itemtaxgroupid]) && vouchertaxtype === 'exclusive') {
+                    vouchertotaldisplay += taxCalculation(taxesList[itemtaxgroupid], baseprice, productqnt)
+                }
+
+            })
+        }
+    })
+    return vouchertotaldisplay
+}*/
+
+export const setItemRowData = (data) => {
+
+    try {
+
+        let isInward  = false;
+
+        let {cartData, restaurantDetail:{unit}} = store.getState();
+
+        let unittype = unit[data?.itemunit]
+
+        let pricingTemplate =   undefined
+
+        let isDepartmentSelected = false;
+
+
+        let {
+            itemid,
+            itemname,
+            itemtaxgroupid,
+            pricing,
+            productqnt,
+            itemmaxqnt,
+            salesunit,
+            stockonhand,
+            inventorytype,
+            identificationtype,
+            itemhsncode,
+            itemtype,
+            committedstock,
+            itemminqnt,
+            itemaddon,
+            itemtags,
+            notes,
+            hasAddon,
+            mrp,
+            key
+        } = data;
+
+
+        let recurring = undefined, producttaxgroupid, productqntunitid;
+
+        if (pricing?.type !== "free" &&
+            pricing.price &&
+            pricing.price.default &&
+            pricing.price.default[0] &&
+            pricing.price.default?.length > 0) {
+            recurring = Object.keys(pricing.price.default[0])[0];
+        }
+        if (Boolean(salesunit)) {
+            productqntunitid = salesunit;
+        }
+
+        if (Boolean(itemtaxgroupid)) {
+            producttaxgroupid = itemtaxgroupid;
+        }
+
+        const defaultCurrency = getDefaultCurrency().code
+
+        let additem = {
+            identificationtype,
+            productid: itemid,
+            productdisplayname: itemname,
+            productqnt: productqnt || (Boolean(itemminqnt) ? itemminqnt : 1),
+            producttaxgroupid,
+            pricingtype: pricing.type,
+            recurring,
+            minqnt: Boolean(itemminqnt) ? parseFloat(itemminqnt) : undefined,
+            maxqnt: Boolean(itemmaxqnt) ? parseFloat(itemmaxqnt) : undefined,
+            productqntunitid,
+            displayunitcode: unittype?.unitcode || '',
+            "accountid": 2,
+            clientid: cartData?.clientid,
+            productdiscounttype: "%",
+            stockonhand,
+            hsn: itemhsncode,
+            itemtype: itemtype === "service" ? "service" : "goods",
+            committedstock,
+            inventorytype,
+            itemaddon,
+            itemtags,
+            notes,
+            mrp,
+            hasAddon,
+            isDepartmentSelected,
+            ...getProductData(data, defaultCurrency, defaultCurrency, undefined, undefined, isInward, pricingTemplate)
+        }
+
+        additem.key = key;
+        additem.change = true;
+        additem.newitem = true;
+
+        return additem;
+
+
+    } catch (e) {
+
+    }
+
+}
+
+export const getItemById = async (itemid) => {
+    return new promise(async (resolve)=>{
+        await apiService({
+            method: METHOD.GET,
+            action: ACTIONS.ITEMS,
+            queryString: {locationid:device.locationid,itemid:itemid},
+            hideLoader:true,
+            workspace: getWorkspaceName(),
+            other: {url: urls.posUrl},
+        }).then(async (result) => {
+            if (result.status === STATUS.SUCCESS && Boolean(result?.data)) {
+                resolve(result?.data)
+            }
+        });
+    })
+
+}
+
+export const addToCart = async (item) => {
+
+    console.log('addToCart item',item)
+
+    const baseprice = item.price;
+
+    try {
+
+        item = {
+            ...item,
+            added: true,
+            key: uuid(),
+            deviceid:'broswer'
+        }
+        let start = moment();
+
+        const itemRowData = setItemRowData(item);
+        item = {
+            ...item,
+            ...itemRowData,
+        }
+        await store.dispatch(setCartItems(item))
+
+    } catch (e) {
+        console.log(e)
+    }
+
+}
+
+
+
+export const currencyRate = (currencyName) => {
+    const currency = getFromSetting('currency');
+    const rate = currency[currencyName].rate
+    return parseFloat(rate);
+}
+
+export const getFloatValue = (value, fraxtionDigits = 4, notConvert = true, isLog = false) => {
+    if (!Boolean(fraxtionDigits)) {
+        fraxtionDigits = 4;
+    }
+    let returnValue  = 0;
+    if (Boolean(value) && !isNaN(value)) {
+        const {general} = localredux.initData;
+        let newstring = new Intl.NumberFormat('en-' + general?.defaultcountry,
+            {
+                style: "decimal",
+                maximumFractionDigits: fraxtionDigits
+            }).format(value)
+        returnValue = parseFloat(newstring.replaceAll(",", ""))
+    }
+    return returnValue;
+}
+
+export const getFromSetting = (key) => {
+    const {settings} = store.getState()?.restaurantDetail;
+    if(!isEmpty(settings)){
+        return settings[key]
+    }
+    return {}
 }

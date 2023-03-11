@@ -3,21 +3,38 @@ import {connect, useDispatch} from "react-redux";
 import {ACTIONS, device, METHOD, STATUS, urls} from "../../lib/static";
 import apiService from "../../lib/api-service";
 
-import {useNavigate, useParams} from "react-router-dom";
-import {checkLocation, isEmpty, numberFormat} from "../../lib/functions";
+import {addToCart,  getItemById,  isEmpty, numberFormat} from "../../lib/functions";
 import ReactReadMoreReadLess from "react-read-more-read-less";
 import ItemDetails from "./ItemDetails";
 import {setModal} from "../../lib/redux-store/reducer/component";
-import Loader2 from "../../components/Loader/loader2";
 import Loader3 from "../../components/Loader/Loader3";
 
 
 
-export const ItemBox = ({item,itemid}) => {
+export const ItemBox = ({item}) => {
     const dispatch = useDispatch()
-    const {itemname,itemimage,price,itemdescription,veg} = item
+    const {itemname,itemimage,price,itemid,hasextra,itemdescription,veg} = item
 
     const diat = {veg:{color:'#659a4a',icon:'leaf'},nonveg:{color:'#ee4c4c',icon:'meat'},egg:{color:'gray',icon:'egg'}}
+
+    const openItemModal =  async () =>{
+        /*await getItemById(itemid).then(async (data)=>{
+            if(hasextra) {
+                dispatch(setModal({
+                    show: true,
+                    title: itemname,
+                    height: '80%',
+                    component: () => <><ItemDetails itemdetail={data} item={item}/></>
+                }))
+            }
+            else{
+                addToCart(data).then(r => { })
+            }
+        });*/
+    }
+
+
+
 
     return (
         <div   className="col-12 col-sm-4 col-xl-3  item-hover  p-2 py-4">
@@ -39,26 +56,18 @@ export const ItemBox = ({item,itemid}) => {
                             >
                                 {itemdescription}
                             </ReactReadMoreReadLess>
-
                         </div>
                     </div>
                 </div>
-                <div className={'border border-light  rounded-3  p-3'} style={{width:150}} onClick={()=>{
-                    dispatch(setModal({
-                        show: true,
-                        title:itemname,
-                        height: '80%',
-                        component: () => <><ItemDetails item={item}/></>
-                    }))
-                }}>
+                <div className={'border border-light  rounded-3 p-2'} style={{width:150}}>
                     <div style={{minHeight:50}}>
                         {itemimage &&  <img className={'w-100 rounded-3'} src={`https://${itemimage}`}/>}
                     </div>
-                    {/*<div className={'mt-3'}>
-                        <button className="w-100 company-detail btn text-white border-0 p-2" onClick={()=>{
-
+                    {/*<div className={'mt-3 text-center'}>
+                        <button className=" btn-add btn" onClick={()=>{
+                            openItemModal().then()
                         }} type="button" role="button">
-                           + Add
+                            ADD
                         </button>
 
                     </div>*/}
@@ -147,7 +156,7 @@ const Items = (props) => {
                   <div className="row" >
                         {
                             Object.keys(items).map((key) => {
-                                return <ItemBox key={key} item={{...items[key],itemid:key}}  />
+                                return <ItemBox key={key}  item={{...items[key],itemid:key}}  />
                             })
                         }
                     </div>

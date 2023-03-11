@@ -2,7 +2,7 @@ import {getType} from "@reduxjs/toolkit";
 
 export const device:any = {tablet: true, db: '', token: '', global_token: '', navigation: '',uniqueid:'',workspace:'',locationid:''}
 
-export const urls = {posUrl:'.api.dhru.io/menu/v1/',adminUrl:'',localserver:''}
+export const urls = {posUrl:'.api.dhru.com/menu/v1/',adminUrl:'',localserver:''}
 
 
 export enum STATUS {
@@ -71,3 +71,8 @@ export const composeValidators = (...validators:any) => (value:any) =>
     validators.reduce((error:any, validator:any) => error || validator(value), undefined)
 
 
+export const defaultclient: any = {clientid: 1, clientname: 'Walkin'}
+
+export enum VOUCHER {
+    INVOICE = "b152d626-b614-4736-8572-2ebd95e24173",
+}

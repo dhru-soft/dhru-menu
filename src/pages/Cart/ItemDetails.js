@@ -5,36 +5,24 @@ import {ACTIONS, device, METHOD, STATUS, urls} from "../../lib/static";
 import Addons from "./Addons";
 import {setItemDetail} from "../../lib/redux-store/reducer/item-detail";
 import TagsNotes from "./TagsNotes";
-import {numberFormat} from "../../lib/functions";
+import {getItemById, numberFormat} from "../../lib/functions";
 import Loader3 from "../../components/Loader/Loader3";
+import store from "../../lib/redux-store/store";
 
 
 const Index = (props) => {
 
     const dispatch = useDispatch()
 
-    const {item: {itemimage,itemid, price,itemdescription, itemname,}} = props;
+    const {itemdetail,item: {itemimage,itemid, price,itemdescription, itemname,}} = props;
     const [loader,setLoader] = useState(false)
 
-     const getItemDetails = async () => {
-
+/*     const getItemDetails = async () => {
         const {workspace} = props;
-
-
-
-        await apiService({
-            method: METHOD.GET,
-            action: ACTIONS.ITEMS,
-            queryString: {locationid:device.locationid,itemid:itemid},
-            hideLoader:true,
-            workspace: workspace,
-            other: {url: urls.posUrl},
-        }).then(async (result) => {
-            if (result.status === STATUS.SUCCESS && Boolean(result?.data)) {
-                dispatch(setItemDetail(result?.data))
-                setLoader(true)
-            }
+        await getItemById(workspace,itemid).then((data)=>{
+            dispatch(setItemDetail(data))
         });
+        setLoader(true)
     }
 
     useEffect(()=>{
@@ -43,7 +31,7 @@ const Index = (props) => {
 
     if(!loader){
         return  <Loader3/>
-    }
+    }*/
 
     return (
         <div className={'col-12'}>
