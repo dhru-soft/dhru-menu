@@ -4,11 +4,12 @@ import apiService from "./api-service";
 import {ACTIONS, device, METHOD, STATUS, urls} from "./static";
 import {setrestaurantData} from "./redux-store/reducer/restaurant-data";
 import store from "./redux-store/store";
-/*import moment from "moment";
+import moment from "moment";
 import {setCartItems} from "./redux-store/reducer/cart-data";
 import {v4 as uuid} from "uuid";
 import {setItemDetail} from "./redux-store/reducer/item-detail";
-import {getProductData} from "./item-calculation";*/
+import promise from "promise";
+import {getProductData} from "./item-calculation";
 var ls = require('local-storage');
 
 
@@ -256,7 +257,6 @@ export const postQrCode = async (accesscode) => {
         if (result.status === STATUS.SUCCESS && Boolean(result?.data)) {
             const {workspace,tableid,locationid} = result.data;
             window.location.href=`${window.location.protocol}//${workspace}.${window.location.host.replace('www','')}/location/${locationid}/?table=${tableid}`
-            //await getInit(workspace, tableid);
         }
         else{
             store.dispatch(setrestaurantData({legalname:'notfound'}))
@@ -278,8 +278,8 @@ export const getInit = async (workspace) => {
         other: {url: urls.posUrl},
     }).then(async (result) => {
         if (result.status === STATUS.SUCCESS && Boolean(result?.data)) {
-            store.dispatch(setrestaurantData({...result.data,workspace:workspace}))
-           //
+            device.workspace = workspace;
+            store.dispatch(setrestaurantData({...result.data}))
         }
     });
 }
@@ -297,6 +297,7 @@ export const getWorkspaceName = () => {
     if (workspace === "localhost" || workspace === "dhru"  ||  workspace === "menu" || workspace === "www") {
         workspace = ""
     }
+    device.workspace = workspace
     return workspace
 }
 
@@ -342,13 +343,6 @@ export const getLocalSettings = async (key) => {
 
 export const getDefaultPayment = () => {
     return [{paymentby: "Pay Later", label: "Pay Later"}];
-}
-
-
-export const currencyRate = (currencyName) => {
-    const currency = getFromSetting('currency');
-    const rate = currency[currencyName].rate
-    return parseFloat(rate);
 }
 
 /* export const voucherData = (voucherKey, isPayment = true, isTaxInvoice= false) => {
@@ -471,7 +465,7 @@ export const voucherTotal = (items, vouchertaxtype) => {
     })
     return vouchertotaldisplay
 }*/
-/*
+
 export const setItemRowData = (data) => {
 
     try {
@@ -579,10 +573,11 @@ export const getItemById = async (itemid) => {
             action: ACTIONS.ITEMS,
             queryString: {locationid:device.locationid,itemid:itemid},
             hideLoader:true,
-            workspace: getWorkspaceName(),
+            workspace: device.workspace,
             other: {url: urls.posUrl},
         }).then(async (result) => {
             if (result.status === STATUS.SUCCESS && Boolean(result?.data)) {
+                store.dispatch(setItemDetail(result?.data))
                 resolve(result?.data)
             }
         });
@@ -592,10 +587,6 @@ export const getItemById = async (itemid) => {
 
 export const addToCart = async (item) => {
 
-    console.log('addToCart item',item)
-
-    const baseprice = item.price;
-
     try {
 
         item = {
@@ -604,7 +595,6 @@ export const addToCart = async (item) => {
             key: uuid(),
             deviceid:'broswer'
         }
-        let start = moment();
 
         const itemRowData = setItemRowData(item);
         item = {
@@ -620,15 +610,20 @@ export const addToCart = async (item) => {
 }
 
 
-*/
+
+export const currencyRate = (currencyName) => {
+    const currency = getFromSetting('currency');
+    const rate = currency[currencyName].rate
+    return parseFloat(rate);
+}
 
 export const getFloatValue = (value, fraxtionDigits = 4, notConvert = true, isLog = false) => {
-    /*if (!Boolean(fraxtionDigits)) {
+    if (!Boolean(fraxtionDigits)) {
         fraxtionDigits = 4;
     }
     let returnValue  = 0;
     if (Boolean(value) && !isNaN(value)) {
-        const {general} = localredux.initData;
+        const general = getFromSetting('general');
         let newstring = new Intl.NumberFormat('en-' + general?.defaultcountry,
             {
                 style: "decimal",
@@ -636,7 +631,7 @@ export const getFloatValue = (value, fraxtionDigits = 4, notConvert = true, isLo
             }).format(value)
         returnValue = parseFloat(newstring.replaceAll(",", ""))
     }
-    return returnValue;*/
+    return returnValue;
 }
 
 export const getFromSetting = (key) => {

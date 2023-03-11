@@ -8,6 +8,7 @@ import ReactReadMoreReadLess from "react-read-more-read-less";
 import ItemDetails from "./ItemDetails";
 import {setModal} from "../../lib/redux-store/reducer/component";
 import Loader3 from "../../components/Loader/Loader3";
+import {setItemDetail} from "../../lib/redux-store/reducer/item-detail";
 
 
 
@@ -18,19 +19,18 @@ export const ItemBox = ({item}) => {
     const diat = {veg:{color:'#659a4a',icon:'leaf'},nonveg:{color:'#ee4c4c',icon:'meat'},egg:{color:'gray',icon:'egg'}}
 
     const openItemModal =  async () =>{
-        /*await getItemById(itemid).then(async (data)=>{
             if(hasextra) {
+                dispatch(setItemDetail(item));
                 dispatch(setModal({
                     show: true,
                     title: itemname,
                     height: '80%',
-                    component: () => <><ItemDetails itemdetail={data} item={item}/></>
+                    component: () => <><ItemDetails   /></>
                 }))
             }
             else{
-                addToCart(data).then(r => { })
+                addToCart(item).then(r => { })
             }
-        });*/
     }
 
 
@@ -63,14 +63,13 @@ export const ItemBox = ({item}) => {
                     <div style={{minHeight:50}}>
                         {itemimage &&  <img className={'w-100 rounded-3'} src={`https://${itemimage}`}/>}
                     </div>
-                    {/*<div className={'mt-3 text-center'}>
-                        <button className=" btn-add btn" onClick={()=>{
+                    <div className={'mt-3 text-center'}>
+                        {/*<button className=" btn-add btn" onClick={()=>{
                             openItemModal().then()
                         }} type="button" role="button">
                             ADD
-                        </button>
-
-                    </div>*/}
+                        </button>*/}
+                    </div>
 
                 </div>
             </div>

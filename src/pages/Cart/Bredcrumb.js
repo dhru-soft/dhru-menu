@@ -7,7 +7,7 @@ import {GroupBox} from "./Groups";
 
 const Index = (props) => {
 
-    const {groupList,groupids,searchitem,selectedtags} = props;
+    const {groupList,groupids,searchitem} = props;
     const [subgroup, setSubGroup] = useState([]);
 
 

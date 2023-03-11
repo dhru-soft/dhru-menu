@@ -23,15 +23,11 @@ const Index = (props) => {
 
 
 
-
-
     return (
         <div className={'col-12'}>
 
             <div>
                 <div className="">
-
-
                     {!hidetag &&  <div>
                         <div className={'overflow-auto d-flex tags'}>
                             {

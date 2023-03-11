@@ -6,11 +6,11 @@ import {device} from "../../lib/static";
 
 const Index = (props) => {
 
-    let {restaurantDetail,restaurantDetail:{logo:{download_url},tabledetail:{tablename,locationname,address1,address2,}}} = props;
+    let {restaurantDetail:{general},restaurantDetail:{general:{logo},tabledetail:{tablename,locationname,address1,address2,}}} = props;
 
-    if(!Boolean(locationname) && Boolean(restaurantDetail?.legalname)){
-        const {address1 : ad1,address2 : ad2,name} = restaurantDetail?.location[device?.locationid];
-        download_url = restaurantDetail.logo.download_url;
+    if(!Boolean(locationname) && Boolean(general?.legalname)){
+        const {address1 : ad1,address2 : ad2,name} = general?.location[device?.locationid];
+        logo.download_url = general?.logo?.download_url;
         locationname = name;
         address1 = ad1;
         address2 = ad2;
@@ -38,8 +38,8 @@ const Index = (props) => {
                             </div>
 
                             <div className={'text-center'}>
-                                {download_url &&  <img style={{width: 50}} className="img-fluid"
-                                                       src={`https://${download_url}`} />}
+                                {logo?.download_url &&  <img style={{width: 50}} className="img-fluid"
+                                                       src={`https://${logo?.download_url}`} />}
                             </div>
 
                         </div>

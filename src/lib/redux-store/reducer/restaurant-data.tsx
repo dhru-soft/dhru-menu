@@ -2,7 +2,7 @@ import {createSlice} from '@reduxjs/toolkit'
 
 export const restaurantData = createSlice({
   name: 'restaurantData',
-  initialState: {legalname:'',logo:{download_url:''},tabledetail:{tablename:'',locationid:''},location:{}},
+  initialState: {location:{},settings:{},general:{},tabledetail:{}},
   reducers: {
     setrestaurantData: (state: any, action) => {
       return {...state, ...action.payload}

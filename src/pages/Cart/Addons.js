@@ -1,17 +1,18 @@
 import React, { useEffect, useState} from "react";
 
 import {connect} from "react-redux";
-import { clone, findObject,} from "../../lib/functions";
+import {clone, findObject, getFromSetting, numberFormat,} from "../../lib/functions";
 import {v4 as uuid} from "uuid";
 import restaurantDetail from "../../lib/redux-store/reducer/restaurant-data";
 
 
-const Index = ({itemDetail,unit}) => {
+const Index = ({itemDetail}) => {
+
 
     const {itemaddon,addons,addon,settings} = itemDetail
 
     let {addongroupid, addonid,autoaddon} = addons || {addongroupid: [], addonid: [],autoaddon:[]};
-
+    let unit = getFromSetting('unit');
 
     const [moreaddon, setMoreAddon] = useState(clone(addon))
 
@@ -121,8 +122,9 @@ const Index = ({itemDetail,unit}) => {
 
 
                                     <div>
-                                        <span>{baseprice * (productqnt || 1)}</span>
+                                        <span>{numberFormat(baseprice * (productqnt || 1))}</span>
                                     </div>
+
                                 </div>
                             </div>
                         )
@@ -138,9 +140,6 @@ const Index = ({itemDetail,unit}) => {
 
 const mapStateToProps = (state) => ({
     itemDetail: state.itemDetail,
-    unit:state.restaurantDetail?.unit
 })
 
 export default connect(mapStateToProps)(Index);
-
-//({toCurrency(baseprice * productQnt)})

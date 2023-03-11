@@ -1,37 +1,17 @@
-import React, {Component, useEffect, useState} from "react";
+import React from "react";
 import {connect, useDispatch} from "react-redux";
-import apiService from "../../lib/api-service";
-import {ACTIONS, device, METHOD, STATUS, urls} from "../../lib/static";
 import Addons from "./Addons";
-import {setItemDetail} from "../../lib/redux-store/reducer/item-detail";
 import TagsNotes from "./TagsNotes";
-import {getItemById, numberFormat} from "../../lib/functions";
-import Loader3 from "../../components/Loader/Loader3";
-import store from "../../lib/redux-store/store";
+import {addToCart, numberFormat} from "../../lib/functions";
+import {setModal} from "../../lib/redux-store/reducer/component";
 
 
 const Index = (props) => {
 
     const dispatch = useDispatch()
 
-    const {itemdetail,item: {itemimage,itemid, price,itemdescription, itemname,}} = props;
-    const [loader,setLoader] = useState(false)
+    const {itemimage, itemdescription, price} = props?.itemDetail;
 
-/*     const getItemDetails = async () => {
-        const {workspace} = props;
-        await getItemById(workspace,itemid).then((data)=>{
-            dispatch(setItemDetail(data))
-        });
-        setLoader(true)
-    }
-
-    useEffect(()=>{
-        getItemDetails().then()
-    },[])
-
-    if(!loader){
-        return  <Loader3/>
-    }*/
 
     return (
         <div className={'col-12'}>
@@ -39,29 +19,31 @@ const Index = (props) => {
             <div>
                 <div className="container">
 
-                    {Boolean(itemimage) &&   <img src={`https://${itemimage}`} className={'w-100'} style={{borderRadius:5}} />}
+                    {Boolean(itemimage) &&
+                        <img src={`https://${itemimage}`} className={'w-100'} style={{borderRadius: 5}}/>}
 
-                    <h4 className={'text-bold'}>Price : { numberFormat(price)}</h4>
-
-
-                        <div>
-
-                            <div>{itemdescription}</div>
-                        </div>
+                    <h4 className={'text-bold'}>Price : {numberFormat(price)}</h4>
 
 
-                        <Addons   />
-                        <TagsNotes    />
+                    <div>
+                        <div>{itemdescription}</div>
+                    </div>
 
 
-                    {/*<div className={'d-flex justify-content-between'}>
+                    <Addons/>
+                    <TagsNotes/>
+
+
+                    {/*<div className={'d-flex justify-content-between align-items-center'}>
                         <div>
                             Item Qnt
                         </div>
 
                         <div>
                             <button className="custom-btn custom-btn--medium custom-btn--style-4" onClick={() => {
-
+                                addToCart(props?.itemDetail).then(r => {
+                                    dispatch(setModal({show: false}))
+                                })
                             }} type="button" role="button">
                                 Add
                             </button>
@@ -78,8 +60,7 @@ const Index = (props) => {
 
 const mapStateToProps = (state) => {
     return {
-        workspace: state.restaurantDetail?.workspace,
-        ...state.selectedData
+        itemDetail: state.itemDetail,
     }
 }
 

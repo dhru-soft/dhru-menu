@@ -1,13 +1,13 @@
 import React, {useEffect, useState} from "react";
 
 import {connect, useDispatch} from "react-redux";
-import {clone} from "../../lib/functions";
+import {clone, getFromSetting} from "../../lib/functions";
 
 
 
-const Index = ({tag,itemDetail:  {tags,notes,itemtags,updateProduct}}) => {
+const Index = ({itemDetail:  {tags,notes,itemtags,updateProduct}}) => {
 
-    const inittags = tag
+    const inittags = getFromSetting('tag')
 
     const [selectedTag,setSelectedTag] = useState(0);
     let [temptags,setTempTags] = useState(clone(itemtags));
@@ -103,7 +103,6 @@ const Index = ({tag,itemDetail:  {tags,notes,itemtags,updateProduct}}) => {
 
 const mapStateToProps = (state) => ({
     itemDetail : state.itemDetail,
-    tag:state.restaurantDetail?.tag
 })
 
 export default connect(mapStateToProps)(Index);

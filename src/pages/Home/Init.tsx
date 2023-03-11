@@ -5,9 +5,7 @@ import {connect} from "react-redux";
 
 const Index = (props: any) => {
 
-    const {restaurantDetail} = props
-
-    const {legalname}: any = restaurantDetail
+    const legalname: any = props?.general?.legalname
 
     if (!Boolean(legalname)) {
         getInit(getWorkspaceName()).then()
@@ -23,7 +21,7 @@ const Index = (props: any) => {
 
 const mapStateToProps = (state: any) => {
     return {
-        restaurantDetail: state.restaurantDetail
+        general: state.restaurantDetail?.general
     }
 }
 
