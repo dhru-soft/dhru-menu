@@ -4,6 +4,7 @@ import {addItem, removeItem} from "../../lib/functions";
 import store from "../../lib/redux-store/store";
 import {changeCartItem} from "../../lib/redux-store/reducer/cart-data";
 import {v4 as uuid} from "uuid";
+import {device} from "../../lib/static";
 
 
 export const updateCartItem = async (values) => {
@@ -68,7 +69,12 @@ const Index = ({item,updateItem}) => {
         updateCartItem(item).then(r => {})
     }
 
-    return <></>
+    const {tableorder} = device.order;
+
+    if(!tableorder){
+        return <></>
+    }
+
 
     if(productqnt){
         return (

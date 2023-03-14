@@ -1,4 +1,4 @@
-import React, {useEffect} from "react";
+import React, {useEffect, useState} from "react";
 import {connect} from "react-redux";
 
 import {useNavigate, useParams} from "react-router-dom";
@@ -15,28 +15,43 @@ const Index = (props: any) => {
 
     const navigate = useNavigate();
     const {workspace} = device;
+    const [loader,setLoader] = useState(false);
 
 
     useEffect(() => {
         if (workspace) {
-            getInit(workspace).then()
+            getInit(workspace).then(()=>{
+                setLoader(true)
+            })
         } else {
-            Boolean(accesscode) && postQrCode(accesscode).then()
+            Boolean(accesscode) && postQrCode(accesscode).then((data)=>{
+                const {workspace,tableid,locationid} = data;
+                if(locationid) {
+                    window.location.href = `${window.location.protocol}//${workspace}.${window.location.host.replace('www', '')}/location/${locationid}/?table=${tableid}`
+                }
+                else {
+                    setLoader(true)
+                }
+            })
         }
     }, [accesscode])
 
-    const {general: {legalname, logo}, location, tabledetail: {tablename, locationid}}: any = restaurantDetail;
 
+    if(!loader){
+        return <div className="col-12   text-center mt-5 pt-5">
+                Please Wait
+        </div>
+    }
+
+    const {general: {legalname, logo}, location, tabledetail: {tablename, locationid}}: any = restaurantDetail;
 
     if (!Boolean(legalname)) {
         return (
             <div className="col-12   text-center mt-5 pt-5">
-                {workspace ? <>
+                <>
                     <h1>404</h1>
                     Invalid URl
-                </> : <>
-                    Please Wait
-                </>}
+                </>
             </div>
         )
     }
@@ -80,7 +95,6 @@ const Index = (props: any) => {
                                                     const {name, address1, address2, city} = location[key]
                                                     return <div key={key} className={'mb-2'}>
                                                         <div onClick={() => {
-
                                                             navigate(`/location/${key}`)
                                                         }} className={'text-white border p-3 d-flex justify-content-between align-items-center cursor-pointer'}
                                                              style={{borderRadius: 5}}>
@@ -103,6 +117,7 @@ const Index = (props: any) => {
                                     {isEmpty(location) && <div className={'text-center'}>
                                          <h1 className={'text-white'}>Coming Soon</h1>
                                     </div>}
+
                                 </> : <>
                                     <div className="section-heading section-heading--center">
                                         <h4

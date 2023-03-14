@@ -6,6 +6,7 @@ import Home from "../pages/Home/index";
 import Restaurant from "../pages/Restaurant";
 
 import Cart from "../pages/Cart";
+import CartDetail from "../pages/Cart/CartDetail";
 
 class RouterComponent extends Component {
 
@@ -15,6 +16,7 @@ class RouterComponent extends Component {
                 <Route exact path="/" element={<Home />}/>
                 <Route exact path="/location/:locationid" element={<Cart />}/>
                 <Route exact path="/qrcode/:accesscode" element={<Restaurant />} />
+                <Route exact path="/cartdetail" element={<CartDetail />} />
             </Routes>
         </Fragment>)
     }

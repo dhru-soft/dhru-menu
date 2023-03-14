@@ -18,8 +18,17 @@ const Index = (props) => {
 
     device.locationid = params?.locationid;
 
+    let {groupids, searchitem,restaurantDetail:{general,location,tabledetail:{tablename,locationname,address1,address2,order}}} = props;
+    const download_url = general?.logo?.download_url || ''
 
-    const {groupids, searchitem} = props
+    if(!Boolean(locationname) && Boolean(general?.legalname)){
+        const {address1 : ad1,address2 : ad2,name,order : ord} = location[device?.locationid];
+        locationname = name;
+        address1 = ad1;
+        address2 = ad2;
+        order = ord
+    }
+    device.order = order;
 
 
     return (
@@ -29,7 +38,7 @@ const Index = (props) => {
 
             <div className="">
 
-                <CompanyDetail/>
+                <CompanyDetail company={{download_url,locationname,address1,address2,tablename}}/>
 
                 <div className={'col-12'}>
 
@@ -69,7 +78,8 @@ const Index = (props) => {
 
 const mapStateToProps = (state) => {
     return {
-        ...state.selectedData
+        restaurantDetail: state.restaurantDetail,
+        ...state.selectedData,
     }
 }
 

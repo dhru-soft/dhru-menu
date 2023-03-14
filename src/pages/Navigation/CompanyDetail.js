@@ -4,20 +4,11 @@ import {NavLink} from "reactstrap";
 import {useParams} from "react-router-dom";
 import {device} from "../../lib/static";
 
-const Index = (props) => {
+const Index = ({company}) => {
 
 
 
-    let {restaurantDetail:{general,location,tabledetail:{tablename,locationname,address1,address2,}}} = props;
-    const download_url = general?.logo?.download_url || ''
-
-    if(!Boolean(locationname) && Boolean(general?.legalname)){
-        const {address1 : ad1,address2 : ad2,name} = location[device?.locationid];
-        locationname = name;
-        address1 = ad1;
-        address2 = ad2;
-    }
-
+    let {tablename,locationname,address1,address2,download_url} = company;
 
         return (
             <div className="container p-0">
@@ -53,11 +44,6 @@ const Index = (props) => {
 
 }
 
-const mapStateToProps = (state) => {
-    return {
-        restaurantDetail: state.restaurantDetail,
-        ...state.selectedData
-    }
-}
 
-export default connect(mapStateToProps)(Index);
+
+export default  Index;

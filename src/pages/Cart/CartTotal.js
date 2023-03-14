@@ -3,10 +3,12 @@ import {connect, useDispatch} from "react-redux";
 import {clone, numberFormat} from "../../lib/functions";
 import {setCartData, setUpdateCart} from "../../lib/redux-store/reducer/cart-data";
 import {itemTotalCalculation} from "../../lib/item-calculation";
+import {useNavigate} from "react-router-dom";
 
 const Index = (props) => {
 
     const dispatch = useDispatch()
+    const navigate = useNavigate();
 
     const {cartData,cartData:{vouchertotaldisplay,invoiceitems}} = props;
 
@@ -31,7 +33,7 @@ const Index = (props) => {
                 </div>
                 <div>
                     <button className="w-100 custom-btn custom-btn--medium custom-btn--style-1" onClick={()=>{
-
+                        navigate('/cartdetail');
                     }} type="button" role="button">
                         Place Order
                     </button>

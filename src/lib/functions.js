@@ -249,43 +249,53 @@ export const shortName = (str) => {
 }*/
 
 export const postQrCode = async (accesscode) => {
-    await apiService({
-        method: METHOD.GET,
-        action: ACTIONS.CODE,
-        queryString:{code:accesscode},
-        workspace:'dev',
-        other: {url: urls.posUrl},
-    }).then(async (result) => {
-        if (result.status === STATUS.SUCCESS && Boolean(result?.data)) {
-            const {workspace,tableid,locationid} = result.data;
-            window.location.href=`${window.location.protocol}//${workspace}.${window.location.host.replace('www','')}/location/${locationid}/?table=${tableid}`
-        }
-        else{
-            store.dispatch(setrestaurantData({legalname:'notfound'}))
-            console.log('no workspace found')
-        }
-    });
+    return new promise(async (resolve)=>{
+        await apiService({
+            method: METHOD.GET,
+            action: ACTIONS.CODE,
+            queryString:{code:accesscode},
+            workspace:'dev',
+            other: {url: urls.posUrl},
+        }).then(async (result) => {
+            if (result.status === STATUS.SUCCESS && Boolean(result?.data)) {
+                resolve(result.data)
+            }
+            else{
+                resolve({})
+            }
+        });
+    })
 }
 
 export const getInit = async (workspace) => {
 
-    const urlSearchParams = new URLSearchParams(window.location.search);
-    const params = Object.fromEntries(urlSearchParams.entries());
+    return new promise(async (resolve)=>{
+        const urlSearchParams = new URLSearchParams(window.location.search);
+        const params = Object.fromEntries(urlSearchParams.entries());
 
-    await apiService({
-        method: METHOD.GET,
-        action: ACTIONS.INIT,
-        queryString:{tableid:params?.table?params.table:''},
-        workspace:workspace,
-        other: {url: urls.posUrl},
-    }).then(async (result) => {
-        if (result.status === STATUS.SUCCESS && Boolean(result?.data)) {
-            device.workspace = workspace;
-            const {settings} = result.data
-            localredux.settings = settings;
-            store.dispatch(setrestaurantData({...result.data}))
-        }
-    });
+        await apiService({
+            method: METHOD.GET,
+            action: ACTIONS.INIT,
+            queryString:{tableid:params?.table?params.table:''},
+            workspace:workspace,
+            other: {url: urls.posUrl},
+        }).then(async (result) => {
+            if (result.status === STATUS.SUCCESS && Boolean(result?.data)) {
+                device.workspace = workspace;
+                const {settings} = result.data
+                localredux.settings = settings;
+                store.dispatch(setrestaurantData({...result.data}))
+                resolve(true)
+            }
+            else{
+                device.workspace = ''
+                resolve(false)
+            }
+
+        });
+    })
+
+
 }
 
 
