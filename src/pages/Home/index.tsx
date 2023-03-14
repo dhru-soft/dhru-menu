@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useState} from "react";
 
 import {Field, Form} from 'react-final-form'
 import {required} from "../../lib/static";
@@ -8,9 +8,19 @@ import Restaurant from "../Restaurant";
 
 const Index = (props: any) => {
 
+    const [msg,setMsg] = useState('')
 
     const onSubmit = (values: any) => {
-        postQrCode(values.accesscode).then()
+        postQrCode(values.accesscode).then((data)=>{
+            const {workspace,tableid,locationid} = data;
+            if(locationid) {
+                window.location.href = `${window.location.protocol}//${workspace}.${window.location.host.replace('www', '')}/location/${locationid}/?table=${tableid}`
+            }
+            else{
+                setMsg('Code not found')
+            }
+        })
+
     }
 
     const legalname = props?.general?.legalname || '';
@@ -55,6 +65,10 @@ const Index = (props: any) => {
                                                     )}
                                                 </Field>
                                             </div>
+
+                                            {Boolean(msg) && <div  className={'text-center text-danger  mb-4'}>
+                                                {msg}
+                                            </div>}
 
 
                                             <div>

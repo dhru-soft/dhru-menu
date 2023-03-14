@@ -11,7 +11,7 @@ import AddButton from "./AddButton";
 export const ItemBox = memo(({item})=>{
 
     const [updateItem,setUpdateItem] = useState(item);
-    const {itemname, itemimage, price, itemdescription, veg} = updateItem;
+    const {itemname, itemimage, price, itemdescription, veg,addbutton} = updateItem;
 
     const diat = {
         veg: {color: '#659a4a', icon: 'leaf'},
@@ -47,7 +47,7 @@ export const ItemBox = memo(({item})=>{
                     <div style={{minHeight: 50}}>
                         {itemimage && <img className={'w-100 rounded-3'} src={`https://${itemimage}`}/>}
                     </div>
-                    <AddButton item={updateItem} updateItem={setUpdateItem}/>
+                    {addbutton &&  <AddButton item={updateItem} updateItem={setUpdateItem}/>}
                 </div>
             </div>
         </div>
@@ -63,7 +63,13 @@ const Items = (props) => {
     const [items, setItems] = useState({})
     const [loader, setLoader] = useState(false)
 
+    const urlSearchParams = new URLSearchParams(window.location.search);
+    const params = Object.fromEntries(urlSearchParams.entries());
+
+    const {tableorder,online} = device.order;
     const {groupids, selectedtags, searchitem} = props;
+
+    const hasAdd = (tableorder && params.table) || ((online || tableorder) && !params.table)
 
 
     const getItems = async () => {
@@ -134,7 +140,7 @@ const Items = (props) => {
                     <div className="row">
                         {
                             Object.keys(items).map((key) => {
-                                return <ItemBox key={key} item={{...items[key], itemid: key}}/>
+                                return <ItemBox key={key} item={{...items[key], itemid: key,addbutton : hasAdd}}/>
                             })
                         }
                     </div>

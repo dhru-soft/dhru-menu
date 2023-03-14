@@ -55,9 +55,9 @@ const Index = (props) => {
                     <TagsNotes/>
 
 
-                    <div className={'d-flex justify-content-between align-items-center'}>
+                    <div className={'d-flex justify-content-between align-items-center mt-5'}>
                         <div>
-                            Item Qnt
+
                         </div>
 
                         <div>

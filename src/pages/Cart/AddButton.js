@@ -44,7 +44,6 @@ const Index = ({item,updateItem}) => {
 
     const [productqnt,setQnt] = useState(item?.productqnt || 0);
 
-
     const updateQnt = (action) => {
         let qnt = productqnt;
         if(action === 'add'){
@@ -69,11 +68,6 @@ const Index = ({item,updateItem}) => {
         updateCartItem(item).then(r => {})
     }
 
-    const {tableorder} = device.order;
-
-    if(!tableorder){
-        return <></>
-    }
 
 
     if(productqnt){
@@ -81,7 +75,7 @@ const Index = ({item,updateItem}) => {
             <div className={'border rounded-3 btn-add p-0 mt-3 '}>
                 <div className={'d-flex justify-content-between align-items-center'}>
                     <div className={'p-3  px-4 cursor-pointer'} onClick={()=> updateQnt('remove') }> - </div>
-                    <div className={'bg-white'} style={{height: '35px',width: '40px',display: 'flex',justifyContent: 'center',alignItems: 'center'}}> {productqnt} </div>
+                    <div className={'bg-white'} style={{height: '34px',width: '40px',display: 'flex',justifyContent: 'center',alignItems: 'center'}}> {productqnt} </div>
                     <div className={'p-3 px-4 cursor-pointer'} onClick={()=> updateQnt('add') }> + </div>
                 </div>
             </div>

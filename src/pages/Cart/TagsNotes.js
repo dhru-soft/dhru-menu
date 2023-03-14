@@ -37,7 +37,7 @@ const Index = ({itemDetail:  {tags,notes,itemtags,updateProduct}}) => {
 
                 <div className={'border p-3 rounded-3'}>
                 {
-                    temptags.map((tag, key) => {
+                    temptags?.map((tag, key) => {
                         const {taggroupname} = tag;
                         const selected = (selectedTag === key);
                         {
@@ -54,13 +54,13 @@ const Index = ({itemDetail:  {tags,notes,itemtags,updateProduct}}) => {
                         {
                             return (
                                 <div key={tagid}  >
-                                    {<div className={'d-flex mt-3'}>
+                                    {<div className={'d-flex mt-3 flex-wrap'}>
 
                                         {
-                                           tags?.taglist.map((tag, key) => {
+                                           tags?.taglist?.map((tag, key) => {
                                                return (
-                                                   <div className={'pe-3'} key={key}>
-                                                       <button type="button" className={`btn btn-${tag.selected?'primary':'light'}`} onClick={() => {
+                                                   <div className={'pe-3 my-2'} key={key}>
+                                                       <button type="button" className={`btn   btn-${tag?.selected?'primary':'light'}`} onClick={() => {
                                                            tag.selected = !Boolean(tag?.selected)
                                                            setTempTags(clone(temptags))
                                                        }}>{tag.name+''}</button>
