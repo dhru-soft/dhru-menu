@@ -9,6 +9,9 @@ export const isDevelopment = process.env.NODE_ENV === "development";
 export const urls = {posUrl:`.api.dhru.${isDevelopment?'io':'com'}/menu/v1/`,adminUrl:'',localserver:''}
 
 
+export const localredux = {settings:{}}
+
+
 export enum STATUS {
     SUCCESS = "success",
     ERROR = "error"

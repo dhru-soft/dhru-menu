@@ -28,8 +28,8 @@ export const ItemBox = memo(({item})=>{
                         <div className={'flex-nowrap'}>
                             {veg && <div><i style={{color: diat[veg].color}} className={`fa fa-${diat[veg].icon}`}></i>
                             </div>}
-                            <h4 className="__title">{itemname} </h4>
-                            <h5 className={'mb-2'}> {numberFormat(price)} </h5>
+                            <h4 style={{fontSize:'1.8rem'}}>{itemname} </h4>
+                            <h6 className={'mb-2'}> {numberFormat(price)} </h6>
                         </div>
                         <div className={'text-muted mt-3'}>
                             <ReactReadMoreReadLess
@@ -47,7 +47,7 @@ export const ItemBox = memo(({item})=>{
                     <div style={{minHeight: 50}}>
                         {itemimage && <img className={'w-100 rounded-3'} src={`https://${itemimage}`}/>}
                     </div>
-                    <AddButton item={item} updateItem={setUpdateItem}/>
+                    <AddButton item={updateItem} updateItem={setUpdateItem}/>
                 </div>
             </div>
         </div>
@@ -146,7 +146,6 @@ const Items = (props) => {
 
 const mapStateToProps = (state) => {
     return {
-        /*invoiceitems: state.cartData.invoiceitems,*/
         ...state.selectedData
     }
 }

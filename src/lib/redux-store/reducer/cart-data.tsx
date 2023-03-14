@@ -1,5 +1,5 @@
 import {createSlice} from '@reduxjs/toolkit'
-import {clone, isEmpty} from "../../functions";
+import {clone, isEmpty, voucherTotal} from "../../functions";
 import {defaultclient, VOUCHER} from "../../static";
 import {v4 as uuid} from "uuid";
 
@@ -35,7 +35,8 @@ let intialState: any = {
     vouchertotaldisplay:0,
     globaldiscountvalue:0,
     adjustmentamount:0,
-    voucherroundoffdisplay:0
+    voucherroundoffdisplay:0,
+
 }
 
 
@@ -59,17 +60,15 @@ export const cartData = createSlice({
             return {
                 ...state,
                 invoiceitems,
-               // vouchertotaldisplay: voucherTotal(invoiceitems,state.vouchertaxtype),
+                vouchertotaldisplay: voucherTotal(invoiceitems,state.vouchertaxtype),
             }
         },
 
         changeCartItem: (state: any, action: any) => {
-
             const {itemIndex, item} = action.payload;
             state.invoiceitems[itemIndex] = clone({...state.invoiceitems[itemIndex], ...item});
-
-           // state.vouchertotaldisplay = voucherTotal(state.invoiceitems,state.vouchertaxtype),
-                state.updatecart = true;
+            state.vouchertotaldisplay = voucherTotal(state.invoiceitems,state.vouchertaxtype);
+            state.updatecart = true;
             return state
         },
         updateCartItems: (state: any, action) => {
@@ -77,7 +76,7 @@ export const cartData = createSlice({
             return {
                 ...state,
                 invoiceitems: action.payload,
-               // vouchertotaldisplay: voucherTotal(action.payload,state.vouchertaxtype),
+                vouchertotaldisplay: voucherTotal(action.payload,state.vouchertaxtype),
                 updatecart: true
             }
         },
@@ -125,6 +124,7 @@ export const cartData = createSlice({
         resetCart: (state:any) => {
            // const voucherDataJson: any = voucherData(VOUCHER.INVOICE, false);
            // return clone({...intialState,...voucherDataJson,ordertype:state.ordertype});
+            return clone({...intialState});
         }
     },
 });

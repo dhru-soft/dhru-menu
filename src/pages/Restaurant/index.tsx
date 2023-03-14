@@ -82,10 +82,15 @@ const Index = (props: any) => {
                                                         <div onClick={() => {
 
                                                             navigate(`/location/${key}`)
-                                                        }} className={'text-white border p-3'}
+                                                        }} className={'text-white border p-3 d-flex justify-content-between align-items-center cursor-pointer'}
                                                              style={{borderRadius: 5}}>
-                                                            <h5 className={'text-white'}>{name}</h5>
-                                                            <small>{address1} {address2} {city}</small>
+                                                            <div>
+                                                                <h4 className={'text-white'}>{name}</h4>
+                                                                <small>{address1} {address2} {city}</small>
+                                                            </div>
+                                                            <div>
+                                                                <i className={'fa fa-chevron-right'}></i>
+                                                            </div>
                                                         </div>
                                                     </div>
                                                 })
@@ -96,13 +101,7 @@ const Index = (props: any) => {
 
 
                                     {isEmpty(location) && <div className={'text-center'}>
-                                        <button className="custom-btn custom-btn--medium custom-btn--style-4"
-                                                onClick={() => {
-
-                                                    navigate(`/location/${locationid}`)
-                                                }} type="button" role="button">
-                                            Explore Menu
-                                        </button>
+                                         <h1 className={'text-white'}>Coming Soon</h1>
                                     </div>}
                                 </> : <>
                                     <div className="section-heading section-heading--center">

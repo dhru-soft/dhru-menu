@@ -4,7 +4,6 @@ import {setSelected} from "../../lib/redux-store/reducer/selected-data";
 import apiService from "../../lib/api-service";
 import {ACTIONS, device, METHOD, STATUS, urls} from "../../lib/static";
 import {setGroupList} from "../../lib/redux-store/reducer/group-list";
-import {checkLocation} from "../../lib/functions";
 import {useNavigate, useParams} from "react-router-dom";
 
 
@@ -24,12 +23,8 @@ export const GroupBox = ({item}) => {
 
 const Index = (props) => {
 
-
-
     const dispatch = useDispatch()
     const navigate = useNavigate()
-
-
 
     const {workspace,groupList} = props;
     const params = useParams()

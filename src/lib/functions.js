@@ -1,7 +1,7 @@
 import $ from "jquery";
 import React from "react";
 import apiService from "./api-service";
-import {ACTIONS, device, METHOD, STATUS, urls} from "./static";
+import {ACTIONS, device, localredux, METHOD, STATUS, urls} from "./static";
 import {setrestaurantData} from "./redux-store/reducer/restaurant-data";
 import store from "./redux-store/store";
 import moment from "moment";
@@ -281,18 +281,13 @@ export const getInit = async (workspace) => {
     }).then(async (result) => {
         if (result.status === STATUS.SUCCESS && Boolean(result?.data)) {
             device.workspace = workspace;
+            const {settings} = result.data
+            localredux.settings = settings;
             store.dispatch(setrestaurantData({...result.data}))
         }
     });
 }
 
-export const getDomainName = () => {
-    let workspace = window.location.hostname.split(".")
-    if (workspace === "localhost" || workspace === "dhru"  ||  workspace === "menu" || workspace === "www") {
-        workspace = ""
-    }
-    return workspace
-}
 
 export const getWorkspaceName = () => {
     let workspace = window.location.hostname.split(".")[0]
@@ -346,6 +341,7 @@ export const getLocalSettings = async (key) => {
 export const getDefaultPayment = () => {
     return [{paymentby: "Pay Later", label: "Pay Later"}];
 }
+
 
 /* export const voucherData = (voucherKey, isPayment = true, isTaxInvoice= false) => {
 
@@ -423,50 +419,60 @@ export const getDefaultPayment = () => {
     }
 
     return data;
-}
+}*/
+
 
 export const voucherTotal = (items, vouchertaxtype) => {
-    let vouchertotaldisplay = 0;
 
-    let taxesList = localredux.initData.tax;
+    try {
+
+        let vouchertotaldisplay = 0;
+
+        let taxesList = getFromSetting('tax');
 
 
-    const taxCalculation = (tax, taxableValue, qnt) => {
-        let totalTax = 0;
-        if (!isEmpty(tax?.taxes)) {
-            tax?.taxes?.forEach((tx) => {
-                let taxpriceDisplay = tx?.taxpercentage * taxableValue;
-                taxpriceDisplay = getFloatValue(taxpriceDisplay / 100);
-                totalTax += getFloatValue(taxpriceDisplay * qnt, 4);
-            })
+        const taxCalculation = (tax, taxableValue, qnt) => {
+            let totalTax = 0;
+            if (!isEmpty(tax?.taxes)) {
+                tax?.taxes?.forEach((tx) => {
+                    let taxpriceDisplay = tx?.taxpercentage * taxableValue;
+                    taxpriceDisplay = getFloatValue(taxpriceDisplay / 100);
+                    totalTax += getFloatValue(taxpriceDisplay * qnt, 4);
+                })
+            }
+            return totalTax;
         }
-        return totalTax;
+
+        items.forEach((item) => {
+
+            const {productratedisplay, productqnt, itemtaxgroupid} = item;
+
+            vouchertotaldisplay += productratedisplay * productqnt;
+
+            if (!isEmpty(taxesList) && !isEmpty(taxesList[itemtaxgroupid]) && vouchertaxtype === 'exclusive') {
+                vouchertotaldisplay += taxCalculation(taxesList[itemtaxgroupid], productratedisplay, productqnt)
+            }
+
+            if (Boolean(item?.itemaddon?.length)) {
+                item?.itemaddon?.forEach(({pricing, productqnt, itemtaxgroupid}) => {
+                    const pricingtype = pricing?.type;
+                    const baseprice = pricing?.price?.default[0][pricingtype]?.baseprice || 0;
+                    vouchertotaldisplay += baseprice * productqnt
+                    if (!isEmpty(taxesList) && !isEmpty(taxesList[itemtaxgroupid]) && vouchertaxtype === 'exclusive') {
+                        vouchertotaldisplay += taxCalculation(taxesList[itemtaxgroupid], baseprice, productqnt)
+                    }
+
+                })
+            }
+        })
+
+        return vouchertotaldisplay
+    }
+    catch (e) {
+        console.log('e',e)
     }
 
-    items.forEach((item) => {
-
-        const {productratedisplay, productqnt, itemtaxgroupid} = item;
-
-        vouchertotaldisplay += productratedisplay * productqnt;
-
-        if (!isEmpty(taxesList) && !isEmpty(taxesList[itemtaxgroupid]) && vouchertaxtype === 'exclusive') {
-            vouchertotaldisplay += taxCalculation(taxesList[itemtaxgroupid], productratedisplay, productqnt)
-        }
-
-        if (Boolean(item?.itemaddon?.length)) {
-            item?.itemaddon?.forEach(({pricing, productqnt, itemtaxgroupid}) => {
-                const pricingtype = pricing?.type;
-                const baseprice = pricing?.price?.default[0][pricingtype]?.baseprice || 0;
-                vouchertotaldisplay += baseprice * productqnt
-                if (!isEmpty(taxesList) && !isEmpty(taxesList[itemtaxgroupid]) && vouchertaxtype === 'exclusive') {
-                    vouchertotaldisplay += taxCalculation(taxesList[itemtaxgroupid], baseprice, productqnt)
-                }
-
-            })
-        }
-    })
-    return vouchertotaldisplay
-}*/
+}
 
 
 export const removeItem = async (unique) => {
@@ -494,6 +500,7 @@ export const setItemRowData = (data) => {
         let isInward  = false;
 
         let {cartData} = store.getState();
+
         const unit = getFromSetting('unit')
 
         let unittype = unit[data?.itemunit]
@@ -647,6 +654,7 @@ export const addToCart = async (item) => {
             ...item,
             ...itemRowData,
         }
+
         await store.dispatch(setCartItems(item))
 
     } catch (e) {
@@ -681,7 +689,7 @@ export const getFloatValue = (value, fraxtionDigits = 4, notConvert = true, isLo
 }
 
 export const getFromSetting = (key) => {
-    const {settings} = store.getState()?.restaurantDetail;
+    const {settings} = localredux;
     if(!isEmpty(settings)){
         return settings[key]
     }

@@ -28,7 +28,6 @@ export const updateCartItem = async (values) => {
         }
 
         if (values.productqnt <= 0) {
-            console.log('values.key',values.key)
              removeItem(values.key).then(() => {  });
         } else {
             store.dispatch(changeCartItem({itemIndex: index, item: finditem,itemUpdate:true}));
@@ -65,18 +64,19 @@ const Index = ({item,updateItem}) => {
             productqnt:qnt
         }
         setQnt(qnt)
-        console.log('item',item.key)
         updateItem(item);
         updateCartItem(item).then(r => {})
     }
+
+    return <></>
 
     if(productqnt){
         return (
             <div className={'border rounded-3 btn-add p-0 mt-3 '}>
                 <div className={'d-flex justify-content-between align-items-center'}>
-                    <div className={'px-4 cursor-pointer'} onClick={()=> updateQnt('remove') }> - </div>
-                    <div className={'p-3 bg-white'}> {productqnt} </div>
-                    <div className={'px-4 cursor-pointer'} onClick={()=> updateQnt('add') }> + </div>
+                    <div className={'p-3  px-4 cursor-pointer'} onClick={()=> updateQnt('remove') }> - </div>
+                    <div className={'bg-white'} style={{height: '35px',width: '40px',display: 'flex',justifyContent: 'center',alignItems: 'center'}}> {productqnt} </div>
+                    <div className={'p-3 px-4 cursor-pointer'} onClick={()=> updateQnt('add') }> + </div>
                 </div>
             </div>
         )

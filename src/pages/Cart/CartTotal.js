@@ -23,11 +23,11 @@ const Index = (props) => {
     }
 
     return (
-        <div>
-            <div className={'d-flex justify-content-between align-items-center rounded-3 bg-white py-3 px-4 mt-3'}>
+        <div className={'position-fixed'} style={{zIndex:9999,bottom:5,left:5,right:5}}>
+            <div className={'d-flex shadow justify-content-between align-items-center rounded-3 bg-white py-3 px-4 mt-3'}>
                 <div>
                     <div><small className={'text-muted'}>Items : {invoiceitems?.length}</small></div>
-                    {/*<h4 className={'mb-0'}> {numberFormat(vouchertotaldisplay)}</h4>*/}
+                    <h4 className={'mb-0'}> {numberFormat(vouchertotaldisplay)}</h4>
                 </div>
                 <div>
                     <button className="w-100 custom-btn custom-btn--medium custom-btn--style-1" onClick={()=>{
