@@ -36,7 +36,6 @@ export const component = createSlice({
       return state
     },
     setModal: (state: any,action:any) => {
-      console.log('action.payload',action.payload)
       state.modal = action.payload
       return state
     },

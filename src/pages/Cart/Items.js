@@ -43,8 +43,8 @@ export const ItemBox = memo(({item})=>{
                         </div>
                     </div>
                 </div>
-                <div className={'border border-light  rounded-3 p-2'} style={{width: 150}}>
-                    <div style={{minHeight: 50}}>
+                <div className={'border-light  rounded-3 p-2'} style={{width: 150}}>
+                    <div>
                         {itemimage && <img className={'w-100 rounded-3'} src={`https://${itemimage}`}/>}
                     </div>
                     {addbutton &&  <AddButton item={updateItem} updateItem={setUpdateItem}/>}

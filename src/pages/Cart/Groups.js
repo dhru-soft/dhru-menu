@@ -24,11 +24,8 @@ export const GroupBox = ({item}) => {
 const Index = (props) => {
 
     const dispatch = useDispatch()
-    const navigate = useNavigate()
 
     const {workspace,groupList} = props;
-    const params = useParams()
-
 
     const getGroups = async () => {
         await apiService({

@@ -248,6 +248,22 @@ export const shortName = (str) => {
      return true
 }*/
 
+export const getCompanyDetails = () => {
+
+    let {restaurantDetail:{general,location,tabledetail:{tablename,locationname,address1,address2,order}}} = store.getState();
+    const download_url = general?.logo?.download_url || ''
+
+    if(!Boolean(locationname) && Boolean(general?.legalname)){
+        const {address1 : ad1,address2 : ad2,name,order : ord} = location[device?.locationid];
+        locationname = name;
+        address1 = ad1;
+        address2 = ad2;
+        order = ord
+    }
+    device.order = order;
+    return {download_url,locationname,address1,address2,tablename}
+}
+
 export const postQrCode = async (accesscode) => {
     return new promise(async (resolve)=>{
         await apiService({
@@ -308,10 +324,25 @@ export const getWorkspaceName = () => {
     return workspace
 }
 
+export const sessionStore = async (key, value) => {
+    try {
+        window.sessionStorage.setItem(key, JSON.stringify(value));
+        return true
+    } catch (error) {
+        return false;
+    }
+};
+
+export const sessionRetrieve = async (key) => {
+    return new Promise(async resolve => {
+        const data = window.sessionStorage.getItem(key);
+        resolve(JSON.parse(data))
+    })
+};
 
 export const storeData = async (key, value) => {
     try {
-        ls.set(key, JSON.stringify(value));
+        ls.set(key, value);
         return true
     } catch (error) {
         return false;
@@ -319,10 +350,15 @@ export const storeData = async (key, value) => {
 };
 
 export const retrieveData = async (key) => {
-    return await ls.get(key).then((data) => {
-        return JSON.parse(data);
-    });
+    return new Promise(async resolve => {
+        const data = await ls.get(key)
+        resolve(data)
+    })
 };
+
+export const createUniqueStore = () => {
+    return device.workspace+'-'+device.locationid
+}
 
 export const saveLocalSettings = async (key, setting) => {
     await retrieveData(`fusion-dhru-menu-settings`).then(async (data) => {
@@ -627,7 +663,9 @@ export const getItemById = async (itemid) => {
 }
 
 export const addItem =  async (item) =>{
-    const {hasextra,itemname} = item
+
+    const {hasextra,itemname} = item;
+
     if(hasextra) {
         store.dispatch(setItemDetail(item));
         store.dispatch(setModal({
@@ -682,20 +720,27 @@ export const currencyRate = (currencyName) => {
 }
 
 export const getFloatValue = (value, fraxtionDigits = 4, notConvert = true, isLog = false) => {
-    if (!Boolean(fraxtionDigits)) {
-        fraxtionDigits = 4;
+    try {
+
+        if (!Boolean(fraxtionDigits)) {
+            fraxtionDigits = 4;
+        }
+        let returnValue = 0;
+        if (Boolean(value) && !isNaN(value)) {
+            const general = getFromSetting('general');
+
+            let newstring = new Intl.NumberFormat('en-IN',
+                {
+                    style: "decimal",
+                    maximumFractionDigits: fraxtionDigits
+                }).format(value)
+            returnValue = parseFloat(newstring.replaceAll(",", ""))
+        }
+        return returnValue;
     }
-    let returnValue  = 0;
-    if (Boolean(value) && !isNaN(value)) {
-        const general = getFromSetting('general');
-        let newstring = new Intl.NumberFormat('en-' + general?.defaultcountry,
-            {
-                style: "decimal",
-                maximumFractionDigits: fraxtionDigits
-            }).format(value)
-        returnValue = parseFloat(newstring.replaceAll(",", ""))
+    catch (e) {
+        console.log('e',e)
     }
-    return returnValue;
 }
 
 export const getFromSetting = (key) => {

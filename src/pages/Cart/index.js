@@ -15,21 +15,9 @@ import CartTotal from "./CartTotal";
 const Index = (props) => {
 
     const params = useParams()
-
     device.locationid = params?.locationid;
 
-    let {groupids, searchitem,restaurantDetail:{general,location,tabledetail:{tablename,locationname,address1,address2,order}}} = props;
-    const download_url = general?.logo?.download_url || ''
-
-    if(!Boolean(locationname) && Boolean(general?.legalname)){
-        const {address1 : ad1,address2 : ad2,name,order : ord} = location[device?.locationid];
-        locationname = name;
-        address1 = ad1;
-        address2 = ad2;
-        order = ord
-    }
-    device.order = order;
-
+    let {groupids, searchitem} = props;
 
     return (
         <section>
@@ -38,27 +26,29 @@ const Index = (props) => {
 
             <div className="">
 
-                <CompanyDetail company={{download_url,locationname,address1,address2,tablename}}/>
+                <CompanyDetail/>
 
                 <div className={'col-12'}>
 
                     <div>
                         <div className="container">
 
-                            <div className={'bg-white p-4 rounded-4 mt-3'}>
-                                <div>
-                                    <Search/>
-                                    <Diet/>
+                            <div >
+                                <div className={'bg-white p-4 rounded-4 mt-3'}>
+                                    <div>
+                                        <Search/>
+                                        <Diet/>
+                                    </div>
                                 </div>
+
+                                <Bredcrumb/>
+
+                                {(!Boolean(groupids) && !Boolean(searchitem)) ? <div>
+                                    <Groups/>
+                                </div> : <div>
+                                    <ItemList/>
+                                </div>}
                             </div>
-
-                            <Bredcrumb/>
-
-                            {(!Boolean(groupids) && !Boolean(searchitem)) ? <div>
-                                <Groups/>
-                            </div> : <div>
-                                <ItemList/>
-                            </div>}
 
 
                             <CartTotal/>

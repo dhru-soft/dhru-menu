@@ -1,16 +1,13 @@
 import React, {Component, Fragment} from "react";
-import {connect} from "react-redux";
-import {NavLink} from "reactstrap";
-import {useParams} from "react-router-dom";
-import {device} from "../../lib/static";
-
-const Index = ({company}) => {
+import {getCompanyDetails} from "../../lib/functions";
 
 
+const Index = () => {
 
-    let {tablename,locationname,address1,address2,download_url} = company;
 
-        return (
+    let {tablename,locationname,address1,address2,download_url} = getCompanyDetails();
+
+    return (
             <div className="container p-0">
 
                 <div className={'p-4 border-bottom company-detail'} style={{borderBottomLeftRadius:20,borderBottomRightRadius:20}}>
@@ -19,14 +16,14 @@ const Index = ({company}) => {
 
                             <div>
 
-                            <div>
-                                <h4>{locationname}</h4>
-                                <small>{address1} {address2}</small>
-                            </div>
+                                <div>
+                                    <h4>{locationname}</h4>
+                                    <small>{address1} {address2}</small>
+                                </div>
 
-                            {tablename &&  <div className={'mt-3'}>
-                               Table :  {tablename}
-                            </div>}
+                                {tablename &&  <div className={'mt-3'}>
+                                   Table :  {tablename}
+                                </div>}
 
                             </div>
 

@@ -14,9 +14,9 @@ class RouterComponent extends Component {
         return (<Fragment>
             <Routes >
                 <Route exact path="/" element={<Home />}/>
-                <Route exact path="/location/:locationid" element={<Cart />}/>
                 <Route exact path="/qrcode/:accesscode" element={<Restaurant />} />
-                <Route exact path="/cartdetail" element={<CartDetail />} />
+                <Route exact path="/location/:locationid" element={<Cart />}/>
+                <Route exact path="/location/:locationid/cartdetail" element={<CartDetail />} />
             </Routes>
         </Fragment>)
     }

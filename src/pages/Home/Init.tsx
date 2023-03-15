@@ -1,15 +1,22 @@
 import React from "react";
-import {getInit, getWorkspaceName} from "../../lib/functions";
-import {connect} from "react-redux";
+import {createUniqueStore, getInit, getWorkspaceName, retrieveData, sessionRetrieve} from "../../lib/functions";
+import {connect, useDispatch} from "react-redux";
+import {setCartData} from "../../lib/redux-store/reducer/cart-data";
 
 
 const Index = (props: any) => {
 
+    const dispatch = useDispatch()
     const legalname: any = props?.general?.legalname
 
     if (!Boolean(legalname)) {
-        getInit(getWorkspaceName()).then()
+        getInit(getWorkspaceName()).then(()=>{ })
     }
+
+    ////// RETRIVE CART AND INIT FOR STATE
+    sessionRetrieve(createUniqueStore()).then((data)=>{
+        dispatch(setCartData(data));
+    })
 
     return (
         <>

@@ -62,13 +62,14 @@ const Index = (props) => {
 
                         <div>
 
-                            <button className="custom-btn custom-btn--medium custom-btn--style-4" onClick={() => {
+                            <AddButton/>
+                            {/*<button className="custom-btn custom-btn--medium custom-btn--style-4" onClick={() => {
                                 addToCart(props?.itemDetail).then(r => {
                                     dispatch(setModal({show: false}))
                                 })
                             }} type="button" role="button">
                                 Add
-                            </button>
+                            </button>*/}
                         </div>
                     </div>
 

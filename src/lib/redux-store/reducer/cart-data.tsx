@@ -1,7 +1,6 @@
 import {createSlice} from '@reduxjs/toolkit'
-import {clone, isEmpty, voucherTotal} from "../../functions";
-import {defaultclient, VOUCHER} from "../../static";
-import {v4 as uuid} from "uuid";
+import {clone, createUniqueStore, retrieveData, voucherTotal} from "../../functions";
+import {defaultclient} from "../../static";
 
 
 
@@ -36,8 +35,10 @@ let intialState: any = {
     globaldiscountvalue:0,
     adjustmentamount:0,
     voucherroundoffdisplay:0,
-
 }
+
+
+
 
 
 export const cartData = createSlice({
@@ -122,8 +123,6 @@ export const cartData = createSlice({
             }
         },
         resetCart: (state:any) => {
-           // const voucherDataJson: any = voucherData(VOUCHER.INVOICE, false);
-           // return clone({...intialState,...voucherDataJson,ordertype:state.ordertype});
             return clone({...intialState});
         }
     },
