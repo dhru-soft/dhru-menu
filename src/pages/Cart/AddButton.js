@@ -44,13 +44,12 @@ const Index = ({item,updateItem}) => {
 
     const [productqnt,setQnt] = useState(item?.productqnt || 0);
 
-
     const addQnt = () => {
         const key = uuid();
         item = {
             ...item,productqnt:1,key
         }
-        addItem(item).then()
+        addItem(item).then();
         if(!item?.hasextra){
             setQnt(1)
             Boolean(updateItem) && updateItem(item);

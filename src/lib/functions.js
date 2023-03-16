@@ -500,14 +500,11 @@ export const voucherTotal = (items, vouchertaxtype) => {
             }
 
             if (Boolean(item?.itemaddon?.length)) {
-                item?.itemaddon?.forEach(({pricing, productqnt, itemtaxgroupid}) => {
-                    const pricingtype = pricing?.type;
-                    const baseprice = pricing?.price?.default[0][pricingtype]?.baseprice || 0;
-                    vouchertotaldisplay += baseprice * productqnt
+                item?.itemaddon?.forEach(({price,  itemtaxgroupid}) => {
+                    vouchertotaldisplay += price * productqnt
                     if (!isEmpty(taxesList) && !isEmpty(taxesList[itemtaxgroupid]) && vouchertaxtype === 'exclusive') {
-                        vouchertotaldisplay += taxCalculation(taxesList[itemtaxgroupid], baseprice, productqnt)
+                        vouchertotaldisplay += taxCalculation(taxesList[itemtaxgroupid], price, productqnt)
                     }
-
                 })
             }
         })
@@ -547,52 +544,24 @@ export const setItemRowData = (data) => {
 
         let {cartData} = store.getState();
 
-        const unit = getFromSetting('unit')
-
-        let unittype = unit[data?.itemunit]
-
         let pricingTemplate =   undefined
-
-        let isDepartmentSelected = false;
-
 
         let {
             itemid,
             itemname,
             itemtaxgroupid,
-            pricing,
+            price,
             productqnt,
-            itemmaxqnt,
-            salesunit,
-            stockonhand,
-            inventorytype,
-            identificationtype,
             itemhsncode,
-            itemtype,
-            committedstock,
             itemminqnt,
-            itemaddon,
-            itemtags,
             notes,
-            hasAddon,
-            mrp,
-            key
+            key,
+            itemaddon
         } = data;
 
 
-        let recurring = undefined, producttaxgroupid, productqntunitid;
+        let  producttaxgroupid;
 
-        if (pricing?.type !== "free" &&
-            pricing.price &&
-            pricing.price.default &&
-            pricing.price.default[0] &&
-            pricing.price.default?.length > 0) {
-            recurring = Object.keys(pricing.price.default[0])[0];
-        }
-
-        if (Boolean(salesunit)) {
-            productqntunitid = salesunit;
-        }
 
         if (Boolean(itemtaxgroupid)) {
             producttaxgroupid = itemtaxgroupid;
@@ -601,31 +570,17 @@ export const setItemRowData = (data) => {
         const defaultCurrency = getDefaultCurrency().code
 
         let additem = {
-            identificationtype,
             productid: itemid,
-            productdisplayname: itemname,
+            itemname,
             productqnt: productqnt || (Boolean(itemminqnt) ? itemminqnt : 1),
             producttaxgroupid,
-            pricingtype: pricing.type,
-            recurring,
-            minqnt: Boolean(itemminqnt) ? parseFloat(itemminqnt) : undefined,
-            maxqnt: Boolean(itemmaxqnt) ? parseFloat(itemmaxqnt) : undefined,
-            productqntunitid,
-            displayunitcode: unittype?.unitcode || '',
+            price,
             "accountid": 2,
             clientid: cartData?.clientid,
             productdiscounttype: "%",
-            stockonhand,
             hsn: itemhsncode,
-            itemtype: itemtype === "service" ? "service" : "goods",
-            committedstock,
-            inventorytype,
-            itemaddon,
-            itemtags,
             notes,
-            mrp,
-            hasAddon,
-            isDepartmentSelected,
+            itemaddon,
             ...getProductData(data, defaultCurrency, defaultCurrency, undefined, undefined, isInward, pricingTemplate)
         }
 
@@ -687,13 +642,13 @@ export const addToCart = async (item) => {
     if(Boolean(item.price)){
         getdetail = await getItemById(item.itemid)
     }
+    console.log('getdetail',getdetail)
 
     try {
         item = {
             ...item,
             ...getdetail,
             added: true,
-            productqnt:1,
             deviceid:'browser'
         }
 

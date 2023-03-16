@@ -1,23 +1,14 @@
-import React, {useEffect} from "react";
-import {connect, useDispatch} from "react-redux";
-import Groups from "./Groups";
+import React from "react";
+import {connect} from "react-redux";
 
 import CompanyDetail from "../Navigation/CompanyDetail";
-import ItemList from "./Items";
-import Search from "./Search";
-import Bredcrumb from "./Bredcrumb";
-import Diet from "./Diet";
-import {useParams} from "react-router-dom";
+import {useNavigate, useParams} from "react-router-dom";
 import Init from "../Home/Init";
 import {device} from "../../lib/static";
 import CartTotal from "./CartTotal";
 import AddButton from "./AddButton";
-import {clone, numberFormat} from "../../lib/functions";
-import ReactReadMoreReadLess from "react-read-more-read-less";
-import {cartData, setCartData, setUpdateCart} from "../../lib/redux-store/reducer/cart-data";
-import {itemTotalCalculation} from "../../lib/item-calculation";
-import CartSummary from "./CartSummary";
-
+import {numberFormat} from "../../lib/functions";
+import {v4 as uuid} from "uuid";
 
 
 const Index = (props) => {
@@ -25,8 +16,9 @@ const Index = (props) => {
     const params = useParams()
     device.locationid = params?.locationid;
 
-    const {invoiceitems} = props;
+    const navigate = useNavigate()
 
+    const {invoiceitems} = props;
 
     return (
         <section>
@@ -42,35 +34,60 @@ const Index = (props) => {
                     <div>
                         <div className="container">
 
-                            <div className={'bg-white rounded-3 mt-3'} style={{marginBottom:200}}>
+                            <div className={'bg-white rounded-3 mt-3'}>
 
-                            {
-                                invoiceitems.map((item,index)=>{
-                                    const {itemname,productratedisplay,productqnt} = item
-                                    return  <div className="col-12    item-hover  p-2 py-4" key={index}>
-                                        <div className="d-flex p-2 h-100">
-                                            <div className={'w-100'}>
+                                {
+                                    Boolean(invoiceitems?.length > 0) && invoiceitems?.map((item) => {
+                                        const {itemname, productratedisplay, productqnt,itemaddon} = item || {};
 
-                                                <div className={'p-2 mt-auto '}>
-                                                    <div className={'flex-nowrap'}>
-                                                        <h4 style={{fontSize:'1.8rem'}}>{itemname} </h4>
-                                                        <div className={'mb-2 text-muted'}> {productqnt} x {numberFormat(productratedisplay)} = {numberFormat(productqnt * productratedisplay)} </div>
+                                        return <div className="col-12    item-hover  p-2 py-4" key={uuid()}>
+                                            <div className="d-flex p-2 h-100">
+                                                <div className={'w-100'}>
+
+                                                    <div className={'p-2 mt-auto '}>
+                                                        <div>
+                                                            <h4 style={{fontSize: '1.8rem'}}>{itemname} </h4>
+                                                            <div className={'mb-2 text-muted'}> {productqnt} x {numberFormat(productratedisplay)} = {numberFormat(productqnt * productratedisplay)} </div>
+                                                        </div>
+
+                                                        {Boolean(itemaddon?.length > 0) && <div>
+                                                            {
+                                                                itemaddon?.map((addon,key)=>{
+                                                                    const {itemname, productratedisplay} = addon;
+                                                                    return (
+                                                                        <div key={key} className={'mb-2 text-muted'}> {productqnt} x {itemname} =  {numberFormat(productqnt * productratedisplay)} </div>
+                                                                    )
+                                                                })
+                                                            }
+                                                        </div>}
+
                                                     </div>
-
+                                                </div>
+                                                <div className={'border-light'} style={{width: 150}}>
+                                                    <AddButton item={item}/>
                                                 </div>
                                             </div>
-                                            <div className={'border-light'} style={{width: 150}}>
-                                                <AddButton item={item}  />
-                                            </div>
+                                        </div>
+                                    })
+                                }
+
+                                {
+                                    !Boolean(invoiceitems?.length) && <div className={'p-5'}>
+                                        <div className={'p-5 text-center'}>No item(s) added in cart</div>
+                                        <div className={'text-center'}>
+                                            <button className=" btn-primary btn" onClick={() => {
+                                                navigate(`/location/${device.locationid}`);
+                                            }} type="button" role="button">
+                                                Browse Menu
+                                            </button>
                                         </div>
                                     </div>
-                                })
-                            }
+                                }
 
                             </div>
 
 
-                            <CartTotal/>
+                            <CartTotal page={'final'}/>
 
 
                         </div>
@@ -90,7 +107,7 @@ const Index = (props) => {
 const mapStateToProps = (state) => {
     return {
         restaurantDetail: state.restaurantDetail,
-        invoiceitems:state.cartData.invoiceitems
+        invoiceitems: state.cartData.invoiceitems
     }
 }
 

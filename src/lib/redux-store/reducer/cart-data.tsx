@@ -116,7 +116,6 @@ export const cartData = createSlice({
             return state
         },
         setUpdateCart: (state: any) => {
-
             return {
                 ...state,
                 updatecart: !state.updatecart

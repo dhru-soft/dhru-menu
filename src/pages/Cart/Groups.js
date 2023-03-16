@@ -4,7 +4,6 @@ import {setSelected} from "../../lib/redux-store/reducer/selected-data";
 import apiService from "../../lib/api-service";
 import {ACTIONS, device, METHOD, STATUS, urls} from "../../lib/static";
 import {setGroupList} from "../../lib/redux-store/reducer/group-list";
-import {useNavigate, useParams} from "react-router-dom";
 
 
 export const GroupBox = ({item}) => {

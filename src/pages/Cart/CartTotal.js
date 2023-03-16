@@ -1,20 +1,46 @@
 import React, {useEffect, useState} from "react";
 import {connect, useDispatch} from "react-redux";
 import {clone, createUniqueStore, numberFormat, retrieveData, sessionStore, storeData} from "../../lib/functions";
-import {setCartData, setUpdateCart} from "../../lib/redux-store/reducer/cart-data";
+import {resetCart, setCartData, setUpdateCart} from "../../lib/redux-store/reducer/cart-data";
 import {itemTotalCalculation} from "../../lib/item-calculation";
-import {useNavigate} from "react-router-dom";
+
 import {device} from "../../lib/static";
 import CartSummary from "./CartSummary";
+import { confirmAlert } from 'react-confirm-alert'; // Import
+import 'react-confirm-alert/src/react-confirm-alert.css';
+import {useNavigate} from "react-router-dom"; // Import css
 
 const Index = (props) => {
 
     const dispatch = useDispatch()
     const navigate = useNavigate();
 
-    const {cartData,cartData:{vouchertotaldisplay,invoiceitems}} = props;
+    const {cartData,page,cartData:{vouchertotaldisplay,invoiceitems}} = props;
 
     const [summary,setSummary] = useState(false)
+
+    const options = {
+        title: 'Confirm',
+        message: 'Are you sure to place order?',
+        buttons: [
+            {
+                label: 'Yes',
+                onClick: () =>  {
+                    dispatch(resetCart())
+                }
+            },
+            {
+                label: 'No',
+                onClick: () => {
+
+                }
+            }
+        ],
+        closeOnEscape: true,
+        closeOnClickOutside: true,
+        keyCodeForClose: [8, 32],
+        overlayClassName: "overlay-custom-class-name"
+    };
 
 
     ////// STORE CART
@@ -37,9 +63,14 @@ const Index = (props) => {
                 <div onClick={()=>setSummary(!summary)}><i className={`fa fa-chevron-${summary?'down':'up'}`}></i></div>
                 <div>
                     <button className="w-100 custom-btn custom-btn--medium custom-btn--style-1" onClick={()=>{
-                        navigate(`/location/${device.locationid}/cartdetail`);
+                        if(page === 'final'){
+                            confirmAlert(options);
+                        }
+                        else {
+                            navigate(`/location/${device.locationid}/cartdetail`);
+                        }
                     }} type="button" role="button">
-                        Place Order
+                        {page === 'final'?'Place Order':'Next'}
                     </button>
                 </div>
             </div>

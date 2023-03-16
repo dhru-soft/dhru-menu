@@ -1,18 +1,16 @@
 import React, { useEffect, useState} from "react";
 
 import {connect} from "react-redux";
-import {clone, findObject, getFromSetting, numberFormat,} from "../../lib/functions";
+import {clone, findObject, getFromSetting, numberFormat, setItemRowData,} from "../../lib/functions";
 import {v4 as uuid} from "uuid";
-import restaurantDetail from "../../lib/redux-store/reducer/restaurant-data";
 
 
-const Index = ({itemDetail}) => {
+const Index = ({itemDetail,updateItem}) => {
 
 
-    const {itemaddon,addons,addon,settings} = itemDetail
+    const {itemaddon,addons,addon} = itemDetail
 
     let {addongroupid, addonid,autoaddon} = addons || {addongroupid: [], addonid: [],autoaddon:[]};
-    let unit = getFromSetting('unit');
 
     const [moreaddon, setMoreAddon] = useState(clone(addon))
 
@@ -26,37 +24,37 @@ const Index = ({itemDetail}) => {
            if (Boolean(findaddons.length)) {
                addonid = addonid.concat(findaddons)
            }
-
        })
 
 
     const updateQnt = (key, action) => {
-        let productqnt = moreaddon[key].productqnt || 0;
+        let productqnt  =  0;
 
         if (action === 'add') {
-            productqnt = productqnt + 1
+            productqnt = 1
         } else if (action === 'remove') {
-            productqnt = productqnt - 1
+            productqnt = 0
         }
 
-        let unittype = unit[moreaddon[key]?.itemunit]
         let uuidn = uuid();
         moreaddon[key] = {
             ...moreaddon[key],
-            displayunitcode:unittype?.unitcode || '',
+            itemid:key,
             productqnt: productqnt,
             key: uuidn,
-            ref_id:uuidn
         }
 
-        const selectedAddons = Object.values(moreaddon).filter((addon) => {
+        let selectedAddons = Object.values(moreaddon).filter((addon) => {
             return addon.productqnt > 0
         })
 
-        //  itemaddon = selectedAddons;
+        selectedAddons = selectedAddons.map((addon)=>{
+            return setItemRowData(addon)
+        })
+
 
         setMoreAddon(clone(moreaddon));
-        // updateProduct({itemaddon:selectedAddons})
+        updateItem({...itemDetail,itemaddon:selectedAddons})
     }
 
 
@@ -76,12 +74,12 @@ const Index = ({itemDetail}) => {
 
         setMoreAddon(clone(moreaddon));
 
-        setTimeout(()=>{
+        /*setTimeout(()=>{
             autoaddon?.map((addon)=>{
                 updateQnt(addon,'add')
 
             })
-        })
+        })*/
 
     }, [])
 
@@ -91,6 +89,10 @@ const Index = ({itemDetail}) => {
         return <></>
     }
 
+    const handleCheckboxChange = (addon,e) => {
+        updateQnt(addon,e.target.checked?'add':'remove')
+    }
+
 
    return (<div className={'mt-5'}>
 
@@ -98,23 +100,25 @@ const Index = ({itemDetail}) => {
 
                 <h6>Addons</h6>
 
-                <div className={'border p-3 rounded-3'}>
+                <div>
 
                 {
                     addonid?.map((addon, key) => {
 
-                        let {itemname, pricing, productqnt} = moreaddon[addon] || {};
-
-                        const pricingtype = pricing?.type;
-
-                        const baseprice = pricing?.price?.default[0][pricingtype]?.baseprice || 0;
+                        let {itemname, price, productqnt} = moreaddon[addon] || {};
 
                         return (
                             <div className={`${key!== 0 && 'border-top'} py-3`} key={key}>
                                 <div  key={key}  className={'d-flex justify-content-between'}>
 
                                     <div>
-                                        <div style={{width: 150}}><span>{`${itemname}`} </span></div>
+                                        <div className="form-check">
+                                            <input className="form-check-input" type="checkbox" value="1"
+                                                   id={`checkbox${key}`} onChange={(e)=>handleCheckboxChange(addon,e)}  />
+                                                <label className="form-check-label" htmlFor={`checkbox${key}`}>
+                                                    {`${itemname}`}
+                                                </label>
+                                        </div>
                                         <div>
 
                                         </div>
@@ -122,7 +126,7 @@ const Index = ({itemDetail}) => {
 
 
                                     <div>
-                                        <span>{numberFormat(baseprice * (productqnt || 1))}</span>
+                                        <span>{numberFormat(price)}</span>
                                     </div>
 
                                 </div>

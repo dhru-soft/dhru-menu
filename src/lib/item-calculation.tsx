@@ -21,12 +21,8 @@ export const getProductData = (product: any,
     let returnObject: any = {};
     try {
 
-        let {itemminqnt, pricing, purchasecost} = product;
-        const {qntranges, price, type} = pricing;
+        let {purchasecost,price} = product;
 
-        if (!pricingType) {
-            pricingType = "default";
-        }
 
         let currency = "USD", defaultCurrency = getDefaultCurrency();
         if (companyCurrency != null) {
@@ -39,56 +35,8 @@ export const getProductData = (product: any,
             clientCurrency = currency;
         }
 
-
-        let quantity: number = 1,
-            qntRangeIndex = 0,
-            productratedisplay: number = 0;
-
-
-        if (qnt != null) {
-            quantity = qnt;
-        } else if (Boolean(itemminqnt)) {
-            quantity = parseFloat(itemminqnt);
-        }
-
-        if (type !== 'free' && recuringType == null && price[pricingType] && price[pricingType][0]) {
-            recuringType = Object.keys(price[pricingType][0])[0];
-        }
-
-
-        qntranges?.forEach(({start, end}: any, index: any) => {
-            if (quantity >= parseFloat(start) && quantity < parseFloat(end)) {
-                qntRangeIndex = index;
-            }
-        });
-
-        returnObject.productrate = 0;
-        returnObject.productratedisplay = 0
-
-
-        if (recuringType) {
-
-            let rate = price[pricingType][0][recuringType].baseprice;
-
-            if (!Boolean(rate)) {
-                rate = 0
-            }
-
-            if (price[pricingType][qntRangeIndex][recuringType]["currency"] &&
-                price[pricingType][qntRangeIndex][recuringType]["currency"][currency] &&
-                price[pricingType][qntRangeIndex][recuringType]["currency"][currency].price) {
-                rate = price[pricingType][qntRangeIndex][recuringType]["currency"][currency].price;
-            }
-
-            returnObject.productrate = rate;
-            if (price[pricingType][qntRangeIndex][recuringType]["currency"] &&
-                price[pricingType][qntRangeIndex][recuringType]["currency"][clientCurrency]) {
-                productratedisplay = price[pricingType][qntRangeIndex][recuringType]["currency"][clientCurrency].price;
-            } else {
-                productratedisplay = currencyRate(clientCurrency) * returnObject.productrate;
-            }
-            returnObject.productratedisplay = productratedisplay;
-        }
+        returnObject.productrate = price;
+        returnObject.productratedisplay = price
 
         if (isInward) {
             if (!Boolean(purchasecost)) {
@@ -158,6 +106,7 @@ export const itemTotalCalculation = (
 
                         if (Boolean(item.itemaddon)) {
 
+                            console.log('item.itemaddon',item.itemaddon)
 
                             item.itemaddon = item.itemaddon.map((ai: any) => {
 
@@ -720,7 +669,6 @@ export const newItemCalculation = (
         productqnt = item_qnt;
     }
 
-    console.log('product_tax_object_display', product_tax_object_display)
 
     if (!Boolean(product_inclusive_taxable_display)) {
         product_inclusive_taxable_display = 0;
@@ -920,7 +868,6 @@ export const newItemCalculation = (
         product_tax_object_display.forEach(({taxpercentage}: any) => {
             totalTaxPercentageDisplay += getFloatValue(taxpercentage);
         });
-        console.log("totalTaxPercentageDisplay", totalTaxPercentageDisplay);
         return_object.totalTaxPercentageDisplay = totalTaxPercentageDisplay;
     }
     // PRODUCT TAX END

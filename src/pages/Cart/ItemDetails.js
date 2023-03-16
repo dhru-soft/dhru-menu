@@ -7,21 +7,21 @@ import {setModal} from "../../lib/redux-store/reducer/component";
 import {setItemDetail} from "../../lib/redux-store/reducer/item-detail";
 import Loader3 from "../../components/Loader/Loader3";
 import AddButton from "./AddButton";
+import {updateCartField} from "../../lib/redux-store/reducer/cart-data";
 
 
 const Index = (props) => {
 
     const dispatch = useDispatch()
 
-    const {itemimage,itemid, itemdescription,pricing} = props?.itemDetail;
-    const pricingtype = pricing?.type;
-    const baseprice = pricing?.price?.default[0][pricingtype]?.baseprice || 0;
+    const [updateItem,setUpdateItem] = useState(props?.itemDetail);
+    const {itemimage,itemid, itemdescription,price} = updateItem;
 
     const [loader,setLoader] = useState(false)
 
     const getItemDetails = async () => {
         await getItemById(itemid).then((data)=>{
-            dispatch(setItemDetail(data))
+            dispatch(setItemDetail({...props.itemDetail,...data}))
         });
         setLoader(true)
     }
@@ -43,7 +43,7 @@ const Index = (props) => {
                     {Boolean(itemimage) &&
                         <img src={`https://${itemimage}`} className={'w-100'} style={{borderRadius: 5}}/>}
 
-                    <h4 className={'text-bold'}>Price : {numberFormat(baseprice)}</h4>
+                    <h6 className={'mt-3'}>Price : {numberFormat(price)}</h6>
 
 
                     <div>
@@ -51,25 +51,31 @@ const Index = (props) => {
                     </div>
 
 
-                    <Addons/>
-                    <TagsNotes/>
+                    <Addons updateItem={setUpdateItem}/>
+                    {/*<TagsNotes/>*/}
 
+                    <div className={'form mt-3'}>
+                        <input className="textfield textfield2"
+                               type="text"
+                               placeholder="Notes"
+                               onBlur={(e) => {
+                                   dispatch(updateCartField({notes:e.target.value}))
+                               }}
+                        />
+                    </div>
 
                     <div className={'d-flex justify-content-between align-items-center mt-5'}>
                         <div>
-
+                            <AddButton item={updateItem} updateItem={setUpdateItem} />
                         </div>
 
                         <div>
-
-                            <AddButton/>
-                            {/*<button className="custom-btn custom-btn--medium custom-btn--style-4" onClick={() => {
-                                addToCart(props?.itemDetail).then(r => {
-                                    dispatch(setModal({show: false}))
-                                })
+                            <button className="custom-btn custom-btn--medium custom-btn--style-4" onClick={() => {
+                                addToCart(updateItem).then(r => {})
+                                dispatch(setModal({show: false}))
                             }} type="button" role="button">
                                 Add
-                            </button>*/}
+                            </button>
                         </div>
                     </div>
 

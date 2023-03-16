@@ -903,6 +903,11 @@ b, strong {
     height: 45px;
     border-color: rgb(230, 232, 240);
     border-width: 1px;
+    &.textfield2{
+        border-radius:10px;
+        border-color:#E6E8F0;
+        border-width:1px
+    }
 }
 
 .breadcrumb-item{
@@ -940,4 +945,5 @@ b, strong {
     width:110px;
     height:38px
 }
+
 
