@@ -741,6 +741,7 @@ export const getFloatValue = (value, fraxtionDigits = 4, notConvert = true, isLo
     catch (e) {
         console.log('e',e)
     }
+    return value
 }
 
 export const getFromSetting = (key) => {

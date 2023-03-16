@@ -61,7 +61,7 @@ const Index = (props) => {
                         return group?.itemgroupmid === '0'
                     }).map((item, index) => {
 
-                        return <div key={index} className="text-center col-sm-4 col-lg-2 col-md-3 col-6 mb-3"
+                        return <div key={index} className="text-center col-sm-4 col-lg-2 col-md-3 col-6 mb-3 cursor-pointer"
                                     onClick={() => {
                                         dispatch(setSelected({groupids: [item?.itemgroupid]}))
                                     }}>
