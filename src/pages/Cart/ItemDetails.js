@@ -14,6 +14,7 @@ const Index = (props) => {
 
     const dispatch = useDispatch()
 
+    const {updateListItem} = props
     const [updateItem,setUpdateItem] = useState(props?.itemDetail);
     const {itemimage,itemid, itemdescription,price} = updateItem;
 
@@ -66,16 +67,11 @@ const Index = (props) => {
 
                     <div className={'d-flex justify-content-between align-items-center mt-5'}>
                         <div>
-                            <AddButton item={updateItem} updateItem={setUpdateItem} />
+                            <AddButton  item={updateItem} updateItem={setUpdateItem} />
                         </div>
 
                         <div>
-                            <button className="custom-btn custom-btn--medium custom-btn--style-4" onClick={() => {
-                                addToCart(updateItem).then(r => {})
-                                dispatch(setModal({show: false}))
-                            }} type="button" role="button">
-                                Add
-                            </button>
+                            <AddButton custom={true} item={updateItem} updateItem={updateListItem} />
                         </div>
                     </div>
 

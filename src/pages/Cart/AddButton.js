@@ -1,10 +1,13 @@
 import React, {useEffect, useState} from "react";
 import {connect, useDispatch} from "react-redux";
-import {addItem, removeItem} from "../../lib/functions";
+import {addItem, addToCart, removeItem} from "../../lib/functions";
 import store from "../../lib/redux-store/store";
 import {changeCartItem} from "../../lib/redux-store/reducer/cart-data";
 import {v4 as uuid} from "uuid";
 import {device} from "../../lib/static";
+import {setModal} from "../../lib/redux-store/reducer/component";
+import {setItemDetail} from "../../lib/redux-store/reducer/item-detail";
+import ItemDetails from "./ItemDetails";
 
 
 export const updateCartItem = async (values) => {
@@ -40,19 +43,43 @@ export const updateCartItem = async (values) => {
     }
 }
 
-const Index = ({item,updateItem}) => {
+const Index = ({item,updateItem,custom}) => {
 
     const [productqnt,setQnt] = useState(item?.productqnt || 0);
+    const dispatch = useDispatch()
 
-    const addQnt = () => {
+    const addQnt = (productqnt,extradisable=false) => {
         const key = uuid();
         item = {
-            ...item,productqnt:1,key
+            ...item,productqnt,key
         }
-        addItem(item).then();
+
+
+        if(extradisable){
+            item = {
+                ...item,hasextra:false
+            }
+        }
+        const {hasextra,itemname} = item;
+        if(hasextra) {
+            store.dispatch(setItemDetail(item));
+            store.dispatch(setModal({
+                show: true,
+                title: itemname,
+                height: '80%',
+                component: () => <><ItemDetails updateListItem={updateItem}  /></>
+            }))
+        }
+        else{
+            addToCart(item).then(r => { })
+        }
+
+
+
         if(!item?.hasextra){
             setQnt(1)
-            Boolean(updateItem) && updateItem(item);
+            Boolean(updateItem) && updateItem({...item});
+            dispatch(setModal({show: false}))
         }
     }
 
@@ -69,11 +96,19 @@ const Index = ({item,updateItem}) => {
             productqnt:qnt
         }
         setQnt(qnt)
-        Boolean(updateItem) && updateItem(item);
+        Boolean(updateItem) && updateItem({...item});
         updateCartItem(item).then(r => {})
     }
 
-
+    if(custom){
+        return (
+            <button className="custom-btn custom-btn--medium custom-btn--style-4" onClick={() => {
+                addQnt(item.productqnt,true).then(r => {})
+            }} type="button" role="button">
+                Add
+            </button>
+        )
+    }
 
     if(productqnt){
         return (
@@ -90,7 +125,7 @@ const Index = ({item,updateItem}) => {
     return (
         <div className={'mt-3 text-center'}>
             <button className=" btn-add btn" onClick={()=>{
-                addQnt()
+                addQnt(1)
             }} type="button" role="button">
                 ADD
             </button>

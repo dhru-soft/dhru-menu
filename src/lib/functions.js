@@ -617,23 +617,7 @@ export const getItemById = async (itemid) => {
 
 }
 
-export const addItem =  async (item) =>{
 
-    const {hasextra,itemname} = item;
-
-    if(hasextra) {
-        store.dispatch(setItemDetail(item));
-        store.dispatch(setModal({
-            show: true,
-            title: itemname,
-            height: '80%',
-            component: () => <><ItemDetails   /></>
-        }))
-    }
-    else{
-        addToCart(item).then(r => { })
-    }
-}
 
 
 export const addToCart = async (item) => {
@@ -642,7 +626,6 @@ export const addToCart = async (item) => {
     if(Boolean(item.price)){
         getdetail = await getItemById(item.itemid)
     }
-    console.log('getdetail',getdetail)
 
     try {
         item = {

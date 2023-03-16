@@ -7,11 +7,13 @@ import {isEmpty, numberFormat} from "../../lib/functions";
 import ReactReadMoreReadLess from "react-read-more-read-less";
 import Loader3 from "../../components/Loader/Loader3";
 import AddButton from "./AddButton";
+import store from "../../lib/redux-store/store";
 
 export const ItemBox = memo(({item})=>{
 
     const [updateItem,setUpdateItem] = useState(item);
-    const {itemname, itemimage, price, itemdescription, veg,addbutton} = updateItem;
+
+    const {itemname, itemimage, price, itemdescription, veg, addbutton} = updateItem;
 
     const diat = {
         veg: {color: '#659a4a', icon: 'leaf'},
@@ -67,7 +69,7 @@ const Items = (props) => {
     const params = Object.fromEntries(urlSearchParams.entries());
 
     const {tableorder,online} = device.order;
-    const {groupids, selectedtags, searchitem} = props;
+    const {groupids, selectedtags, searchitem,invoiceitems} = props;
 
     const hasAdd = (tableorder && params.table) || ((online || tableorder) && !params.table)
 
@@ -110,7 +112,17 @@ const Items = (props) => {
         }).then(async (result) => {
 
             if (result.status === STATUS.SUCCESS && Boolean(result?.data)) {
-                const {items} = result?.data;
+                let {items} = result?.data;
+
+                invoiceitems?.map((item)=>{
+                     if(Boolean(items[item?.itemid])){
+                         items = {
+                             ...items,
+                             [item?.itemid]:item,
+                         }
+                     }
+                })
+
                 setItems(items);
             } else {
                 setItems({})
@@ -152,6 +164,7 @@ const Items = (props) => {
 
 const mapStateToProps = (state) => {
     return {
+        invoiceitems:state.cartData.invoiceitems,
         ...state.selectedData
     }
 }
