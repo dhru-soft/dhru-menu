@@ -8,6 +8,9 @@ import ReactReadMoreReadLess from "react-read-more-read-less";
 import Loader3 from "../../components/Loader/Loader3";
 import AddButton from "./AddButton";
 import store from "../../lib/redux-store/store";
+import {setItemDetail} from "../../lib/redux-store/reducer/item-detail";
+import {setModal} from "../../lib/redux-store/reducer/component";
+import ItemDetails from "./ItemDetails";
 
 export const ItemBox = memo(({item})=>{
 
@@ -22,7 +25,7 @@ export const ItemBox = memo(({item})=>{
     }
 
     return (
-        <div className="col-12 col-sm-4 col-xl-3  item-hover  p-2 py-4">
+        <div className="col-12 col-sm-6 col-md-4  col-lg-3    item-hover  p-2 py-4">
             <div className="d-flex p-2 h-100">
                 <div className={'w-100'}>
 

@@ -7,7 +7,6 @@ import {v4 as uuid} from "uuid";
 
 const Index = ({itemDetail,updateItem}) => {
 
-
     const {itemaddon,addons,addon} = itemDetail
 
     let {addongroupid, addonid,autoaddon} = addons || {addongroupid: [], addonid: [],autoaddon:[]};
@@ -28,6 +27,8 @@ const Index = ({itemDetail,updateItem}) => {
 
 
     const updateQnt = (key, action) => {
+
+
         let productqnt  =  0;
 
         if (action === 'add') {
@@ -37,6 +38,7 @@ const Index = ({itemDetail,updateItem}) => {
         }
 
         let uuidn = uuid();
+
         moreaddon[key] = {
             ...moreaddon[key],
             itemid:key,
@@ -60,15 +62,16 @@ const Index = ({itemDetail,updateItem}) => {
 
     useEffect(() => {
         if(Boolean(itemaddon)) {
+
             addonid?.map((addon, key) => {
-                const find = findObject(itemaddon, 'itemid', addon, true);
+                const find = findObject(itemaddon, 'productid', addon, true);
+
                 if (Boolean(find)) {
                     moreaddon[addon] = {
                         ...moreaddon[addon],
                         ...find,
                     }
                 }
-
             })
         }
 
@@ -105,7 +108,7 @@ const Index = ({itemDetail,updateItem}) => {
                 {
                     addonid?.map((addon, key) => {
 
-                        let {itemname, price, productqnt} = moreaddon[addon] || {};
+                        let {itemname, price,productqnt} = moreaddon[addon] || {};
 
                         return (
                             <div className={`${key!== 0 && 'border-top'} py-3`} key={key}>
@@ -113,7 +116,7 @@ const Index = ({itemDetail,updateItem}) => {
 
                                     <div>
                                         <div className="form-check">
-                                            <input className="form-check-input" type="checkbox" value="1"
+                                            <input className="form-check-input" type="checkbox" checked={Boolean(productqnt)} value="1"
                                                    id={`checkbox${key}`} onChange={(e)=>handleCheckboxChange(addon,e)}  />
                                                 <label className="form-check-label" htmlFor={`checkbox${key}`}>
                                                     {`${itemname}`}

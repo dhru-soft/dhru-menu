@@ -9,6 +9,11 @@ import CartTotal from "./CartTotal";
 import AddButton from "./AddButton";
 import {numberFormat} from "../../lib/functions";
 import {v4 as uuid} from "uuid";
+import {setSelected} from "../../lib/redux-store/reducer/selected-data";
+import store from "../../lib/redux-store/store";
+import {setItemDetail} from "../../lib/redux-store/reducer/item-detail";
+import {setModal} from "../../lib/redux-store/reducer/component";
+import ItemDetails from "./ItemDetails";
 
 
 const Index = (props) => {
@@ -34,15 +39,36 @@ const Index = (props) => {
                     <div>
                         <div className="container">
 
+                            {<div className={'pt-3  mt-3'}>
+                                <nav>
+                                    <ol className="breadcrumb mb-0">
+                                        <>
+                                            <li className="breadcrumb-item ps-2"><span onClick={()=>{
+                                                navigate(`/location/${device.locationid}`);
+                                            }}><i className={'fa fa-chevron-left'}></i> Back </span></li>
+                                        </>
+                                    </ol>
+                                </nav>
+                            </div> }
+
+
                             <div className={'bg-white rounded-3 mt-3'}>
 
                                 {
                                     Boolean(invoiceitems?.length > 0) && invoiceitems?.map((item) => {
-                                        const {itemname, productratedisplay, productqnt,itemaddon} = item || {};
+                                        const {itemname, productratedisplay, productqnt,itemaddon,notes} = item || {};
 
                                         return <div className="col-12    item-hover  p-2 py-4" key={uuid()}>
                                             <div className="d-flex p-2 h-100">
-                                                <div className={'w-100'}>
+                                                <div className={'w-100'}  onClick={()=>{
+                                                    store.dispatch(setItemDetail(item));
+                                                    store.dispatch(setModal({
+                                                        show: true,
+                                                        title: itemname,
+                                                        height: '80%',
+                                                        component: () => <><ItemDetails cart={true}   /></>
+                                                    }))
+                                                }}>
 
                                                     <div className={'p-2 mt-auto '}>
                                                         <div>
@@ -60,6 +86,11 @@ const Index = (props) => {
                                                                 })
                                                             }
                                                         </div>}
+
+                                                        <div>
+                                                            <i className={'mb-2 text-danger'}> {notes} </i>
+                                                        </div>
+
 
                                                     </div>
                                                 </div>

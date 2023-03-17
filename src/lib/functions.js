@@ -548,6 +548,7 @@ export const setItemRowData = (data) => {
 
         let {
             itemid,
+            productid,
             itemname,
             itemtaxgroupid,
             price,
@@ -570,7 +571,7 @@ export const setItemRowData = (data) => {
         const defaultCurrency = getDefaultCurrency().code
 
         let additem = {
-            productid: itemid,
+            productid: itemid || productid,
             itemname,
             productqnt: productqnt || (Boolean(itemminqnt) ? itemminqnt : 1),
             producttaxgroupid,

@@ -14,16 +14,22 @@ const Index = (props) => {
 
     const dispatch = useDispatch()
 
-    const {updateListItem} = props
+    const {updateListItem,cart} = props
     const [updateItem,setUpdateItem] = useState(props?.itemDetail);
-    const {itemimage,itemid, itemdescription,price} = updateItem;
+    const {itemimage,itemid, itemdescription,price,notes} = updateItem;
 
     const [loader,setLoader] = useState(false)
 
     const getItemDetails = async () => {
-        await getItemById(itemid).then((data)=>{
-            dispatch(setItemDetail({...props.itemDetail,...data}))
-        });
+        if(cart) {
+            dispatch(setItemDetail({...props.itemDetail}))
+
+        }
+        else{
+            await getItemById(itemid).then((data) => {
+                dispatch(setItemDetail({...props.itemDetail, ...data}))
+            });
+        }
         setLoader(true)
     }
 
@@ -58,9 +64,10 @@ const Index = (props) => {
                     <div className={'form mt-3'}>
                         <input className="textfield textfield2"
                                type="text"
+                               defaultValue={notes}
                                placeholder="Notes"
                                onBlur={(e) => {
-                                   dispatch(updateCartField({notes:e.target.value}))
+                                   setUpdateItem({...updateItem,notes:e.target.value})
                                }}
                         />
                     </div>
@@ -71,7 +78,7 @@ const Index = (props) => {
                         </div>
 
                         <div>
-                            <AddButton custom={true} item={updateItem} updateItem={updateListItem} />
+                            <AddButton custom={true} fromCart={cart} item={updateItem} updateItem={updateListItem} />
                         </div>
                     </div>
 

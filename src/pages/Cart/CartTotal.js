@@ -56,11 +56,11 @@ const Index = (props) => {
             {summary && <CartSummary />}
 
             <div className={'d-flex  justify-content-between align-items-center'}>
-                <div  onClick={()=>setSummary(!summary)}>
+                <div className={'cursor-pointer'} onClick={()=>setSummary(!summary)}>
                     <div><small className={'text-muted'}>Items : {invoiceitems?.length}</small></div>
                     <h4 className={'mb-0'}> {numberFormat(vouchertotaldisplay)}</h4>
                 </div>
-                <div onClick={()=>setSummary(!summary)}><i className={`fa fa-chevron-${summary?'down':'up'}`}></i></div>
+                <div className={'p-4  text-center w-100  cursor-pointer'} onClick={()=>setSummary(!summary)}><i className={`fa fa-chevron-${summary?'down':'up'}`}></i></div>
                 <div>
                     <button className="w-100 custom-btn custom-btn--medium custom-btn--style-1" onClick={()=>{
                         if(page === 'final'){

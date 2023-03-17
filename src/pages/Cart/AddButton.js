@@ -43,18 +43,21 @@ export const updateCartItem = async (values) => {
     }
 }
 
-const Index = ({item,updateItem,custom}) => {
+const Index = ({item,updateItem,custom,fromCart}) => {
 
     const [productqnt,setQnt] = useState(item?.productqnt || 0);
     const dispatch = useDispatch()
+
+    useEffect(()=>{
+        setQnt(item?.productqnt)
+    },[item?.productqnt])
+
 
     const addQnt = (productqnt,extradisable=false) => {
         const key = uuid();
         item = {
             ...item,productqnt,key
         }
-
-
         if(extradisable){
             item = {
                 ...item,hasextra:false
@@ -73,8 +76,6 @@ const Index = ({item,updateItem,custom}) => {
         else{
             addToCart(item).then(r => { })
         }
-
-
 
         if(!item?.hasextra){
             setQnt(1)
@@ -100,12 +101,23 @@ const Index = ({item,updateItem,custom}) => {
         updateCartItem(item).then(r => {})
     }
 
+    const updatecartItem = () => {
+        updateCartItem(item).then(r => {})
+        dispatch(setModal({show: false}))
+    }
+
+
     if(custom){
         return (
             <button className="custom-btn custom-btn--medium custom-btn--style-4" onClick={() => {
-                addQnt(item.productqnt,true).then(r => {})
+                if(fromCart){
+                    updatecartItem()
+                }
+                else {
+                    addQnt(item.productqnt, true)
+                }
             }} type="button" role="button">
-                Add
+                {fromCart?'Update':'Add'}
             </button>
         )
     }

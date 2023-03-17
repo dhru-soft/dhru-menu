@@ -95,7 +95,7 @@ const Index = (props) => {
                                         groups.push(group.itemgroupid)
                                     }
                                     dispatch(setSelected({groupids: groups}))
-                                }}  className="text-center col-sm-4 col-lg-2 col-md-3 col-6 mb-3">
+                                }}  className="text-center col-sm-4 col-lg-2 col-md-3 col-6 mb-3 cursor-pointer">
 
                                     <GroupBox item={group}/>
 
