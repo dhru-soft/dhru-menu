@@ -2,7 +2,7 @@ import React, {useEffect, useState} from "react";
 import {connect, useDispatch} from "react-redux";
 import Addons from "./Addons";
 import TagsNotes from "./TagsNotes";
-import {addToCart, getItemById, numberFormat} from "../../lib/functions";
+import {addToCart, getItemById, isEmpty, numberFormat} from "../../lib/functions";
 import {setModal} from "../../lib/redux-store/reducer/component";
 import {setItemDetail} from "../../lib/redux-store/reducer/item-detail";
 import Loader3 from "../../components/Loader/Loader3";
@@ -22,8 +22,7 @@ const Index = (props) => {
 
     const getItemDetails = async () => {
         if(cart) {
-            dispatch(setItemDetail({...props.itemDetail}))
-
+            dispatch(setItemDetail(props.itemDetail))
         }
         else{
             await getItemById(itemid).then((data) => {

@@ -648,7 +648,7 @@ export const getItemList = async (queryString) => {
 export const addToCart = async (item) => {
 
     let getdetail = {};
-    if(Boolean(item.price)){
+    if(Boolean(item.price)){ // && item.hasextra
         getdetail = await getItemById(item.itemid)
     }
 
