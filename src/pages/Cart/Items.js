@@ -1,9 +1,9 @@
 import React, {memo, useCallback, useEffect, useState} from "react";
-import {connect} from "react-redux";
+import {connect, useDispatch} from "react-redux";
 import {ACTIONS, device, METHOD, STATUS, urls} from "../../lib/static";
 import apiService from "../../lib/api-service";
 
-import {isEmpty, numberFormat} from "../../lib/functions";
+import {clone, getItemList, isEmpty, numberFormat} from "../../lib/functions";
 import ReactReadMoreReadLess from "react-read-more-read-less";
 import Loader3 from "../../components/Loader/Loader3";
 import AddButton from "./AddButton";
@@ -11,6 +11,7 @@ import store from "../../lib/redux-store/store";
 import {setItemDetail} from "../../lib/redux-store/reducer/item-detail";
 import {setModal} from "../../lib/redux-store/reducer/component";
 import ItemDetails from "./ItemDetails";
+import {setItem, setItemList} from "../../lib/redux-store/reducer/item-list";
 
 export const ItemBox = memo(({item})=>{
 
@@ -65,6 +66,8 @@ export const ItemBox = memo(({item})=>{
 const Items = (props) => {
 
 
+    const dispatch = useDispatch()
+
     const [items, setItems] = useState({})
     const [loader, setLoader] = useState(false)
 
@@ -72,7 +75,7 @@ const Items = (props) => {
     const params = Object.fromEntries(urlSearchParams.entries());
 
     const {tableorder,online} = device.order;
-    const {groupids, selectedtags, searchitem,invoiceitems} = props;
+    const {groupids, selectedtags, searchitem,invoiceitems,itemList} = props;
 
     const hasAdd = (tableorder && params.table) || ((online || tableorder) && !params.table)
 
@@ -105,33 +108,48 @@ const Items = (props) => {
             }
         }
 
-        await apiService({
-            method: METHOD.GET,
-            action: ACTIONS.ITEMS,
-            queryString: queryString,
-            hideLoader: true,
-            workspace: device.workspace,
-            other: {url: urls.posUrl},
-        }).then(async (result) => {
+        const {tags,search} = queryString;
 
-            if (result.status === STATUS.SUCCESS && Boolean(result?.data)) {
-                let {items} = result?.data;
+        const mergeCart = (items) => {
 
-                invoiceitems?.map((item)=>{
-                     if(Boolean(items[item?.itemid])){
-                         items = {
-                             ...items,
-                             [item?.itemid]:item,
-                         }
-                     }
-                })
-
-                setItems(items);
-            } else {
-                setItems({})
+            //////// SAVE FOR LOCAL REDUX BY GROUP
+            if(!Boolean(tags) && !Boolean(search)) {
+                dispatch(setItemList({[itemgroupid]: items}))
             }
+
+            /////// MERGE CART ITEM AND NORMAL ITEM
+            if (!isEmpty(items)) {
+                invoiceitems?.map((item) => {
+                    if (Boolean(items[item?.itemid])) {
+                        items = {
+                            ...items,
+                            [item?.itemid]: item,
+                        }
+                    }
+                })
+            }
+
+            setItems(clone(items));
+
+        }
+
+
+        if(!itemList.hasOwnProperty(itemgroupid) || (Boolean(tags) || Boolean(search))){
+            //////// CHECK IF NOT IN REDUX AND GET FROM REMOTE
+            getItemList(queryString).then((items) => {
+                setLoader(true)
+                mergeCart(items)
+            })
+        }
+        else {
+
+            //////// MERGE ITEMS IF EXISTS IN LOCAL REDUX
             setLoader(true)
-        });
+            mergeCart(itemList[itemgroupid])
+        }
+
+
+
     }
 
     useEffect(() => {
@@ -168,6 +186,7 @@ const Items = (props) => {
 const mapStateToProps = (state) => {
     return {
         invoiceitems:state.cartData.invoiceitems,
+        itemList:state?.itemList || {},
         ...state.selectedData
     }
 }

@@ -12,6 +12,7 @@ import promise from "promise";
 import {getProductData} from "./item-calculation";
 import {setModal} from "./redux-store/reducer/component";
 import ItemDetails from "../pages/Cart/ItemDetails";
+import {setItemList} from "./redux-store/reducer/item-list";
 var ls = require('local-storage');
 
 
@@ -618,6 +619,29 @@ export const getItemById = async (itemid) => {
 
 }
 
+
+export const getItemList = async (queryString) => {
+    return new promise(async (resolve)=>{
+
+        await apiService({
+            method: METHOD.GET,
+            action: ACTIONS.ITEMS,
+            queryString: queryString,
+            hideLoader: true,
+            workspace: device.workspace,
+            other: {url: urls.posUrl},
+        }).then(async (result) => {
+            if (result.status === STATUS.SUCCESS && Boolean(result?.data)) {
+                let {items} = result?.data;
+                resolve(items)
+            }
+            else{
+                resolve(false)
+            }
+        });
+    })
+
+}
 
 
 

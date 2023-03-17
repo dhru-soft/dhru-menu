@@ -2,8 +2,9 @@ import React, {useEffect, useState} from "react";
 import {connect, useDispatch} from "react-redux";
 import {setSelected} from "../../lib/redux-store/reducer/selected-data";
 import apiService from "../../lib/api-service";
-import {ACTIONS, device, METHOD, STATUS, urls} from "../../lib/static";
+import {ACTIONS, device, localredux, METHOD, STATUS, urls} from "../../lib/static";
 import {setGroupList} from "../../lib/redux-store/reducer/group-list";
+import {isEmpty} from "../../lib/functions";
 
 
 export const GroupBox = ({item}) => {
@@ -27,28 +28,30 @@ const Index = (props) => {
     const {workspace,groupList} = props;
 
     const getGroups = async () => {
-        await apiService({
-            method: METHOD.GET,
-            action: ACTIONS.ITEMS,
-            queryString: {locationid: device.locationid},
-            hideLoader:true,
-            workspace: workspace,
-            other: {url: urls.posUrl},
-        }).then(async (result) => {
 
-            if (result.status === STATUS.SUCCESS && Boolean(result?.data)) {
-                const {itemgroup} = result?.data;
-                dispatch(setGroupList(itemgroup))
+            if(isEmpty(groupList)){
+                await apiService({
+                    method: METHOD.GET,
+                    action: ACTIONS.ITEMS,
+                    queryString: {locationid: device.locationid},
+                    hideLoader: true,
+                    workspace: workspace,
+                    other: {url: urls.posUrl},
+                }).then(async (result) => {
+                    if (result.status === STATUS.SUCCESS && Boolean(result?.data)) {
+                        dispatch(setGroupList(result?.data?.itemgroup))
+                    }
+                });
             }
-        });
     }
 
     useEffect(() => {
         getGroups().then()
     }, [])
 
-
-
+    if(isEmpty(groupList)){
+        return  <></>
+    }
 
     return (
         <div>

@@ -106,8 +106,6 @@ export const itemTotalCalculation = (
 
                         if (Boolean(item.itemaddon)) {
 
-                            console.log('item.itemaddon',item.itemaddon)
-
                             item.itemaddon = item.itemaddon.map((ai: any) => {
 
                                 ai.item_qnt = item.productqnt * ai.productqnt
