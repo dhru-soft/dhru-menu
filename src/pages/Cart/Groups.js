@@ -5,17 +5,26 @@ import apiService from "../../lib/api-service";
 import {ACTIONS, device, localredux, METHOD, STATUS, urls} from "../../lib/static";
 import {setGroupList} from "../../lib/redux-store/reducer/group-list";
 import {isEmpty} from "../../lib/functions";
+import { LazyLoadImage } from 'react-lazy-load-image-component';
 
 
 export const GroupBox = ({item}) => {
     const withimage = Boolean(item.itemgroupimage);
     return (
         <>
-            <div className={`__item __item--rounded text-center border ${withimage?'backgroundImage':'backgroundNoImage'}`} style={{
+            <div className={`__item __item--rounded bg-white text-center border position-relative group-box`} style={{
                 borderRadius: 10,
-                backgroundImage: withimage ? `url("https://${item.itemgroupimage}")` :''
+                minHeight:80,
+                height:'100%'
             }}>
-                <h5 className={`__title text-center ${withimage?'text-white':''} p-3`}>{item.itemgroupname} </h5>
+
+                {Boolean(item?.itemgroupimage)  ?  <LazyLoadImage
+                    alt={'helo'}
+                    src={`https://${item?.itemgroupimage}`}
+
+                    style={{maxWidth:'100%',borderRadius:10}} /> : <div></div>}
+
+                <h5 className={`__title text-center position-absolute ${withimage?'text-white':''} p-3`} style={{top:0}} >{item.itemgroupname} </h5>
             </div>
         </>
     )

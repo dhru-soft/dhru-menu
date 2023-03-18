@@ -12,6 +12,7 @@ import {setItemDetail} from "../../lib/redux-store/reducer/item-detail";
 import {setModal} from "../../lib/redux-store/reducer/component";
 import ItemDetails from "./ItemDetails";
 import {setItem, setItemList} from "../../lib/redux-store/reducer/item-list";
+import {LazyLoadImage} from "react-lazy-load-image-component";
 
 export const ItemBox = memo(({item})=>{
 
@@ -51,7 +52,12 @@ export const ItemBox = memo(({item})=>{
                 </div>
                 <div className={'border-light  rounded-3 p-2'} style={{width: 150}}>
                     <div>
-                        {itemimage && <img className={'w-100 rounded-3'} src={`https://${itemimage}`}/>}
+
+                        {itemimage && <LazyLoadImage
+                            alt={''}
+                            src={`https://${itemimage}`}
+                            style={{maxWidth:'100%',borderRadius:5}}
+                        />}
                     </div>
                     {addbutton &&  <AddButton item={updateItem} updateItem={setUpdateItem}/>}
                 </div>
