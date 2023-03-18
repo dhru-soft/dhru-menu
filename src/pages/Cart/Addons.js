@@ -145,8 +145,5 @@ const Index = ({itemDetail,updateItem}) => {
 
 
 
-const mapStateToProps = (state) => ({
-    itemDetail: state.itemDetail,
-})
 
-export default connect(mapStateToProps)(Index);
+export default  Index;

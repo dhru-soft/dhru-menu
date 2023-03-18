@@ -611,7 +611,6 @@ export const getItemById = async (itemid) => {
             other: {url: urls.posUrl},
         }).then(async (result) => {
             if (result.status === STATUS.SUCCESS && Boolean(result?.data)) {
-                store.dispatch(setItemDetail(result?.data))
                 resolve(result?.data)
             }
         });
@@ -657,6 +656,7 @@ export const addToCart = async (item) => {
             ...item,
             ...getdetail,
             added: true,
+            hasextra:!isEmpty(getdetail?.addons),
             deviceid:'browser'
         }
 

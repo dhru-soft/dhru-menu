@@ -14,11 +14,45 @@ import ItemDetails from "./ItemDetails";
 import {setItem, setItemList} from "../../lib/redux-store/reducer/item-list";
 import {LazyLoadImage} from "react-lazy-load-image-component";
 
+
+export const AddonAction = ({item,updateQnt}) => {
+    const dispatch = useDispatch()
+    return (
+        <div>
+            <div className={'d-flex justify-content-between align-items-center'}>
+                <div className={'w-100'}>
+
+                    <button className="w-100 custom-btn custom-btn--medium custom-btn--style-1" onClick={()=>{
+
+                        dispatch(setModal({
+                            show: true,
+                            title: item.itemname,
+                            height: '80%',
+                            component: () => <><ItemDetails itemDetail={{...item,productqnt:1,key:''}}     /></>
+                        }))
+                    }} type="button" role="button">
+                        Add New
+                    </button>
+                </div>
+
+                <div  className={'w-100 ms-3'}>
+                    <button className="w-100 custom-btn custom-btn--medium custom-btn--style-2" onClick={()=>{
+                        updateQnt('add',true);
+                        dispatch(setModal({show:false}));
+                    }} type="button" role="button">
+                        Repeat
+                    </button>
+                </div>
+            </div>
+        </div>
+    )
+}
+
 export const ItemBox = memo(({item})=>{
 
     const [updateItem,setUpdateItem] = useState(item);
 
-    const {itemname, itemimage, price, itemdescription, veg, addbutton} = updateItem;
+    const {itemname, itemimage, price, itemdescription, veg,itemid, addbutton} = updateItem;
 
     const diat = {
         veg: {color: '#659a4a', icon: 'leaf'},

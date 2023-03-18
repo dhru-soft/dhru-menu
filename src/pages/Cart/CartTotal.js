@@ -26,6 +26,7 @@ const Index = (props) => {
             {
                 label: 'Yes',
                 onClick: () =>  {
+                    console.log('cartData',JSON.stringify(cartData))
                     dispatch(resetCart())
                 }
             },

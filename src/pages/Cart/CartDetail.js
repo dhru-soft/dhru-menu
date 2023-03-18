@@ -61,12 +61,11 @@ const Index = (props) => {
                                         return <div className="col-12    item-hover  p-2 py-4" key={uuid()}>
                                             <div className="d-flex p-2 h-100">
                                                 <div className={'w-100'}  onClick={()=>{
-                                                    store.dispatch(setItemDetail(item));
                                                     store.dispatch(setModal({
                                                         show: true,
                                                         title: itemname,
                                                         height: '80%',
-                                                        component: () => <><ItemDetails cart={true}   /></>
+                                                        component: () => <><ItemDetails itemDetail={item} cart={true}   /></>
                                                     }))
                                                 }}>
 
@@ -95,7 +94,7 @@ const Index = (props) => {
                                                     </div>
                                                 </div>
                                                 <div className={'border-light'} style={{width: 150}}>
-                                                    <AddButton item={item}/>
+                                                    <AddButton item={item} fromCart={true}/>
                                                 </div>
                                             </div>
                                         </div>
