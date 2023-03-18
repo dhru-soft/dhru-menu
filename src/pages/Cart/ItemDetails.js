@@ -46,38 +46,45 @@ const Index = (props) => {
             <div>
                 <div className="container">
 
-                    {Boolean(itemimage) &&
-                        <img src={`https://${itemimage}`} className={'w-100'} style={{borderRadius: 5}}/>}
+                    <div style={{marginBottom:100}}>
+                        {Boolean(itemimage) &&
+                            <div className={'text-center p-5 rounded-4'}>
+                                <img src={`https://${itemimage}`}  style={{borderRadius: 5,maxWidth:'100%'}}/>
+                            </div>}
 
-                    <h6 className={'mt-3'}>Price : {numberFormat(price)}</h6>
-
-
-                    <div>
-                        <div>{itemdescription}</div>
-                    </div>
+                        <h6 className={'mt-3'}>Price : {numberFormat(price)}</h6>
 
 
-                    <Addons updateItem={setUpdateItem}/>
-                    {/*<TagsNotes/>*/}
-
-                    <div className={'form mt-3'}>
-                        <input className="textfield textfield2"
-                               type="text"
-                               defaultValue={notes}
-                               placeholder="Notes"
-                               onBlur={(e) => {
-                                   setUpdateItem({...updateItem,notes:e.target.value})
-                               }}
-                        />
-                    </div>
-
-                    <div className={'d-flex justify-content-between align-items-center mt-5'}>
                         <div>
-                            <AddButton  item={updateItem} updateItem={setUpdateItem} />
+                            <div>{itemdescription}</div>
                         </div>
 
-                        <div>
-                            <AddButton custom={true} fromCart={cart} item={updateItem} updateItem={updateListItem} />
+
+                        <Addons updateItem={setUpdateItem}/>
+                        {/*<TagsNotes/>*/}
+
+                        <div className={'form mt-3'}>
+                            <input className="textfield textfield2"
+                                   type="text"
+                                   defaultValue={notes}
+                                   placeholder="Notes"
+                                   onBlur={(e) => {
+                                       setUpdateItem({...updateItem,notes:e.target.value})
+                                   }}
+                            />
+                        </div>
+                    </div>
+
+
+                    <div className={' position-fixed'}  style={{left:0,right:0,bottom:0}}>
+                        <div className={'d-flex justify-content-between align-items-center p-4'}>
+                            <div>
+                                <AddButton  item={updateItem} updateItem={setUpdateItem} />
+                            </div>
+
+                            <div>
+                                <AddButton custom={true} fromCart={cart} item={updateItem} updateItem={updateListItem} />
+                            </div>
                         </div>
                     </div>
 

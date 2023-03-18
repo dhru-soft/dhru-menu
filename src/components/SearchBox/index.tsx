@@ -4,6 +4,7 @@ import {useEffect, useRef} from 'react';
 
 const Search = (props: any) => {
     const [searchQuery, setSearchQuery] = React.useState('');
+
     const onChangeSearch = (event: any) => {
         setSearchQuery(event.target.value)
     };
@@ -22,23 +23,26 @@ const Search = (props: any) => {
 
     }, [searchQuery]);
 
-    useEffect(()=>{
+   /* useEffect(()=>{
         if(props.autoFocus) {
             setTimeout(() => {
                 searchRf?.focus()
             }, 200)
         }
-    },[])
+    },[])*/
 
 
     return (
         <div>
           <div className={'position-absolute p-4'}>  <i className={'fa fa-search'}></i> </div>
-            <input className="textfield textfield2"   placeholder="Search for item" defaultValue={searchQuery} onSubmit={() => props?.handleSearch(searchQuery.trim())} onChange={(e)=>{
+            <input ref={searchRf} className="textfield textfield2"   placeholder="Search for item" defaultValue={searchQuery} onSubmit={() => props?.handleSearch(searchQuery.trim())} onChange={(e)=>{
                 onChangeSearch(e)
             }}   name="search" type="text" style={{paddingLeft:40}}/>
 
-            {/*<div className={'position-absolute p-4'} style={{right:0,top:0}}>  <i className={'fa fa-times'}></i> </div>*/}
+            <div className={'position-absolute p-4'} onClick={()=>{
+                searchRf.current.value = "";
+                setSearchQuery('')
+            }} style={{right:0,top:0}}>  <i className={'fa fa-times'}></i> </div>
         </div>
     );
 };

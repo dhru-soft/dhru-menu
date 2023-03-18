@@ -57,25 +57,25 @@ const Index = (props) => {
             <div>
                 <div className="">
 
-                    {<div className={'pt-3 pb-3 mt-3'}>
+                    {<div className={'mt-3'}>
                         <nav>
-                            <ol className="breadcrumb mb-0">
+                            <ol className="breadcrumb mb-0 ps-3">
                                 {Boolean(groupids)  ?  <>
-                                    <li className="breadcrumb-item ps-2"><span onClick={()=>{
+                                    <li className="breadcrumb-item   py-4"><span onClick={()=>{
                                         dispatch(setSelected({groupids:''}))
                                     }}><i className={'fa fa-chevron-left'}></i> Back </span></li>
 
                                     {
                                          groupids?.map((gid,index)=>{
                                             return (
-                                                <li key={index} className="breadcrumb-item" onClick={()=>{
+                                                <li key={index} className="breadcrumb-item py-4" onClick={()=>{
                                                     setCurrentGroup(gid)
                                                 }}><span>{groupList[gid]?.itemgroupname}</span></li>
                                             )
                                         })
                                     }
                                 </> : <>
-                                    <li className="breadcrumb-item ps-2"><span> Menu </span></li>
+                                    <li className="breadcrumb-item py-4"><span> Menu </span></li>
                                 </> }
                             </ol>
                         </nav>
