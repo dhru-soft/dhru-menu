@@ -125,7 +125,7 @@ const Index = ({item, updateItem, custom, fromCart}) => {
 
     if (custom) {
         return (
-            <button className="custom-btn custom-btn--medium custom-btn--style-4" onClick={() => {
+            <button className="custom-btn custom-btn--medium custom-btn--style-4 mt-3" onClick={() => {
                 if (fromCart) {
                     updatecartItem()
                 } else {
