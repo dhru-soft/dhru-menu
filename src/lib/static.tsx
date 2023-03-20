@@ -28,7 +28,7 @@ export enum ACTIONS {
     INIT = "init",
     INVOICE  = "invoice",
     CODE = "code",
-    CLIENT = "client",
+    CLIENT = "clientlogin",
     ITEMS = "item",
     CATEGORY = "category",
 }

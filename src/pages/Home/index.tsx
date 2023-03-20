@@ -53,7 +53,7 @@ const Index = (props: any) => {
                                         <div className={'form'}>
 
                                             <div>
-                                                <Field name="accesscode" validate={required}>
+                                                <Field name="accesscode" validate={ required}>
                                                     {({input, meta}) => (
                                                         <div className="input-wrp">
                                                             <input className="textfield textfield2" type="text" {...input}
