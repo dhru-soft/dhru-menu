@@ -59,11 +59,11 @@ const Index = (props: any) => {
         });
     }
 
-    const updateDetail = () => {
+    const updateDetail = (values:any) => {
         apiService({
             method: METHOD.PUT,
             action: ACTIONS.CLIENT,
-            queryString: {displayname:displayname},
+            body: values,
             workspace: device.workspace,
             other: {url: urls.posUrl},
         }).then(async (result) => {
@@ -118,7 +118,7 @@ const Index = (props: any) => {
                         {!otpverify &&   <div>
 
                             <Form
-                                initialValues={{phone: ''}}
+                                initialValues={{mobile: '8866522619'}}
                                 onSubmit={requestOTP}
                                 render={({handleSubmit, values}) => (
                                     <form onSubmit={handleSubmit}>
@@ -175,8 +175,6 @@ const Index = (props: any) => {
                             />
 
 
-
-
                             <div className={'form'} ref={otpverifyRef} style={{display:'none'}}>
 
 
@@ -202,31 +200,53 @@ const Index = (props: any) => {
                         </div>}
 
 
-                        {otpverify &&  <div className={'form'}>
+                        {otpverify &&
 
-                            <div className={''}>
-                                <div className={'d-flex justify-content-between align-items-center'}>
-                                    <div className="w-100">
-                                        <input className="textfield textfield2" type="text" onBlur={(e)=>{
-                                            setDisplayname(e.target.value)
-                                        }}  style={{padding:15}}  placeholder="Full Name"/>
-                                    </div>
-                                </div>
-                            </div>
+                            <Form
+                                initialValues={{diplayname: ''}}
+                                onSubmit={updateDetail}
+                                render={({handleSubmit, values}) => (
+                                    <form onSubmit={handleSubmit}>
+
+                                        <div className={'form'}>
+
+                                            <div className={''}>
+                                                <div className={'d-flex justify-content-between align-items-center'}>
+                                                    <div className="w-100">
+
+                                                        <Field name="displayname" validate={composeValidators(required)}>
+                                                            {({input, meta}) => (
+                                                                <div className="">
+                                                                    <input className="textfield textfield2" {...input} type="text"   style={{padding:15}}  placeholder="Full Name"/>
+                                                                    {meta.touched && meta.error &&
+                                                                        <div className={'text-danger  mt-2'}>Full name {meta.error}</div>}
+                                                                </div>
+                                                            )}
+                                                        </Field>
+
+                                                    </div>
+                                                </div>
+                                            </div>
 
 
-                            <div className={'my-3'}>
-                                <button
-                                    className="w-100 custom-btn custom-btn--medium custom-btn--style-4"
-                                    onClick={() => {
-                                        updateDetail()
-                                    }} type="button" role="button">
-                                    Save
-                                </button>
-                            </div>
+                                            <div className={'my-3'}>
+                                                <button
+                                                    className="w-100 custom-btn custom-btn--medium custom-btn--style-4"
+                                                    onClick={() => {
+                                                        handleSubmit(values)
+                                                    }} type="button" role="button">
+                                                    Save
+                                                </button>
+                                            </div>
 
 
-                        </div>}
+                                        </div>
+
+                                    </form>
+                                )}
+                            />
+
+                           }
 
 
                     </div>
