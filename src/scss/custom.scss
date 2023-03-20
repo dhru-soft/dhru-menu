@@ -985,3 +985,20 @@ b, strong {
         }
     }
 }
+
+.input-otp{
+    & input{
+        width: 46px;
+        height: 46px;
+        padding: 0;
+        font-size: 24px;
+        text-align: center;
+        margin-right: 6px;
+        text-transform: uppercase;
+        color: #494949;
+        border: 1px solid #d6d6d6;
+        border-radius: 4px;
+        background: #fff;
+        background-clip: padding-box;
+    }
+}

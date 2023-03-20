@@ -4,17 +4,11 @@ import apiService from "./api-service";
 import {ACTIONS, device, localredux, METHOD, STATUS, urls} from "./static";
 import {setrestaurantData} from "./redux-store/reducer/restaurant-data";
 import store from "./redux-store/store";
-import moment from "moment";
 import {setCartItems, updateCartField, updateCartItems} from "./redux-store/reducer/cart-data";
-import {v4 as uuid} from "uuid";
-import {setItemDetail} from "./redux-store/reducer/item-detail";
 import promise from "promise";
 import {getProductData} from "./item-calculation";
-import {setModal} from "./redux-store/reducer/component";
-import ItemDetails from "../pages/Cart/ItemDetails";
-import {setItemList} from "./redux-store/reducer/item-list";
-var ls = require('local-storage');
 
+var ls = require('local-storage');
 
 
 window.dataLayer = window.dataLayer || [];
@@ -67,16 +61,16 @@ export const _accordion = () => {
 
 export const getDefaultCurrency = () => {
     const currency = getFromSetting('currency');
-    if(!isEmpty(currency)) {
+    if (!isEmpty(currency)) {
         const code = Object.keys(currency)?.find((k) => currency[k]?.rate === "1") || {}
         return {...currency[code], code};
     }
-    return   {decimalplace:3,code:'USD'}
+    return {decimalplace: 3, code: 'USD'}
 }
 
 export const numberFormat = (value) => {
 
-    const {decimalplace,code} = getDefaultCurrency()
+    const {decimalplace, code} = getDefaultCurrency()
 
     return new Intl.NumberFormat('en-US', {
         style: 'currency',
@@ -215,7 +209,6 @@ export function isEmpty(obj) {
 }
 
 
-
 export const wait = (time, signal) => {
     return new Promise((resolve, reject) => {
         const timeoutId = setTimeout(() => {
@@ -238,7 +231,7 @@ export const shortName = (str) => {
             .join('');
         return firstLetters.substring(0, 2).toUpperCase();
     }
-    return
+
 }
 
 /*export const checkLocation = () => {
@@ -251,33 +244,38 @@ export const shortName = (str) => {
 
 export const getCompanyDetails = () => {
 
-    let {restaurantDetail:{general,location,tabledetail:{tablename,locationname,address1,address2,order}}} = store.getState();
+    let {
+        restaurantDetail: {
+            general,
+            location,
+            tabledetail: {tablename, locationname, address1, address2, order}
+        }
+    } = store.getState();
     const download_url = general?.logo?.download_url || ''
 
-    if(!Boolean(locationname) && Boolean(general?.legalname)){
-        const {address1 : ad1,address2 : ad2,name,order : ord} = location[device?.locationid];
+    if (!Boolean(locationname) && Boolean(general?.legalname)) {
+        const {address1: ad1, address2: ad2, name, order: ord} = location[device?.locationid];
         locationname = name;
         address1 = ad1;
         address2 = ad2;
         order = ord
     }
     device.order = order;
-    return {download_url,locationname,address1,address2,tablename}
+    return {download_url, locationname, address1, address2, tablename}
 }
 
 export const postQrCode = async (accesscode) => {
-    return new promise(async (resolve)=>{
+    return new promise(async (resolve) => {
         await apiService({
             method: METHOD.GET,
             action: ACTIONS.CODE,
-            queryString:{code:accesscode},
-            workspace:'dev',
+            queryString: {code: accesscode},
+            workspace: 'dev',
             other: {url: urls.posUrl},
         }).then(async (result) => {
             if (result.status === STATUS.SUCCESS && Boolean(result?.data)) {
                 resolve(result.data)
-            }
-            else{
+            } else {
                 resolve({})
             }
         });
@@ -286,15 +284,15 @@ export const postQrCode = async (accesscode) => {
 
 export const getInit = async (workspace) => {
 
-    return new promise(async (resolve)=>{
+    return new promise(async (resolve) => {
         const urlSearchParams = new URLSearchParams(window.location.search);
         const params = Object.fromEntries(urlSearchParams.entries());
 
         await apiService({
             method: METHOD.GET,
             action: ACTIONS.INIT,
-            queryString:{tableid:params?.table?params.table:''},
-            workspace:workspace,
+            queryString: {tableid: params?.table ? params.table : ''},
+            workspace: workspace,
             other: {url: urls.posUrl},
         }).then(async (result) => {
             if (result.status === STATUS.SUCCESS && Boolean(result?.data)) {
@@ -303,8 +301,7 @@ export const getInit = async (workspace) => {
                 localredux.settings = settings;
                 store.dispatch(setrestaurantData({...result.data}))
                 resolve(true)
-            }
-            else{
+            } else {
                 device.workspace = ''
                 resolve(false)
             }
@@ -318,7 +315,7 @@ export const getInit = async (workspace) => {
 
 export const getWorkspaceName = () => {
     let workspace = window.location.hostname.split(".")[0]
-    if (workspace === "localhost" || workspace === "dhru"  ||  workspace === "menu" || workspace === "www") {
+    if (workspace === "localhost" || workspace === "dhru" || workspace === "menu" || workspace === "www") {
         workspace = ""
     }
     device.workspace = workspace
@@ -358,7 +355,7 @@ export const retrieveData = async (key) => {
 };
 
 export const createUniqueStore = () => {
-    return device.workspace+'-'+device.locationid
+    return device.workspace + '-' + device.locationid
 }
 
 export const saveLocalSettings = async (key, setting) => {
@@ -367,7 +364,7 @@ export const saveLocalSettings = async (key, setting) => {
             ...data,
             [key]: setting
         }
-        await storeData('settings',data)
+        await storeData('settings', data)
     })
 }
 
@@ -500,20 +497,21 @@ export const voucherTotal = (items, vouchertaxtype) => {
                 vouchertotaldisplay += taxCalculation(taxesList[itemtaxgroupid], productratedisplay, productqnt)
             }
 
+
+
             if (Boolean(item?.itemaddon?.length)) {
-                item?.itemaddon?.forEach(({price,  itemtaxgroupid}) => {
-                    vouchertotaldisplay += price * productqnt
+                item?.itemaddon?.forEach(({productratedisplay, itemtaxgroupid}) => {
+                    vouchertotaldisplay += productratedisplay * productqnt
                     if (!isEmpty(taxesList) && !isEmpty(taxesList[itemtaxgroupid]) && vouchertaxtype === 'exclusive') {
-                        vouchertotaldisplay += taxCalculation(taxesList[itemtaxgroupid], price, productqnt)
+                        vouchertotaldisplay += taxCalculation(taxesList[itemtaxgroupid], productratedisplay, productqnt)
                     }
                 })
             }
         })
 
         return vouchertotaldisplay
-    }
-    catch (e) {
-        console.log('e',e)
+    } catch (e) {
+        console.log('e', e)
     }
 
 }
@@ -541,11 +539,11 @@ export const setItemRowData = (data) => {
 
     try {
 
-        let isInward  = false;
+        let isInward = false;
 
         let {cartData} = store.getState();
 
-        let pricingTemplate =   undefined
+        let pricingTemplate = undefined
 
         let {
             itemid,
@@ -562,7 +560,7 @@ export const setItemRowData = (data) => {
         } = data;
 
 
-        let  producttaxgroupid;
+        let producttaxgroupid;
 
 
         if (Boolean(itemtaxgroupid)) {
@@ -595,18 +593,18 @@ export const setItemRowData = (data) => {
 
 
     } catch (e) {
-        console.log('e',e)
+        console.log('e', e)
     }
 
 }
 
 export const getItemById = async (itemid) => {
-    return new promise(async (resolve)=>{
+    return new promise(async (resolve) => {
         await apiService({
             method: METHOD.GET,
             action: ACTIONS.ITEMS,
-            queryString: {locationid:device.locationid,itemid:itemid},
-            hideLoader:true,
+            queryString: {locationid: device.locationid, itemid: itemid},
+            hideLoader: true,
             workspace: device.workspace,
             other: {url: urls.posUrl},
         }).then(async (result) => {
@@ -620,7 +618,7 @@ export const getItemById = async (itemid) => {
 
 
 export const getItemList = async (queryString) => {
-    return new promise(async (resolve)=>{
+    return new promise(async (resolve) => {
 
         await apiService({
             method: METHOD.GET,
@@ -633,8 +631,7 @@ export const getItemList = async (queryString) => {
             if (result.status === STATUS.SUCCESS && Boolean(result?.data)) {
                 let {items} = result?.data;
                 resolve(items)
-            }
-            else{
+            } else {
                 resolve(false)
             }
         });
@@ -643,11 +640,10 @@ export const getItemList = async (queryString) => {
 }
 
 
-
 export const addToCart = async (item) => {
 
     let getdetail = {};
-    if(Boolean(item.price)){ // && item.hasextra
+    if (Boolean(item.price)) { // && item.hasextra
         getdetail = await getItemById(item.itemid)
     }
 
@@ -656,8 +652,8 @@ export const addToCart = async (item) => {
             ...item,
             ...getdetail,
             added: true,
-            hasextra:!isEmpty(getdetail?.addons),
-            deviceid:'browser'
+            hasextra: !isEmpty(getdetail?.addons),
+            deviceid: 'browser'
         }
 
         const itemRowData = setItemRowData(item);
@@ -673,7 +669,6 @@ export const addToCart = async (item) => {
     }
 
 }
-
 
 
 export const currencyRate = (currencyName) => {
@@ -700,17 +695,39 @@ export const getFloatValue = (value, fraxtionDigits = 4, notConvert = true, isLo
             returnValue = parseFloat(newstring.replaceAll(",", ""))
         }
         return returnValue;
-    }
-    catch (e) {
-        console.log('e',e)
+    } catch (e) {
+        console.log('e', e)
     }
     return value
 }
 
 export const getFromSetting = (key) => {
     const {settings} = localredux;
-    if(!isEmpty(settings)){
+    if (!isEmpty(settings)) {
         return settings[key]
     }
     return {}
+}
+
+
+export const placeOrder = () => {
+
+    const cartData = store.getState().cartData;
+
+    return new promise(async (resolve) => {
+        await apiService({
+            method: METHOD.POST,
+            action: ACTIONS.INVOICE,
+            body:cartData,
+            workspace: device.workspace,
+            token: device.token,
+            other: {url: urls.posUrl},
+        }).then(async (result) => {
+
+            if (result.status === STATUS.SUCCESS && Boolean(result?.data)) {
+
+            }
+            resolve(true)
+        });
+    })
 }

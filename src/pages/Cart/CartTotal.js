@@ -1,6 +1,14 @@
 import React, {useEffect, useState} from "react";
 import {connect, useDispatch} from "react-redux";
-import {clone, createUniqueStore, numberFormat, retrieveData, sessionStore, storeData} from "../../lib/functions";
+import {
+    clone,
+    createUniqueStore,
+    getLocalSettings,
+    numberFormat, placeOrder,
+    retrieveData,
+    sessionStore,
+    storeData
+} from "../../lib/functions";
 import {resetCart, setCartData, setUpdateCart} from "../../lib/redux-store/reducer/cart-data";
 import {itemTotalCalculation} from "../../lib/item-calculation";
 
@@ -8,7 +16,11 @@ import {device} from "../../lib/static";
 import CartSummary from "./CartSummary";
 import { confirmAlert } from 'react-confirm-alert'; // Import
 import 'react-confirm-alert/src/react-confirm-alert.css';
-import {useNavigate} from "react-router-dom"; // Import css
+import {useNavigate} from "react-router-dom";
+import store from "../../lib/redux-store/store";
+import {setModal} from "../../lib/redux-store/reducer/component";
+import ItemDetails from "./ItemDetails";
+import Login from "../Login"; // Import css
 
 const Index = (props) => {
 
@@ -44,6 +56,23 @@ const Index = (props) => {
     };
 
 
+    const accessAuth = () => {
+        retrieveData('token').then((token)=>{
+            if(token){
+                placeOrder()
+            }
+            else {
+                dispatch(setModal({
+                    show: true,
+                    title: '',
+                    height: '80%',
+                    component: () => <><Login/></>
+                }))
+            }
+        })
+    }
+
+
     ////// STORE CART
     sessionStore(createUniqueStore(),cartData).then();
 
@@ -69,7 +98,8 @@ const Index = (props) => {
                     <div>
                         <button className="w-100 custom-btn custom-btn--medium custom-btn--style-1" onClick={()=>{
                             if(page === 'final'){
-                                confirmAlert(options);
+                                accessAuth()
+                                //confirmAlert(options);
                             }
                             else {
                                 navigate(`/location/${device.locationid}/cartdetail`);

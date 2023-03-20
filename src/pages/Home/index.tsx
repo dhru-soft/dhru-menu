@@ -56,7 +56,7 @@ const Index = (props: any) => {
                                                 <Field name="accesscode" validate={required}>
                                                     {({input, meta}) => (
                                                         <div className="input-wrp">
-                                                            <input className="textfield" type="text" {...input}
+                                                            <input className="textfield textfield2" type="text" {...input}
                                                                    placeholder="QR ID"/>
                                                             {meta.touched && meta.error &&
                                                                 <div className={'text-center text-danger  mt-2'}>QR
