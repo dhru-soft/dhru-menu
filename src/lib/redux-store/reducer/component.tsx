@@ -7,7 +7,7 @@ export const component = createSlice({
   name: 'component',
   initialState: {
     dialog: {visible:false,title:'',component: () => {return <></>}},
-    modal: {visible:false,title:'',component: () => {return <></>}},
+    modal: {show:false,visible:false,title:'',component: () => {return <></>}},
     page: {visible:false,title:'',component: () => {return <></>}},
     bottomsheet: {visible:false,title:'',component: () => {return <></>}},
     pagesheet: {visible:false,title:'',component: () => {return <></>}},

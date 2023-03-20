@@ -12,7 +12,7 @@ import {saveLocalSettings, storeData} from "../../lib/functions";
 
 const Index = (props: any) => {
 
-    const otpverifyRef = useRef()
+    const otpverifyRef:any = useRef()
     const AuthInputRef = useRef<AuthCodeRef>(null);
     const [counter,setCounter] = useState(false)
     const [otpverify,setOtpVerify] = useState(false)
@@ -29,7 +29,7 @@ const Index = (props: any) => {
                 workspace: device.workspace,
                 other: {url: urls.posUrl},
             }).then(async (result) => {
-                otpverifyRef.current.style.display = 'block';
+                otpverifyRef.current.style.display = 'block' ;
                 setCounter(true)
                 if (result.status === STATUS.SUCCESS && Boolean(result?.data)) {
 
@@ -68,9 +68,9 @@ const Index = (props: any) => {
                 other: {url: urls.posUrl},
             }).then(async (result) => {
                 if (result.status === STATUS.SUCCESS && Boolean(result?.data)) {
-                    dispatch(setModal({visible:false}))
                     console.log('result?.data',result?.data)
                 }
+                //dispatch(setModal({show:false}))
                 resolve(true)
             });
         })
