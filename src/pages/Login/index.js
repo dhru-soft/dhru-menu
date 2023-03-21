@@ -1,107 +1,142 @@
-import React, { useRef, useState} from "react";
+import React, {useMemo, useRef, useState} from "react";
 import {connect, useDispatch} from "react-redux";
 
-import {ACTIONS, composeValidators, device, METHOD, mustBeNumber, required, STATUS, urls} from "../../lib/static";
+import {
+    ACTIONS,
+    composeValidators,
+    countryList,
+    device,
+    METHOD,
+    mustBeNumber,
+    required,
+    STATUS,
+    urls
+} from "../../lib/static";
 import AuthCode, {AuthCodeRef} from "react-auth-code-input";
 import promise from "promise";
 import apiService from "../../lib/api-service";
 
 import Countdown from "react-countdown";
 import {setModal} from "../../lib/redux-store/reducer/component";
-import {saveLocalSettings, storeData} from "../../lib/functions";
-import {Field, Form} from 'react-final-form'
+import {retrieveData, saveLocalSettings, storeData} from "../../lib/functions";
+import {Field, Form} from 'react-final-form';
 
-const Index = (props: any) => {
+import Select from 'react-select'
+import {toast} from "react-toastify";
+import {v4 as uuid} from "uuid"
+import store from "../../lib/redux-store/store";
+import {setClientDetail} from "../../lib/redux-store/reducer/client-detail";
 
-    const otpverifyRef:any = useRef()
-    const AuthInputRef = useRef<AuthCodeRef>(null);
+const Index = (props) => {
+
+    const otpverifyRef = useRef()
+    const countryRef = useRef()
+    const mobileRef = useRef()
+    const counterRef = useRef()
+    const AuthInputRef = useRef(null);
     const [counter,setCounter] = useState(false)
-    const [otpverify,setOtpVerify] = useState(false)
-    const [mobile,setMobile] = useState('')
+    const [otpverify,setOtpVerify] = useState(Boolean(device.client))
+    const [mobile,setMobile] = useState('8866522619')
+    const [otp,setOTP] = useState('')
 
-    const [displayname,setDisplayname] = useState('')
-
+    const dispatch = useDispatch()
 
     const requestOTP = () => {
         apiService({
             method: METHOD.POST,
             action: ACTIONS.CLIENT,
             workspace: device.workspace,
+            showalert:true,
             body: {phone:mobile},
             other: {url: urls.posUrl},
         }).then(async (result) => {
             otpverifyRef.current.style.display = 'block' ;
+            AuthInputRef.current?.clear();
+            AuthInputRef.current?.focus();
+            mobileRef.current.style.display = 'none';
             setCounter(true)
-            if (result.status === STATUS.SUCCESS && Boolean(result?.data)) {
-
-            }
-
         });
     }
 
-    const verifyOTP = (otp:any) => {
+    const verifyOTP = () => {
         apiService({
-            method: METHOD.GET,
+            method: METHOD.POST,
             action: ACTIONS.CLIENT,
-            queryString: {otp:otp},
+            body: {otp:otp,phone:mobile},
+            showalert:true,
             workspace: device.workspace,
             other: {url: urls.posUrl},
         }).then(async (result) => {
             if (result.status === STATUS.SUCCESS && Boolean(result?.data)) {
-                await storeData('token','save token').then(()=>{
-                    setOtpVerify(true);
+                await storeData('token',result.token).then(async ()=>{
+                    device.token = result.token;
+
+                    dispatch(setClientDetail(result?.data));
+                    await storeData('client',result?.data).then(()=>{})
+
+                    const {clientname} = result.data || {}
+
+                    if(Boolean(clientname)){
+                        store.dispatch(setModal({show:false}))
+                    }
+                    else{
+                        setOtpVerify(true);
+                    }
+
                 })
             }
-            else{
-                alert('Wrong OTP ')
-            }
-
         });
     }
 
-    const updateDetail = (values:any) => {
-        apiService({
-            method: METHOD.PUT,
-            action: ACTIONS.CLIENT,
-            body: values,
-            workspace: device.workspace,
-            other: {url: urls.posUrl},
-        }).then(async (result) => {
-            if (result.status === STATUS.SUCCESS && Boolean(result?.data)) {
-                console.log('result?.data',result?.data)
-            }
-            //dispatch(setModal({show:false}))
-        });
+    const updateDetail = (values) => {
+
+        retrieveData('client').then((clientdetail)=>{
+
+            const client = {...clientdetail,...values}
+
+            apiService({
+                method: METHOD.PUT,
+                action: ACTIONS.CLIENT,
+                body: client,
+                showalert:true,
+                workspace: device.workspace,
+                token : device.token,
+                other: {url: urls.posUrl},
+            }).then(async (result) => {
+                if (result.status === STATUS.SUCCESS) {
+                    await storeData('client',client).then(()=>{})
+                    dispatch(setClientDetail(client));
+                    store.dispatch(setModal({show:false}))
+                }
+            });
+        })
     }
 
-    const [result, setResult] = useState();
-    const handleOnChange = (res:any) => {
+    const handleOnChange =async (res) => {
         if(res.length === 6){
-            verifyOTP(res);
+            await setOTP(res)
         }
-        else {
-            setResult(res);
-        }
-
     };
 
+    const [country, setCountry] = useState({label: 'India', value: '+91', code: 'IN'})
+    const options = useMemo(() => countryList, [])
 
-    const renderer = ({ hours, minutes, seconds, completed }:any) => {
-        if (completed) {
-            return <div className={'d-flex justify-content-between align-items-center'}>
-                <div onClick={()=> requestOTP()}>
+    const changeHandler = value => {
+        setCountry(value)
+    }
+
+
+    const renderer = ({ hours, minutes, seconds, completed }) => {
+        return <div className={'d-flex justify-content-between align-items-center'}>
+            <div>
+                <div style={{color:'#3174de'}} className={!completed?'text-muted':''}  onClick={()=> {
+                     requestOTP()
+                }}>
                     Resend OTP
                 </div>
-            </div>;
-        } else {
-            return <div className={'d-flex justify-content-between align-items-center'}>
-                <div>
-
-                </div>
-                <small  className={' text-muted'}>Waiting {seconds} Sec</small>
             </div>
-
-        }
+            {!completed && <small  className={' text-muted'}>Waiting {seconds} Sec</small>}
+        </div>
     };
 
 
@@ -115,29 +150,48 @@ const Index = (props: any) => {
 
                     <div className="m-auto" style={{width:315}}>
 
-                        {!otpverify &&   <div>
+                        {!otpverify &&   <div >
 
                             <Form
-                                initialValues={{mobile: '8866522619'}}
+                                initialValues={{mobile: mobile}}
                                 onSubmit={requestOTP}
+
                                 render={({handleSubmit, values}) => (
                                     <form onSubmit={handleSubmit}>
 
-                                        <div className={'form'}>
+                                        <div ref={mobileRef} className={'form'}>
+
+
+
+                                            <div className={'my-3 toggle'} ref={countryRef}>
+
+                                                <div className={'py-3 show'}>
+                                                    We are think you are from India. <label style={{color:'#3174de'}} onClick={()=>{
+                                                    countryRef.current?.classList.toggle('inverse')
+                                                }}> Change Country</label>
+                                                </div>
+
+                                                <div className={'hide'}>
+                                                    <Select options={options} defaultValue={country} onChange={changeHandler} />
+                                                </div>
+
+                                            </div>
+
 
                                             <div>
                                                 <div className={''}>
                                                     <div className={'d-flex justify-content-between align-items-top'}>
-                                                        <div style={{width:70}}>
-                                                            <input className="textfield textfield2 px-3" type="text" defaultValue={'+91'}  placeholder="+91"/>
-                                                        </div>
 
+
+                                                        <div style={{width:70,padding:12}} className={'bg-white textfield textfield2'}>
+                                                            {country?.value}
+                                                        </div>
 
                                                         <div className="w-100 ms-2">
                                                             <Field name="mobile" validate={composeValidators(required,mustBeNumber)}>
                                                                 {({input, meta}) => (
                                                                     <div className="">
-                                                                        <input className="textfield textfield2" {...input} minLength={10} maxLength={10}   type="text"  placeholder="Mobile"/>
+                                                                        <input className="textfield textfield2" {...input} minLength={10} maxLength={10}   type="text"  placeholder="Mobile" style={{padding:15}}/>
                                                                         {meta.touched && meta.error &&
                                                                             <div className={'text-danger  mt-2'}>Mobile number {meta.error}</div>}
                                                                     </div>
@@ -151,7 +205,7 @@ const Index = (props: any) => {
                                                 <div className={'my-3'}>
                                                     <button
                                                         className="w-100 custom-btn custom-btn--medium custom-btn--style-4"
-                                                        disabled={counter}
+
                                                         onClick={() => {
                                                             setMobile(values.mobile)
                                                             handleSubmit(values)
@@ -160,9 +214,7 @@ const Index = (props: any) => {
                                                     </button>
                                                 </div>
 
-                                                <div>
-                                                    {counter && <Countdown date={Date.now() + 30000} renderer={renderer} />}
-                                                </div>
+
 
                                             </div>
 
@@ -179,17 +231,29 @@ const Index = (props: any) => {
 
 
                                  <div>
-                                <div className={'mt-5 mb-3 pt-5'}>
+                                <div className={'mb-3'}>
+
+                                    <div className={'mb-3'}> OTP was sent to mobile  {mobile}  </div>
+                                    <div className={'mb-5'} style={{color:'#3174de'}} onClick={()=>{
+                                        otpverifyRef.current.style.display = 'none';
+                                        mobileRef.current.style.display = 'block'
+                                    }}> Change Mobile  </div>
+
                                     <div className={'input-otp'}>
                                         <AuthCode allowedCharacters='numeric' ref={AuthInputRef} onChange={handleOnChange} />
                                     </div>
                                 </div>
 
-                                <div className={'mb-5'}>
+
+                                 <div>
+                                     {counter && <Countdown ref={counterRef} date={Date.now() + 30000} key={uuid} renderer={renderer} />}
+                                 </div>
+
+                                <div className={'my-4'}>
                                     <button
                                         className="w-100 custom-btn custom-btn--medium custom-btn--style-4"
                                         onClick={() => {
-                                            verifyOTP('')
+                                            verifyOTP()
                                         }} type="button" role="button">
                                         Verify OTP
                                     </button>
@@ -203,14 +267,14 @@ const Index = (props: any) => {
                         {otpverify &&
 
                             <Form
-                                initialValues={{diplayname: ''}}
+                                initialValues={{displayname: ''}}
                                 onSubmit={updateDetail}
                                 render={({handleSubmit, values}) => (
                                     <form onSubmit={handleSubmit}>
 
                                         <div className={'form'}>
 
-                                            <div className={''}>
+                                            <div className={'mt-3'}>
                                                 <div className={'d-flex justify-content-between align-items-center'}>
                                                     <div className="w-100">
 
@@ -260,7 +324,7 @@ const Index = (props: any) => {
     );
 }
 
-const mapStateToProps = (state: any) => {
+const mapStateToProps = (state) => {
     return {
 
     }

@@ -2,6 +2,7 @@ import {getWorkspaceName, wait} from "../functions";
 import {ACTIONS, device, METHOD, STATUS} from "../static";
 import store from "../redux-store/store";
 import {hideLoader, setAlert, showLoader} from "../redux-store/reducer/component";
+import {toast} from "react-toastify";
 
 
 interface configData {
@@ -10,7 +11,7 @@ interface configData {
     queryString?: object,
     body?: object,
     hideLoader?: boolean,
-    hidealert?: boolean,
+    showalert?: boolean,
     token?: string,
     workspace?: string,
     other?: any
@@ -98,21 +99,27 @@ const apiService = async (config: configData) => {
             apiresponse = true
             store.dispatch(hideLoader());
 
-            if (response?.message && (response?.status === STATUS.ERROR) && !config?.hidealert) {
-                if ((config?.action?.includes('server/')) && (response?.message?.includes('ENOTFOUND'))) {
+
+
+            if (response?.message && (response?.status === STATUS.ERROR)) {
+                /*if ((config?.action?.includes('server/')) && (response?.message?.includes('ENOTFOUND'))) {
                     store.dispatch(setAlert({visible: true, message: 'Internet connection not available'}))
                 } else {
                     store.dispatch(setAlert({visible: true, message: response?.message}))
-                }
+                }*/
+
+                toast.error(response.message)
+
             }
 
-            if ((response?.status === STATUS.SUCCESS) && !config?.hidealert) {
-                store.dispatch(setAlert({visible: true, message: response.message}))
+            if ((response?.status === STATUS.SUCCESS) && config?.showalert) {
+                //store.dispatch(setAlert({visible: true, message: response.message}))
+                toast.success(response.message)
             }
 
             if (response?.code === 401) {
-
-                store.dispatch(setAlert({visible: true, message: 'Something went wrong, Please try again!'}))
+                toast.info(response.message)
+                //store.dispatch(setAlert({visible: true, message: 'Something went wrong, Please try again!'}))
             }
 
             return response;
@@ -121,7 +128,8 @@ const apiService = async (config: configData) => {
         .catch(error => {
 
             store.dispatch(hideLoader());
-            store.dispatch(setAlert({visible: true, message: 'Something went wrong'}))
+            toast.error('Something went wrong')
+           // store.dispatch(setAlert({visible: true, message: 'Something went wrong'}))
             //appLog("API_CATCH_ERROR", error,navigator.onLine);
 
             /*if(!navigator.onLine){

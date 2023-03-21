@@ -1,7 +1,7 @@
 import React, {useState} from "react";
 
 import {Field, Form} from 'react-final-form'
-import {required} from "../../lib/static";
+import {device, required} from "../../lib/static";
 import {getWorkspaceName, postQrCode} from "../../lib/functions";
 import {connect} from "react-redux";
 import Restaurant from "../Restaurant";

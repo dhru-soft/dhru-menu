@@ -15,7 +15,12 @@ import CartTotal from "./CartTotal";
 const Index = (props) => {
 
     const params = useParams()
+
+    const queryParameters = new URLSearchParams(window.location.search)
+    const table = queryParameters.get("table")
+
     device.locationid = params?.locationid;
+    device.tableid = table;
 
     let {groupids, searchitem} = props;
 

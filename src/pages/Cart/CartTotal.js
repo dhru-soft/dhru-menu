@@ -56,23 +56,6 @@ const Index = (props) => {
     };
 
 
-    const accessAuth = () => {
-        retrieveData('token').then((token)=>{
-            if(token){
-                placeOrder()
-            }
-            else {
-                dispatch(setModal({
-                    show: true,
-                    title: '',
-                    height: '80%',
-                    component: () => <><Login/></>
-                }))
-            }
-        })
-    }
-
-
     ////// STORE CART
     sessionStore(createUniqueStore(),cartData).then();
 
@@ -96,16 +79,16 @@ const Index = (props) => {
                     </div>
                     <div className={'p-4  text-center w-100  cursor-pointer'} onClick={()=>setSummary(!summary)}><i className={`fa fa-chevron-${summary?'down':'up'}`}></i></div>
                     <div>
-                        <button className="w-100 custom-btn custom-btn--medium custom-btn--style-1" onClick={()=>{
+                        <button className="w-100 custom-btn custom-btn--medium custom-btn--style-1" style={{padding:5}} onClick={()=>{
                             if(page === 'final'){
-                                accessAuth()
+                                placeOrder()
                                 //confirmAlert(options);
                             }
                             else {
                                 navigate(`/location/${device.locationid}/cartdetail`);
                             }
                         }} type="button" role="button">
-                            {page === 'final'?'Place Order':'Next'}
+                            {page === 'final'?'Send To Kitchen':'Next'}
                         </button>
                     </div>
                 </div>

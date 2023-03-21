@@ -899,7 +899,7 @@ b, strong {
     }
 }
 
-.form input.textfield {
+.form input.textfield,.form .textfield, .form .css-13cymwt-control {
     height: 45px;
     border-color: rgb(230, 232, 240);
     border-width: 1px;
@@ -908,6 +908,10 @@ b, strong {
         border-color:#E6E8F0;
         border-width:1px
     }
+}
+
+.form .css-13cymwt-control{
+    border-radius: 10px;
 }
 
 .breadcrumb-item{
@@ -1002,3 +1006,25 @@ b, strong {
         background-clip: padding-box;
     }
 }
+
+.Toastify__toast-container{
+    z-index: 999999999 !important;
+}
+
+.toggle{
+    .show{
+        display: block;
+    }
+    .hide{
+        display: none;
+    }
+    &.inverse{
+        .show{
+            display: none;
+        }
+        .hide{
+            display: block;
+        }
+    }
+}
+

@@ -1,6 +1,6 @@
 import {createSlice} from '@reduxjs/toolkit'
 import {clone, createUniqueStore, retrieveData, voucherTotal} from "../../functions";
-import {defaultclient} from "../../static";
+import {defaultclient, device} from "../../static";
 
 
 
@@ -61,6 +61,7 @@ export const cartData = createSlice({
             return {
                 ...state,
                 invoiceitems,
+                tableid:device.tableid,
                 vouchertotaldisplay: voucherTotal(invoiceitems,state.vouchertaxtype),
             }
         },

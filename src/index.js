@@ -12,6 +12,8 @@ import Header from "./pages/Navigation/Header";
 import Footer from "./pages/Navigation/Footer";
 import './scss/index.scss';
 
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 
 export const history = createBrowserHistory({
@@ -31,9 +33,19 @@ const JSX = () => {
                         <Footer/>
                     </div>
                     <Dialog/>
-
                     <Loader/>
+                <ToastContainer  position="top-center"
+                                 autoClose={2000}
+                                 hideProgressBar={true}
+                                 newestOnTop={false}
+                                 closeOnClick
+                                 rtl={false}
+                                 pauseOnFocusLoss
+                                 draggable
+                                 pauseOnHover
+                                 theme="light" />
             </BrowserRouter>
+
 
 
 

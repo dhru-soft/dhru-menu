@@ -4,9 +4,12 @@ import apiService from "./api-service";
 import {ACTIONS, device, localredux, METHOD, STATUS, urls} from "./static";
 import {setrestaurantData} from "./redux-store/reducer/restaurant-data";
 import store from "./redux-store/store";
-import {setCartItems, updateCartField, updateCartItems} from "./redux-store/reducer/cart-data";
+import {resetCart, setCartItems, updateCartField, updateCartItems} from "./redux-store/reducer/cart-data";
 import promise from "promise";
 import {getProductData} from "./item-calculation";
+import {setModal} from "./redux-store/reducer/component";
+import Login from "../pages/Login";
+import {setClientDetail} from "./redux-store/reducer/client-detail";
 
 var ls = require('local-storage');
 
@@ -270,6 +273,7 @@ export const postQrCode = async (accesscode) => {
             method: METHOD.GET,
             action: ACTIONS.CODE,
             queryString: {code: accesscode},
+
             workspace: 'dev',
             other: {url: urls.posUrl},
         }).then(async (result) => {
@@ -299,7 +303,13 @@ export const getInit = async (workspace) => {
                 device.workspace = workspace;
                 const {settings} = result.data
                 localredux.settings = settings;
-                store.dispatch(setrestaurantData({...result.data}))
+                store.dispatch(setrestaurantData({...result.data}));
+                retrieveData('token').then((token)=>{
+                    device.token = token
+                })
+                retrieveData('client').then((client)=>{
+                    store.dispatch(setClientDetail(client));
+                })
                 resolve(true)
             } else {
                 device.workspace = ''
@@ -605,6 +615,7 @@ export const getItemById = async (itemid) => {
             action: ACTIONS.ITEMS,
             queryString: {locationid: device.locationid, itemid: itemid},
             hideLoader: true,
+
             workspace: device.workspace,
             other: {url: urls.posUrl},
         }).then(async (result) => {
@@ -625,6 +636,7 @@ export const getItemList = async (queryString) => {
             action: ACTIONS.ITEMS,
             queryString: queryString,
             hideLoader: true,
+
             workspace: device.workspace,
             other: {url: urls.posUrl},
         }).then(async (result) => {
@@ -712,22 +724,54 @@ export const getFromSetting = (key) => {
 
 export const placeOrder = () => {
 
-    const cartData = store.getState().cartData;
 
-    return new promise(async (resolve) => {
-        await apiService({
-            method: METHOD.POST,
-            action: ACTIONS.INVOICE,
-            body:cartData,
-            workspace: device.workspace,
-            token: device.token,
-            other: {url: urls.posUrl},
-        }).then(async (result) => {
 
-            if (result.status === STATUS.SUCCESS && Boolean(result?.data)) {
+    if(Boolean(device.token)){
 
-            }
-            resolve(true)
-        });
-    })
+        let cartData = store.getState().cartData;
+        const {clientid} = store.getState().clientDetail;
+
+        cartData = {
+            ...cartData,
+            clientid:clientid,
+            invoiceitems : cartData.invoiceitems.map((item)=>{
+                const {itemid,accountid,addbutton,added,addon,addons,change,clientid,hasextra,itemdescription,itemgroupid,itemimage,itemname,itemtaxgroupid,key,newitem,price,productdiscounttype,veg,...remaining} = item;
+                return remaining
+            })
+        }
+
+        const data = {
+             orderdata:cartData,
+            "ordertype":"table",
+            "reference":cartData?.tableid,
+            "locationid":device.locationid,
+            "source":""
+        }
+
+        return new promise(async (resolve) => {
+            await apiService({
+                method: METHOD.POST,
+                action: ACTIONS.ORDER,
+                body: data,
+                workspace: device.workspace,
+                showalert:true,
+                token: device.token,
+                other: {url: urls.posUrl},
+            }).then(async (result) => {
+                if (result.status === STATUS.SUCCESS && Boolean(result?.data)) {
+                    store.dispatch(resetCart())
+                }
+                resolve(true)
+            });
+        })
+
+    }
+    else {
+        store.dispatch(setModal({
+            show: true,
+            title: '',
+            height: '80%',
+            component: () => <><Login/></>
+        }))
+    }
 }
