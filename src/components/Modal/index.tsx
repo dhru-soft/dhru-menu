@@ -7,7 +7,7 @@ import {connect} from "react-redux";
 import Sheet from 'react-modal-sheet';
 
 const Index = (props: any) => {
-    const {component: Component, title, show, maxWidth, className, backdrop, keyboard} = props.modal;
+    const {component: Component, title, show,maxWidth, className, backdrop, keyboard} = props.modal;
 
     const [isOpen, setOpen] = useState(false);
 
@@ -18,7 +18,6 @@ const Index = (props: any) => {
             show: false,
         });
     }
-
 
 
     return (
@@ -39,15 +38,7 @@ const Index = (props: any) => {
         </Sheet>
     )
 
-/*    return (
-        <Modal isOpen={show} toggle={handleClose} size={maxWidth ? maxWidth : 'xs'} className={className}
-               backdrop={backdrop ? backdrop : true} keyboard={keyboard ? keyboard : true}>
-            <ModalHeader toggle={handleClose}>{title ? title : ''}</ModalHeader>
-            <ModalBody>
-                <Component/>
-            </ModalBody>
-        </Modal>
-    )*/
+
 
 }
 

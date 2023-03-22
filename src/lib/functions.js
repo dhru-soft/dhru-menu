@@ -10,6 +10,9 @@ import {getProductData} from "./item-calculation";
 import {setModal} from "./redux-store/reducer/component";
 import Login from "../pages/Login";
 import {setClientDetail} from "./redux-store/reducer/client-detail";
+import { confirmAlert } from 'react-confirm-alert'; // Import
+import 'react-confirm-alert/src/react-confirm-alert.css';
+import ConfirmOrder from "../pages/Cart/ConfirmOrder"; // Import css
 
 var ls = require('local-storage');
 
@@ -304,10 +307,8 @@ export const getInit = async (workspace) => {
                 const {settings} = result.data
                 localredux.settings = settings;
                 store.dispatch(setrestaurantData({...result.data}));
-                retrieveData('token').then((token)=>{
-                    device.token = token
-                })
                 retrieveData('client').then((client)=>{
+                    device.token = client?.token;
                     store.dispatch(setClientDetail(client));
                 })
                 resolve(true)
@@ -722,49 +723,23 @@ export const getFromSetting = (key) => {
 }
 
 
-export const placeOrder = () => {
+export const placeOrder = (tableid) => {
 
+    const {token, verifymobile, otp, clientname,address1} = store.getState().clientDetail
 
+    const mobilescreen = !verifymobile
+    const otpscreen = (verifymobile === 'inprocess' && otp === 'sent')
+    const otherdetailscreen = (((verifymobile === 'done' && !Boolean(clientname)) || !Boolean(device.tableid) && !Boolean(address1)) && !mobilescreen && !otpscreen)
 
-    if(Boolean(device.token)){
-
-        let cartData = store.getState().cartData;
-        const {clientid} = store.getState().clientDetail;
-
-        cartData = {
-            ...cartData,
-            clientid:clientid,
-            invoiceitems : cartData.invoiceitems.map((item)=>{
-                const {itemid,accountid,addbutton,added,addon,addons,change,clientid,hasextra,itemdescription,itemgroupid,itemimage,itemname,itemtaxgroupid,key,newitem,price,productdiscounttype,veg,...remaining} = item;
-                return remaining
-            })
-        }
-
-        const data = {
-             orderdata:cartData,
-            "ordertype":"table",
-            "reference":cartData?.tableid,
-            "locationid":device.locationid,
-            "source":""
-        }
-
-        return new promise(async (resolve) => {
-            await apiService({
-                method: METHOD.POST,
-                action: ACTIONS.ORDER,
-                body: data,
-                workspace: device.workspace,
-                showalert:true,
-                token: device.token,
-                other: {url: urls.posUrl},
-            }).then(async (result) => {
-                if (result.status === STATUS.SUCCESS && Boolean(result?.data)) {
-                    store.dispatch(resetCart())
-                }
-                resolve(true)
-            });
-        })
-
+    if(!mobilescreen && !otpscreen && !otherdetailscreen){
+        store.dispatch(setModal({
+            show: true,
+            title: 'Confirm Order Type',
+            height: '80%',
+            isBootstrap:true,
+            component: () => <><ConfirmOrder/></>
+        }))
+       // confirmAlert(options);
     }
     else {
         store.dispatch(setModal({
@@ -774,4 +749,98 @@ export const placeOrder = () => {
             component: () => <><Login/></>
         }))
     }
+}
+
+
+export const postOrder = (order) => {
+
+    let cartData = store.getState().cartData;
+    const {clientid} = store.getState().clientDetail;
+
+    cartData = {
+        ...cartData,
+        ...order,
+        clientid:clientid,
+        invoiceitems : cartData.invoiceitems.map((item)=>{
+            const {itemid,accountid,addbutton,added,addon,addons,change,clientid,hasextra,itemdescription,itemgroupid,itemimage,itemname,itemtaxgroupid,key,newitem,price,productdiscounttype,veg,...remaining} = item;
+            return remaining
+        })
+    }
+
+    const data = {
+        orderdata:cartData,
+        "ordertype":order.ordertype,
+        "reference":cartData?.tableid,
+        "locationid":device.locationid,
+        "source":""
+    }
+
+    return new promise(async (resolve) => {
+        await apiService({
+            method: METHOD.POST,
+            action: ACTIONS.ORDER,
+            body: data,
+            workspace: device.workspace,
+            showalert:true,
+            token: device.token,
+            other: {url: urls.posUrl},
+        }).then(async (result) => {
+            if (result.status === STATUS.SUCCESS && Boolean(result?.data)) {
+                store.dispatch(resetCart())
+                store.dispatch(setModal({show:false}))
+            }
+            resolve(true)
+        });
+    })
+}
+
+
+
+const options = {
+    title: 'Confirm',
+    message: 'Are you sure to place order?',
+    buttons: [
+        {
+            label: 'Yes',
+            onClick: () => {
+                postOrder()
+            }
+        },
+        {
+            label: 'No',
+            onClick: () => {
+
+            }
+        }
+    ],
+    closeOnEscape: true,
+    closeOnClickOutside: true,
+    keyCodeForClose: [8, 32],
+    overlayClassName: "overlay-custom-confirmation"
+};
+
+
+
+
+
+export const requestOTP = (mobile) => {
+
+    let clientDetail = store.getState().clientDetail
+
+    apiService({
+        method: METHOD.POST,
+        action: ACTIONS.CLIENT,
+        workspace: device.workspace,
+        showalert:true,
+        body: {phone:mobile},
+        other: {url: urls.posUrl},
+    }).then(async (result) => {
+        clientDetail = {
+            ...clientDetail,
+            mobile:mobile,
+            verifymobile: 'inprocess',
+            otp:'sent'
+        }
+        store.dispatch(setClientDetail(clientDetail))
+    });
 }
