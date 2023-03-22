@@ -28,29 +28,25 @@ const Index = ({clientDetail}) => {
 
             <section className="h-100">
 
-                <div className="container h-100">
+                <div className="m-auto h-100" style={{width: 330}}>
 
-                    <div className="m-auto" style={{width: 315}}>
+                    {
+                        mobilescreen && <>
+                            <Mobile/>
+                        </>
+                    }
 
-                        {
-                            mobilescreen && <>
-                                <Mobile/>
-                            </>
-                        }
+                    {
+                        otpscreen && <>
+                            <Otp/>
+                        </>
+                    }
 
-                        {
-                            otpscreen && <>
-                                <Otp/>
-                            </>
-                        }
-
-                        {
-                            otherdetailscreen && <>
-                                <NameAddress/>
-                            </>
-                        }
-
-                    </div>
+                    {
+                        otherdetailscreen && <>
+                            <NameAddress/>
+                        </>
+                    }
 
                 </div>
 

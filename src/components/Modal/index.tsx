@@ -7,7 +7,7 @@ import {connect} from "react-redux";
 import Sheet from 'react-modal-sheet';
 
 const Index = (props: any) => {
-    const {component: Component, title, show,maxWidth, className, backdrop, keyboard} = props.modal;
+    const {component: Component, title, show, maxWidth, className, backdrop, keyboard} = props.modal;
 
     const [isOpen, setOpen] = useState(false);
 
@@ -19,6 +19,15 @@ const Index = (props: any) => {
         });
     }
 
+    /*return (
+        <Modal isOpen={show} toggle={handleClose} size={maxWidth ? maxWidth : 'xs'} className={className}
+               backdrop={backdrop ? backdrop : true} keyboard={keyboard ? keyboard : true}>
+            <ModalHeader toggle={handleClose}>{title ? title : ''}</ModalHeader>
+            <ModalBody>
+                {show &&  <Component/> }
+            </ModalBody>
+        </Modal>
+    )*/
 
     return (
         <Sheet isOpen={show} onClose={() => handleClose()} snapPoints={[800, 400, 100, 0]} initialSnap={0} detent="content-height">

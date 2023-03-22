@@ -28,7 +28,7 @@ const Index = ({clientDetail}) => {
     return (
 
         <>
-
+            <div className={'container'}>
             <Form
                 initialValues={{mobile: mobile}}
                 onSubmit={sendOTP}
@@ -102,6 +102,7 @@ const Index = ({clientDetail}) => {
                     </form>
                 )}
             />
+            </div>
         </>
 
 

@@ -14,7 +14,8 @@ const Index = ({clientDetail}) => {
 
 
     const dispatch = useDispatch()
-    const initdata = {displayname: clientDetail.clientname, clientid: clientDetail.clientid}
+    const {token,mobile,verifymobile,otp,serverurl,update,...other} = clientDetail
+    const initdata = {displayname: clientDetail.clientname, ...other}
     const tableorder = Boolean(device.tableid);
 
     const updateDetail = (values) => {
@@ -28,7 +29,7 @@ const Index = ({clientDetail}) => {
             other: {url: urls.posUrl},
         }).then(async (result) => {
             if (result.status === STATUS.SUCCESS) {
-                dispatch(setClientDetail({...clientDetail, clientname: values.displayname, ...values}));
+                dispatch(setClientDetail({...clientDetail,update:false, clientname: values.displayname, ...values}));
                 dispatch(setModal({show: false}))
             }
         });
@@ -37,6 +38,9 @@ const Index = ({clientDetail}) => {
     return (
 
         <>
+            <div className={'container'}>
+
+                <h4>Client Information</h4>
 
             <Form
                 initialValues={initdata}
@@ -131,6 +135,7 @@ const Index = ({clientDetail}) => {
                 )}
             />
 
+            </div>
         </>
 
 

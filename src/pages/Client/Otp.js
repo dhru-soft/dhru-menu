@@ -80,6 +80,7 @@ const Index = ({clientDetail}) => {
 
         <>
 
+            <div className={'container'}>
             <div className={'form'}>
 
 
@@ -116,6 +117,8 @@ const Index = ({clientDetail}) => {
                         </button>
                     </div>
                 </div>
+
+            </div>
 
             </div>
 

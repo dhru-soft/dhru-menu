@@ -723,7 +723,7 @@ export const getFromSetting = (key) => {
 }
 
 
-export const placeOrder = (tableid) => {
+export const placeOrder = () => {
 
     const {token, verifymobile, otp, clientname,address1} = store.getState().clientDetail
 
@@ -734,7 +734,7 @@ export const placeOrder = (tableid) => {
     if(!mobilescreen && !otpscreen && !otherdetailscreen){
         store.dispatch(setModal({
             show: true,
-            title: 'Confirm Order Type',
+            title: '',
             height: '80%',
             isBootstrap:true,
             component: () => <><ConfirmOrder/></>

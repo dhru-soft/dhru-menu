@@ -1,9 +1,11 @@
 import React from "react";
-import {connect} from "react-redux";
+import {connect, useDispatch} from "react-redux";
 import {getCompanyDetails, postOrder} from "../../lib/functions";
 
 import {Field, Form} from 'react-final-form';
 import {device} from "../../lib/static";
+import {setClientDetail} from "../../lib/redux-store/reducer/client-detail";
+import NameAddress from "../Client/NameAddress";
 
 const Index = ({clientDetail}) => {
 
@@ -11,14 +13,21 @@ const Index = ({clientDetail}) => {
         postOrder(values)
     }
 
-    const {address1, address2, city} = clientDetail;
+    const dispatch = useDispatch()
+    const {clientname,address1, address2, city,update} = clientDetail;
     const {tablename, locationname} = getCompanyDetails();
+
+    if(update){
+        return (<NameAddress  /> )
+    }
 
 
     return (
         <div>
 
             <div className={'container'}>
+
+                <h4>Confirm Order Type</h4>
 
                 <Form
                     initialValues={{ordertype: Boolean(device.tableid)?'table':'homedelivery'}}
@@ -39,22 +48,36 @@ const Index = ({clientDetail}) => {
 
                                                             {!Boolean(device.tableid) && <div>
                                                                 <div className="mb-4">
-                                                                    <input className="form-check-input" {...input}
-                                                                           checked={true} onChange={(e) => {
-                                                                        values.ordertype = e.target.value
-                                                                    }} id="radio1" type="radio"
-                                                                           value={'homedelivery'}/>
-                                                                    <label className="form-check-label"
-                                                                           htmlFor="radio1">
-                                                                        Home Delivery
-                                                                    </label>
 
-                                                                    <div style={{marginLeft: 25}}
-                                                                         className={'text-muted'}>
-                                                                        <div>{address1}</div>
-                                                                        <div>{address2}</div>
-                                                                        <div>{city}</div>
+                                                                    <div className={'d-flex justify-content-between align-items-start'}>
+                                                                        <div>
+
+                                                                            <input className="form-check-input" {...input}
+                                                                                   checked={true} onChange={(e) => {
+                                                                                values.ordertype = e.target.value
+                                                                            }} id="radio1" type="radio"
+                                                                                   value={'homedelivery'}/>
+                                                                            <label className="form-check-label"
+                                                                                   htmlFor="radio1">
+                                                                                Home Delivery
+                                                                            </label>
+
+                                                                            <div style={{marginLeft: 25,marginTop:3}}
+                                                                                 className={'text-muted'}>
+                                                                                <div>{clientname}</div>
+                                                                                <div>{address1}</div>
+                                                                                <div>{address2}</div>
+                                                                                <div>{city}</div>
+                                                                            </div>
+
+                                                                        </div>
+                                                                        <div className={'p-3'} onClick={()=>{
+                                                                            dispatch(setClientDetail({...clientDetail,update:true}))
+                                                                        }}>
+                                                                            <i className={'fa fa-pencil'}></i>
+                                                                        </div>
                                                                     </div>
+
 
                                                                 </div>
 
