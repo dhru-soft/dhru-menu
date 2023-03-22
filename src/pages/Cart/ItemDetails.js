@@ -47,7 +47,7 @@ const Index = (props) => {
             <div>
                 <div className="container">
 
-                    <div style={{marginBottom: 100}}>
+                    <div style={{marginBottom: 20}}>
                         {Boolean(itemimage) &&
                             <div className={'text-center p-5 rounded-4'}>
                                 <img src={`https://${itemimage}`} style={{borderRadius: 5, maxWidth: '100%'}}/>
@@ -77,9 +77,9 @@ const Index = (props) => {
                     </div>
 
 
-                    <div className={' position-fixed'} style={{left: 0, right: 0, bottom: 0}}>
-                        <div style={{maxWidth: 500}} className={'m-auto'}>
-                            <div className={'d-flex justify-content-between align-items-center p-4'}>
+                    <div>
+                        <div   className={'m-auto'}>
+                            <div className={'d-flex justify-content-between align-items-center'}>
                                 <div>
                                     {<AddButton item={{...updateItem}} fromCart={true}  updateItem={setUpdateItem}/>}
                                 </div>
