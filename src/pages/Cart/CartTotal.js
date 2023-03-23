@@ -1,7 +1,6 @@
 import React, {useState} from "react";
-import {connect, useDispatch} from "react-redux";
+import {connect} from "react-redux";
 import {createUniqueStore, numberFormat, placeOrder, sessionStore} from "../../lib/functions";
-import {resetCart} from "../../lib/redux-store/reducer/cart-data";
 
 import {device} from "../../lib/static";
 import CartSummary from "./CartSummary";
@@ -10,13 +9,11 @@ import {useNavigate} from "react-router-dom";
 
 const Index = (props) => {
 
-    const dispatch = useDispatch()
     const navigate = useNavigate();
 
-    const {cartData, page, cartData: {vouchertotaldisplay, invoiceitems,tableid}} = props;
+    const {cartData, page, cartData: {vouchertotaldisplay, invoiceitems, tableid}} = props;
 
     const [summary, setSummary] = useState(false)
-
 
 
     ////// STORE CART
@@ -27,9 +24,9 @@ const Index = (props) => {
     }
 
     let btnLabel = 'Next'
-    if(page === 'final'){
+    if (page === 'final') {
         btnLabel = 'Send To Kitchen';
-        if(!Boolean(tableid)){
+        if (!Boolean(tableid)) {
             btnLabel = 'Place Order';
         }
     }
@@ -62,8 +59,6 @@ const Index = (props) => {
                             }} type="button" role="button">
                                 {btnLabel}
                             </button>
-
-
 
                         </div>
                     </div>

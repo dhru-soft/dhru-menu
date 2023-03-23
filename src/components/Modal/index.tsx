@@ -3,6 +3,7 @@ import React, {Component, useState} from "react";
 import {Modal, ModalBody, ModalHeader} from "reactstrap";
 import {setModal} from "../../lib/redux-store/reducer/component";
 import {connect} from "react-redux";
+import { BrowserView, MobileView, isBrowser, isMobile } from 'react-device-detect';
 
 import Sheet from 'react-modal-sheet';
 
@@ -19,15 +20,17 @@ const Index = (props: any) => {
         });
     }
 
-    /*return (
-        <Modal isOpen={show} toggle={handleClose} size={maxWidth ? maxWidth : 'xs'} className={className}
-               backdrop={backdrop ? backdrop : true} keyboard={keyboard ? keyboard : true}>
-            <ModalHeader toggle={handleClose}>{title ? title : ''}</ModalHeader>
-            <ModalBody>
-                {show &&  <Component/> }
-            </ModalBody>
-        </Modal>
-    )*/
+    if(isMobile) {
+        return (
+            <Modal isOpen={show} toggle={handleClose} size={maxWidth ? maxWidth : 'xs'} className={className}
+                   backdrop={backdrop ? backdrop : true} keyboard={keyboard ? keyboard : true}>
+                <ModalHeader toggle={handleClose}>{title ? title : ''}</ModalHeader>
+                <ModalBody>
+                    {show && <Component/>}
+                </ModalBody>
+            </Modal>
+        )
+    }
 
     return (
         <Sheet isOpen={show} onClose={() => handleClose()} snapPoints={[800, 400, 100, 0]} initialSnap={0} detent="content-height">

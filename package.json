@@ -28,6 +28,7 @@
     "react-color": "^2.19.3",
     "react-confirm-alert": "^3.0.6",
     "react-countdown": "^2.3.5",
+    "react-device-detect": "^2.2.3",
     "react-dom": "^18.2.0",
     "react-final-form": "^6.5.9",
     "react-image": "^4.0.3",
