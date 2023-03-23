@@ -67,7 +67,7 @@ const Index = (props) => {
                         <div className={'form mt-3'}>
                             <input className="textfield textfield2"
                                    type="text"
-                                   autofocus="" autocapitalize="none"
+                                   autocapitalize="none"
                                    defaultValue={notes}
                                    placeholder="Notes"
                                    onBlur={(e) => {
