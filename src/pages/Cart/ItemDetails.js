@@ -67,6 +67,7 @@ const Index = (props) => {
                         <div className={'form mt-3'}>
                             <input className="textfield textfield2"
                                    type="text"
+                                   autofocus="" autocapitalize="none"
                                    defaultValue={notes}
                                    placeholder="Notes"
                                    onBlur={(e) => {
@@ -78,10 +79,10 @@ const Index = (props) => {
 
 
                     <div>
-                        <div   className={'m-auto'}>
+                        <div>
                             <div className={'d-flex justify-content-between align-items-center'}>
                                 <div>
-                                    {<AddButton item={{...updateItem}} fromCart={true}  updateItem={setUpdateItem}/>}
+                                    {<AddButton item={{...updateItem}} fromCart={true} minqnt={1} updateItem={setUpdateItem}/>}
                                 </div>
 
                                 <div>

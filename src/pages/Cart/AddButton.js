@@ -43,7 +43,7 @@ export const updateCartItem = async (values) => {
     }
 }
 
-const Index = ({item, updateItem, custom, fromCart}) => {
+const Index = ({item, updateItem, custom, fromCart,minqnt}) => {
 
     const [productqnt, setQnt] = useState(item?.productqnt || 0);
     const dispatch = useDispatch()
@@ -91,7 +91,7 @@ const Index = ({item, updateItem, custom, fromCart}) => {
                 title: '',
                 height: '80%',
                 component: () => <>
-                    <AddonAction item={clone(item)} updateQnt={updateQnt}/>
+                    <AddonAction item={clone(item)} action={action} updateQnt={updateQnt}/>
                 </>
             }))
         } else {
@@ -139,10 +139,11 @@ const Index = ({item, updateItem, custom, fromCart}) => {
 
 
     if (productqnt) {
+
         return (
             <div className={'border rounded-3 btn-add p-0 mt-3 '}>
                 <div className={'d-flex justify-content-between align-items-center'}>
-                    <div className={'p-3  px-4 cursor-pointer'} onClick={() => updateQnt('remove')}> -</div>
+                    <div className={'p-3  px-4 cursor-pointer'} onClick={() => ((productqnt > minqnt) || !Boolean(minqnt)) && updateQnt('remove')}> -</div>
                     <div className={'bg-white'} style={{
                         height: '34px',
                         width: '40px',

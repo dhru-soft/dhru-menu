@@ -32,7 +32,7 @@ const Index = (props) => {
     }
 
     return (
-        <div className={'position-fixed '} style={{zIndex: 9999, bottom: 5, left: 0, right: 0}}>
+        <div className={'position-fixed '} style={{zIndex: 999, bottom: 5, left: 0, right: 0}}>
 
             <div className={'container'}>
 

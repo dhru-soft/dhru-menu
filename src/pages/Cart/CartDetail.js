@@ -72,7 +72,7 @@ const Index = (props) => {
                                                     <div className={'p-2 mt-auto '}>
                                                         <div>
                                                             <h4 style={{fontSize: '1.8rem'}}>{itemname} </h4>
-                                                            <div className={'mb-2 text-muted'}> {productqnt} x {numberFormat(productratedisplay)} = {numberFormat(productqnt * productratedisplay)} </div>
+                                                            <small className={'mb-2 text-muted'}> {productqnt} x {numberFormat(productratedisplay)} = {numberFormat(productqnt * productratedisplay)} </small>
                                                         </div>
 
                                                         {Boolean(itemaddon?.length > 0) && <div>
@@ -80,7 +80,7 @@ const Index = (props) => {
                                                                 itemaddon?.map((addon,key)=>{
                                                                     const {itemname, productratedisplay} = addon;
                                                                     return (
-                                                                        <div key={key} className={'mb-2 text-muted'}> {productqnt} x {itemname} =  {numberFormat(productqnt * productratedisplay)} </div>
+                                                                        <div key={key} ><small className={'mb-2 text-muted'}> {productqnt} x {itemname} =  {numberFormat(productqnt * productratedisplay)} </small></div>
                                                                     )
                                                                 })
                                                             }

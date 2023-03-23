@@ -13,17 +13,65 @@ import {setModal} from "../../lib/redux-store/reducer/component";
 import ItemDetails from "./ItemDetails";
 import {setItem, setItemList} from "../../lib/redux-store/reducer/item-list";
 import {LazyLoadImage} from "react-lazy-load-image-component";
+import {v4 as uuid} from "uuid";
 
 
 export const AddonAction = ({item,updateQnt}) => {
-    const dispatch = useDispatch()
+    const dispatch = useDispatch();
+
+    const {invoiceitems} = store.getState().cartData
+
+    let filtered = invoiceitems?.filter((value, key) => {
+        return item.itemid === value.itemid
+    })
+
     return (
         <div>
-            <div className={'d-flex justify-content-between align-items-center'}>
+
+            {
+                Boolean(filtered?.length > 1) && filtered?.map((item) => {
+
+                    const {itemname, productratedisplay, productqnt,itemaddon,notes} = item || {};
+
+                    return <div className="col-12    item-hover  p-2 py-4" key={uuid()}>
+                        <div className="d-flex p-2 h-100">
+                            <div className={'w-100'} >
+
+                                <div className={'p-2 mt-auto '}>
+                                    <div>
+                                        <h4 style={{fontSize: '1.8rem'}}>{itemname} </h4>
+                                        <small className={'mb-2 text-muted'}> {productqnt} x {numberFormat(productratedisplay)} = {numberFormat(productqnt * productratedisplay)} </small>
+                                    </div>
+
+                                    {Boolean(itemaddon?.length > 0) && <div>
+                                        {
+                                            itemaddon?.map((addon,key)=>{
+                                                const {itemname, productratedisplay} = addon;
+                                                return (
+                                                    <div key={key} ><small className={'mb-2 text-muted'}> {productqnt} x {itemname} =  {numberFormat(productqnt * productratedisplay)} </small></div>
+                                                )
+                                            })
+                                        }
+                                    </div>}
+
+                                    <div>
+                                        <i className={'mb-2 text-danger'}> {notes} </i>
+                                    </div>
+
+                                </div>
+                            </div>
+                            <div className={'border-light'} style={{width: 150}}>
+                                <AddButton item={item} minqnt={1} fromCart={true}/>
+                            </div>
+                        </div>
+                    </div>
+                })
+            }
+
+            <div className={'d-flex justify-content-between align-items-center mt-3'}>
                 <div className={'w-100'}>
 
                     <button className="w-100 custom-btn custom-btn--medium custom-btn--style-1" onClick={()=>{
-
                         dispatch(setModal({
                             show: true,
                             title: item.itemname,
@@ -35,20 +83,29 @@ export const AddonAction = ({item,updateQnt}) => {
                     </button>
                 </div>
 
-                <div  className={'w-100 ms-3'}>
+                {filtered?.length > 1 &&  <div  className={'w-100 ms-3'}>
+                    <button className="w-100 custom-btn custom-btn--medium custom-btn--style-2" onClick={()=>{
+                        dispatch(setModal({show:false}));
+                    }} type="button" role="button">
+                        OK
+                    </button>
+                </div>}
+
+                {filtered?.length === 1 &&  <div  className={'w-100 ms-3'}>
                     <button className="w-100 custom-btn custom-btn--medium custom-btn--style-2" onClick={()=>{
                         updateQnt('add',true);
                         dispatch(setModal({show:false}));
                     }} type="button" role="button">
                         Repeat
                     </button>
-                </div>
+                </div>}
             </div>
         </div>
     )
 }
 
 export const ItemBox = memo(({item})=>{
+
 
     const [updateItem,setUpdateItem] = useState(item);
 
@@ -93,13 +150,13 @@ export const ItemBox = memo(({item})=>{
                             style={{maxWidth:'100%',borderRadius:5}}
                         />}
                     </div>
-                    {addbutton &&  <AddButton item={updateItem} updateItem={setUpdateItem}/>}
+                    {addbutton &&  <AddButton item={updateItem}  updateItem={setUpdateItem}/>}
                 </div>
             </div>
         </div>
     )
 },(r1,r2)=>{
-    return ((r1.item.productqnt === r2.item.productqnt) && (r1.item.itemid === r2.item.itemid));
+    return ((r1.item.productqnt === r2.item.productqnt) &&  (r1.item.itemid === r2.item.itemid));
 })
 
 
@@ -159,6 +216,7 @@ const Items = (props) => {
 
             /////// MERGE CART ITEM AND NORMAL ITEM
             if (!isEmpty(items)) {
+
                 invoiceitems?.map((item) => {
                     if (Boolean(items[item?.itemid])) {
                         items = {
@@ -194,7 +252,7 @@ const Items = (props) => {
 
     useEffect(() => {
         getItems().then()
-    }, [groupids, selectedtags, searchitem])
+    }, [groupids, selectedtags,invoiceitems, searchitem])
 
     if (!loader) {
         return <Loader3/>

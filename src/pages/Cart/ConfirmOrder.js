@@ -7,10 +7,30 @@ import {device} from "../../lib/static";
 import {setClientDetail} from "../../lib/redux-store/reducer/client-detail";
 import NameAddress from "../Client/NameAddress";
 
-const Index = ({clientDetail}) => {
+const Index = ({clientDetail,vouchertotaldisplay}) => {
 
     const confirmOrder = (values) => {
-        postOrder(values)
+
+        let payments = [
+            {
+                "remainingamount": 0,
+                "totalamount": vouchertotaldisplay,
+                "paymentgateways": [
+                    {
+                        "gid": values.paymentgateway,
+                        "gatewayname": "Cash",
+                        "pay": vouchertotaldisplay,
+                        "paysystem": vouchertotaldisplay,
+                        "receipt": "",
+                        "phone": "",
+                        "otp": "",
+                        "gatewaytype": "cash",
+                        "isupi": false
+                    }
+                ]
+            }
+        ]
+        postOrder({...values,payments})
     }
 
     const dispatch = useDispatch()
@@ -28,22 +48,43 @@ const Index = ({clientDetail}) => {
             <div className={'container'}>
 
 
-
-
-
-
-
                 <Form
-                    initialValues={{ordertype: Boolean(device.tableid)?'table':'homedelivery'}}
+                    initialValues={{paymentgateway:'c02fc4ca-8d89-4c91-bd66-2dd29bc34e43',ordertype: Boolean(device.tableid)?'table':'homedelivery'}}
                     onSubmit={confirmOrder}
                     render={({handleSubmit, values}) => (
                         <form onSubmit={handleSubmit}>
 
 
-
                             <div className={'form'}>
 
-                                <h4>Confirm Order Type</h4>
+                                <h5>Payment Detail</h5>
+
+                                <div className={'mb-3 '}>
+                                    <Field name="paymentgateway">
+                                        {({input, meta}) => (
+                                            <>
+
+                                                <div className="mb-4">
+                                                    <input className="form-check-input"  {...input} checked={true}
+                                                           onChange={(e) => {
+                                                               values.ordertype = e.target.value
+                                                           }} id="radio" type="radio"
+                                                           value={'c02fc4ca-8d89-4c91-bd66-2dd29bc34e43'}/>
+                                                    <label className="form-check-label"
+                                                           htmlFor="radio">
+                                                        Cash
+                                                    </label>
+                                                </div>
+
+
+                                            </>
+                                        )}
+                                    </Field>
+                                </div>
+
+
+
+                                <h5 className={'mt-5'}>Confirm Order Type</h5>
 
 
                                 <div className={'mt-3'}>
@@ -160,6 +201,7 @@ const Index = ({clientDetail}) => {
 const mapStateToProps = (state) => {
     return {
         clientDetail: state.clientDetail,
+        vouchertotaldisplay:state.cartData.vouchertotaldisplay
     }
 }
 
