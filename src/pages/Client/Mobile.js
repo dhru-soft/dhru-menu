@@ -69,7 +69,7 @@ const Index = ({clientDetail}) => {
                                                 {({input, meta}) => (
                                                     <div className="">
                                                         <input className="textfield textfield2" {...input}
-                                                               minLength={10} maxLength={10} type="text"
+                                                               minLength={10} maxLength={10} type="tel"
                                                                placeholder="Mobile" style={{padding: 15}}/>
                                                         {meta.touched && meta.error &&
                                                             <div className={'text-danger  mt-2'}>Mobile

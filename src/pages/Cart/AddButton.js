@@ -85,7 +85,7 @@ const Index = ({item, updateItem, custom, fromCart,minqnt,merger}) => {
 
         const {hasextra, key} = item;
 
-        if (hasextra && key && (!fromCart) && (action === 'add') && (!isRepeat)) {
+        if (hasextra && key && (!fromCart) && ((action === 'add') ) && (!isRepeat)) {
             store.dispatch(setModal({
                 show: true,
                 title: '',

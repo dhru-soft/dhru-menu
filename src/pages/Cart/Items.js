@@ -16,7 +16,7 @@ import {LazyLoadImage} from "react-lazy-load-image-component";
 import {v4 as uuid} from "uuid";
 
 
-export const AddonAction = ({item,updateQnt}) => {
+export const AddonAction = ({item,updateQnt,action}) => {
     const dispatch = useDispatch();
 
     const {invoiceitems} = store.getState().cartData
@@ -24,6 +24,7 @@ export const AddonAction = ({item,updateQnt}) => {
     let filtered = invoiceitems?.filter((value, key) => {
         return item.itemid === value.itemid
     })
+
 
     return (
         <div>
@@ -61,17 +62,21 @@ export const AddonAction = ({item,updateQnt}) => {
                                 </div>
                             </div>
                             <div className={'border-light'} style={{width: 150}}>
-                                <AddButton item={item} minqnt={1} fromCart={true}/>
+                                <AddButton item={item} minqnt={action === 'add' && 1} fromCart={true}/>
                             </div>
                         </div>
                     </div>
                 })
             }
 
-            <div className={'d-flex justify-content-between align-items-center mt-3'}>
-                <div className={'w-100'}>
+            {
+                (filtered?.length === 1) && <h5 className={'mb-5'}>{item.itemname}</h5>
+            }
 
-                    <button className="w-100 custom-btn custom-btn--medium custom-btn--style-1" onClick={()=>{
+            <div className={'d-flex justify-content-between align-items-center mt-3'}>
+                {action === 'add' && <div className={'w-100 me-3'}>
+
+                     <button className="w-100 custom-btn custom-btn--medium custom-btn--style-1" onClick={()=>{
                         dispatch(setModal({
                             show: true,
                             title: item.itemname,
@@ -81,9 +86,9 @@ export const AddonAction = ({item,updateQnt}) => {
                     }} type="button" role="button">
                         Add New
                     </button>
-                </div>
+                </div>}
 
-                {filtered?.length > 1 &&  <div  className={'w-100 ms-3'}>
+                {filtered?.length > 1 &&  <div  className={'w-100'}>
                     <button className="w-100 custom-btn custom-btn--medium custom-btn--style-2" onClick={()=>{
                         dispatch(setModal({show:false}));
                     }} type="button" role="button">
@@ -91,7 +96,7 @@ export const AddonAction = ({item,updateQnt}) => {
                     </button>
                 </div>}
 
-                {filtered?.length === 1 &&  <div  className={'w-100 ms-3'}>
+                {filtered?.length === 1 &&  <div  className={'w-100'}>
                     <button className="w-100 custom-btn custom-btn--medium custom-btn--style-2" onClick={()=>{
                         updateQnt('add',true);
                         dispatch(setModal({show:false}));
