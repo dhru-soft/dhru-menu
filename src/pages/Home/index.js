@@ -1,16 +1,19 @@
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 
 import {Field, Form} from 'react-final-form'
 import {device, required} from "../../lib/static";
 import {getWorkspaceName, postQrCode} from "../../lib/functions";
 import {connect} from "react-redux";
 import Restaurant from "../Restaurant";
+import store from "../../lib/redux-store/store";
+import {setModal} from "../../lib/redux-store/reducer/component";
+import Login from "../Login";
 
-const Index = (props: any) => {
+const Index = (props) => {
 
     const [msg,setMsg] = useState('')
 
-    const onSubmit = (values: any) => {
+    const onSubmit = (values) => {
         postQrCode(values.accesscode).then((data)=>{
             const {workspace,tableid,locationid} = data;
             if(locationid) {
@@ -27,6 +30,7 @@ const Index = (props: any) => {
     const workspace = getWorkspaceName();
 
 
+
     if (Boolean(legalname) || Boolean(workspace)) {
         return <Restaurant/>
     }
@@ -35,7 +39,7 @@ const Index = (props: any) => {
     return (
         <>
             <div className="position-relative   h-100">
-                <div className={'container'}>
+                <div className={'container p-4'}>
                     <div className="row justify-content-xl-between pt-5">
                         <div className="col-12 col-md-6 col-lg-4 m-auto">
 
@@ -75,6 +79,7 @@ const Index = (props: any) => {
                                                 <button
                                                     className="w-100 custom-btn custom-btn--medium custom-btn--style-4"
                                                     onClick={() => {
+
                                                         handleSubmit(values)
 
                                                     }} type="button" role="button">
@@ -100,7 +105,7 @@ const Index = (props: any) => {
 }
 
 
-const mapStateToProps = (state: any) => {
+const mapStateToProps = (state) => {
     return {
         general: state.restaurantDetail?.general
     }

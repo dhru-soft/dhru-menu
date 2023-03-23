@@ -28,7 +28,7 @@ const Index = ({clientDetail}) => {
 
             <section className="h-100">
 
-                <div className="m-auto h-100" style={{width: 330}}>
+                <div className="m-auto h-100" style={{width: 360}}>
 
                     {
                         mobilescreen && <>
