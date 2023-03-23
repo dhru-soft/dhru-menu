@@ -4,6 +4,7 @@ import {connect} from "react-redux";
 export class Footer extends Component {
     render() {
 
+        return <></>
 
         return (
             <Fragment>
