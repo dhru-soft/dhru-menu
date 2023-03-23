@@ -3,7 +3,7 @@ import {connect, useDispatch} from "react-redux";
 import {ACTIONS, device, METHOD, STATUS, urls} from "../../lib/static";
 import apiService from "../../lib/api-service";
 
-import {clone, getItemList, isEmpty, numberFormat} from "../../lib/functions";
+import {clone, getItemList, groupBy, isEmpty, numberFormat} from "../../lib/functions";
 import ReactReadMoreReadLess from "react-read-more-read-less";
 import Loader3 from "../../components/Loader/Loader3";
 import AddButton from "./AddButton";
@@ -109,6 +109,10 @@ export const ItemBox = memo(({item})=>{
 
     const [updateItem,setUpdateItem] = useState(item);
 
+    useEffect(()=>{
+        setUpdateItem(item)
+    },[item])
+
     const {itemname, itemimage, price, itemdescription, veg,itemid, addbutton} = updateItem;
 
     const diat = {
@@ -150,13 +154,13 @@ export const ItemBox = memo(({item})=>{
                             style={{maxWidth:'100%',borderRadius:5}}
                         />}
                     </div>
-                    {addbutton &&  <AddButton item={updateItem}  updateItem={setUpdateItem}/>}
+                    {addbutton &&  <AddButton item={updateItem} merger={true} updateItem={setUpdateItem}/>}
                 </div>
             </div>
         </div>
     )
 },(r1,r2)=>{
-    return ((r1.item.productqnt === r2.item.productqnt) &&  (r1.item.itemid === r2.item.itemid));
+    return ((r1.item.productqnt === r2.item.productqnt) && (r1.item.mergeqnt === r2.item.mergeqnt) &&  (r1.item.itemid === r2.item.itemid));
 })
 
 
@@ -217,18 +221,24 @@ const Items = (props) => {
             /////// MERGE CART ITEM AND NORMAL ITEM
             if (!isEmpty(items)) {
 
+                let qntbyitem = {}
+                invoiceitems.map((item) => {
+                    if(!Boolean(qntbyitem[item.itemid])){
+                        qntbyitem[item.itemid] = 0
+                    }
+                    qntbyitem[item.itemid] += item.productqnt
+                })
+
                 invoiceitems?.map((item) => {
                     if (Boolean(items[item?.itemid])) {
                         items = {
                             ...items,
-                            [item?.itemid]: item,
+                            [item?.itemid]: {...item,mergeqnt:qntbyitem[item?.itemid] || 0},
                         }
                     }
                 })
             }
-
             setItems(clone(items));
-
         }
 
 

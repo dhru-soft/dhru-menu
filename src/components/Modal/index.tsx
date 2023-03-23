@@ -37,7 +37,7 @@ const Index = (props: any) => {
             <Sheet.Container>
                 <Sheet.Header />
                 <Sheet.Content>
-                    <div className={'container p-4'} style={{maxWidth:500}}>
+                    <div className={'container p-4'} style={{maxWidth:500,marginBottom:100}}>
                         {show && <>
                             <h4 style={{marginLeft:10}}> {title}</h4>
                             <Component/>

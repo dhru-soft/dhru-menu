@@ -43,15 +43,15 @@ export const updateCartItem = async (values) => {
     }
 }
 
-const Index = ({item, updateItem, custom, fromCart,minqnt}) => {
+const Index = ({item, updateItem, custom, fromCart,minqnt,merger}) => {
 
     const [productqnt, setQnt] = useState(item?.productqnt || 0);
+    const displayqnt =  merger ? item.mergeqnt : productqnt;
     const dispatch = useDispatch()
 
     useEffect(() => {
         setQnt(item?.productqnt)
     }, [item?.productqnt])
-
 
     const addQnt = (productqnt) => {
 
@@ -150,7 +150,7 @@ const Index = ({item, updateItem, custom, fromCart,minqnt}) => {
                         display: 'flex',
                         justifyContent: 'center',
                         alignItems: 'center'
-                    }}> {productqnt} </div>
+                    }}> {displayqnt} </div>
                     <div className={'p-3 px-4 cursor-pointer'} onClick={() => updateQnt('add')}> +</div>
                 </div>
             </div>

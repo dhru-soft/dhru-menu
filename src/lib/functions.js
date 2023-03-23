@@ -844,3 +844,19 @@ export const requestOTP = (mobile) => {
         store.dispatch(setClientDetail(clientDetail))
     });
 }
+
+
+
+export const groupBy = (arr, property) => {
+    try {
+        return arr.reduce(function (memo, x) {
+            if (!memo[x[property]]) {
+                memo[x[property]] = [];
+            }
+            memo[x[property]].push(x);
+            return memo;
+        }, {});
+    } catch (e) {
+        console.log('e', e)
+    }
+}

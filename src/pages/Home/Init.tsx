@@ -16,7 +16,7 @@ const Index = (props: any) => {
 
     ////// RETRIVE CART AND INIT FOR STATE
     sessionRetrieve(createUniqueStore()).then((data)=>{
-        device.tableid = data.tableid
+        device.tableid = data?.tableid
         dispatch(setCartData(data));
     })
 

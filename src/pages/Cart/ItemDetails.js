@@ -4,7 +4,7 @@ import {getItemById, numberFormat} from "../../lib/functions";
 
 import Loader3 from "../../components/Loader/Loader3";
 import AddButton from "./AddButton";
-
+import {v4 as uuid} from "uuid"
 
 const Index = (props) => {
 
@@ -19,6 +19,8 @@ const Index = (props) => {
     }
 
     const [updateItem, setUpdateItem] = useState(itemDetail);
+
+
 
     const {itemimage, itemid, itemdescription, price, notes} = updateItem;
 
@@ -61,13 +63,12 @@ const Index = (props) => {
                         </div>
 
 
-                        <Addons itemDetail={updateItem} updateItem={setUpdateItem}/>
+                        <Addons itemDetail={updateItem} updateItem={setUpdateItem} key={uuid}/>
                         {/*<TagsNotes/>*/}
 
                         <div className={'form mt-3'}>
                             <input className="textfield textfield2"
                                    type="text"
-                                   autocapitalize="none"
                                    defaultValue={notes}
                                    placeholder="Notes"
                                    onBlur={(e) => {
