@@ -4,11 +4,10 @@ import {connect} from "react-redux";
 export class Footer extends Component {
     render() {
 
-        return <></>
 
         return (
             <Fragment>
-                 <section className="section--no-pt section--no-pb">
+                 <section className="section--no-pt section--no-pb" style={{marginBottom:100}}>
                     <footer className="footer footer--s3 footer--color-dark">
                         <div className="p-5">
                             <div className="container">
@@ -21,6 +20,7 @@ export class Footer extends Component {
                                         </div>
                                       </div>
                                 </div>
+
                             </div>
                         </div>
                     </footer>
