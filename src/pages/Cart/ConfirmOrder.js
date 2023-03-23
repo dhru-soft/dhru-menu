@@ -27,7 +27,11 @@ const Index = ({clientDetail}) => {
 
             <div className={'container'}>
 
-                <h4>Confirm Order Type</h4>
+
+
+
+
+
 
                 <Form
                     initialValues={{ordertype: Boolean(device.tableid)?'table':'homedelivery'}}
@@ -35,7 +39,12 @@ const Index = ({clientDetail}) => {
                     render={({handleSubmit, values}) => (
                         <form onSubmit={handleSubmit}>
 
+
+
                             <div className={'form'}>
+
+                                <h4>Confirm Order Type</h4>
+
 
                                 <div className={'mt-3'}>
                                     <div className={'d-flex justify-content-between align-items-center'}>

@@ -20,7 +20,7 @@ const Index = (props: any) => {
         });
     }
 
-    if(isMobile) {
+    if(isBrowser) {
         return (
             <Modal isOpen={show} toggle={handleClose} size={maxWidth ? maxWidth : 'xs'} className={className}
                    backdrop={backdrop ? backdrop : true} keyboard={keyboard ? keyboard : true}>
