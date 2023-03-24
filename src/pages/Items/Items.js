@@ -6,11 +6,11 @@ import apiService from "../../lib/api-service";
 import {clone, getItemList, groupBy, isEmpty, numberFormat} from "../../lib/functions";
 import ReactReadMoreReadLess from "react-read-more-read-less";
 import Loader3 from "../../components/Loader/Loader3";
-import AddButton from "./AddButton";
+import AddButton from "../Cart/AddButton";
 import store from "../../lib/redux-store/store";
 import {setItemDetail} from "../../lib/redux-store/reducer/item-detail";
 import {setModal} from "../../lib/redux-store/reducer/component";
-import ItemDetails from "./ItemDetails";
+import ItemDetails from "../Cart/ItemDetails";
 import {setItem, setItemList} from "../../lib/redux-store/reducer/item-list";
 import {LazyLoadImage} from "react-lazy-load-image-component";
 import {v4 as uuid} from "uuid";
@@ -180,7 +180,7 @@ const Items = (props) => {
     const urlSearchParams = new URLSearchParams(window.location.search);
     const params = Object.fromEntries(urlSearchParams.entries());
 
-    const {tableorder,online} = device.order;
+    const {tableorder,online} = device?.order || {};
     const {groupids, selectedtags, searchitem,invoiceitems,itemList} = props;
 
     const hasAdd = (tableorder && params.table) || ((online || tableorder) && !params.table)
@@ -188,11 +188,13 @@ const Items = (props) => {
 
     const getItems = async () => {
 
-        const selectedDiat = Boolean(selectedtags?.length > 0) && selectedtags?.map((tag) => {
+        const selectedDiat = Boolean(selectedtags?.length > 0) && selectedtags.filter((tag)=>{
+            return tag.selected
+        })?.map((tag) => {
             return tag.value
         })?.toString() || '';
         let queryString = {locationid: device.locationid};
-        let itemgroupid = Boolean(groupids) && groupids[groupids?.length - 1];
+        let itemgroupid = Boolean(groupids) ? groupids[groupids?.length - 1] : device.groupid;
 
 
         if (Boolean(searchitem)) {

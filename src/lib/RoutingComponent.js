@@ -8,6 +8,8 @@ import Restaurant from "../pages/Restaurant";
 import Cart from "../pages/Cart";
 import CartDetail from "../pages/Cart/CartDetail";
 import Login from "../pages/Login";
+import Groups from "../pages/Groups";
+import Items from "../pages/Items";
 
 class RouterComponent extends Component {
 
@@ -17,8 +19,10 @@ class RouterComponent extends Component {
                 <Route exact path="/" element={<Home />}/>
                 <Route exact path="/qrcode/:accesscode" element={<Restaurant />} />
                 <Route exact path="/login" element={<Login />} />
-                <Route exact path="/location/:locationid" element={<Cart />}/>
-                <Route exact path="/location/:locationid/cartdetail" element={<CartDetail />} />
+                <Route exact path="/l/:locationid" element={<Groups />}/>
+                <Route exact path="/l/:locationid/t/:tableid" element={<Groups />}/>
+                <Route exact path="/l/:locationid/t/:tableid/g/:groupid" element={<Items />}/>
+                <Route exact path="/l/:locationid/t/:tableid/cartdetail" element={<CartDetail />} />
             </Routes>
         </Fragment>)
     }

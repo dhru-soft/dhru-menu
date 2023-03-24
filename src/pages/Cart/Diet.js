@@ -13,11 +13,11 @@ const Index = (props) => {
 
     useEffect(()=>{
         /// selected tag
-        setTags([
+        setTags(selectedtags || [
             {label:'Veg',value:'veg',selected:false,icon:'leaf',color:'#659a4a'},
             {label:'Non Veg',value:'nonveg',selected:false,icon:'meat',color:'#ee4c4c'},
             {label:'Egg',value:'egg',selected:false,icon:'egg',color:'gray'},
-        ].filter((tag)=>{
+        ]?.filter((tag)=>{
             return options && Boolean(options[tag?.value])
         }))
     },[options])
@@ -36,11 +36,10 @@ const Index = (props) => {
                                             ...tags,
                                             [index]:{...tag,selected:!tag.selected}
                                         }
-                                        setTags(clone(Object.values(ctags)))
-                                        const selected =  Object.values(ctags).filter((tag)=>{
-                                            return  tag.selected
-                                        })
-                                        dispatch(setSelected({selectedtags: isEmpty(selected)?'':selected}))
+                                        const copytags = clone(Object.values(ctags))
+                                        setTags(copytags)
+
+                                        dispatch(setSelected({selectedtags: copytags}))
                                     }} className={`border rounded-4 px-4 btn ${tag.selected?'btn-danger':'bg-white'}`} > {tag.selected ? <i className={'fa fa-check'}></i> : <i style={{color:tag.color}} className={`fa fa-${tag.icon}`}></i>} <span>{tag.label}</span>  </button>
                                 })
                             }

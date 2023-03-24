@@ -55,7 +55,7 @@ const Index = (props) => {
                                 if (page === 'final') {
                                     placeOrder(tableid)
                                 } else {
-                                    navigate(`/location/${device.locationid}/cartdetail`);
+                                    navigate(`/l/${device.locationid}/t/${device.tableid}/cartdetail`);
                                 }
                             }} type="button" role="button">
                                 {btnLabel}

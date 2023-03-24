@@ -6,7 +6,7 @@ import {changeCartItem} from "../../lib/redux-store/reducer/cart-data";
 import {v4 as uuid} from "uuid";
 import {setModal} from "../../lib/redux-store/reducer/component";
 import ItemDetails from "./ItemDetails";
-import {AddonAction} from "./Items";
+import {AddonAction} from "../Items/Items";
 
 
 export const updateCartItem = async (values) => {

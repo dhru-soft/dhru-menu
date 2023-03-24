@@ -4,8 +4,9 @@ import {setSelected} from "../../lib/redux-store/reducer/selected-data";
 import apiService from "../../lib/api-service";
 import {ACTIONS, device, localredux, METHOD, STATUS, urls} from "../../lib/static";
 import {setGroupList} from "../../lib/redux-store/reducer/group-list";
-import {isEmpty} from "../../lib/functions";
+import {getGroups, isEmpty} from "../../lib/functions";
 import { LazyLoadImage } from 'react-lazy-load-image-component';
+import {useNavigate, useParams} from "react-router-dom";
 
 
 export const GroupBox = ({item}) => {
@@ -32,30 +33,16 @@ export const GroupBox = ({item}) => {
 
 const Index = (props) => {
 
+
+
     const dispatch = useDispatch()
+    const navigate = useNavigate()
 
     const {workspace,groupList} = props;
 
-    const getGroups = async () => {
-
-            if(isEmpty(groupList)){
-                await apiService({
-                    method: METHOD.GET,
-                    action: ACTIONS.ITEMS,
-                    queryString: {locationid: device.locationid},
-                    hideLoader: true,
-                    workspace: workspace,
-                    other: {url: urls.posUrl},
-                }).then(async (result) => {
-                    if (result.status === STATUS.SUCCESS && Boolean(result?.data)) {
-                        dispatch(setGroupList(result?.data?.itemgroup))
-                    }
-                });
-            }
-    }
 
     useEffect(() => {
-        getGroups().then()
+        getGroups(groupList).then()
     }, [])
 
     if(isEmpty(groupList)){
@@ -75,6 +62,7 @@ const Index = (props) => {
                         return <div key={index} className="text-center col-sm-4 col-lg-2 col-md-3 col-6 mb-3 cursor-pointer"
                                     onClick={() => {
                                         dispatch(setSelected({groupids: [item?.itemgroupid]}))
+                                        navigate(`/l/${device.locationid}/t/${device.tableid}/g/${item?.itemgroupid}`)
                                     }}>
                              <GroupBox item={item}/>
                         </div>

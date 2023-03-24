@@ -17,7 +17,7 @@ const Index = (props) => {
         postQrCode(values.accesscode).then((data)=>{
             const {workspace,tableid,locationid} = data;
             if(locationid) {
-                window.location.href = `${window.location.protocol}//${workspace}.${window.location.host.replace('www', '')}/location/${locationid}/?table=${tableid}`
+                window.location.href = `${window.location.protocol}//${workspace}.${window.location.host.replace('www', '')}/l/${locationid}/t/${tableid}`
             }
             else{
                 setMsg('Code not found')

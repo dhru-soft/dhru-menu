@@ -9,17 +9,13 @@ import CartTotal from "./CartTotal";
 import AddButton from "./AddButton";
 import {numberFormat} from "../../lib/functions";
 import {v4 as uuid} from "uuid";
-import {setSelected} from "../../lib/redux-store/reducer/selected-data";
 import store from "../../lib/redux-store/store";
-import {setItemDetail} from "../../lib/redux-store/reducer/item-detail";
 import {setModal} from "../../lib/redux-store/reducer/component";
 import ItemDetails from "./ItemDetails";
 
 
 const Index = (props) => {
 
-    const params = useParams()
-    device.locationid = params?.locationid;
 
     const navigate = useNavigate()
 
@@ -44,7 +40,7 @@ const Index = (props) => {
                                     <ol className="breadcrumb mb-0">
                                         <>
                                             <li className="breadcrumb-item ps-2"><span onClick={()=>{
-                                                navigate(`/location/${device.locationid}`);
+                                                navigate(-1);
                                             }}><i className={'fa fa-chevron-left'}></i> Back </span></li>
                                         </>
                                     </ol>
@@ -106,7 +102,7 @@ const Index = (props) => {
                                         <div className={'p-5 text-center'}>No item(s) added in cart</div>
                                         <div className={'text-center'}>
                                             <button className="custom-btn btn-primary btn" onClick={() => {
-                                                navigate(`/location/${device.locationid}`);
+                                                navigate(`/l/${device.locationid}/t/${device.tableid}`);
                                             }} type="button" role="button">
                                                 Browse Menu
                                             </button>
@@ -136,7 +132,6 @@ const Index = (props) => {
 
 const mapStateToProps = (state) => {
     return {
-        restaurantDetail: state.restaurantDetail,
         invoiceitems: state.cartData.invoiceitems
     }
 }

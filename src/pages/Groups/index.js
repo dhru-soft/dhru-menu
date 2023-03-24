@@ -1,21 +1,21 @@
 import React from "react";
 import {connect} from "react-redux";
-import Groups from "../Groups/Groups";
+import Groups from "./Groups";
 
 import CompanyDetail from "../Navigation/CompanyDetail";
-import ItemList from "../Items/Items";
-import Search from "./Search";
-import Bredcrumb from "./Bredcrumb";
-import Diet from "./Diet";
-import {useParams} from "react-router-dom";
+
+import Search from "../Cart/Search";
+import Bredcrumb from "../Cart/Bredcrumb";
+import Diet from "../Cart/Diet";
+import {useNavigate, useParams} from "react-router-dom";
 import Init from "../Home/Init";
 import {device} from "../../lib/static";
-import CartTotal from "./CartTotal";
+import CartTotal from "../Cart/CartTotal";
+import ItemList from "../Items/Items";
 
 const Index = (props) => {
 
-
-    let {groupids, searchitem} = props;
+    let {searchitem} = props;
 
     return (
         <section>
@@ -39,13 +39,14 @@ const Index = (props) => {
                                     </div>
                                 </div>
 
-                                <Bredcrumb/>
+                                <Bredcrumb />
 
-                                {(!Boolean(groupids) && !Boolean(searchitem)) ? <div>
+                                {(!Boolean(searchitem)) ? <div>
                                     <Groups/>
                                 </div> : <div>
                                     <ItemList/>
                                 </div>}
+
                             </div>
 
 
@@ -64,9 +65,10 @@ const Index = (props) => {
     )
 }
 
+
+
 const mapStateToProps = (state) => {
     return {
-        restaurantDetail: state.restaurantDetail,
         ...state.selectedData,
     }
 }

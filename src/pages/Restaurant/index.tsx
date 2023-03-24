@@ -27,7 +27,7 @@ const Index = (props: any) => {
             Boolean(accesscode) && postQrCode(accesscode).then((data)=>{
                 const {workspace,tableid,locationid} = data;
                 if(locationid) {
-                    window.location.href = `${window.location.protocol}//${workspace}.${window.location.host.replace('www', '')}/location/${locationid}/?table=${tableid}`
+                    window.location.href = `${window.location.protocol}//${workspace}.${window.location.host.replace('www', '')}/l/${locationid}/t/${tableid}`
                 }
                 else {
                     setLoader(true)
@@ -95,7 +95,7 @@ const Index = (props: any) => {
                                                     const {name, address1, address2, city} = location[key]
                                                     return <div key={key} className={'mb-2'}>
                                                         <div onClick={() => {
-                                                            navigate(`/location/${key}`)
+                                                            navigate(`/l/${key}/t/0`)
                                                         }} className={'text-white border p-3 d-flex justify-content-between align-items-center cursor-pointer'}
                                                              style={{borderRadius: 5}}>
                                                             <div>

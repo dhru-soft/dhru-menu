@@ -12,7 +12,8 @@ import Login from "../pages/Login";
 import {setClientDetail} from "./redux-store/reducer/client-detail";
 import { confirmAlert } from 'react-confirm-alert'; // Import
 import 'react-confirm-alert/src/react-confirm-alert.css';
-import ConfirmOrder from "../pages/Cart/ConfirmOrder"; // Import css
+import ConfirmOrder from "../pages/Cart/ConfirmOrder";
+import {setGroupList} from "./redux-store/reducer/group-list"; // Import css
 
 var ls = require('local-storage');
 
@@ -859,5 +860,25 @@ export const groupBy = (arr, property) => {
         }, {});
     } catch (e) {
         console.log('e', e)
+    }
+}
+
+
+
+export  const getGroups = async (groupList) => {
+
+    if(isEmpty(groupList)){
+        await apiService({
+            method: METHOD.GET,
+            action: ACTIONS.ITEMS,
+            queryString: {locationid: device.locationid},
+            hideLoader: true,
+            workspace: device.workspace,
+            other: {url: urls.posUrl},
+        }).then(async (result) => {
+            if (result.status === STATUS.SUCCESS && Boolean(result?.data)) {
+                store.dispatch(setGroupList(result?.data?.itemgroup))
+            }
+        });
     }
 }
