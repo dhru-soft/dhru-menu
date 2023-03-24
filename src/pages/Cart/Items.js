@@ -201,18 +201,19 @@ const Items = (props) => {
                 search: searchitem
             }
         }
+        else if (Boolean(itemgroupid)) {
+            queryString = {
+                ...queryString,
+                itemgroupid: itemgroupid
+            }
+        }
         if (Boolean(selectedDiat)) {
             queryString = {
                 ...queryString,
                 tags: selectedDiat
             }
         }
-        if (Boolean(itemgroupid)) {
-            queryString = {
-                ...queryString,
-                itemgroupid: itemgroupid
-            }
-        }
+
 
         const {tags,search} = queryString;
 

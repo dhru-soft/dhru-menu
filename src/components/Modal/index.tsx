@@ -41,7 +41,6 @@ const Index = (props: any) => {
                     <div className={'container p-4'} style={{maxWidth:500,marginBottom:100}}>
                         {show && <>
                             <h4 style={{marginLeft:10}}> {title}</h4>
-                            <Login/>
                             <Component/>
                         </>}
                     </div>
