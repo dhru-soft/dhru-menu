@@ -69,7 +69,7 @@ const Index = ({clientDetail}) => {
                                         </div>
 
 
-                                        {!tableorder && <>
+                                        {/*{!tableorder && <>
 
                                            <div className={'mb-3'}>
                                                 <Field name="address1" validate={composeValidators(required)}>
@@ -111,7 +111,7 @@ const Index = ({clientDetail}) => {
                                                 </Field>
                                             </div>
 
-                                        </>}
+                                        </>}*/}
 
                                     </div>
                                 </div>

@@ -729,7 +729,8 @@ export const placeOrder = () => {
 
     const mobilescreen = !verifymobile
     const otpscreen = (verifymobile === 'inprocess' && otp === 'sent')
-    const otherdetailscreen = (((verifymobile === 'done' && !Boolean(clientname)) || !Boolean(device.tableid) && !Boolean(address1)) && !mobilescreen && !otpscreen)
+   // const otherdetailscreen = (((verifymobile === 'done' && !Boolean(clientname)) || !Boolean(device.tableid) && !Boolean(address1)) && !mobilescreen && !otpscreen)
+    const otherdetailscreen = (((verifymobile === 'done' && !Boolean(clientname))) && !mobilescreen && !otpscreen)
 
     if(!mobilescreen && !otpscreen && !otherdetailscreen){
         store.dispatch(setModal({

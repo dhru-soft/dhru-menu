@@ -46,7 +46,8 @@ const Index = (props) => {
                             <h4 className={'mb-0'}> {numberFormat(vouchertotaldisplay)}</h4>
                         </div>
                         <div className={'p-4  text-center w-100  cursor-pointer'} onClick={() => setSummary(!summary)}>
-                            <i className={`fa fa-chevron-${summary ? 'down' : 'up'}`}></i></div>
+                            <i className={`fa fa-chevron-${summary ? 'down' : 'up'}`}></i>
+                        </div>
                         <div>
 
                             <button className="w-100 custom-btn custom-btn--medium custom-btn--style-1"
