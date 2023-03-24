@@ -12,6 +12,7 @@ import Init from "../Home/Init";
 import {device} from "../../lib/static";
 import CartTotal from "../Cart/CartTotal";
 import ItemList from "../Items/Items";
+import StickyBox from "react-sticky-box";
 
 const Index = (props) => {
 
@@ -31,12 +32,12 @@ const Index = (props) => {
                     <div>
                         <div className="container">
 
-                            <div >
+                            <div>
                                 <div className={'bg-white p-4 rounded-4 mt-3'}>
-                                    <div>
+                                    <StickyBox offsetTop={20} offsetBottom={20}>
                                         <Search/>
                                         <Diet/>
-                                    </div>
+                                    </StickyBox>
                                 </div>
 
                                 <Bredcrumb />

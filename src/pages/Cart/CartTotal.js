@@ -36,13 +36,13 @@ const Index = (props) => {
 
             <div className={'container'}>
 
-                <div className={'shadow bg-white rounded-3  p-4'}>
+                <div className={'  rounded-3  p-4'} style={{background:'#bbdba4'}}>
 
                     {summary && <CartSummary/>}
 
                     <div className={'d-flex  justify-content-between align-items-center'}>
                         <div className={'cursor-pointer'} onClick={() => setSummary(!summary)}>
-                            <div><small className={'text-muted'}>Items : {invoiceitems?.length}</small></div>
+                            <div><small>Items : {invoiceitems?.length}</small></div>
                             <h4 className={'mb-0'}> {numberFormat(vouchertotaldisplay)}</h4>
                         </div>
                         <div className={'p-4  text-center w-100  cursor-pointer'} onClick={() => setSummary(!summary)}>
@@ -50,7 +50,7 @@ const Index = (props) => {
                         </div>
                         <div>
 
-                            <button className="w-100 custom-btn custom-btn--medium custom-btn--style-1"
+                            <button className="w-100 custom-btn custom-btn--medium custom-btn--style-2"
                                     style={{padding: 5}} onClick={() => {
                                 if (page === 'final') {
                                     placeOrder(tableid)

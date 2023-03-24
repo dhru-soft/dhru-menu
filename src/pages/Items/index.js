@@ -11,8 +11,10 @@ import {useParams} from "react-router-dom";
 import Init from "../Home/Init";
 import {device} from "../../lib/static";
 import CartTotal from "../Cart/CartTotal";
+import StickyBox, {useStickyBox} from "react-sticky-box";
 
 const Index = (props) => {
+
 
 
     return (
@@ -29,18 +31,22 @@ const Index = (props) => {
                     <div>
                         <div className="container">
 
-                            <div >
-                                <div className={'bg-white p-4 rounded-4 mt-3'}>
-                                    <div>
-                                        <Search/>
-                                        <Diet/>
+                            <div style={{display:'flex'}}>
+                                <div >
+                                    <div className={'bg-white p-4 rounded-4 mt-3'}>
+                                        <StickyBox offsetTop={20} offsetBottom={20}>
+                                            <div>
+                                                <Search/>
+                                                <Diet/>
+                                            </div>
+                                        </StickyBox>
                                     </div>
+
+                                    <Bredcrumb/>
+
+                                    <ItemList/>
+
                                 </div>
-
-                                <Bredcrumb/>
-
-                                <ItemList/>
-
                             </div>
 
 
