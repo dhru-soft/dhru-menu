@@ -12,6 +12,7 @@ const Index = (props) => {
     const [tags,setTags] = useState(selectedtags);
 
     useEffect(()=>{
+        /// selected tag
         setTags([
             {label:'Veg',value:'veg',selected:false,icon:'leaf',color:'#659a4a'},
             {label:'Non Veg',value:'nonveg',selected:false,icon:'meat',color:'#ee4c4c'},
