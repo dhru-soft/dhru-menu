@@ -7,21 +7,19 @@ import {setSelected} from "../../lib/redux-store/reducer/selected-data";
 const Index = (props) => {
 
     const dispatch = useDispatch()
-    const {hidetag,selectedtags} = props;
+    const {hidetag,selectedtags,options} = props;
 
+    const [tags,setTags] = useState(selectedtags);
 
-
-    const [tags,setTags] = useState(selectedtags || [
-        {label:'Veg',value:'veg',selected:false,icon:'leaf',color:'#659a4a'},
-        {label:'Non Veg',value:'nonveg',selected:false,icon:'meat',color:'#ee4c4c'},
-        {label:'Egg',value:'egg',selected:false,icon:'egg',color:'gray'},
-        /*{label:'Jain',selected:false},
-        {label:'Swaminarayan',selected:false},
-        {label:'Gluten Free',selected:false},
-        {label:'Lactose Free',selected:false},*/
-    ]);
-
-
+    useEffect(()=>{
+        setTags([
+            {label:'Veg',value:'veg',selected:false,icon:'leaf',color:'#659a4a'},
+            {label:'Non Veg',value:'nonveg',selected:false,icon:'meat',color:'#ee4c4c'},
+            {label:'Egg',value:'egg',selected:false,icon:'egg',color:'gray'},
+        ].filter((tag)=>{
+            return options && Boolean(options[tag?.value])
+        }))
+    },[options])
 
     return (
         <div className={'col-12'}>
@@ -58,7 +56,9 @@ const Index = (props) => {
 
 const mapStateToProps = (state) => {
     return {
-        ...state.selectedData
+        ...state.selectedData,
+        options: state.restaurantDetail?.settings?.options
+
     }
 }
 

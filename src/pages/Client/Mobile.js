@@ -7,13 +7,16 @@ import {Field, Form} from 'react-final-form';
 
 import Select from 'react-select'
 
-const Index = ({clientDetail}) => {
+const Index = ({clientDetail,visitorcountry}) => {
 
     const countryRef = useRef()
     const [mobile, setMobile] = useState(clientDetail?.mobile)
 
+     const defaultcountry = countryList.filter((country)=>{
+        return country.code === visitorcountry || 'IN'
+    })
 
-    const [country, setCountry] = useState({label: 'India', value: '+91', code: 'IN'})
+    const [country, setCountry] = useState(defaultcountry[0])
     const options = useMemo(() => countryList, [])
 
     const changeHandler = value => {
@@ -42,7 +45,7 @@ const Index = ({clientDetail}) => {
                             <div className={'my-3 toggle'} ref={countryRef}>
 
                                 <div className={'py-3 show'}>
-                                    We are think you are from India. <label style={{color: '#3174de'}} onClick={() => {
+                                    We are think you are from {country.label}. <label style={{color: '#3174de'}} onClick={() => {
                                     countryRef.current?.classList.toggle('inverse')
                                 }}> Change Country</label>
                                 </div>
@@ -112,7 +115,8 @@ const Index = ({clientDetail}) => {
 
 const mapStateToProps = (state) => {
     return {
-        clientDetail: state.clientDetail
+        clientDetail: state.clientDetail,
+        visitorcountry: state.restaurantDetail?.settings?.visitorcountry
     }
 }
 
