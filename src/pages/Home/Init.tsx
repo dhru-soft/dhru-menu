@@ -39,7 +39,12 @@ const Index = (props: any) => {
         });
 
         if(Boolean(device.groupid)) {
-            if (index === -1 || !Boolean(index)) {
+
+            if (index === 0) {
+                const newgroupids = groupids?.slice(0, index + 1);
+                dispatch(setSelected({groupids: newgroupids}))
+
+            } else {
                 let groups = clone(groupids) || []
                 const find = groups?.filter((key: any) => {
                     return key === device.groupid
@@ -50,11 +55,14 @@ const Index = (props: any) => {
                 if (Boolean(device?.groupid)) {
                     dispatch(setSelected({groupids: groups}))
                 }
-            } else {
-                const newgroupids = groupids?.slice(0, index + 1);
-                dispatch(setSelected({groupids: newgroupids}))
             }
         }
+        else{
+           // dispatch(setSelected({groupids: ''}))
+        }
+
+
+
 
     },[params?.groupid])
 
