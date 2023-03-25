@@ -12,6 +12,7 @@ const Index = (props) => {
     const navigate = useNavigate();
 
     const {cartData, page, cartData: {vouchertotaldisplay, invoiceitems, tableid}} = props;
+    const themecolor = device?.order?.themecolor || '#5C933FFF'
 
     const [summary, setSummary] = useState(false)
 
@@ -36,7 +37,7 @@ const Index = (props) => {
 
             <div className={'container'}>
 
-                <div className={'  rounded-3  p-4'} style={{background:'#bbdba4'}}>
+                <div className={'  rounded-3  p-4'} style={{background:themecolor}}>
 
                     {summary && <CartSummary/>}
 

@@ -36,10 +36,10 @@ const Index = (props) => {
                         <Diet/>
                     </div>
                 </div>
-
+                <Bredcrumb/>
             </div>
 
-            <Bredcrumb/>
+
 
         </>
     )

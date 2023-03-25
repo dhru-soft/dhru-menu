@@ -182,12 +182,14 @@ const Items = (props) => {
     const params = Object.fromEntries(urlSearchParams.entries());
 
     const {tableorder, online} = device?.order || {};
-    const {groupids, selectedtags, searchitem, invoiceitems, itemList} = props;
+    const {groupids, selectedtags, searchitem, invoiceitems} = props;
 
     const hasAdd = (tableorder && params.table) || ((online || tableorder) && !params.table)
 
 
     const getItems = async () => {
+
+        const itemList = store.getState().itemList
 
         const selectedDiat = Boolean(selectedtags?.length > 0) && selectedtags.filter((tag) => {
             return tag.selected
@@ -257,18 +259,18 @@ const Items = (props) => {
                 mergeCart(items)
             })
         } else {
-
             //////// MERGE ITEMS IF EXISTS IN LOCAL REDUX
             setLoader(true)
             mergeCart(itemList[itemgroupid])
         }
-
 
     }
 
     useEffect(() => {
         getItems().then()
     }, [groupids, selectedtags, invoiceitems, searchitem])
+
+
 
     if (!loader) {
         return <Loader3/>
@@ -300,7 +302,6 @@ const Items = (props) => {
 const mapStateToProps = (state) => {
     return {
         invoiceitems: state.cartData.invoiceitems,
-        itemList: state?.itemList || {},
         ...state.selectedData
     }
 }

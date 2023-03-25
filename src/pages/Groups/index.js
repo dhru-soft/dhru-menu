@@ -53,7 +53,7 @@ const Index = (props) => {
 
 const mapStateToProps = (state) => {
     return {
-        ...state.selectedData,
+        searchitem : state.selectedData.searchitem,
     }
 }
 

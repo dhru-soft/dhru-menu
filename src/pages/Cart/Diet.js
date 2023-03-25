@@ -14,13 +14,19 @@ const Index = (props) => {
     useEffect(()=>{
         /// selected tag
         setTags(selectedtags || [
-            {label:'Veg',value:'veg',selected:false,icon:'leaf',color:'#659a4a'},
-            {label:'Non Veg',value:'nonveg',selected:false,icon:'meat',color:'#ee4c4c'},
-            {label:'Egg',value:'egg',selected:false,icon:'egg',color:'gray'},
+            {label:'Veg',value:'veg',selected:false,icon:'leaf',color:'#659a4a',label2:'Pure Veg'},
+            {label:'Non Veg',value:'nonveg',selected:false,icon:'meat',color:'#ee4c4c',label2:'Only Non Veg'},
+            {label:'Egg',value:'egg',selected:false,icon:'egg',color:'gray',label2:'Only Egg'},
         ]?.filter((tag)=>{
             return options && Boolean(options[tag?.value])
         }))
     },[options])
+
+
+    if(Boolean(tags?.length === 1)){
+        const {label2,icon,color} = tags[0]
+        return <div> <i style={{color:color}} className={`fa fa-${icon}`}></i> {label2}</div>
+    }
 
     return (
         <div className={'col-12'}>

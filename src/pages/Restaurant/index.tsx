@@ -63,7 +63,7 @@ const Index = (props: any) => {
 
             <section className="h-100 restaurant-bg">
 
-                <div className={'h-100'} style={{backgroundColor: '#00000090'}}>
+                <div className={'h-100'}  >
 
                     <div className="container h-100">
 
