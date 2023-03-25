@@ -31,7 +31,7 @@ const Index = (props) => {
                     <div>
                         <div className="container">
 
-                            <div style={{display:'flex'}}>
+                            <div>
 
                                 <div>
                                     <div className={'bg-white p-4 rounded-4 mt-3'}>
