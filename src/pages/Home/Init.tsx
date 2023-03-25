@@ -1,5 +1,5 @@
 import React, {useEffect} from "react";
-import {createUniqueStore, getInit, getWorkspaceName, retrieveData, sessionRetrieve} from "../../lib/functions";
+import {clone, createUniqueStore, getInit, getWorkspaceName, retrieveData, sessionRetrieve} from "../../lib/functions";
 import {connect, useDispatch} from "react-redux";
 import {setCartData} from "../../lib/redux-store/reducer/cart-data";
 import {device} from "../../lib/static";
@@ -31,10 +31,39 @@ const Index = (props: any) => {
 
 
     useEffect(()=>{
-        if(Boolean(device?.groupid)) {
-            dispatch(setSelected({groupids: [device.groupid]}))
+
+        const {groupids} = props || []
+
+        const index = groupids?.findIndex(function(key:any) {
+            return key == device.groupid
+        });
+
+
+        if(Boolean(device.groupid)) {
+            if (index === -1) {
+                let groups = clone(groupids)
+                const find = groups?.filter((key: any) => {
+                    return key === device.groupid
+                });
+                if (!Boolean(find?.length)) {
+                    groups?.push(device.groupid)
+                }
+                if (Boolean(device?.groupid)) {
+                    dispatch(setSelected({groupids: groups}))
+                }
+            } else {
+                const newgroupids = groupids?.slice(0, index + 1);
+                dispatch(setSelected({groupids: newgroupids}))
+            }
         }
-    },[])
+        else{
+           // dispatch(setSelected({groupids: ''}))
+        }
+
+
+
+
+    },[params?.groupid])
 
 
     return (
@@ -47,7 +76,8 @@ const Index = (props: any) => {
 
 const mapStateToProps = (state: any) => {
     return {
-        general: state.restaurantDetail?.general
+        general: state.restaurantDetail?.general,
+        ...state.selectedData
     }
 }
 

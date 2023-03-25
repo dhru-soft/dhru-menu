@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useEffect} from "react";
 
 
 import CompanyDetail from "../Navigation/CompanyDetail";
@@ -6,12 +6,15 @@ import ItemList from "./Items";
 import Init from "../Home/Init";
 import CartTotal from "../Cart/CartTotal";
 import CartHeader from "../Cart/CartHeader";
+import {useHistory, useParams} from "react-router-dom";
+import {setSelected} from "../../lib/redux-store/reducer/selected-data";
+import {connect} from "react-redux";
 
 const Index = (props) => {
 
 
     return (
-        <section>
+        <section >
 
             <Init/>
 
@@ -28,10 +31,7 @@ const Index = (props) => {
                             <div>
 
                                 <div>
-
-
                                     <CartHeader/>
-
 
                                     <ItemList/>
                                 </div>
@@ -55,5 +55,11 @@ const Index = (props) => {
 }
 
 
-export default Index;
+const mapStateToProps = (state) => {
+    return {
+        ...state.selectedData
+    }
+}
+
+export default connect(mapStateToProps)(Index);
 

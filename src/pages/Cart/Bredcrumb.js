@@ -74,16 +74,14 @@ const Index = (props) => {
                                 {Boolean(device?.groupid) && Boolean(groupids?.length)  ?  <>
                                     <li className="breadcrumb-item   pt-4 pb-2"><span onClick={()=>{
                                         setCurrentGroup('')
-                                        //navigate(+`-${groupids.length}`)
-                                        //dispatch(setSelected({groupids:''}))
                                     }}><i className={'fa fa-chevron-left'}></i> Back </span></li>
 
                                     {
                                          groupids?.map((gid,index)=>{
                                             return (
                                                 <li key={index} className="breadcrumb-item py-4" onClick={()=>{
-                                                    setCurrentGroup(gid)
-                                                }}><span>{groupList[gid]?.itemgroupname}</span></li>
+                                                    (groupids?.length - 1 !== index) && setCurrentGroup(gid)
+                                                }}><span>{groupList[gid]?.itemgroupname} </span></li>
                                             )
                                         })
                                     }
@@ -97,23 +95,12 @@ const Index = (props) => {
 
                     <div className="row">
                     {
-                        subgroup?.map((group,index)=>{
+                       device.groupid && subgroup?.map((group,index)=>{
                             return (
                                 <div  key={index}  onClick={()=>{
-                                    let groups = clone(groupids)
-                                    const find = groups.filter((key)=>{
-                                        return key === group?.itemgroupid
-                                    });
-                                    if(!Boolean(find.length)){
-                                        groups.push(group.itemgroupid)
-                                    }
                                     navigate(`/l/${device.locationid}/t/${device.tableid}/g/${group?.itemgroupid}`)
-                                    dispatch(setSelected({groupids: groups}))
                                 }}  className="text-center col-sm-4 col-lg-2 col-md-3 col-6 mb-3 cursor-pointer">
-
                                     <GroupBox item={group}/>
-
-
                                 </div>
                             )
                         })
