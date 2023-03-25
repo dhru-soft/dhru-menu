@@ -93,7 +93,7 @@ export const AddonAction = ({item, updateQnt, action}) => {
                     <button className="w-100 custom-btn custom-btn--medium custom-btn--style-2" onClick={() => {
                         dispatch(setModal({show: false}));
                     }} type="button" role="button">
-                        OK
+                        Update Qnt
                     </button>
                 </div>}
 
