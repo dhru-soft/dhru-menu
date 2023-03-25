@@ -38,10 +38,9 @@ const Index = (props: any) => {
             return key == device.groupid
         });
 
-
         if(Boolean(device.groupid)) {
-            if (index === -1) {
-                let groups = clone(groupids)
+            if (index === -1 || !Boolean(index)) {
+                let groups = clone(groupids) || []
                 const find = groups?.filter((key: any) => {
                     return key === device.groupid
                 });
@@ -56,12 +55,6 @@ const Index = (props: any) => {
                 dispatch(setSelected({groupids: newgroupids}))
             }
         }
-        else{
-           // dispatch(setSelected({groupids: ''}))
-        }
-
-
-
 
     },[params?.groupid])
 
