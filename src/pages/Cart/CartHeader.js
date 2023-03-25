@@ -37,9 +37,10 @@ const Index = (props) => {
                     </div>
                 </div>
 
-                <Bredcrumb/>
-
             </div>
+
+            <Bredcrumb/>
+
         </>
     )
 }

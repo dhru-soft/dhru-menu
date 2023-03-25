@@ -52,7 +52,7 @@ const Index = (props) => {
     if(Boolean(searchitem)){
 
         return (
-            <div className={'pt-3 pb-3 mt-3'}>
+            <div className={'pt-3 pb-3 mt-3  bread-section'}>
                 <nav>
                     <ol className="breadcrumb mb-0">
                         <li className="breadcrumb-item ps-2"><span> Search Result '{searchitem}'</span></li>
@@ -63,7 +63,7 @@ const Index = (props) => {
     }
 
     return (
-        <div className={'col-12'}>
+        <div className={'col-12 bread-section'}>
 
             <div>
                 <div className="">
