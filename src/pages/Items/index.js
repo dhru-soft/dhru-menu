@@ -32,7 +32,8 @@ const Index = (props) => {
                         <div className="container">
 
                             <div style={{display:'flex'}}>
-                                <div >
+
+                                <div>
                                     <div className={'bg-white p-4 rounded-4 mt-3'}>
                                         <StickyBox offsetTop={20} offsetBottom={20}>
                                             <div>
@@ -45,8 +46,8 @@ const Index = (props) => {
                                     <Bredcrumb/>
 
                                     <ItemList/>
-
                                 </div>
+
                             </div>
 
 
