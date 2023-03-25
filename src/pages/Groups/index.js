@@ -3,16 +3,10 @@ import {connect} from "react-redux";
 import Groups from "./Groups";
 
 import CompanyDetail from "../Navigation/CompanyDetail";
-
-import Search from "../Cart/Search";
-import Bredcrumb from "../Cart/Bredcrumb";
-import Diet from "../Cart/Diet";
-import {useNavigate, useParams} from "react-router-dom";
 import Init from "../Home/Init";
-import {device} from "../../lib/static";
 import CartTotal from "../Cart/CartTotal";
 import ItemList from "../Items/Items";
-import StickyBox from "react-sticky-box";
+import CartHeader from "../Cart/CartHeader";
 
 const Index = (props) => {
 
@@ -33,25 +27,15 @@ const Index = (props) => {
                         <div className="container">
 
                             <div>
-                                <div className={'bg-white p-4 rounded-4 mt-3'}>
-                                    <StickyBox offsetTop={20} offsetBottom={20}>
-                                        <Search/>
-                                        <Diet/>
-                                    </StickyBox>
-                                </div>
 
-                                <Bredcrumb />
+                                <CartHeader/>
 
-                                {(!Boolean(searchitem)) ? <div>
-                                    <Groups/>
-                                </div> : <div>
-                                    <ItemList/>
-                                </div>}
+                                {(!Boolean(searchitem)) ? <Groups/> : <ItemList/>}
 
                             </div>
 
 
-                            <CartTotal  page={'detailview'}/>
+                            <CartTotal page={'detailview'}/>
 
                         </div>
 
@@ -65,7 +49,6 @@ const Index = (props) => {
         </section>
     )
 }
-
 
 
 const mapStateToProps = (state) => {

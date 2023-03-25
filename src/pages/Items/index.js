@@ -1,20 +1,13 @@
 import React from "react";
-import {connect} from "react-redux";
 
 
 import CompanyDetail from "../Navigation/CompanyDetail";
 import ItemList from "./Items";
-import Search from "../Cart/Search";
-import Bredcrumb from "../Cart/Bredcrumb";
-import Diet from "../Cart/Diet";
-import {useParams} from "react-router-dom";
 import Init from "../Home/Init";
-import {device} from "../../lib/static";
 import CartTotal from "../Cart/CartTotal";
-import StickyBox, {useStickyBox} from "react-sticky-box";
+import CartHeader from "../Cart/CartHeader";
 
 const Index = (props) => {
-
 
 
     return (
@@ -23,6 +16,7 @@ const Index = (props) => {
             <Init/>
 
             <div className="">
+
 
                 <CompanyDetail/>
 
@@ -34,16 +28,10 @@ const Index = (props) => {
                             <div>
 
                                 <div>
-                                    <div className={'bg-white p-4 rounded-4 mt-3'}>
-                                        <StickyBox offsetTop={20} offsetBottom={20}>
-                                            <div>
-                                                <Search/>
-                                                <Diet/>
-                                            </div>
-                                        </StickyBox>
-                                    </div>
 
-                                    <Bredcrumb/>
+
+                                    <CartHeader/>
+
 
                                     <ItemList/>
                                 </div>
@@ -51,7 +39,7 @@ const Index = (props) => {
                             </div>
 
 
-                            <CartTotal  page={'detailview'}/>
+                            <CartTotal page={'detailview'}/>
 
                         </div>
 
@@ -67,6 +55,5 @@ const Index = (props) => {
 }
 
 
-
-export default  Index;
+export default Index;
 

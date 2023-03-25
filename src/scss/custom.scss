@@ -1,6 +1,7 @@
 body{
     color: $yiq-text-dark;
     overflow-x: hidden;
+    min-height: 800px;
 }
 html,body{
     height: 100%;
@@ -937,6 +938,7 @@ b, strong {
 .company-detail{
     background: rgb(92,147,63);
     background: linear-gradient(129deg, rgba(92,147,63,1) 0%, rgba(199,227,176,1) 100%);
+    margin-bottom: 10px;
 }
 
 .btn-add{
@@ -1057,4 +1059,22 @@ b, strong {
             }
         }
     }
+}
+
+
+
+
+
+.fixedTop {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 999;
+    background: #F4F5FA;
+    padding: 8px;
+    padding-bottom: 0;
+}
+.fixedTop + section{
+    margin-top: 130px;
 }

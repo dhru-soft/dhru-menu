@@ -72,7 +72,7 @@ const Index = (props) => {
                         <nav>
                             <ol className="breadcrumb mb-0 ps-3">
                                 {Boolean(device?.groupid) && Boolean(groupids?.length)  ?  <>
-                                    <li className="breadcrumb-item   py-4"><span onClick={()=>{
+                                    <li className="breadcrumb-item   pt-4 pb-2"><span onClick={()=>{
                                         setCurrentGroup('')
                                         //navigate(+`-${groupids.length}`)
                                         //dispatch(setSelected({groupids:''}))

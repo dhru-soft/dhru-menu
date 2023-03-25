@@ -1,22 +1,20 @@
-import React, {memo, useCallback, useEffect, useState} from "react";
+import React, {memo, useEffect, useState} from "react";
 import {connect, useDispatch} from "react-redux";
-import {ACTIONS, device, METHOD, STATUS, urls} from "../../lib/static";
-import apiService from "../../lib/api-service";
+import {device} from "../../lib/static";
 
-import {clone, getItemList, groupBy, isEmpty, numberFormat} from "../../lib/functions";
+import {clone, getItemList, isEmpty, numberFormat} from "../../lib/functions";
 import ReactReadMoreReadLess from "react-read-more-read-less";
 import Loader3 from "../../components/Loader/Loader3";
 import AddButton from "../Cart/AddButton";
 import store from "../../lib/redux-store/store";
-import {setItemDetail} from "../../lib/redux-store/reducer/item-detail";
 import {setModal} from "../../lib/redux-store/reducer/component";
 import ItemDetails from "../Cart/ItemDetails";
-import {setItem, setItemList} from "../../lib/redux-store/reducer/item-list";
+import {setItemList} from "../../lib/redux-store/reducer/item-list";
 import {LazyLoadImage} from "react-lazy-load-image-component";
 import {v4 as uuid} from "uuid";
 
 
-export const AddonAction = ({item,updateQnt,action}) => {
+export const AddonAction = ({item, updateQnt, action}) => {
     const dispatch = useDispatch();
 
     const {invoiceitems} = store.getState().cartData
@@ -32,24 +30,27 @@ export const AddonAction = ({item,updateQnt,action}) => {
             {
                 Boolean(filtered?.length > 1) && filtered?.map((item) => {
 
-                    const {itemname, productratedisplay, productqnt,itemaddon,notes} = item || {};
+                    const {itemname, productratedisplay, productqnt, itemaddon, notes} = item || {};
 
                     return <div className="col-12    item-hover  p-2 py-4" key={uuid()}>
                         <div className="d-flex p-2 h-100">
-                            <div className={'w-100'} >
+                            <div className={'w-100'}>
 
                                 <div className={'p-2 mt-auto '}>
                                     <div>
                                         <h4 style={{fontSize: '1.8rem'}}>{itemname} </h4>
-                                        <small className={'mb-2 text-muted'}> {productqnt} x {numberFormat(productratedisplay)} = {numberFormat(productqnt * productratedisplay)} </small>
+                                        <small
+                                            className={'mb-2 text-muted'}> {productqnt} x {numberFormat(productratedisplay)} = {numberFormat(productqnt * productratedisplay)} </small>
                                     </div>
 
                                     {Boolean(itemaddon?.length > 0) && <div>
                                         {
-                                            itemaddon?.map((addon,key)=>{
+                                            itemaddon?.map((addon, key) => {
                                                 const {itemname, productratedisplay} = addon;
                                                 return (
-                                                    <div key={key} ><small className={'mb-2 text-muted'}> {productqnt} x {itemname} =  {numberFormat(productqnt * productratedisplay)} </small></div>
+                                                    <div key={key}><small
+                                                        className={'mb-2 text-muted'}> {productqnt} x {itemname} = {numberFormat(productqnt * productratedisplay)} </small>
+                                                    </div>
                                                 )
                                             })
                                         }
@@ -76,30 +77,30 @@ export const AddonAction = ({item,updateQnt,action}) => {
             <div className={'d-flex justify-content-between align-items-center mt-3'}>
                 {action === 'add' && <div className={'w-100 me-3'}>
 
-                     <button className="w-100 custom-btn custom-btn--medium custom-btn--style-1" onClick={()=>{
+                    <button className="w-100 custom-btn custom-btn--medium custom-btn--style-1" onClick={() => {
                         dispatch(setModal({
                             show: true,
                             title: item.itemname,
                             height: '80%',
-                            component: () => <><ItemDetails itemDetail={{...item,productqnt:1,key:''}}     /></>
+                            component: () => <><ItemDetails itemDetail={{...item, productqnt: 1, key: ''}}/></>
                         }))
                     }} type="button" role="button">
                         Add New
                     </button>
                 </div>}
 
-                {filtered?.length > 1 &&  <div  className={'w-100'}>
-                    <button className="w-100 custom-btn custom-btn--medium custom-btn--style-2" onClick={()=>{
-                        dispatch(setModal({show:false}));
+                {filtered?.length > 1 && <div className={'w-100'}>
+                    <button className="w-100 custom-btn custom-btn--medium custom-btn--style-2" onClick={() => {
+                        dispatch(setModal({show: false}));
                     }} type="button" role="button">
                         OK
                     </button>
                 </div>}
 
-                {filtered?.length === 1 &&  <div  className={'w-100'}>
-                    <button className="w-100 custom-btn custom-btn--medium custom-btn--style-2" onClick={()=>{
-                        updateQnt('add',true);
-                        dispatch(setModal({show:false}));
+                {filtered?.length === 1 && <div className={'w-100'}>
+                    <button className="w-100 custom-btn custom-btn--medium custom-btn--style-2" onClick={() => {
+                        updateQnt('add', true);
+                        dispatch(setModal({show: false}));
                     }} type="button" role="button">
                         Repeat
                     </button>
@@ -109,16 +110,16 @@ export const AddonAction = ({item,updateQnt,action}) => {
     )
 }
 
-export const ItemBox = memo(({item})=>{
+export const ItemBox = memo(({item}) => {
 
 
-    const [updateItem,setUpdateItem] = useState(item);
+    const [updateItem, setUpdateItem] = useState(item);
 
-    useEffect(()=>{
+    useEffect(() => {
         setUpdateItem(item)
-    },[item])
+    }, [item])
 
-    const {itemname, itemimage, price, itemdescription, veg,itemid, addbutton} = updateItem;
+    const {itemname, itemimage, price, itemdescription, veg, itemid, addbutton} = updateItem;
 
     const diat = {
         veg: {color: '#659a4a', icon: 'leaf'},
@@ -135,7 +136,7 @@ export const ItemBox = memo(({item})=>{
                         <div className={'flex-nowrap'}>
                             {veg && <div><i style={{color: diat[veg].color}} className={`fa fa-${diat[veg].icon}`}></i>
                             </div>}
-                            <h4 style={{fontSize:'1.8rem'}}>{itemname} </h4>
+                            <h4 style={{fontSize: '1.8rem'}}>{itemname} </h4>
                             <h6 className={'mb-2'}> {numberFormat(price)} </h6>
                         </div>
                         <div className={'text-muted mt-3'}>
@@ -156,16 +157,16 @@ export const ItemBox = memo(({item})=>{
                         {itemimage && <LazyLoadImage
                             alt={''}
                             src={`https://${itemimage}`}
-                            style={{maxWidth:'100%',borderRadius:5}}
+                            style={{maxWidth: '100%', borderRadius: 5}}
                         />}
                     </div>
-                    {addbutton &&  <AddButton item={updateItem} merger={true} updateItem={setUpdateItem}/>}
+                    {addbutton && <AddButton item={updateItem} merger={true} updateItem={setUpdateItem}/>}
                 </div>
             </div>
         </div>
     )
-},(r1,r2)=>{
-    return ((r1.item.productqnt === r2.item.productqnt) && (r1.item.mergeqnt === r2.item.mergeqnt) &&  (r1.item.itemid === r2.item.itemid));
+}, (r1, r2) => {
+    return ((r1.item.productqnt === r2.item.productqnt) && (r1.item.mergeqnt === r2.item.mergeqnt) && (r1.item.itemid === r2.item.itemid));
 })
 
 
@@ -180,15 +181,15 @@ const Items = (props) => {
     const urlSearchParams = new URLSearchParams(window.location.search);
     const params = Object.fromEntries(urlSearchParams.entries());
 
-    const {tableorder,online} = device?.order || {};
-    const {groupids, selectedtags, searchitem,invoiceitems,itemList} = props;
+    const {tableorder, online} = device?.order || {};
+    const {groupids, selectedtags, searchitem, invoiceitems, itemList} = props;
 
     const hasAdd = (tableorder && params.table) || ((online || tableorder) && !params.table)
 
 
     const getItems = async () => {
 
-        const selectedDiat = Boolean(selectedtags?.length > 0) && selectedtags.filter((tag)=>{
+        const selectedDiat = Boolean(selectedtags?.length > 0) && selectedtags.filter((tag) => {
             return tag.selected
         })?.map((tag) => {
             return tag.value
@@ -202,8 +203,7 @@ const Items = (props) => {
                 ...queryString,
                 search: searchitem
             }
-        }
-        else if (Boolean(itemgroupid)) {
+        } else if (Boolean(itemgroupid)) {
             queryString = {
                 ...queryString,
                 itemgroupid: itemgroupid
@@ -217,12 +217,12 @@ const Items = (props) => {
         }
 
 
-        const {tags,search} = queryString;
+        const {tags, search} = queryString;
 
         const mergeCart = (items) => {
 
             //////// SAVE FOR LOCAL REDUX BY GROUP
-            if(!Boolean(tags) && !Boolean(search)) {
+            if (!Boolean(tags) && !Boolean(search)) {
                 dispatch(setItemList({[itemgroupid]: items}))
             }
 
@@ -231,7 +231,7 @@ const Items = (props) => {
 
                 let qntbyitem = {}
                 invoiceitems.map((item) => {
-                    if(!Boolean(qntbyitem[item.itemid])){
+                    if (!Boolean(qntbyitem[item.itemid])) {
                         qntbyitem[item.itemid] = 0
                     }
                     qntbyitem[item.itemid] += item.productqnt
@@ -241,7 +241,7 @@ const Items = (props) => {
                     if (Boolean(items[item?.itemid])) {
                         items = {
                             ...items,
-                            [item?.itemid]: {...item,mergeqnt:qntbyitem[item?.itemid] || 0},
+                            [item?.itemid]: {...item, mergeqnt: qntbyitem[item?.itemid] || 0},
                         }
                     }
                 })
@@ -250,14 +250,13 @@ const Items = (props) => {
         }
 
 
-        if(!itemList.hasOwnProperty(itemgroupid) || (Boolean(tags) || Boolean(search))){
+        if (!itemList.hasOwnProperty(itemgroupid) || (Boolean(tags) || Boolean(search))) {
             //////// CHECK IF NOT IN REDUX AND GET FROM REMOTE
             getItemList(queryString).then((items) => {
                 setLoader(true)
                 mergeCart(items)
             })
-        }
-        else {
+        } else {
 
             //////// MERGE ITEMS IF EXISTS IN LOCAL REDUX
             setLoader(true)
@@ -265,12 +264,11 @@ const Items = (props) => {
         }
 
 
-
     }
 
     useEffect(() => {
         getItems().then()
-    }, [groupids, selectedtags,invoiceitems, searchitem])
+    }, [groupids, selectedtags, invoiceitems, searchitem])
 
     if (!loader) {
         return <Loader3/>
@@ -281,15 +279,15 @@ const Items = (props) => {
     }
 
 
-
     return (
         <>
             <section>
+
                 <div className="container bg-white rounded-4">
                     <div className="row">
                         {
                             Object.keys(items).map((key) => {
-                                return <ItemBox key={key} item={{...items[key], itemid: key,addbutton : hasAdd}}/>
+                                return <ItemBox key={key} item={{...items[key], itemid: key, addbutton: hasAdd}}/>
                             })
                         }
                     </div>
@@ -301,8 +299,8 @@ const Items = (props) => {
 
 const mapStateToProps = (state) => {
     return {
-        invoiceitems:state.cartData.invoiceitems,
-        itemList:state?.itemList || {},
+        invoiceitems: state.cartData.invoiceitems,
+        itemList: state?.itemList || {},
         ...state.selectedData
     }
 }
