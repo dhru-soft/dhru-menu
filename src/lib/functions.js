@@ -882,3 +882,10 @@ export  const getGroups = async (groupList) => {
         });
     }
 }
+
+
+export default function applyTheme(styles) {
+    Object.keys(styles).map((key)=>{
+        document.documentElement.style.setProperty(key, styles[key])
+    })
+}

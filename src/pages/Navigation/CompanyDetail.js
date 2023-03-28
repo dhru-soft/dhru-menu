@@ -1,15 +1,26 @@
 import React, {Component, Fragment} from "react";
-import {getCompanyDetails} from "../../lib/functions";
+import setBodyColor, {getCompanyDetails} from "../../lib/functions";
 import {connect} from "react-redux";
 import {device} from "../../lib/static";
+import applyTheme from "../../lib/functions";
 
 
 const Index = ({clientDetail}) => {
 
     const {clientname,displayname} = clientDetail;
     let {tablename,locationname,address1,address2,download_url} = getCompanyDetails();
-    const themecolor = device?.order?.themecolor || '#5C933FFF'
+    const themecolor = device?.order?.themecolor || '#5C933F'
 
+    applyTheme({
+        '--bodyColor': `${themecolor}10`,
+        '--bs-border-color':`${themecolor}20`,
+        '--cartTotalColor':`${themecolor}`,
+        '--dashed-border':`${themecolor}40`,
+        '--text-muted':`${themecolor}90`,
+        '--btn-color':`${themecolor}`,
+        '--textbox-border':`#dddddd`,
+        '--item-hover':`${themecolor}10`,
+    })
 
     return (
             <div className="container p-0">

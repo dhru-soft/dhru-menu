@@ -1,10 +1,11 @@
 body{
     color: $yiq-text-dark;
     overflow-x: hidden;
+
 }
 html,body{
     height: 100%;
-    background: #F4F5FA;
+    background-color: var(--bodyColor);
 }
 @font-face {
   font-family: "myriad-pro";
@@ -344,9 +345,12 @@ a.cursor-pointer[data-href]{
 .pricing-table .__desc-list{
     border-radius: 20px;
 }
+
+
+
 .custom-btn.custom-btn--style-4,.custom-btn.custom-btn--style-2:before{
-    background-color: $button-color;
-    border-color: $button-color;
+    background-color: var(--btn-color);
+    border-color: var(--btn-color);
 }
 
 .top-bar--light .top-bar__navigation ul:hover a.active:not(.custom-btn):after{
@@ -354,7 +358,7 @@ a.cursor-pointer[data-href]{
 }
 
 .top-bar--light .top-bar__navigation a:not(.custom-btn):after,.top-bar__navigation .submenu a:after {
-    background-color: $button-color;
+    background-color: var(--btn-color);
 }
 .custom-btn.custom-btn--style-4:hover, .custom-btn.custom-btn--style-4:focus{
     outline: none;
@@ -902,13 +906,21 @@ b, strong {
 }
 
 .form input.textfield,.form .textfield, .form .css-13cymwt-control {
+
     height: 45px;
-    border-color: rgb(230, 232, 240);
+    border-color: var(--textbox-border);
     border-width: 1px;
     &.textfield2{
         border-radius:10px;
-        border-color:#E6E8F0;
-        border-width:1px
+        border-color:var(--textbox-border);
+        border-width:1px;
+        padding: 15px;
+    }
+    &.textfield3{
+        border-radius:10px;
+        border-color:#ddd;
+        border-width:1px;
+        padding: 15px;
     }
 }
 
@@ -922,7 +934,7 @@ b, strong {
 }
 
 .item-hover{
-    border-bottom: dashed 1px #ddd;
+    border-bottom: dashed 1px var(--dashed-border);
     &:nth-child(2n+1){
 
     }
@@ -931,7 +943,7 @@ b, strong {
     }
     &:hover {
         /*box-shadow: 0 0 10px #e2e2e2;*/
-        background: #fafafa;
+        background: var(--item-hover);
     }
 }
 
@@ -995,8 +1007,8 @@ b, strong {
 
 .input-otp{
     & input{
-        width: 46px;
-        height: 46px;
+        width: 51px;
+        height: 51px;
         padding: 0;
         font-size: 24px;
         text-align: center;
@@ -1075,4 +1087,12 @@ b, strong {
 }
 .fixedTop + section{
     margin-top: 130px;
+}
+
+.cart-total{
+    background-color: var(--cartTotalColor);
+}
+
+.text-muted{
+    color:var(--text-muted) !important;
 }

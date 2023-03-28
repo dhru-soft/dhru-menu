@@ -60,7 +60,7 @@ const Index = (props) => {
                                                 <Field name="accesscode" validate={ required}>
                                                     {({input, meta}) => (
                                                         <div className="input-wrp">
-                                                            <input className="textfield textfield2" type="tel" {...input}
+                                                            <input className="textfield textfield3" type="tel" {...input}
                                                                    placeholder="QR ID"/>
                                                             {meta.touched && meta.error &&
                                                                 <div className={'text-center text-danger  mt-2'}>QR
@@ -77,7 +77,8 @@ const Index = (props) => {
 
                                             <div>
                                                 <button
-                                                    className="w-100 custom-btn custom-btn--medium custom-btn--style-4"
+                                                    className="w-100 custom-btn custom-btn--large custom-btn--style-1"
+                                                    style={{height:45}}
                                                     onClick={() => {
 
                                                         handleSubmit(values)

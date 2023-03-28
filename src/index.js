@@ -23,11 +23,12 @@ export const history = createBrowserHistory({
 
 const JSX = () => {
 
+
     return (
         <Provider store={store}>
             <BrowserRouter history={history}>
 
-                    <div className={'h-100 d-flex flex-column'}>
+                    <div className={'h-100 d-flex flex-column'} >
                         <Header location={history.location} />
                         <RoutingComponent />
                         <Footer/>

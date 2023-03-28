@@ -37,7 +37,7 @@ const Index = (props) => {
 
             <div className={'container'}>
 
-                <div className={'  rounded-3  p-4'} style={{background:themecolor}}>
+                <div className={'  rounded-3  p-4 cart-total'}  >
 
                     {summary && <CartSummary/>}
 
