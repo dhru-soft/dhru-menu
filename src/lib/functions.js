@@ -268,6 +268,8 @@ export const getCompanyDetails = () => {
         order = ord
     }
     device.order = order;
+
+    setTheme(device?.order?.themecolor || '#5C933F')
     return {download_url, locationname, address1, address2, tablename}
 }
 
@@ -887,5 +889,20 @@ export  const getGroups = async (groupList) => {
 export default function applyTheme(styles) {
     Object.keys(styles).map((key)=>{
         document.documentElement.style.setProperty(key, styles[key])
+    })
+}
+
+
+export const setTheme = (themecolor) => {
+    applyTheme({
+        '--bodyColor': `${themecolor}10`,
+        '--bs-border-color': `${themecolor}20`,
+        '--cartTotalColor': `${themecolor}`,
+        '--cartTotalColor2': `${themecolor}60`,
+        '--dashed-border': `${themecolor}40`,
+        '--text-muted': `${themecolor}90`,
+        '--btn-color': `${themecolor}db`,
+        '--textbox-border': `#dddddd`,
+        '--item-hover': `${themecolor}10`,
     })
 }

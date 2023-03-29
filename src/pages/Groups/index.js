@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useEffect} from "react";
 import {connect} from "react-redux";
 import Groups from "./Groups";
 
@@ -7,13 +7,20 @@ import Init from "../Home/Init";
 import CartTotal from "../Cart/CartTotal";
 import ItemList from "../Items/Items";
 import CartHeader from "../Cart/CartHeader";
+import BodyClassName from 'react-body-classname';
+import Theme from "../Home/Theme";
 
 const Index = (props) => {
 
     let {searchitem} = props;
 
+
+
     return (
-        <section>
+        <BodyClassName className="groups">
+            <section>
+
+                <Theme/>
 
             <Init/>
 
@@ -47,6 +54,7 @@ const Index = (props) => {
             </div>
 
         </section>
+        </BodyClassName>
     )
 }
 

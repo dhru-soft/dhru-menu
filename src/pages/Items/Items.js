@@ -139,7 +139,7 @@ export const ItemBox = memo(({item}) => {
                             <h4 style={{fontSize: '1.8rem'}}>{itemname} </h4>
                             <h6 className={'mb-2'}> {numberFormat(price)} </h6>
                         </div>
-                        <div className={'text-muted mt-3'}>
+                        <div className={'mt-3'}>
                             <ReactReadMoreReadLess
                                 charLimit={50}
                                 readMoreText={"Read more"}

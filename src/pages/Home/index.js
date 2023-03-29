@@ -5,9 +5,7 @@ import {device, required} from "../../lib/static";
 import {getWorkspaceName, postQrCode} from "../../lib/functions";
 import {connect} from "react-redux";
 import Restaurant from "../Restaurant";
-import store from "../../lib/redux-store/store";
-import {setModal} from "../../lib/redux-store/reducer/component";
-import Login from "../Login";
+import BodyClassName from 'react-body-classname';
 
 const Index = (props) => {
 
@@ -36,8 +34,9 @@ const Index = (props) => {
     }
 
 
+
     return (
-        <>
+        <BodyClassName className={'qrcode'}>
             <div className="position-relative   h-100">
                 <div className={'container p-4'}>
                     <div className="row justify-content-xl-between pt-5">
@@ -99,7 +98,7 @@ const Index = (props) => {
                     </div>
                 </div>
             </div>
-        </>
+        </BodyClassName>
     )
 
 

@@ -29,14 +29,15 @@ const Index = (props) => {
         <>
 
             <div className={'mainHeader'}  id="mainHeader" ref={stickyHeader}>
-
-                <div className={'bg-white p-4 rounded-4'} >
-                    <div>
-                        <Search/>
-                        <Diet/>
+                <div className={'supported'}>
+                    <div className={'bg-white p-4 rounded-4'} >
+                        <div>
+                            <Search/>
+                            <Diet/>
+                        </div>
                     </div>
+                    <Bredcrumb/>
                 </div>
-                <Bredcrumb/>
             </div>
 
 

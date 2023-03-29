@@ -1,12 +1,16 @@
 import React, {useEffect, useState} from "react";
 import {connect} from "react-redux";
 
+
 import {useNavigate, useParams} from "react-router-dom";
 import {getInit, isEmpty, postQrCode} from "../../lib/functions";
 
 import {device} from "../../lib/static";
 
-const Index = (props: any) => {
+import BodyClassName from 'react-body-classname';
+import Theme from "../Home/Theme";
+
+const Index = (props) => {
 
     const params = useParams();
 
@@ -37,13 +41,14 @@ const Index = (props: any) => {
     }, [accesscode])
 
 
+
     if(!loader){
         return <div className="col-12   text-center mt-5 pt-5">
                 Please Wait
         </div>
     }
 
-    const {general: {legalname, logo}, location, tabledetail: {tablename, locationid}}: any = restaurantDetail;
+    const {general: {legalname, logo}, location, tabledetail: {tablename, locationid}} = restaurantDetail;
 
     if (!Boolean(legalname)) {
         return (
@@ -59,9 +64,10 @@ const Index = (props: any) => {
 
     return (
 
-        <>
-
-            <section className="h-100 restaurant-bg">
+        <BodyClassName className={'restaurant'}>
+            <>
+                <Theme/>
+                <section className="h-100 restaurant-bg">
 
                 <div className={'h-100'}  >
 
@@ -80,30 +86,29 @@ const Index = (props: any) => {
 
                                     <div className="section-heading section-heading--center">
                                         <h2
-                                            className="__title text-white">
-                                            <div
-                                                style={{color: '#ffdb00'}}>{legalname}</div>
+                                            className="__title invert-effect">
+                                            <div>{legalname}</div>
                                         </h2>
-                                        {Boolean(tablename) && <h6 className="__subtitle text-white"> {tablename} </h6>}
+                                        {Boolean(tablename) && <h6 className="__subtitle"> {tablename} </h6>}
                                     </div>
 
                                     <>
 
-                                        {!isEmpty(location) && <div className={'px-5'}>
+                                        {!isEmpty(location) && <div className={'px-3'}>
                                             {
                                                 Object.keys(location).map((key) => {
                                                     const {name, address1, address2, city} = location[key]
-                                                    return <div key={key} className={'mb-2'}>
+                                                    return <div key={key} className={'mb-3'}>
                                                         <div onClick={() => {
                                                             navigate(`/l/${key}/t/0`)
-                                                        }} className={'text-white border p-3 d-flex justify-content-between align-items-center cursor-pointer'}
+                                                        }} className={'border  location-list p-4 d-flex justify-content-between align-items-center cursor-pointer'}
                                                              style={{borderRadius: 5}}>
                                                             <div>
-                                                                <h4 className={'text-white'}>{name}</h4>
-                                                                <small>{address1} {address2} {city}</small>
+                                                                <h4 className={'invert-effect'}>{name}</h4>
+                                                                <h6 className={'invert-effect'}>{address1} {address2} {city}</h6>
                                                             </div>
                                                             <div>
-                                                                <i className={'fa fa-chevron-right'}></i>
+                                                                <h6  className={'invert-effect'}><i className={'fa fa-chevron-right'}></i></h6>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -115,13 +120,13 @@ const Index = (props: any) => {
 
 
                                     {isEmpty(location) && <div className={'text-center'}>
-                                         <h1 className={'text-white'}>Coming Soon</h1>
+                                         <h1>Coming Soon</h1>
                                     </div>}
 
                                 </> : <>
                                     <div className="section-heading section-heading--center">
                                         <h4
-                                            className="__title text-white">Opps! <div
+                                            className="__title">Opps! <div
                                             style={{color: '#ff0000'}}>Something went wrong</div></h4>
                                     </div>
                                 </>}
@@ -135,13 +140,14 @@ const Index = (props: any) => {
                 </div>
 
             </section>
-        </>
+            </>
+        </BodyClassName>
 
 
     );
 }
 
-const mapStateToProps = (state: any) => {
+const mapStateToProps = (state) => {
     return {
         restaurantDetail: state.restaurantDetail
     }

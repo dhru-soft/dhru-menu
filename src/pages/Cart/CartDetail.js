@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useEffect} from "react";
 import {connect} from "react-redux";
 
 import CompanyDetail from "../Navigation/CompanyDetail";
@@ -12,7 +12,7 @@ import {v4 as uuid} from "uuid";
 import store from "../../lib/redux-store/store";
 import {setModal} from "../../lib/redux-store/reducer/component";
 import ItemDetails from "./ItemDetails";
-
+import BodyClassName from 'react-body-classname';
 
 const Index = (props) => {
 
@@ -21,8 +21,11 @@ const Index = (props) => {
 
     const {invoiceitems} = props;
 
+
+
     return (
-        <section>
+        <BodyClassName className="cartdetail">
+            <section>
 
             <Init/>
 
@@ -126,6 +129,7 @@ const Index = (props) => {
             </div>
 
         </section>
+        </BodyClassName>
     )
 }
 

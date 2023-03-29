@@ -6,14 +6,17 @@ import ItemList from "./Items";
 import Init from "../Home/Init";
 import CartTotal from "../Cart/CartTotal";
 import CartHeader from "../Cart/CartHeader";
+import BodyClassName from 'react-body-classname';
+import Theme from "../Home/Theme";
 
 
 const Index = (props) => {
 
 
     return (
-        <section >
-
+        <BodyClassName className="items">
+            <section >
+             <Theme/>
             <Init/>
 
             <div className="">
@@ -27,13 +30,10 @@ const Index = (props) => {
                         <div className="container">
 
                             <div>
-
                                 <div>
                                     <CartHeader/>
-
                                     <ItemList/>
                                 </div>
-
                             </div>
 
 
@@ -49,6 +49,7 @@ const Index = (props) => {
             </div>
 
         </section>
+        </BodyClassName>
     )
 }
 

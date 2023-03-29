@@ -18,7 +18,7 @@ const OTPCounter = ({mobile}) => {
     const renderer = ({hours, minutes, seconds, completed}) => {
         return <div className={'d-flex justify-content-between align-items-center'}>
             <div>
-                <div style={{color: '#3174de'}} className={!completed ? 'text-muted' : ''} onClick={() => {
+                <div   className={!completed ? '' : 'text-muted'} onClick={() => {
                     if(completed) {
                         setDate(Date.now() + 30000)
                         counterRef.current.api.start()
@@ -88,7 +88,7 @@ const Index = ({clientDetail}) => {
                     <div className={'my-3'}>
 
                         <div className={'mb-3'}> OTP was sent to mobile {mobile}  </div>
-                        <div className={'mb-5'} style={{color: '#3174de'}} onClick={() => {
+                        <div className={'mb-5 text-muted'}  onClick={() => {
                             clientDetail = {
                                 ...clientDetail,
                                 verifymobile: '',

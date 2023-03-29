@@ -39,10 +39,11 @@ const Search = (props: any) => {
                 onChangeSearch(e)
             }}   name="search" type="text" style={{paddingLeft:40}}/>
 
-            <div className={'position-absolute p-4'} onClick={()=>{
+            {Boolean(searchQuery?.length) &&  <div className={'position-absolute p-4'} onClick={()=>{
                 searchRf.current.value = "";
-                setSearchQuery('')
-            }} style={{right:0,top:0}}>  <i className={'fa fa-times'}></i> </div>
+                setSearchQuery('');
+                searchRf.current.focus()
+            }} style={{right:0,top:0}}>  <i className={'fa fa-times'}></i> </div>}
         </div>
     );
 };

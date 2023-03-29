@@ -9,10 +9,10 @@ import {device} from "../../lib/static";
 const TableRow = ({item}) => {
     return (
         <>
-            {Boolean(item?.value) &&  <div className={'d-flex justify-content-between align-items-center  mb-3'}>
-                <div><div>{item.label}</div></div>
+            {Boolean(item?.value) &&  <div className={'d-flex justify-content-between align-items-center  mb-3  invert-effect'}>
+                <h6 className={'m-0 p-0'}><div>{item.label}</div></h6>
                 <div>
-                    <div>{numberFormat(item?.value || 0)}</div>
+                    <h6  className={'m-0 p-0'}>{numberFormat(item?.value || 0)}</h6>
                 </div>
             </div>}
         </>
@@ -37,7 +37,7 @@ const Index = (props) => {
 
 
     if(!loader){
-        return <div className={'text-center p-5'}>Loading</div>
+        return <div className={'text-center p-5  invert-effect'}>Loading</div>
     }
 
     return (

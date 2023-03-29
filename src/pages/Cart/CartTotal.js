@@ -37,17 +37,19 @@ const Index = (props) => {
 
             <div className={'container'}>
 
-                <div className={'  rounded-3  p-4 cart-total'}  >
+                <div className={'  rounded-3  p-4 cart-total company-detail'}  >
 
                     {summary && <CartSummary/>}
 
                     <div className={'d-flex  justify-content-between align-items-center'}>
-                        <div className={'cursor-pointer'} onClick={() => setSummary(!summary)}>
-                            <div><small>Items : {invoiceitems?.length}</small></div>
+                        <div className={'cursor-pointer invert-effect'} onClick={() => setSummary(!summary)}>
+                            <div><h6>Items : {invoiceitems?.length}</h6></div>
                             <h4 className={'mb-0'}> {numberFormat(vouchertotaldisplay)}</h4>
                         </div>
-                        <div className={'p-4  text-center w-100  cursor-pointer'} onClick={() => setSummary(!summary)}>
-                            <i className={`fa fa-chevron-${summary ? 'down' : 'up'}`}></i>
+                        <div className={'  invert-effect'}>
+                            <h6 className={'p-4 m-0 text-center w-100  cursor-pointer'} onClick={() => setSummary(!summary)}>
+                                <i className={`fa fa-chevron-${summary ? 'down' : 'up'}`}></i>
+                            </h6>
                         </div>
                         <div>
 

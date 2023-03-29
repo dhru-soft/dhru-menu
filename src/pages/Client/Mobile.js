@@ -45,7 +45,7 @@ const Index = ({clientDetail,visitorcountry}) => {
                             <div className={'my-3 toggle'} ref={countryRef}>
 
                                 <div className={'py-3 show'}>
-                                    We are think you are from {country.label}. <label style={{color: '#3174de'}} onClick={() => {
+                                    We are think you are from {country.label}. <label className ={'text-muted'} onClick={() => {
                                     countryRef.current?.classList.toggle('inverse')
                                 }}> Change Country</label>
                                 </div>
