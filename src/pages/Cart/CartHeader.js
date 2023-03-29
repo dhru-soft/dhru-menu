@@ -29,8 +29,8 @@ const Index = (props) => {
         <>
 
             <div className={'mainHeader'}  id="mainHeader" ref={stickyHeader}>
-                <div className={'supported'}>
-                    <div className={'bg-white p-4 rounded-4'} >
+                <div className={'supported  pt-3'}>
+                    <div className={'bg-white p-4 rounded-4 shadow'} >
                         <div>
                             <Search/>
                             <Diet/>
