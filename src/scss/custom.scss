@@ -271,7 +271,7 @@ body{
 .top-bar a:not(.custom-btn),.breadcrumb-item + .breadcrumb-item,.top-bar--light .top-bar__navigation a:not(.custom-btn).active{
     color:$secondary-textcolor;
     text-overflow: ellipsis;
-    max-width: 200px;
+    max-width: 230px;
     overflow: hidden;
 }
 .section{
