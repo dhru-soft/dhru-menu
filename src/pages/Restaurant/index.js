@@ -86,10 +86,10 @@ const Index = (props) => {
 
                                     <div className="section-heading section-heading--center">
                                         <h2
-                                            className="__title invert-effect">
+                                            className="__title text-white">
                                             <div>{legalname}</div>
                                         </h2>
-                                        {Boolean(tablename) && <h6 className="__subtitle"> {tablename} </h6>}
+                                        {Boolean(tablename) && <h6 className="__subtitle  text-white"> {tablename} </h6>}
                                     </div>
 
                                     <>
@@ -103,13 +103,13 @@ const Index = (props) => {
                                                               style={{borderRadius: 5}}  >
                                                             <div onClick={() => {
                                                                 navigate(`/l/${key}/t/0`)
-                                                            }}  className={' p-4 d-flex justify-content-between align-items-center cursor-pointer'} style={{borderRadius: 5,background:'#00000050'}}>
+                                                            }}  className={' p-4 text-white d-flex justify-content-between align-items-center cursor-pointer'} style={{borderRadius: 5,background:'#00000050'}}>
                                                                 <div>
-                                                                    <h4 className={'invert-effect'}>{name}</h4>
-                                                                    <h6 className={'invert-effect'}>{address1} {address2} {city}</h6>
+                                                                    <div className={'mb-3'} style={{fontSize:20}}>{name}</div>
+                                                                    <div  style={{fontSize:14}}>{address1} {address2} {city}</div>
                                                                 </div>
                                                                 <div>
-                                                                    <h6  className={'invert-effect'}><i className={'fa fa-chevron-right'}></i></h6>
+                                                                    <div><i className={'fa fa-chevron-right'}></i></div>
                                                                 </div>
                                                             </div>
                                                         </div>
