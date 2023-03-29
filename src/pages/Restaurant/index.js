@@ -99,16 +99,18 @@ const Index = (props) => {
                                                 Object.keys(location).map((key) => {
                                                     const {name, address1, address2, city} = location[key]
                                                     return <div key={key} className={'mb-3'}>
-                                                        <div onClick={() => {
-                                                            navigate(`/l/${key}/t/0`)
-                                                        }} className={'border  location-list p-4 d-flex justify-content-between align-items-center cursor-pointer'}
-                                                             style={{borderRadius: 5}}>
-                                                            <div>
-                                                                <h4 className={'invert-effect'}>{name}</h4>
-                                                                <h6 className={'invert-effect'}>{address1} {address2} {city}</h6>
-                                                            </div>
-                                                            <div>
-                                                                <h6  className={'invert-effect'}><i className={'fa fa-chevron-right'}></i></h6>
+                                                        <div  className={'location-list'}
+                                                              style={{borderRadius: 5}}  >
+                                                            <div onClick={() => {
+                                                                navigate(`/l/${key}/t/0`)
+                                                            }}  className={' p-4 d-flex justify-content-between align-items-center cursor-pointer'} style={{borderRadius: 5,background:'#00000050'}}>
+                                                                <div>
+                                                                    <h4 className={'invert-effect'}>{name}</h4>
+                                                                    <h6 className={'invert-effect'}>{address1} {address2} {city}</h6>
+                                                                </div>
+                                                                <div>
+                                                                    <h6  className={'invert-effect'}><i className={'fa fa-chevron-right'}></i></h6>
+                                                                </div>
                                                             </div>
                                                         </div>
                                                     </div>

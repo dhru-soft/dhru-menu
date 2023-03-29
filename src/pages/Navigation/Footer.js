@@ -7,7 +7,7 @@ export class Footer extends Component {
 
         return (
             <Fragment>
-                 <section className="" style={{paddingBottom:100}}>
+                 <section className="">
                     <footer className="footer footer--s3 footer--color-dark">
                         <div className="p-5">
                             <div className="container">
@@ -15,7 +15,7 @@ export class Footer extends Component {
                                 <div className="row">
                                     <div className="col-12 text-center">
                                         <div>
-                                            <small className="text-muted">Powered by Dhru ERP</small>
+                                            <label className="power-by"><label>Powered by Dhru ERP </label></label>
 
                                         </div>
                                       </div>

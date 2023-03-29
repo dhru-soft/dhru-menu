@@ -948,7 +948,7 @@ b, strong {
     }
     &:hover {
         /*box-shadow: 0 0 10px #e2e2e2;*/
-        background: var(--item-hover);
+
     }
 }
 
@@ -1114,13 +1114,42 @@ b, strong {
 }
 
 .restaurant{
-    background: var(--cartTotalColor);
-    background: linear-gradient(145deg, var(--cartTotalColor) 0%, var(--cartTotalColor2) 100%);
+    background-image: url("../assets/images/food_bg.svg");
     .location-list{
         background: var(--btn-color);
     }
+    #root{
+        background: var(--cartTotalColor);
+        background: linear-gradient(145deg, var(--cartTotalColor) 0%, var(--cartTotalColor2) 100%);
+    }
 }
+
+body{
+    .power-by{
+        background: var(--btn-color);
+        border-radius: 5px;
+        label{
+            background: rgba(0, 0, 0, 0.314);
+            color:white;
+            padding:3px 10px;
+            border-radius: 5px;
+            font-size: 12px;
+        }
+    }
+}
+
+/*.groups{
+    background-image: url("../assets/images/food_bg.svg");
+    #root{
+        background: var(--bodyColor);
+    }
+}*/
+
 
 h6, .h6,{
     text-transform: capitalize;
+}
+
+.background-gradiant{
+    background: linear-gradient(180deg, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.790354) 100%);
 }
