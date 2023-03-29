@@ -1,9 +1,12 @@
 import React, {Component, Fragment} from "react";
 import {connect} from "react-redux";
+import {device} from "../../lib/static";
 
 export class Footer extends Component {
-    render() {
 
+
+
+    render() {
 
         return (
             <Fragment>
@@ -15,9 +18,11 @@ export class Footer extends Component {
                                 <div className="row">
                                     <div className="col-12 text-center">
                                         <div>
-                                            <label className="power-by"><label>Powered by Dhru ERP </label></label>
-
+                                            <label className="power-by" ><label onClick={()=>{
+                                                window.open(`https://www.dhru.com/?fromid=${device.workspace}`, '_blank');
+                                            }}>Powered by Dhru ERP </label></label>
                                         </div>
+
                                       </div>
                                 </div>
 
