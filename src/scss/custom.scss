@@ -239,6 +239,7 @@ body{
     font-weight: 300;
     display: inline-block !important;
     padding: 0;
+    white-space: nowrap;
 }
 .start-screen{
     border-bottom: #eee solid 1px;
@@ -268,7 +269,10 @@ body{
     display: none !important;
 }
 .top-bar a:not(.custom-btn),.breadcrumb-item + .breadcrumb-item,.top-bar--light .top-bar__navigation a:not(.custom-btn).active{
-    color:$secondary-textcolor
+    color:$secondary-textcolor;
+    text-overflow: ellipsis;
+    max-width: 200px;
+    overflow: hidden;
 }
 .section{
     background: white;
@@ -1063,6 +1067,7 @@ b, strong {
             height: 100%;
             & .modal-content{
                 border-radius: 0;
+                border: none;
             }
         }
         .modal-content{
