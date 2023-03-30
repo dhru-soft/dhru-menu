@@ -1,11 +1,15 @@
 import React, {Component, Fragment} from "react";
 import setBodyColor, {getCompanyDetails} from "../../lib/functions";
-import {connect} from "react-redux";
+import {connect, useDispatch} from "react-redux";
+import {device} from "../../lib/static";
+import store from "../../lib/redux-store/store";
+import {setClientDetail} from "../../lib/redux-store/reducer/client-detail";
 
 
 const Index = ({clientDetail}) => {
 
-    const {clientname,displayname} = clientDetail;
+    const dispatch = useDispatch()
+    const {clientname,displayname,token} = clientDetail;
     let {tablename,locationname,address1,address2,download_url} = getCompanyDetails();
 
 
@@ -27,6 +31,13 @@ const Index = ({clientDetail}) => {
 
                                 {tablename &&  <div className={'mt-3'}>
                                    Table :  {tablename}
+                                </div>}
+
+
+                                {Boolean(token) &&  <div className={'mt-3 text-muted cursor-pointer'} onClick={()=>{
+                                    dispatch(setClientDetail({}))
+                                }}>
+                                    Logout
                                 </div>}
 
                             </div>

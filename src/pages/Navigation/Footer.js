@@ -2,16 +2,13 @@ import React, {Component, Fragment} from "react";
 import {connect} from "react-redux";
 import {device} from "../../lib/static";
 
-export class Footer extends Component {
+const Index = ({vouchertotaldisplay}) => {
 
-
-
-    render() {
 
         return (
             <Fragment>
                  <section className="">
-                    <footer className="footer footer--s3 footer--color-dark">
+                    <footer className="footer footer--s3 footer--color-dark" style={{marginBottom:vouchertotaldisplay ?150:0}}>
                         <div className="p-5">
                             <div className="container">
 
@@ -32,14 +29,16 @@ export class Footer extends Component {
                 </section>
             </Fragment>
         );
-    }
+
 }
 
 const mapStateToProps = (state) => {
-    return {}
+    return {
+        vouchertotaldisplay: state.cartData?.vouchertotaldisplay,
+    }
 };
 
 const mapDispatchToProps = (dispatch) => ({});
 
 
-export default connect(mapStateToProps, mapDispatchToProps)(Footer);
+export default connect(mapStateToProps, mapDispatchToProps)(Index);
