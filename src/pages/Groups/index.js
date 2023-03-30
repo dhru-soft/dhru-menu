@@ -42,6 +42,7 @@ const Index = (props) => {
 
                             </div>
 
+                            <Footer/>
 
                             <CartTotal page={'detailview'}/>
 
@@ -54,7 +55,7 @@ const Index = (props) => {
 
             </div>
 
-                <Footer/>
+
         </section>
         </BodyClassName>
     )

@@ -116,6 +116,7 @@ const Index = (props) => {
 
                             </div>
 
+                            <Footer/>
 
                             <CartTotal page={'final'}/>
 
@@ -128,7 +129,7 @@ const Index = (props) => {
                 </div>
 
             </div>
-                <Footer/>
+
         </section>
         </BodyClassName>
     )
