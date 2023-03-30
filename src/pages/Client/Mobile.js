@@ -51,7 +51,7 @@ const Index = ({clientDetail,visitorcountry}) => {
                                 </div>
 
                                 <div className={'hide'}>
-                                    <Select options={options} defaultValue={country} onChange={changeHandler}/>
+                                    <Select options={options} defaultValue={country} onChange={changeHandler} className={'react-select'}/>
                                 </div>
 
                             </div>
