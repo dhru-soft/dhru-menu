@@ -10,6 +10,7 @@ import CartDetail from "../pages/Cart/CartDetail";
 import Login from "../pages/Login";
 import Groups from "../pages/Groups";
 import Items from "../pages/Items";
+import Feedback from "../pages/Feedback";
 
 class RouterComponent extends Component {
 
@@ -19,6 +20,7 @@ class RouterComponent extends Component {
                 <Route exact path="/" element={<Home />}/>
                 <Route exact path="/qrcode/:accesscode" element={<Restaurant />} />
                 <Route exact path="/login" element={<Login />} />
+                <Route exact path="/feedback" element={<Feedback />} />
                 <Route exact path="/l/:locationid" element={<Groups />}/>
                 <Route exact path="/l/:locationid/t/:tableid" element={<Groups />}/>
                 <Route exact path="/l/:locationid/t/:tableid/g/:groupid" element={<Items />}/>

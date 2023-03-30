@@ -7,7 +7,7 @@ export class Image extends Component {
         const image = require(`../../assets/images/${name}`);
         return <img
             className={classes}
-            src={image.default}
+            src={image}
             width={width}
             height={height}
             alt={"ds"}
