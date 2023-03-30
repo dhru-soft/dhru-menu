@@ -40,8 +40,6 @@ const Index = (props) => {
                 </div>
             </div>
 
-
-
         </>
     )
 }

@@ -1,20 +1,21 @@
 import React, {useEffect, useState} from "react";
 import {connect, useDispatch} from "react-redux";
-import {clone, createUniqueStore, numberFormat, retrieveData, sessionStore, storeData} from "../../lib/functions";
+import {clone, numberFormat} from "../../lib/functions";
 import {setCartData, setUpdateCart} from "../../lib/redux-store/reducer/cart-data";
 import {itemTotalCalculation} from "../../lib/item-calculation";
-import {useNavigate} from "react-router-dom";
-import {device} from "../../lib/static";
 
 const TableRow = ({item}) => {
     return (
         <>
-            {Boolean(item?.value) &&  <div className={'d-flex justify-content-between align-items-center  mb-3  invert-effect'}>
-                <h6 className={'m-0 p-0'}><div>{item.label}</div></h6>
-                <div>
-                    <h6  className={'m-0 p-0'}>{numberFormat(item?.value || 0)}</h6>
-                </div>
-            </div>}
+            {Boolean(item?.value) &&
+                <div className={'d-flex justify-content-between align-items-center  mb-3  invert-effect'}>
+                    <h6 className={'m-0 p-0'}>
+                        <div>{item.label}</div>
+                    </h6>
+                    <div>
+                        <h6 className={'m-0 p-0'}>{numberFormat(item?.value || 0)}</h6>
+                    </div>
+                </div>}
         </>
     )
 }
@@ -22,21 +23,31 @@ const TableRow = ({item}) => {
 const Index = (props) => {
 
     const dispatch = useDispatch();
-    const [loader,setLoader] = useState(false);
+    const [loader, setLoader] = useState(false);
 
-    const {cartData,cartData:{vouchersubtotaldisplay, globaltax, voucherroundoffdisplay,vouchertotaldisplay,vouchertotaldiscountamountdisplay,voucherinlinediscountdisplay}} = props;
+    const {
+        cartData,
+        cartData: {
+            vouchersubtotaldisplay,
+            globaltax,
+            voucherroundoffdisplay,
+            vouchertotaldisplay,
+            vouchertotaldiscountamountdisplay,
+            voucherinlinediscountdisplay
+        }
+    } = props;
 
-    useEffect(()=>{
-        setTimeout(()=>{
+    useEffect(() => {
+        setTimeout(() => {
             let data = itemTotalCalculation(clone(cartData), undefined, undefined, undefined, undefined, 2, 2, false, false);
             dispatch(setCartData(clone(data)));
             dispatch(setUpdateCart());
             setLoader(true)
-        },200)
-    },[])
+        }, 200)
+    }, [])
 
 
-    if(!loader){
+    if (!loader) {
         return <div className={'text-center p-5  invert-effect'}>Loading</div>
     }
 
@@ -46,9 +57,9 @@ const Index = (props) => {
             <div>
 
                 <div>
-                    <TableRow item={{label:'Subtotal',value:vouchersubtotaldisplay - voucherinlinediscountdisplay}}/>
+                    <TableRow item={{label: 'Subtotal', value: vouchersubtotaldisplay - voucherinlinediscountdisplay}}/>
 
-                    <TableRow item={{label:'Discount',value:vouchertotaldiscountamountdisplay}}/>
+                    <TableRow item={{label: 'Discount', value: vouchertotaldiscountamountdisplay}}/>
 
                     {
                         globaltax?.map((tax, key) => {
@@ -56,12 +67,15 @@ const Index = (props) => {
                                 return <></>
                             }
                             return (
-                                <TableRow  key={key} item={{label:`${tax.taxname} ${tax.taxpercentage}`,value:tax.taxpricedisplay}}/>
+                                <TableRow key={key} item={{
+                                    label: `${tax.taxname} ${tax.taxpercentage}`,
+                                    value: tax.taxpricedisplay
+                                }}/>
                             )
                         })
                     }
 
-                    <TableRow item={{label:'Roundoff',value:voucherroundoffdisplay}}/>
+                    <TableRow item={{label: 'Roundoff', value: voucherroundoffdisplay}}/>
 
                 </div>
 

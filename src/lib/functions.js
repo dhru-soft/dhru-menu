@@ -310,7 +310,7 @@ export const getInit = async (workspace) => {
                 const {settings} = result.data
                 localredux.settings = settings;
                 store.dispatch(setrestaurantData({...result.data}));
-                retrieveData('client').then((client)=>{
+                sessionRetrieve('client').then((client)=>{
                     device.token = client?.token;
                     store.dispatch(setClientDetail(client));
                 })
@@ -790,10 +790,12 @@ export const postOrder = (order) => {
             other: {url: urls.posUrl},
         }).then(async (result) => {
             if (result.status === STATUS.SUCCESS && Boolean(result?.data)) {
-                store.dispatch(resetCart())
-                store.dispatch(setModal({show:false}))
+                resolve(true)
             }
-            resolve(true)
+            else{
+                resolve(false)
+            }
+
         });
     })
 }

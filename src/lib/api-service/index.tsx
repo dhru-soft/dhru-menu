@@ -107,20 +107,18 @@ const apiService = async (config: configData) => {
                 } else {
                     store.dispatch(setAlert({visible: true, message: response?.message}))
                 }*/
-
                 toast.error(response.message)
-
             }
-
-            if ((response?.status === STATUS.SUCCESS) && config?.showalert) {
+            else if (response?.code === 401) {
+                toast.error(response.message)
+                //store.dispatch(setAlert({visible: true, message: 'Something went wrong, Please try again!'}))
+            }
+            else if ((response?.status === STATUS.SUCCESS) && config?.showalert) {
                 //store.dispatch(setAlert({visible: true, message: response.message}))
                 toast.success(response.message)
             }
 
-            if (response?.code === 401) {
-                toast.info(response.message)
-                //store.dispatch(setAlert({visible: true, message: 'Something went wrong, Please try again!'}))
-            }
+
 
             return response;
 

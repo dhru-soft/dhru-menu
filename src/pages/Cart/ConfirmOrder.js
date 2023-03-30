@@ -6,6 +6,10 @@ import {Field, Form} from 'react-final-form';
 import {device} from "../../lib/static";
 import {setClientDetail} from "../../lib/redux-store/reducer/client-detail";
 import NameAddress from "../Client/NameAddress";
+import store from "../../lib/redux-store/store";
+import {setModal} from "../../lib/redux-store/reducer/component";
+import Login from "../Login";
+import {resetCart} from "../../lib/redux-store/reducer/cart-data";
 
 const Index = ({clientDetail,vouchertotaldisplay}) => {
 
@@ -30,7 +34,20 @@ const Index = ({clientDetail,vouchertotaldisplay}) => {
                 ]
             }
         ]
-        postOrder({...values,payments})
+        postOrder({...values,payments}).then((data)=>{
+            store.dispatch(setModal({show:false}))
+            if(!data){
+                store.dispatch(setModal({
+                    show: true,
+                    title: '',
+                    height: '80%',
+                    component: () => <><Login/></>
+                }))
+            }
+            else{
+                store.dispatch(resetCart())
+            }
+        })
     }
 
     const dispatch = useDispatch()
