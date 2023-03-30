@@ -9,6 +9,7 @@ import ItemList from "../Items/Items";
 import CartHeader from "../Cart/CartHeader";
 import BodyClassName from 'react-body-classname';
 import Theme from "../Home/Theme";
+import Footer from "../Navigation/Footer";
 
 const Index = (props) => {
 
@@ -53,6 +54,7 @@ const Index = (props) => {
 
             </div>
 
+                <Footer/>
         </section>
         </BodyClassName>
     )

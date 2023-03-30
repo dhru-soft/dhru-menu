@@ -31,7 +31,7 @@ const JSX = () => {
                     <div className={'h-100 d-flex flex-column'} >
                         <Header location={history.location} />
                         <RoutingComponent />
-                        <Footer/>
+
                     </div>
                     <Dialog/>
                     <Loader/>

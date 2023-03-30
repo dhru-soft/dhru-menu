@@ -6,6 +6,7 @@ import {getWorkspaceName, postQrCode} from "../../lib/functions";
 import {connect} from "react-redux";
 import Restaurant from "../Restaurant";
 import BodyClassName from 'react-body-classname';
+import Footer from "../Navigation/Footer";
 
 const Index = (props) => {
 
@@ -37,6 +38,7 @@ const Index = (props) => {
 
     return (
         <BodyClassName className={'qrcode'}>
+            <>
             <div className="position-relative   h-100">
                 <div className={'container p-4'}>
                     <div className="row justify-content-xl-between pt-5">
@@ -97,7 +99,11 @@ const Index = (props) => {
                         </div>
                     </div>
                 </div>
+
             </div>
+
+                <Footer/>
+            </>
         </BodyClassName>
     )
 
