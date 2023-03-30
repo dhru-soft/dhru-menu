@@ -1118,7 +1118,7 @@ b, strong {
     }
 }
 
-.restaurant{
+.restaurant,.retail{
     background-image: url("../assets/images/food_bg.svg");
     .location-list{
         background: var(--btn-color);
@@ -1128,6 +1128,9 @@ b, strong {
         background: var(--cartTotalColor);
         background: linear-gradient(145deg, var(--cartTotalColor) 0%, var(--cartTotalColor2) 100%);
     }
+}
+.retail{
+    background-image: none;
 }
 
 body{

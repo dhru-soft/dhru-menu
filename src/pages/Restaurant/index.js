@@ -50,6 +50,11 @@ const Index = (props) => {
 
     const {general: {legalname, logo}, location, tabledetail: {tablename, locationid}} = restaurantDetail;
 
+    const isRestaurant = Boolean(Object.values(location).filter((values)=>{
+         return values.industrytype === 'foodservices'
+    }).length)
+
+
     if (!Boolean(legalname)) {
         return (
             <div className="col-12   text-center mt-5 pt-5">
@@ -64,7 +69,7 @@ const Index = (props) => {
 
     return (
 
-        <BodyClassName className={'restaurant'}>
+        <BodyClassName className={isRestaurant?`restaurant`:`retail`}>
             <>
                 <Theme/>
                 <section className="h-100 restaurant-bg">
