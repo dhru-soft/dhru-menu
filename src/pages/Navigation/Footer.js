@@ -8,7 +8,7 @@ const Index = ({vouchertotaldisplay}) => {
         return (
             <Fragment>
                  <section className="">
-                    <footer className="footer footer--s3 footer--color-dark" style={{marginBottom:vouchertotaldisplay ?150:0}}>
+                    <footer className="footer footer--s3 footer--color-dark" >
                         <div className="p-5">
                             <div className="container">
 

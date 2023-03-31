@@ -131,7 +131,7 @@ const Index = (props) => {
 
             <div className="position-relative   h-100">
                 <div className={'container p-4'}>
-                    <div className="row justify-content-xl-between pt-5">
+                    <div className="row justify-content-xl-between">
                         <div className="m-auto" style={{maxWidth:360}}>
 
                             <Form
@@ -173,28 +173,17 @@ const Index = (props) => {
                                                    Boolean(setCategories?.length) && categories?.map((option, key) => {
                                                         const {name, selected} = option;
                                                         return (
-                                                            <div className={`mb-2 p-4 rounded-3 bg-white`} key={key}>
-                                                                <div key={key}
-                                                                     className={'d-flex justify-content-between'}>
-
-                                                                    <div>
-                                                                        <div className="form-check">
-                                                                            <input className="form-check-input"
-                                                                                   type="checkbox" checked={selected}
-                                                                                   value="1"
-                                                                                   id={`checkbox${key}`}
-                                                                                   onChange={(e) => handleCheckboxChange(key, e)}/>
-                                                                            <label className="form-check-label"
-                                                                                   htmlFor={`checkbox${key}`}>
-                                                                                {`${name}`}
-                                                                            </label>
-                                                                        </div>
-                                                                        <div>
-
-                                                                        </div>
-                                                                    </div>
-
-
+                                                            <div className={`mb-2 rounded-3 bg-white`} key={key}>
+                                                                <div className="form-check">
+                                                                    <input className="form-check-input"
+                                                                           type="checkbox" checked={selected}
+                                                                           value="1"
+                                                                           id={`checkbox${key}`}
+                                                                           onChange={(e) => handleCheckboxChange(key, e)}/>
+                                                                    <label className="form-check-label p-4"
+                                                                           htmlFor={`checkbox${key}`}>
+                                                                        {`${name}`}
+                                                                    </label>
                                                                 </div>
                                                             </div>
                                                         )
@@ -216,6 +205,8 @@ const Index = (props) => {
                                                 </div>
 
 
+
+
                                                 <div className={'d-flex justify-content-between'}>
 
                                                     {selectedQns !== 0 && <><button
@@ -227,32 +218,34 @@ const Index = (props) => {
                                                         Previous
                                                     </button>
 
-                                                    <div style={{width:10}}></div>
+                                                        <div style={{width:10}}></div>
 
                                                     </>}
 
                                                     {(selectedQns === totalqns) ? <button
-                                                        className="w-100 custom-btn custom-btn--large custom-btn--style-1"
-                                                        style={{height: 45}}
-                                                        onClick={() => {
-                                                            onSubmit(values)
-                                                        }} type="button" role="button">
-                                                        Submit
-                                                    </button>
+                                                            className="w-100 custom-btn custom-btn--large custom-btn--style-1"
+                                                            style={{height: 45}}
+                                                            onClick={() => {
+                                                                onSubmit(values)
+                                                            }} type="button" role="button">
+                                                            Submit
+                                                        </button>
 
-                                                    :
+                                                        :
 
-                                                    <button
-                                                        className="w-100 custom-btn custom-btn--large custom-btn--style-1"
-                                                        style={{height: 45}}
-                                                        onClick={() => {
-                                                            moveToStep(values,'next')
-                                                        }} type="button" role="button">
-                                                         Next
-                                                    </button> }
+                                                        <button
+                                                            className="w-100 custom-btn custom-btn--large custom-btn--style-1"
+                                                            style={{height: 45}}
+                                                            onClick={() => {
+                                                                moveToStep(values,'next')
+                                                            }} type="button" role="button">
+                                                            Next
+                                                        </button> }
 
 
                                                 </div>
+
+                                                <Footer/>
 
                                             </div>
 
@@ -268,7 +261,7 @@ const Index = (props) => {
 
             </div>
 
-                <Footer/>
+
             </>
         </BodyClassName>
     )
