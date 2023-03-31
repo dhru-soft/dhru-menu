@@ -115,7 +115,7 @@ const Index = ({itemDetail,updateItem}) => {
                                 <div  key={key}  className={'d-flex justify-content-between'}>
 
                                     <div>
-                                        <div className="form-check">
+                                        <div className="form-check" style={{paddingLeft:22}}>
                                             <input className="form-check-input" type="checkbox" checked={Boolean(productqnt)} value="1"
                                                    id={`checkbox${key}`} onChange={(e)=>handleCheckboxChange(addon,e)}  />
                                                 <label className="form-check-label" htmlFor={`checkbox${key}`}>
