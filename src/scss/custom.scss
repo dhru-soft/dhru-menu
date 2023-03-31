@@ -1117,15 +1117,19 @@ b, strong {
     }
 }
 
-.form-check-input:checked{
-    background-color: var(--cartTotalColor);
-    border-color: var(--cartTotalColor);
+.form-check-input{
+    margin-top: 0;
+    &:checked{
+        background-color: var(--cartTotalColor);
+        border-color: var(--cartTotalColor);
+    }
+    &:focus {
+        border-color: var(--cartTotalColor);
+        outline: 0;
+        box-shadow: 0 0 0 0.25rem var(--cartTotalColor)10;
+    }
 }
-.form-check-input:focus {
-    border-color: var(--cartTotalColor);
-    outline: 0;
-    box-shadow: 0 0 0 0.25rem var(--cartTotalColor)10;
-}
+
 .css-t3ipsp-control{
     border-color: var(--cartTotalColor) !important;
     box-shadow: 0 0 0 0.25rem var(--cartTotalColor)30 !important;

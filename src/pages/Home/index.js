@@ -42,7 +42,7 @@ const Index = (props) => {
             <div className="position-relative   h-100">
                 <div className={'container p-4'}>
                     <div className="row justify-content-xl-between pt-5">
-                        <div className="col-12 col-md-6 col-lg-4 m-auto">
+                        <div className="m-auto"   style={{maxWidth:360}}>
 
                             <div className="section-heading section-heading--center">
 

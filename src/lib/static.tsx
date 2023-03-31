@@ -26,6 +26,7 @@ export enum METHOD {
 
 export enum ACTIONS {
     INIT = "init",
+    FEEDBACK = "feedback",
     INVOICE  = "invoice",
     CODE = "code",
     ORDER = "order",

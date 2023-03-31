@@ -19,8 +19,8 @@ class RouterComponent extends Component {
             <Routes >
                 <Route exact path="/" element={<Home />}/>
                 <Route exact path="/qrcode/:accesscode" element={<Restaurant />} />
-                <Route exact path="/login" element={<Login />} />
-                <Route exact path="/feedback" element={<Feedback />} />
+                {/*<Route exact path="/login" element={<Login />} />*/}
+                <Route exact path="/feedback/:feedbackid" element={<Feedback />} />
                 <Route exact path="/l/:locationid" element={<Groups />}/>
                 <Route exact path="/l/:locationid/t/:tableid" element={<Groups />}/>
                 <Route exact path="/l/:locationid/t/:tableid/g/:groupid" element={<Items />}/>
