@@ -206,8 +206,8 @@ const Index = (props) => {
 
 
 
-
-                                                <div className={'d-flex justify-content-between'}>
+                                                <div className={'position-fixed action-btn'}>
+                                                    <div className={'d-flex justify-content-between'}>
 
                                                     {selectedQns !== 0 && <><button
                                                         className="w-100 custom-btn custom-btn--large custom-btn--style-1"
@@ -243,6 +243,7 @@ const Index = (props) => {
                                                         </button> }
 
 
+                                                </div>
                                                 </div>
 
                                                 <Footer/>

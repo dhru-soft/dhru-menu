@@ -3,7 +3,7 @@ body{
     overflow-x: hidden;
 }
 html,body{
-    height: 100%;
+
     background-color: var(--bodyColor);
    /* &.groups,&.items,&.cartdetail {
         background-image: url("../assets/images/food_bg.svg");
@@ -1177,6 +1177,22 @@ body{
     }
     .modal-body{
         padding-bottom: 20px;
+    }
+    footer{
+        margin-bottom: 100px;
+    }
+    &.restaurant,&.qrcode{
+        footer{
+            margin-bottom: 0;
+        }
+    }
+    .action-btn{
+        left: 0;
+        right: 0;
+        z-index: 999;
+        bottom: 0;
+
+        padding: 10px;
     }
 }
 
