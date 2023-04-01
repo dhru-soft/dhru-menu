@@ -210,7 +210,7 @@ const Index = (props) => {
                                                     <div className={'d-flex justify-content-between'}>
 
                                                     {selectedQns !== 0 && <><button
-                                                        className="w-100 custom-btn custom-btn--large custom-btn--style-1"
+                                                        className="w-100 custom-btn custom-btn--large custom-btn--style-2"
                                                         style={{height: 45}}
                                                         onClick={() => {
                                                             moveToStep(values,'prev')
@@ -223,7 +223,7 @@ const Index = (props) => {
                                                     </>}
 
                                                     {(selectedQns === totalqns) ? <button
-                                                            className="w-100 custom-btn custom-btn--large custom-btn--style-1"
+                                                            className="w-100 custom-btn custom-btn--large custom-btn--style-2"
                                                             style={{height: 45}}
                                                             onClick={() => {
                                                                 onSubmit(values)
@@ -234,7 +234,7 @@ const Index = (props) => {
                                                         :
 
                                                         <button
-                                                            className="w-100 custom-btn custom-btn--large custom-btn--style-1"
+                                                            className="w-100 custom-btn custom-btn--large custom-btn--style-2"
                                                             style={{height: 45}}
                                                             onClick={() => {
                                                                 moveToStep(values,'next')
