@@ -1,5 +1,13 @@
 import React, {useEffect} from "react";
-import {clone, createUniqueStore, getInit, getWorkspaceName, retrieveData, sessionRetrieve} from "../../lib/functions";
+import {
+    clone,
+    createUniqueStore,
+    getInit,
+    getWorkspaceName,
+    isEmpty,
+    retrieveData,
+    sessionRetrieve
+} from "../../lib/functions";
 import {connect, useDispatch} from "react-redux";
 import {setCartData} from "../../lib/redux-store/reducer/cart-data";
 import {device} from "../../lib/static";
@@ -26,8 +34,9 @@ const Index = (props: any) => {
 
     ////// RETRIVE CART AND INIT FOR STATE
     sessionRetrieve(createUniqueStore()).then((data)=>{
-        // device.tableid = data?.tableid
-        dispatch(setCartData(data));
+        if(!isEmpty(data)) {
+            dispatch(setCartData(data));
+        }
     })
 
 

@@ -6,9 +6,20 @@ import BodyClassName from 'react-body-classname';
 import Footer from "../Navigation/Footer";
 import Image from "../../components/Image";
 import Theme from "../Home/Theme";
-import {clone, isEmpty, sessionRetrieve} from "../../lib/functions";
+import {
+    clone, getCompanyDetails,
+    getDefaultCurrency,
+    getInit,
+    getWorkspaceName,
+    isEmpty, numberFormat,
+    sessionRetrieve,
+    setTheme
+} from "../../lib/functions";
 import {useParams} from "react-router-dom";
 import apiService from "../../lib/api-service";
+import moment from "moment";
+import Init from "../Home/Init";
+import CompanyDetail from "../Navigation/CompanyDetail";
 
 const Index = (props) => {
 
@@ -19,10 +30,11 @@ const Index = (props) => {
     const [loading,setLoading] = useState(false);
     const [selectedQns,setSelectedQns] = useState();
     const [categories,setCategories] = useState([]);
-    const [selectedEmoji,setSelectedEmoji] = useState(3);
+    const [selectedEmoji,setSelectedEmoji] = useState();
     const [emojiexp,setEmojiExp] = useState([])
 
     const [feedbacks,setFeedbacks] = useState()
+    const [voucher,setVoucher] = useState()
 
 
     const setFeedbackOptions = () =>{
@@ -48,18 +60,22 @@ const Index = (props) => {
     }
 
     const getFeedbackQns = async () => {
-        apiService({
+        await getInit(getWorkspaceName()).then(()=>{ })
+        await apiService({
             method: METHOD.GET,
             action: ACTIONS.FEEDBACK,
             queryString: {feedbackid:device.feedbackid},
             other: {url: urls.posUrl},
         }).then(async (result) => {
             if (result.status === STATUS.SUCCESS && Boolean(result?.data)) {
-                let feedback = Object.values(result.data.feedback)[1];
+                const {feedback,voucher} = result?.data || {}
+                await setFeedbacks(feedback)
+                await setVoucher(voucher)
+                await setSelectedQns(0)
 
-                await setFeedbacks(feedback || {})
-                setSelectedQns(0)
-                setLoading(true)
+                device.locationid = voucher.locationid
+
+                setLoading(true);
 
             }
         });
@@ -80,6 +96,14 @@ const Index = (props) => {
         return <></>
     }
 
+    if(!Boolean(feedbacks)){
+        return <div className="section-heading section-heading--center">
+            <h4
+                className="__title">Opps! <div
+                style={{color: '#ff0000'}}>Something went wrong</div></h4>
+        </div>
+    }
+
     const handleCheckboxChange = (key,e) => {
         categories[key].selected = e.target.checked
         setCategories(clone(categories))
@@ -88,8 +112,7 @@ const Index = (props) => {
     const {feedbackName,feedbackQuestions} = feedbacks;
     const totalqns = feedbacks?.feedbackQuestions?.length - 1;
 
-    let {question,ratingStyle} = feedbackQuestions[selectedQns];
-
+    let {question,ratingStyle,star,status} = feedbackQuestions[selectedQns];
 
     const onSubmit = (values) => {
         apiService({
@@ -115,42 +138,69 @@ const Index = (props) => {
         if (action === 'prev') {
            await setSelectedQns(selectedQns - 1)
         } else if (action === 'next') {
-            await setSelectedQns(selectedQns + 1)
+            values.feedbackQuestions[selectedQns] = {
+                ...values.feedbackQuestions[selectedQns],
+                 status:'completed'
+            }
+            await setSelectedQns(selectedQns + 1);
+            if(!values.feedbackQuestions[selectedQns + 1]?.status){
+                setSelectedEmoji(0)
+            }
         }
 
     }
 
 
-
+    const {clientname,date,location,vouchertotaldisplay} = voucher
 
     return (
         <BodyClassName className={'feedback'}>
             <>
 
-                <Theme/>
-
             <div className="position-relative   h-100">
-                <div className={'container p-4'}>
-                    <div className="row justify-content-xl-between">
-                        <div className="m-auto" style={{maxWidth:360}}>
-
-                            <Form
-                                initialValues={{...feedbacks}}
-                                onSubmit={onSubmit}
-                                render={({handleSubmit, values}) => {
 
 
-                                    return (
-                                        <form onSubmit={handleSubmit}>
+                <CompanyDetail/>
 
-                                            <div className={'form'}>
+                <div className={'container'}>
+                    <div className="m-auto" style={{maxWidth:400}}>
+
+                        <Form
+                            initialValues={{...feedbacks}}
+                            onSubmit={onSubmit}
+                            render={({handleSubmit, values}) => {
 
 
-                                                <h3 className={'text-center'}>{feedbackName}</h3>
-                                                <h4  className={'text-center mb-5'}>{question}</h4>
+                                return (
+                                    <form onSubmit={handleSubmit}>
+
+                                        <div className={'form'}>
+
+
+                                            <div className={'d-flex justify-content-between align-items-center  px-4 my-3'}>
+                                                <div>
+                                                    <h5 className={'m-0'}>Hi! <span className={'text-muted'} style={{fontWeight:700}}>{clientname}</span> , your valuable feedback is important for us</h5>
+                                                </div>
+                                            </div>
+
+                                            <div className={'d-flex justify-content-between align-items-center px-4'}>
+                                                <div>
+                                                    <small>Create Amount</small>
+                                                    <h5  className={'m-0'}>{numberFormat(vouchertotaldisplay)}</h5>
+                                                </div>
+                                                <div>
+                                                    <small>On</small>
+                                                    <h5 className={'m-0'}>{moment(date).format('DD-MM-YYYY')}</h5>
+                                                </div>
+                                            </div>
+
+
+                                            <div className={'p-5   border bg-white rounded-4 mt-3'}>
+
+                                                <h4  className={'mb-5'}>{question}</h4>
 
                                                 <div className={'d-flex justify-content-between m-auto'}
-                                                     style={{width: 330}}>
+                                                     style={{maxWidth: 330}}>
                                                     {
                                                         emojiexp.map((emo, index) => {
                                                             return (
@@ -164,99 +214,108 @@ const Index = (props) => {
                                                     }
                                                 </div>
 
-                                                <div className="section-heading section-heading--center">
-                                                    <h5>{emojiexp[selectedEmoji]}</h5>
-                                                </div>
+                                                {Boolean(selectedEmoji) && <>
+                                                    <div className="section-heading section-heading--center">
+                                                        <h6>{emojiexp[selectedEmoji]}</h6>
+                                                    </div>
 
 
-                                                {
-                                                   Boolean(setCategories?.length) && categories?.map((option, key) => {
-                                                        const {name, selected} = option;
-                                                        return (
-                                                            <div className={`mb-2 rounded-3 bg-white`} key={key}>
-                                                                <div className="form-check">
-                                                                    <input className="form-check-input"
-                                                                           type="checkbox" checked={selected}
-                                                                           value="1"
-                                                                           id={`checkbox${key}`}
-                                                                           onChange={(e) => handleCheckboxChange(key, e)}/>
-                                                                    <label className="form-check-label p-4"
-                                                                           htmlFor={`checkbox${key}`}>
-                                                                        {`${name}`}
-                                                                    </label>
+                                                    {
+                                                        Boolean(setCategories?.length) && categories?.map((option, key) => {
+                                                            const {name, selected} = option;
+                                                            return (
+                                                                <div className={`mb-2 rounded-3 bg-white`} key={key}>
+                                                                    <div className="form-check">
+                                                                        <input className="form-check-input"
+                                                                               type="checkbox" checked={selected}
+                                                                               value="1"
+                                                                               id={`checkbox${key}`}
+                                                                               onChange={(e) => handleCheckboxChange(key, e)}/>
+                                                                        <label className="form-check-label p-4"
+                                                                               htmlFor={`checkbox${key}`}>
+                                                                            {`${name}`}
+                                                                        </label>
+                                                                    </div>
                                                                 </div>
-                                                            </div>
-                                                        )
-                                                    })
-                                                }
+                                                            )
+                                                        })
+                                                    }
 
 
-                                                <div className={'mt-5'}>
-                                                    <div className={'mb-2'}>Describe your experience (optional)</div>
-                                                    <Field name={`feedbackQuestions[${selectedQns}].comments`}>
-                                                        {({input, meta}) => (
-                                                            <div className="input-wrp">
-                                                            <textarea className="textfield textfield3"
-                                                                      type="text" {...input}
-                                                                      placeholder="Add your comment"/>
-                                                            </div>
-                                                        )}
-                                                    </Field>
-                                                </div>
+                                                    <div className={'mt-5'}>
+                                                        <div className={'mb-2'}>Describe your experience (optional)</div>
+                                                        <Field name={`feedbackQuestions[${selectedQns}].comments`}>
+                                                            {({input, meta}) => (
+                                                                <div className="input-wrp">
+                                                                <textarea className="textfield textfield3"
+                                                                          type="text" {...input}
+                                                                          placeholder="Add your comment"/>
+                                                                </div>
+                                                            )}
+                                                        </Field>
+                                                    </div>
 
 
 
-                                                <div className={'position-fixed action-btn'}>
+
+
+                                                </>}
+
+                                                <div className={'action-btn'}>
+
                                                     <div className={'d-flex justify-content-between'}>
 
-                                                    {selectedQns !== 0 && <><button
-                                                        className="w-100 custom-btn custom-btn--large custom-btn--style-2"
-                                                        style={{height: 45}}
-                                                        onClick={() => {
-                                                            moveToStep(values,'prev')
-                                                        }} type="button" role="button">
-                                                        Previous
-                                                    </button>
-
-                                                        <div style={{width:10}}></div>
-
-                                                    </>}
-
-                                                    {(selectedQns === totalqns) ? <button
-                                                            className="w-100 custom-btn custom-btn--large custom-btn--style-4"
+                                                        {selectedQns !== 0 && <><button
+                                                            className="w-100 custom-btn custom-btn--large custom-btn--style-2"
                                                             style={{height: 45}}
                                                             onClick={() => {
-                                                                onSubmit(values)
+                                                                moveToStep(values,'prev')
                                                             }} type="button" role="button">
-                                                            Submit
+                                                            Previous
                                                         </button>
 
-                                                        :
+                                                            <div style={{width:10}}></div>
 
-                                                        <button
-                                                            className="w-100 custom-btn custom-btn--large custom-btn--style-4"
-                                                            style={{height: 45}}
-                                                            onClick={() => {
-                                                                moveToStep(values,'next')
-                                                            }} type="button" role="button">
-                                                            Next
-                                                        </button> }
+                                                        </>}
 
+                                                        {(star || Boolean(selectedEmoji)) && <>
+                                                            {(selectedQns === totalqns) ? <button
+                                                                    className="w-100 custom-btn custom-btn--large custom-btn--style-4"
+                                                                    style={{height: 45}}
+                                                                    onClick={() => {
+                                                                        onSubmit(values)
+                                                                    }} type="button" role="button">
+                                                                    Submit
+                                                                </button>
 
+                                                                :
+
+                                                                <button
+                                                                    className="w-100 custom-btn custom-btn--large custom-btn--style-4"
+                                                                    style={{height: 45}}
+                                                                    onClick={() => {
+                                                                        moveToStep(values,'next')
+                                                                    }} type="button" role="button">
+                                                                    Next
+                                                                </button> }
+                                                        </>}
+
+                                                    </div>
                                                 </div>
-                                                </div>
-
-                                                <Footer/>
 
                                             </div>
 
-                                        </form>
-                                    )
-                                }}
-                            />
+
+                                            <Footer/>
+
+                                        </div>
+
+                                    </form>
+                                )
+                            }}
+                        />
 
 
-                        </div>
                     </div>
                 </div>
 
