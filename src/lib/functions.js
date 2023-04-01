@@ -911,7 +911,7 @@ export const setTheme = (themecolor) => {
         '--cartTotalColor2': `${themecolor}60`,
         '--dashed-border': `${themecolor}40`,
         '--text-muted': `${themecolor}`,
-        '--btn-color': `${themecolor}db`,
+        '--btn-color': `${themecolor}`,
         '--textbox-border': `#dddddd`,
         '--item-hover': `${themecolor}10`,
         '--inverse-color':getContrastYIQ(themecolor)

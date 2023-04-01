@@ -53,7 +53,7 @@ const Index = (props) => {
                         </div>
                         <div>
 
-                            <button className="w-100 custom-btn custom-btn--medium custom-btn--style-2"
+                            <button className="w-100 custom-btn custom-btn--medium custom-btn--style-5"
                                     style={{padding: 5}} onClick={() => {
                                 if (page === 'final') {
                                     placeOrder(tableid)

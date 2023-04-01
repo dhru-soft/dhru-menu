@@ -1198,6 +1198,10 @@ body{
 
         padding: 10px;
     }
+    .custom-btn.custom-btn--style-5:hover, .custom-btn.custom-btn--style-5:focus{
+        background-color: white;
+        color: black !important;
+    }
 }
 
 /*.groups{
