@@ -77,7 +77,7 @@ export const AddonAction = ({item, updateQnt, action}) => {
             <div className={'d-flex justify-content-between align-items-center mt-3'}>
                 {action === 'add' && <div className={'w-100 me-3'}>
 
-                    <button className="w-100 custom-btn custom-btn--medium custom-btn--style-1" onClick={() => {
+                    <button className="w-100 custom-btn custom-btn--medium custom-btn--style-4" onClick={() => {
                         dispatch(setModal({
                             show: true,
                             title: item.itemname,

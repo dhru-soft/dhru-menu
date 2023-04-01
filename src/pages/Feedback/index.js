@@ -223,7 +223,7 @@ const Index = (props) => {
                                                     </>}
 
                                                     {(selectedQns === totalqns) ? <button
-                                                            className="w-100 custom-btn custom-btn--large custom-btn--style-2"
+                                                            className="w-100 custom-btn custom-btn--large custom-btn--style-4"
                                                             style={{height: 45}}
                                                             onClick={() => {
                                                                 onSubmit(values)
@@ -234,7 +234,7 @@ const Index = (props) => {
                                                         :
 
                                                         <button
-                                                            className="w-100 custom-btn custom-btn--large custom-btn--style-2"
+                                                            className="w-100 custom-btn custom-btn--large custom-btn--style-4"
                                                             style={{height: 45}}
                                                             onClick={() => {
                                                                 moveToStep(values,'next')

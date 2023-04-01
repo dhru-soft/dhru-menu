@@ -1,13 +1,16 @@
-body{
-    color: $yiq-text-dark;
-    overflow-x: hidden;
-}
-html,body{
 
+html,body{
+    height: 100%;
     background-color: var(--bodyColor);
    /* &.groups,&.items,&.cartdetail {
         background-image: url("../assets/images/food_bg.svg");
     }*/
+}
+body{
+    color: $yiq-text-dark;
+    overflow-x: hidden;
+    min-height: 100%;
+    height: auto;
 }
 @font-face {
   font-family: "myriad-pro";
@@ -1182,6 +1185,7 @@ body{
         margin-bottom: 100px;
     }
     &.restaurant,&.qrcode{
+        height: inherit;
         footer{
             margin-bottom: 0;
         }
