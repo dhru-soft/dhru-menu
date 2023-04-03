@@ -102,7 +102,6 @@ const Index = (props) => {
 
             </div>
 
-                <Footer/>
             </>
         </BodyClassName>
     )

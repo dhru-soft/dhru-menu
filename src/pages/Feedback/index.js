@@ -71,13 +71,10 @@ const Index = (props) => {
                 const {feedback,voucher} = result?.data || {}
                 await setFeedbacks(feedback)
                 await setVoucher(voucher)
-                await setSelectedQns(0)
-
-                device.locationid = voucher.locationid
-
-                setLoading(true);
-
+                await setSelectedQns(0);
+                device.locationid = voucher?.locationid
             }
+            await setLoading(true);
         });
     }
 
@@ -89,6 +86,7 @@ const Index = (props) => {
     useEffect(()=>{
         setFeedbackOptions()
     },[selectedQns])
+
 
 
 
@@ -115,10 +113,13 @@ const Index = (props) => {
     let {question,ratingStyle,star,status} = feedbackQuestions[selectedQns];
 
     const onSubmit = (values) => {
+
         apiService({
             method: METHOD.POST,
             action: ACTIONS.FEEDBACK,
-             body:values,
+            body:values,
+            workspace: device.workspace,
+            token: device.token,
             other: {url: urls.posUrl},
         }).then(async (result) => {
             if (result.status === STATUS.SUCCESS && Boolean(result?.data)) {
@@ -151,17 +152,12 @@ const Index = (props) => {
     }
 
 
-    const {clientname,date,location,vouchertotaldisplay} = voucher
+    const {clientname,date,location,vouchertotaldisplay,company} = voucher
 
     return (
         <BodyClassName className={'feedback'}>
             <>
-
-            <div className="position-relative   h-100">
-
-
-                <CompanyDetail/>
-
+                <CompanyDetail company={company}/>
                 <div className={'container'}>
                     <div className="m-auto" style={{maxWidth:400}}>
 
@@ -306,8 +302,6 @@ const Index = (props) => {
                                             </div>
 
 
-                                            <Footer/>
-
                                         </div>
 
                                     </form>
@@ -318,10 +312,6 @@ const Index = (props) => {
 
                     </div>
                 </div>
-
-            </div>
-
-
             </>
         </BodyClassName>
     )

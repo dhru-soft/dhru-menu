@@ -148,7 +148,7 @@ const Index = (props) => {
                 </div>
 
             </section>
-                <Footer/>
+
             </>
         </BodyClassName>
 

@@ -42,7 +42,6 @@ const Index = (props) => {
 
                             </div>
 
-                            <Footer/>
 
                             <CartTotal page={'detailview'}/>
 

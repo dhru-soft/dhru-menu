@@ -4,7 +4,7 @@ import {connect, useDispatch} from "react-redux";
 import {setClientDetail} from "../../lib/redux-store/reducer/client-detail";
 
 
-const Index = ({clientDetail}) => {
+const Index = ({clientDetail,company}) => {
 
     const dispatch = useDispatch()
     const {clientname, displayname, token} = clientDetail;
@@ -17,7 +17,7 @@ const Index = ({clientDetail}) => {
             <div className={'p-4 border-bottom  company-detail'}
                  style={{borderBottomLeftRadius: 20, borderBottomRightRadius: 20}}>
                 <div className={'bg-white p-4 rounded-5'}>
-                    <div className={'d-flex justify-content-between'}>
+                    <div className={'d-flex justify-content-between align-items-center'}>
 
                         <div>
 
@@ -25,8 +25,8 @@ const Index = ({clientDetail}) => {
                                 <div className={'mb-2'} style={{fontWeight: 'bold'}}>{clientname || displayname}</div>}
 
                             <div>
-                                <h4>{locationname}</h4>
-                                <small>{address1} {address2}</small>
+                                <h4>{company || locationname}</h4>
+                                {!Boolean(company) && <small>{address1} {address2}</small>}
                             </div>
 
                             {tablename && <div className={'mt-3'}>

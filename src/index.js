@@ -28,11 +28,13 @@ const JSX = () => {
         <Provider store={store}>
             <BrowserRouter history={history}>
 
-                    <div className={'h-100 d-flex flex-column'} >
-                        <Header location={history.location} />
-                        <RoutingComponent />
-
-                    </div>
+                    <>
+                        <div className={'min-height'}>
+                            <Header location={history.location} />
+                            <RoutingComponent />
+                        </div>
+                        <Footer/>
+                    </>
                     <Dialog/>
                     <Loader/>
                 <ToastContainer  position="top-center"

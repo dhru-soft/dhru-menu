@@ -7,9 +7,7 @@ import ItemList from "../Items/Items";
 import Search from "./Search";
 import Bredcrumb from "./Bredcrumb";
 import Diet from "./Diet";
-import {useParams} from "react-router-dom";
 import Init from "../Home/Init";
-import {device} from "../../lib/static";
 import CartTotal from "./CartTotal";
 
 const Index = (props) => {
@@ -31,7 +29,7 @@ const Index = (props) => {
                     <div>
                         <div className="container">
 
-                            <div >
+                            <div>
                                 <div className={'bg-white p-4 rounded-4 mt-3'}>
                                     <div>
                                         <Search/>
@@ -49,7 +47,7 @@ const Index = (props) => {
                             </div>
 
 
-                            <CartTotal  page={'detailview'}/>
+                            <CartTotal page={'detailview'}/>
 
                         </div>
 
