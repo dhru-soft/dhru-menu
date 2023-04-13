@@ -4,11 +4,13 @@ import {connect, useDispatch} from "react-redux";
 import Search from "./Search";
 import Diet from "./Diet";
 import Bredcrumb from "./Bredcrumb";
+import {device} from "../../lib/static";
 
 
 
 const Index = (props) => {
 
+    const {industrytype} = props
 
     const stickyHeader = useRef()
     useLayoutEffect(() => {
@@ -33,7 +35,7 @@ const Index = (props) => {
                     <div className={'bg-white p-4 rounded-4 shadow'} >
                         <div>
                             <Search/>
-                            <Diet/>
+                            <Diet hidetag={!Boolean(industrytype === 'foodservices')}/>
                         </div>
                     </div>
                     <Bredcrumb/>
@@ -47,6 +49,7 @@ const Index = (props) => {
 const mapStateToProps = (state) => {
     return {
         cartData: state.cartData,
+        industrytype : state.restaurantDetail?.location[device.locationid]?.industrytype
     }
 }
 

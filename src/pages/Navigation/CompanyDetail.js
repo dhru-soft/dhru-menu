@@ -8,7 +8,8 @@ const Index = ({clientDetail,company}) => {
 
     const dispatch = useDispatch()
     const {clientname, displayname, token} = clientDetail;
-    let {tablename, locationname, address1, address2, download_url} = getCompanyDetails();
+    let {tablename, locationname, address1, address2, download_url,industrytype} = getCompanyDetails();
+
 
 
     return (

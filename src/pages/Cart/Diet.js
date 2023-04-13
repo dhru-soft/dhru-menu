@@ -22,6 +22,9 @@ const Index = (props) => {
         }))
     },[options])
 
+    if(hidetag){
+        return <></>
+    }
 
     if(Boolean(tags?.length === 1)){
         const {label2,icon,color} = tags[0]
@@ -33,7 +36,7 @@ const Index = (props) => {
 
             <div>
                 <div className="">
-                    {!hidetag &&  <div>
+                    {<div>
                         <div className={'overflow-auto d-flex tags'}>
                             {
                                 tags?.map((tag,index)=>{

@@ -1125,7 +1125,7 @@ b, strong {
 .form-check {
     display: flex;
     align-items: center;
-    padding-left: 2.5em;
+
     .form-check-input {
         margin-top: 0;
 
@@ -1226,10 +1226,10 @@ h6, .h6,{
     opacity: 0.8;
     &.active{
         opacity: 1;
-        transform: scale(1.2);
+        transform: scale(1.5);
     }
     &:hover{
-        transform: scale(1.4);
+        transform: scale(1.5);
         transition: all .3s cubic-bezier(.175,.885,.18,1.3) 0s;
     }
 }

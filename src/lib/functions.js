@@ -265,7 +265,7 @@ export const getCompanyDetails = () => {
         locationname = name;
         address1 = ad1;
         address2 = ad2;
-        order = ord
+        order = ord;
     }
     device.order = order;
 
