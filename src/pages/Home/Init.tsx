@@ -24,6 +24,8 @@ const Index = (props: any) => {
     device.locationid = params?.locationid;
     device.groupid = params?.groupid;
 
+    console.log('device.tableid',device.tableid)
+
 
     const dispatch = useDispatch()
     const legalname: any = props?.general?.legalname

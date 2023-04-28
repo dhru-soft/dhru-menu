@@ -14,8 +14,10 @@ const Index = ({clientDetail}) => {
 
     const mobilescreen = !verifymobile
     const otpscreen = (verifymobile === 'inprocess' && otp === 'sent')
-    //const otherdetailscreen = (((verifymobile === 'done' && !Boolean(clientname)) || !Boolean(device.tableid) && !Boolean(address1)) && !mobilescreen && !otpscreen)
-    const otherdetailscreen = (((verifymobile === 'done' && !Boolean(clientname))) && !mobilescreen && !otpscreen)
+
+    const otherdetailscreen = (((verifymobile === 'done' && (!Boolean(clientname) || (!Boolean(address1) && Boolean(device.tableid === '0'))))) && (!mobilescreen && !otpscreen)) // last
+    // const otherdetailscreen = (((verifymobile === 'done' && !Boolean(clientname)) || !Boolean(device.tableid) && !Boolean(address1)) && !mobilescreen && !otpscreen)
+    // const otherdetailscreen = (((verifymobile === 'done' && !Boolean(clientname))) && !mobilescreen && !otpscreen)
 
     useEffect(() => {
         if (!mobilescreen && !otpscreen && !otherdetailscreen) {

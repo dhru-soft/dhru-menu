@@ -13,7 +13,7 @@ const Index = ({clientDetail,visitorcountry}) => {
     const [mobile, setMobile] = useState(clientDetail?.mobile)
 
      const defaultcountry = countryList.filter((country)=>{
-        return country.code === visitorcountry || 'IN'
+        return country.code === (visitorcountry || 'IN')
     })
 
     const [country, setCountry] = useState(defaultcountry[0])

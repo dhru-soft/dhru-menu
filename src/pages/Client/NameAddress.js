@@ -1,7 +1,7 @@
-import React from "react";
+import React, {useEffect, useMemo, useState} from "react";
 import {connect, useDispatch} from "react-redux";
 
-import {ACTIONS, composeValidators, device, METHOD, required, STATUS, urls} from "../../lib/static";
+import {ACTIONS, composeValidators, countryList, device, METHOD, required, STATUS, urls} from "../../lib/static";
 
 import apiService from "../../lib/api-service";
 
@@ -9,16 +9,49 @@ import {Field, Form} from 'react-final-form';
 
 import {setClientDetail} from "../../lib/redux-store/reducer/client-detail";
 import {setModal} from "../../lib/redux-store/reducer/component";
+import Select from 'react-select'
 
-const Index = ({clientDetail}) => {
+const Index = ({clientDetail,visitorcountry}) => {
 
 
     const dispatch = useDispatch()
     const {token,mobile,verifymobile,otp,serverurl,update,...other} = clientDetail
-    const initdata = {displayname: clientDetail.clientname, ...other}
-    const tableorder = Boolean(device.tableid);
+    const initdata = {displayname: clientDetail.clientname,country:(visitorcountry || 'IN'), ...other}
+    const tableorder = Boolean(device.tableid !== 0);
+
+    const country_options = useMemo(() => countryList, [])
+    const state_options = ([])
+
+    const defaultcountry = countryList.filter((country)=>{
+        return country.code === (visitorcountry || 'IN')
+    })
+
+
+
+
+
+    const [country, setCountry] = useState(defaultcountry[0])
+    const [state, setState] = useState({})
+
+/*    useEffect(()=>{
+        apiService({
+            method: METHOD.GET,
+            action: 'getstate',
+            queryString:{country:country.code},
+            showalert: true,
+            workspace: device.workspace,
+            token: device.token,
+            other: {url: urls.posUrl},
+        }).then(async (result) => {
+            if (result.status === STATUS.SUCCESS) {
+                setState(result.data)
+            }
+        });
+    },[country])*/
+
 
     const updateDetail = (values) => {
+
         apiService({
             method: METHOD.PUT,
             action: ACTIONS.CLIENT,
@@ -34,6 +67,12 @@ const Index = ({clientDetail}) => {
             }
         });
     }
+    const changeHandlerCountry = value => {
+        setCountry(value)
+    }
+    const changeHandlerState = value => {
+        setCountry(value)
+    }
 
     return (
 
@@ -45,7 +84,7 @@ const Index = ({clientDetail}) => {
             <Form
                 initialValues={initdata}
                 onSubmit={updateDetail}
-                render={({handleSubmit, values}) => (
+                render={({handleSubmit,form, values}) => (
                     <form onSubmit={handleSubmit}>
 
                         <div className={'form'}>
@@ -69,7 +108,7 @@ const Index = ({clientDetail}) => {
                                         </div>
 
 
-                                        {/*{!tableorder && <>
+                                        {tableorder  && <>
 
                                            <div className={'mb-3'}>
                                                 <Field name="address1" validate={composeValidators(required)}>
@@ -97,10 +136,52 @@ const Index = ({clientDetail}) => {
                                                 </Field>
                                             </div>
 
+
                                             <div className={'mb-3'}>
-                                                <Field name="city" validate={composeValidators(required)}>
+
+
+                                                <Field name="country">
                                                     {({input, meta}) => (
                                                         <div className="">
+                                                            <Select isDisabled={true} options={country_options} defaultValue={country} onChange={changeHandlerCountry} className={'react-select'}/>
+                                                        </div>
+                                                    )}
+                                                </Field>
+
+
+                                            </div>
+
+
+                                            <div className={'mb-3'}>
+
+                                                <Field name="state"  validate={composeValidators(required)}>
+                                                    {({input, meta}) => (
+                                                        <div className="">
+                                                            <input className="textfield textfield2" {...input}
+                                                                   type="text" placeholder="State"/>
+                                                            {meta.touched && meta.error &&  <div   className={'text-danger  mt-2'}>State {meta.error}</div>}
+                                                        </div>
+                                                    )}
+                                                </Field>
+
+                                                {/*<Field name="state" validate={composeValidators(required)}>
+                                                    {({input, meta}) => (
+                                                        <div className="">
+                                                            <Select options={state_options} defaultValue={state} onChange={changeHandlerState} className={'react-select'}/>
+                                                        </div>
+                                                    )}
+                                                </Field>*/}
+
+
+                                            </div>
+
+
+                                            <div className={'mb-3 d-flex justify-content-between'}>
+
+
+                                                <Field name="city" validate={composeValidators(required)}>
+                                                    {({input, meta}) => (
+                                                        <div className="w-100">
                                                             <input className="textfield textfield2" {...input}
                                                                    type="text" placeholder="City"/>
                                                             {meta.touched && meta.error &&
@@ -109,9 +190,22 @@ const Index = ({clientDetail}) => {
                                                         </div>
                                                     )}
                                                 </Field>
+
+                                                <div style={{width:10}}></div>
+
+                                                <Field name="pincode"  >
+                                                    {({input, meta}) => (
+                                                        <div className="w-100">
+                                                            <input className="textfield textfield2" {...input}
+                                                                   type="text" placeholder="Pincode"/>
+
+                                                        </div>
+                                                    )}
+                                                </Field>
+
                                             </div>
 
-                                        </>}*/}
+                                        </>}
 
                                     </div>
                                 </div>
@@ -144,7 +238,8 @@ const Index = ({clientDetail}) => {
 
 const mapStateToProps = (state) => {
     return {
-        clientDetail: state.clientDetail
+        clientDetail: state.clientDetail,
+        visitorcountry: state.restaurantDetail?.settings?.visitorcountry
     }
 }
 

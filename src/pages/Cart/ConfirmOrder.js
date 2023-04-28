@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useState} from "react";
 import {connect, useDispatch} from "react-redux";
 import {getCompanyDetails, postOrder} from "../../lib/functions";
 
@@ -11,7 +11,17 @@ import {setModal} from "../../lib/redux-store/reducer/component";
 import Login from "../Login";
 import {resetCart} from "../../lib/redux-store/reducer/cart-data";
 
-const Index = ({clientDetail,vouchertotaldisplay}) => {
+const Index = ({clientDetail,vouchertotaldisplay,paymentgateways}) => {
+
+    const dispatch = useDispatch()
+    const {clientname,address1, address2,pin,state,country,displayname,addresses, city,update} = clientDetail;
+    const {tablename, locationname} = getCompanyDetails();
+
+    const [selectedAddress,setSelectedAddress] = useState(0)
+
+    let addresss = (Boolean(addresses) && Object.values(addresses)) || []
+    addresss.push({address1, address2,city,pin,state,country,displayname:clientname})
+
 
     const confirmOrder = (values) => {
 
@@ -22,7 +32,7 @@ const Index = ({clientDetail,vouchertotaldisplay}) => {
                 "paymentgateways": [
                     {
                         "gid": values.paymentgateway,
-                        "gatewayname": "Cash",
+                        "gatewayname": paymentgateways[values.paymentgateway].name,
                         "pay": vouchertotaldisplay,
                         "paysystem": vouchertotaldisplay,
                         "receipt": "",
@@ -34,7 +44,7 @@ const Index = ({clientDetail,vouchertotaldisplay}) => {
                 ]
             }
         ]
-        postOrder({...values,payments}).then((data)=>{
+        postOrder({...values,payments,address:addresss[selectedAddress]}).then((data)=>{
             store.dispatch(setModal({show:false}))
             if(!data){
                 store.dispatch(setModal({
@@ -50,9 +60,8 @@ const Index = ({clientDetail,vouchertotaldisplay}) => {
         })
     }
 
-    const dispatch = useDispatch()
-    const {clientname,address1, address2, city,update} = clientDetail;
-    const {tablename, locationname} = getCompanyDetails();
+
+
 
     if(update){
         return (<NameAddress  /> )
@@ -68,7 +77,7 @@ const Index = ({clientDetail,vouchertotaldisplay}) => {
                 <Form
                     initialValues={{paymentgateway:'c02fc4ca-8d89-4c91-bd66-2dd29bc34e43',ordertype: Boolean(device.tableid)?'table':'homedelivery'}}
                     onSubmit={confirmOrder}
-                    render={({handleSubmit, values}) => (
+                    render={({handleSubmit,form, values}) => (
                         <form onSubmit={handleSubmit}>
 
 
@@ -76,28 +85,38 @@ const Index = ({clientDetail,vouchertotaldisplay}) => {
 
                                 <h5>Payment Detail</h5>
 
-                                <div className={'mb-3 '}>
-                                    <Field name="paymentgateway">
-                                        {({input, meta}) => (
-                                            <>
 
-                                                <div className="mb-4">
-                                                    <input className="form-check-input"  {...input} checked={true}
-                                                           onChange={(e) => {
-                                                               values.ordertype = e.target.value
-                                                           }} id="radio" type="radio"
-                                                           value={'c02fc4ca-8d89-4c91-bd66-2dd29bc34e43'}/>
-                                                    <label className="form-check-label"
-                                                           htmlFor="radio">
-                                                        Cash
-                                                    </label>
-                                                </div>
+                                {
+                                    Object.keys(paymentgateways).map((key,index)=>{
+                                        const {name,account} = paymentgateways[key]
+                                        return (
+                                            <div className={'mb-3'} key={index}>
+                                                <Field name="paymentgateway">
+                                                    {({input, meta}) => (
+                                                        <>
 
+                                                            <div className="mb-4  d-flex align-items-center">
+                                                                <input className="form-check-input"  {...input} checked={values.paymentgateway === key}
+                                                                       onChange={(e) => {
+                                                                           form.change('paymentgateway',e.target.value)
+                                                                       }} id={`payment-${key}`} type="radio"
+                                                                       value={key}/>
+                                                                <label className="form-check-label"
+                                                                       htmlFor={`payment-${key}`}>
+                                                                    {name}
+                                                                </label>
+                                                            </div>
+                                                        </>
+                                                    )}
+                                                </Field>
+                                            </div>
+                                        )
+                                    })
+                                }
 
-                                            </>
-                                        )}
-                                    </Field>
-                                </div>
+                                <br/>
+
+                                <hr/>
 
 
 
@@ -113,15 +132,17 @@ const Index = ({clientDetail,vouchertotaldisplay}) => {
                                                     {({input, meta}) => (
                                                         <>
 
-                                                            {!Boolean(device.tableid) && <div>
-                                                                <div className="mb-4">
+                                                            {Boolean(device.tableid === '0') && <div>
+                                                                <div className="mb-4  d-flex align-items-center" >
+
+
 
                                                                     <div className={'d-flex justify-content-between align-items-start'}>
                                                                         <div>
 
                                                                             <input className="form-check-input" {...input}
-                                                                                   checked={true} onChange={(e) => {
-                                                                                values.ordertype = e.target.value
+                                                                                   checked={values.ordertype === 'homedelivery'} onChange={(e) => {
+                                                                                form.change('ordertype',e.target.value)
                                                                             }} id="radio1" type="radio"
                                                                                    value={'homedelivery'}/>
                                                                             <label className="form-check-label"
@@ -129,29 +150,58 @@ const Index = ({clientDetail,vouchertotaldisplay}) => {
                                                                                 Home Delivery
                                                                             </label>
 
-                                                                            <div style={{marginLeft: 25,marginTop:3}}
-                                                                                 className={'text-muted'}>
-                                                                                <div>{clientname}</div>
-                                                                                <div>{address1}</div>
-                                                                                <div>{address2}</div>
-                                                                                <div>{city}</div>
-                                                                            </div>
+
+                                                                            {values.ordertype === 'homedelivery' && <div className={'d-flex mt-3'}>
+
+                                                                                {
+                                                                                    addresss.map((address,index)=>{
+                                                                                        const {address1, address2,city,pin,state,country,displayname} = address;
+                                                                                        return (
+                                                                                            <div className={`addresses border p-3 rounded-3 me-2 ${selectedAddress === index?'selected':''}`} key={index} style={{minWidth:200}} onClick={()=>{
+                                                                                                setSelectedAddress(index)
+                                                                                            }}>
+                                                                                                <div style={{marginTop:3}} >
+                                                                                                    <div className={'mb-2'}><strong>{displayname}</strong></div>
+                                                                                                    <div style={{opacity:0.7}}>
+                                                                                                        <div>{address1}</div>
+                                                                                                        <div>{address2}</div>
+                                                                                                        <div>{city} {pin}</div>
+                                                                                                    </div>
+                                                                                                </div>
+                                                                                                <span style={{display:"inline-block",marginTop:10}} className={'link'}  onClick={()=>{
+                                                                                                    dispatch(setClientDetail({...clientDetail,update:true}))
+                                                                                                }}>
+                                                                                                    Edit
+                                                                                                </span>
+                                                                                            </div>
+                                                                                        )
+                                                                                    })
+                                                                                }
+
+
+
+                                                                            </div>}
 
                                                                         </div>
-                                                                        <div className={'p-3'} onClick={()=>{
-                                                                            dispatch(setClientDetail({...clientDetail,update:true}))
-                                                                        }}>
-                                                                            <i className={'fa fa-pencil'}></i>
-                                                                        </div>
+
+
+
+
+
                                                                     </div>
 
 
                                                                 </div>
 
-                                                                <div className="mb-4">
-                                                                    <input className="form-check-input" {...input}
+
+
+
+
+
+                                                                <div className="mb-4 d-flex align-items-center">
+                                                                    <input className="form-check-input"  checked={values.ordertype === 'takeaway'}  {...input}
                                                                            onChange={(e) => {
-                                                                               values.ordertype = e.target.value
+                                                                               form.change('ordertype',e.target.value)
                                                                            }} id="radio2" type="radio"
                                                                            value={'takeaway'}/>
                                                                     <label className="form-check-label"
@@ -162,23 +212,20 @@ const Index = ({clientDetail,vouchertotaldisplay}) => {
                                                             </div>}
 
                                                             {Boolean(device.tableid) && <div>
-                                                                <div className="mb-4">
-                                                                    <input className="form-check-input" {...input}
-                                                                           checked={true} onChange={(e) => {
-                                                                        values.ordertype = e.target.value
+                                                                <div className="d-flex align-items-center">
+                                                                    <input className="form-check-input"  {...input}
+                                                                           checked={values.ordertype === 'table'}   onChange={(e) => {
+                                                                        form.change('ordertype',e.target.value)
                                                                     }} id="radio3" type="radio"
                                                                            value={'table'}/>
                                                                     <label className="form-check-label"
                                                                            htmlFor="radio3">
                                                                         Table order
                                                                     </label>
-
-                                                                    <div style={{marginLeft: 25}}
-                                                                         className={'text-muted'}>
-                                                                        <div>{locationname}</div>
-                                                                        <div>{tablename}</div>
-                                                                    </div>
-
+                                                                </div>
+                                                                <div  style={{marginLeft: 25,opacity:0.7}}>
+                                                                    <div>{locationname}</div>
+                                                                    <div>{tablename}</div>
                                                                 </div>
                                                             </div>}
                                                         </>
@@ -218,6 +265,7 @@ const Index = ({clientDetail,vouchertotaldisplay}) => {
 const mapStateToProps = (state) => {
     return {
         clientDetail: state.clientDetail,
+        paymentgateways:state.restaurantDetail.settings.payment,
         vouchertotaldisplay:state.cartData.vouchertotaldisplay
     }
 }

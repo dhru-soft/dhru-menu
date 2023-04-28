@@ -1056,8 +1056,6 @@ b, strong {
 
 .form-check-label{
     margin-left: 10px;
-    font-weight:600;
-    width: 100%;
 }
 
 .container{
@@ -1236,4 +1234,8 @@ h6, .h6,{
 
 .min-height{
     min-height: calc(100vh - 70px);
+}
+
+.addresses.selected{
+    background-color: var(--bs-border-color);
 }
