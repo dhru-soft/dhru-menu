@@ -56,13 +56,20 @@ const Index = ({clientDetail}) => {
             other: {url: urls.posUrl},
         }).then(async (result) => {
             if (result.status === STATUS.SUCCESS && Boolean(result?.data)) {
-                device.token = result.token
+                device.token = result.token;
+
+                let {clientname,address1, address2,pin,state,country,displayname,addresses, city} = result.data;
+
+                addresses[0] = {address1, address2,city,pin,state,country,displayname:clientname}
+
                 clientDetail = {
                     ...clientDetail,
                     token: device.token,
                     verifymobile: 'done',
+                    addresses:addresses,
                     ...result.data
                 }
+
                 dispatch(setClientDetail(clientDetail));
             }
         });

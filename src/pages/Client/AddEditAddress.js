@@ -10,13 +10,15 @@ import {Field, Form} from 'react-final-form';
 import {setClientDetail} from "../../lib/redux-store/reducer/client-detail";
 import {setModal} from "../../lib/redux-store/reducer/component";
 import Select from 'react-select'
+import {clone} from "../../lib/functions";
 
-const Index = ({clientDetail,visitorcountry}) => {
+const Index = ({clientDetail,address,visitorcountry}) => {
 
 
     const dispatch = useDispatch()
-    const {token,mobile,verifymobile,otp,serverurl,update,...other} = clientDetail
-    const initdata = {displayname: clientDetail.clientname,country:(visitorcountry || 'IN'), ...other}
+
+    const initdata = {displayname: clientDetail.clientname,...address,country:(visitorcountry || 'IN')}
+
     const tableorder = Boolean(device.tableid !== '0');
 
     const country_options = useMemo(() => countryList, [])
@@ -49,6 +51,11 @@ const Index = ({clientDetail,visitorcountry}) => {
 
     const updateDetail = (values) => {
 
+        values = {
+            ...values,
+            clientid:clientDetail.clientid
+        }
+
         apiService({
             method: METHOD.PUT,
             action: ACTIONS.CLIENT,
@@ -59,7 +66,13 @@ const Index = ({clientDetail,visitorcountry}) => {
             other: {url: urls.posUrl},
         }).then(async (result) => {
             if (result.status === STATUS.SUCCESS) {
-                dispatch(setClientDetail({...clientDetail,update:false, clientname: values.displayname, ...values}));
+                let address = clone(clientDetail?.addresses) || [];
+                address.push(values)
+                values = {
+                    ...values,
+                    addresses:address
+                }
+                dispatch(setClientDetail({...clientDetail,  clientname: values.displayname, ...values}));
                 dispatch(setModal({show: false}))
             }
         });
@@ -77,7 +90,7 @@ const Index = ({clientDetail,visitorcountry}) => {
         <>
             <div className={'container'}>
 
-                <h4>Client Information</h4>
+                <h4>{initdata?.address1?'Edit':'New'} Address</h4>
 
             <Form
                 initialValues={initdata}

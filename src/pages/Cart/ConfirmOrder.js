@@ -1,36 +1,20 @@
 import React, {useState} from "react";
 import {connect, useDispatch} from "react-redux";
-import {getCompanyDetails, postOrder} from "../../lib/functions";
+import {getCompanyDetails, postOrder,setDefaultAddress} from "../../lib/functions";
 
 import {Field, Form} from 'react-final-form';
 import {device} from "../../lib/static";
-import {setClientDetail} from "../../lib/redux-store/reducer/client-detail";
-import NameAddress from "../Client/NameAddress";
+
 import store from "../../lib/redux-store/store";
 import {setModal} from "../../lib/redux-store/reducer/component";
 import Login from "../Login";
 import {resetCart} from "../../lib/redux-store/reducer/cart-data";
-import Scrollbar from "bootstrap/js/src/util/scrollbar";
 
 const Index = ({clientDetail,vouchertotaldisplay,paymentgateways}) => {
 
     const dispatch = useDispatch()
-    const {clientname,address1, address2,pin,state,country,displayname,addresses, city,update} = clientDetail;
+    const {addresses} = clientDetail;
     const {tablename, locationname} = getCompanyDetails();
-
-    let addresss = (Boolean(addresses) && Object.values(addresses)) || [];
-    addresss.push({address1, address2,city,pin,state,country,displayname:clientname})
-
-
-
-    const defaultAddress = addresss?.findIndex((address,index)=>{
-        if(address.default === 1){
-            return index
-        }
-    })
-
-    const [selectedAddress,setSelectedAddress] = useState(defaultAddress >= 0 ?defaultAddress : 0)
-
 
     const confirmOrder = (values) => {
 
@@ -53,7 +37,7 @@ const Index = ({clientDetail,vouchertotaldisplay,paymentgateways}) => {
                 ]
             }
         ]
-        postOrder({...values,payments,address:addresss[selectedAddress]}).then((data)=>{
+        postOrder({...values,payments,address:addresses}).then((data)=>{
             store.dispatch(setModal({show:false}))
             if(!data){
                 store.dispatch(setModal({
@@ -72,9 +56,11 @@ const Index = ({clientDetail,vouchertotaldisplay,paymentgateways}) => {
 
 
 
-    if(update){
-        return (<NameAddress  /> )
-    }
+
+
+    /*if(update){
+        return (<NameAddress/>)
+    }*/
 
 
     return (
@@ -164,11 +150,12 @@ const Index = ({clientDetail,vouchertotaldisplay,paymentgateways}) => {
                                                                             {values.ordertype === 'homedelivery' && <div className={'mt-3'}>
 
                                                                                 {
-                                                                                    addresss.map((address,index)=>{
-                                                                                        const {address1, address2,city,pin,state,country,displayname} = address;
+                                                                                    Object.keys(addresses)?.map((key)=>{
+
+                                                                                        const {address1, address2,city,pin,state,country,displayname} = addresses[key];
                                                                                         return (
-                                                                                            <div className={`addresses border p-3 rounded-3 me-2 ${selectedAddress === index?'selected':''}`} key={index}   onClick={()=>{
-                                                                                                setSelectedAddress(index)
+                                                                                            <div className={`addresses border p-3 rounded-3 me-2 ${addresses[key].default === 1?'selected':''}`} key={key}   onClick={()=>{
+                                                                                                setDefaultAddress(key)
                                                                                             }}>
                                                                                                 <div style={{marginTop:3}} >
                                                                                                     <div className={'mb-2'}><strong>{displayname}</strong></div>
@@ -178,11 +165,11 @@ const Index = ({clientDetail,vouchertotaldisplay,paymentgateways}) => {
                                                                                                         <div>{city} {pin}</div>
                                                                                                     </div>
                                                                                                 </div>
-                                                                                                <span style={{display:"inline-block",marginTop:10}} className={'link'}  onClick={()=>{
+                                                                                                {/*<span style={{display:"inline-block",marginTop:10}} className={'link'}  onClick={()=>{
                                                                                                     dispatch(setClientDetail({...clientDetail,update:true}))
                                                                                                 }}>
                                                                                                     Edit
-                                                                                                </span>
+                                                                                                </span>*/}
                                                                                             </div>
                                                                                         )
                                                                                     })

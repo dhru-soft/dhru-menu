@@ -1,9 +1,8 @@
 import React, {useEffect} from "react";
 import {connect, useDispatch} from "react-redux";
-import {setModal} from "../../lib/redux-store/reducer/component";
 import Mobile from "../Client/Mobile";
 import Otp from "../Client/Otp";
-import NameAddress from "../Client/NameAddress";
+import AddEditAddress from "../Client/AddEditAddress";
 import {device} from "../../lib/static";
 import ConfirmOrder from "../Cart/ConfirmOrder";
 import {isEmpty} from "../../lib/functions";
@@ -13,6 +12,7 @@ const Index = ({clientDetail}) => {
     const dispatch = useDispatch()
 
     const {token, verifymobile, otp, clientname,address1} = clientDetail
+
 
     const mobilescreen = (verifymobile === '');
     const otpscreen = (verifymobile === 'inprocess' && otp === 'sent')
@@ -28,7 +28,7 @@ const Index = ({clientDetail}) => {
         Component = () => <Otp/>
     }
     else if(otherdetailscreen){
-        Component = () => <NameAddress/>
+        Component = () => <AddEditAddress/>
     }
 
 

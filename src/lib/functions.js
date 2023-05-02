@@ -735,6 +735,14 @@ export const placeOrder = () => {
     }))
 }
 
+export const setDefaultAddress = (index) => {
+    let clientDetail = clone(store.getState().clientDetail);
+    Object.keys(clientDetail.addresses).forEach((key)=>{
+        clientDetail.addresses[key].default = 0
+    })
+    clientDetail.addresses[index].default = 1
+    store.dispatch(setClientDetail(clientDetail));
+}
 
 export const postOrder = (order) => {
 

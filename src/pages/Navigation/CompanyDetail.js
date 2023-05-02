@@ -2,13 +2,26 @@ import React from "react";
 import {getCompanyDetails} from "../../lib/functions";
 import {connect, useDispatch} from "react-redux";
 import {setClientDetail} from "../../lib/redux-store/reducer/client-detail";
+import store from "../../lib/redux-store/store";
+import {setModal} from "../../lib/redux-store/reducer/component";
+import Addresses from "../Client/Addresses";
 
 
 const Index = ({clientDetail,company}) => {
 
     const dispatch = useDispatch()
     const {clientname, displayname, token} = clientDetail;
-    let {tablename, locationname, address1, address2, download_url,industrytype} = getCompanyDetails();
+    let {tablename, locationname, address1, address2, download_url} = getCompanyDetails();
+
+
+    const showAddresses = () => {
+        store.dispatch(setModal({
+            show: true,
+            title: '',
+            height: '80%',
+            component: () => <><Addresses/></>
+        }))
+    }
 
 
 
@@ -35,11 +48,26 @@ const Index = ({clientDetail,company}) => {
                             </div>}
 
 
-                            {Boolean(token) && <div className={'mt-3 text-muted cursor-pointer'} onClick={() => {
-                                dispatch(setClientDetail({}))
-                            }}>
-                                Logout
-                            </div>}
+                            {Boolean(token) &&
+                                <div className={'d-flex'}>
+                                    <div className={'mt-3 text-muted cursor-pointer pe-3'} onClick={() => {
+                                        dispatch(setClientDetail({}))
+                                    }}>
+                                        Logout
+                                    </div>
+                                    <div className={'mt-3 text-muted cursor-pointer  pe-3'} onClick={() => {
+
+                                    }}>
+                                        My Orders
+                                    </div>
+                                    <div className={'mt-3 text-muted cursor-pointer  pe-3'} onClick={() => {
+                                        showAddresses()
+                                    }}>
+                                        Shipping Address
+                                    </div>
+
+                                </div>
+                            }
 
                         </div>
 
