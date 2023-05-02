@@ -17,7 +17,7 @@ const Index = ({clientDetail,visitorcountry}) => {
     const dispatch = useDispatch()
     const {token,mobile,verifymobile,otp,serverurl,update,...other} = clientDetail
     const initdata = {displayname: clientDetail.clientname,country:(visitorcountry || 'IN'), ...other}
-    const tableorder = Boolean(device.tableid !== 0);
+    const tableorder = Boolean(device.tableid !== '0');
 
     const country_options = useMemo(() => countryList, [])
     const state_options = ([])
@@ -25,9 +25,6 @@ const Index = ({clientDetail,visitorcountry}) => {
     const defaultcountry = countryList.filter((country)=>{
         return country.code === (visitorcountry || 'IN')
     })
-
-
-
 
 
     const [country, setCountry] = useState(defaultcountry[0])
@@ -66,6 +63,7 @@ const Index = ({clientDetail,visitorcountry}) => {
                 dispatch(setModal({show: false}))
             }
         });
+
     }
     const changeHandlerCountry = value => {
         setCountry(value)
@@ -108,7 +106,7 @@ const Index = ({clientDetail,visitorcountry}) => {
                                         </div>
 
 
-                                        {tableorder  && <>
+                                        {!tableorder  && <>
 
                                            <div className={'mb-3'}>
                                                 <Field name="address1" validate={composeValidators(required)}>

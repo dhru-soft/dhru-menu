@@ -84,8 +84,8 @@ const Index = ({clientDetail}) => {
             <div className={'form'}>
 
 
-                <div>
-                    <div className={'my-3'}>
+                <div className={'m-auto'} style={{maxWidth:360}}>
+                    <div  className={'form'}>
 
                         <div className={'mb-3'}> OTP was sent to mobile {mobile}  </div>
                         <div className={'mb-5 text-muted'}  onClick={() => {
@@ -103,7 +103,7 @@ const Index = ({clientDetail}) => {
                     </div>
 
 
-                    <div>
+                    <div className={'mt-3'}>
                          <OTPCounter mobile={mobile}/>
                     </div>
 

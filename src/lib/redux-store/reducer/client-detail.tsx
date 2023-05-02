@@ -3,7 +3,7 @@ import {sessionStore, storeData} from "../../functions";
 
 export const clientDetail = createSlice({
     name: 'clientDetail',
-    initialState: {token:'',verifymobile:''},
+    initialState: {},
     reducers: {
         setClientDetail: (state: any, action) => {
             sessionStore('client', action.payload).then(r => {

@@ -727,34 +727,12 @@ export const getFromSetting = (key) => {
 
 
 export const placeOrder = () => {
-
-    const {token, verifymobile, otp, clientname,address1} = store.getState().clientDetail
-
-    const mobilescreen = !verifymobile
-    const otpscreen = (verifymobile === 'inprocess' && otp === 'sent')
-
-    const otherdetailscreen = (((verifymobile === 'done' && (!Boolean(clientname) || (!Boolean(address1) && Boolean(device.tableid === '0'))))) && (!mobilescreen && !otpscreen)) // last
-   // const otherdetailscreen = (((verifymobile === 'done' && !Boolean(clientname)) || !Boolean(device.tableid) && !Boolean(address1)) && !mobilescreen && !otpscreen)
-   // const otherdetailscreen = (((verifymobile === 'done' && !Boolean(clientname))) && !mobilescreen && !otpscreen)
-
-    if(!mobilescreen && !otpscreen && !otherdetailscreen){
-        store.dispatch(setModal({
-            show: true,
-            title: '',
-            height: '80%',
-            isBootstrap:true,
-            component: () => <><ConfirmOrder/></>
-        }))
-       // confirmAlert(options);
-    }
-    else {
-        store.dispatch(setModal({
-            show: true,
-            title: '',
-            height: '80%',
-            component: () => <><Login/></>
-        }))
-    }
+    store.dispatch(setModal({
+        show: true,
+        title: '',
+        height: '80%',
+        component: () => <><Login/></>
+    }))
 }
 
 
@@ -799,7 +777,6 @@ export const postOrder = (order) => {
             else{
                 resolve(false)
             }
-
         });
     })
 }

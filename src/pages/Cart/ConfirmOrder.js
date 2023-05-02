@@ -10,6 +10,7 @@ import store from "../../lib/redux-store/store";
 import {setModal} from "../../lib/redux-store/reducer/component";
 import Login from "../Login";
 import {resetCart} from "../../lib/redux-store/reducer/cart-data";
+import Scrollbar from "bootstrap/js/src/util/scrollbar";
 
 const Index = ({clientDetail,vouchertotaldisplay,paymentgateways}) => {
 
@@ -17,10 +18,18 @@ const Index = ({clientDetail,vouchertotaldisplay,paymentgateways}) => {
     const {clientname,address1, address2,pin,state,country,displayname,addresses, city,update} = clientDetail;
     const {tablename, locationname} = getCompanyDetails();
 
-    const [selectedAddress,setSelectedAddress] = useState(0)
-
-    let addresss = (Boolean(addresses) && Object.values(addresses)) || []
+    let addresss = (Boolean(addresses) && Object.values(addresses)) || [];
     addresss.push({address1, address2,city,pin,state,country,displayname:clientname})
+
+
+
+    const defaultAddress = addresss?.findIndex((address,index)=>{
+        if(address.default === 1){
+            return index
+        }
+    })
+
+    const [selectedAddress,setSelectedAddress] = useState(defaultAddress >= 0 ?defaultAddress : 0)
 
 
     const confirmOrder = (values) => {
@@ -75,7 +84,7 @@ const Index = ({clientDetail,vouchertotaldisplay,paymentgateways}) => {
 
 
                 <Form
-                    initialValues={{paymentgateway:'c02fc4ca-8d89-4c91-bd66-2dd29bc34e43',ordertype: Boolean(device.tableid)?'table':'homedelivery'}}
+                    initialValues={{paymentgateway:'c02fc4ca-8d89-4c91-bd66-2dd29bc34e43',ordertype: Boolean(device.tableid !== '0')?'table':'homedelivery'}}
                     onSubmit={confirmOrder}
                     render={({handleSubmit,form, values}) => (
                         <form onSubmit={handleSubmit}>
@@ -124,7 +133,8 @@ const Index = ({clientDetail,vouchertotaldisplay,paymentgateways}) => {
 
 
                                 <div className={'mt-3'}>
-                                    <div className={'d-flex justify-content-between align-items-center'}>
+                                    <div>
+                                        <div className={'justify-content-between align-items-center'}>
                                         <div className="w-100">
 
                                             <div className={'mb-3'}>
@@ -137,7 +147,7 @@ const Index = ({clientDetail,vouchertotaldisplay,paymentgateways}) => {
 
 
 
-                                                                    <div className={'d-flex justify-content-between align-items-start'}>
+                                                                    <div className={'justify-content-between align-items-start'}>
                                                                         <div>
 
                                                                             <input className="form-check-input" {...input}
@@ -151,13 +161,13 @@ const Index = ({clientDetail,vouchertotaldisplay,paymentgateways}) => {
                                                                             </label>
 
 
-                                                                            {values.ordertype === 'homedelivery' && <div className={'d-flex mt-3'}>
+                                                                            {values.ordertype === 'homedelivery' && <div className={'mt-3'}>
 
                                                                                 {
                                                                                     addresss.map((address,index)=>{
                                                                                         const {address1, address2,city,pin,state,country,displayname} = address;
                                                                                         return (
-                                                                                            <div className={`addresses border p-3 rounded-3 me-2 ${selectedAddress === index?'selected':''}`} key={index} style={{minWidth:200}} onClick={()=>{
+                                                                                            <div className={`addresses border p-3 rounded-3 me-2 ${selectedAddress === index?'selected':''}`} key={index}   onClick={()=>{
                                                                                                 setSelectedAddress(index)
                                                                                             }}>
                                                                                                 <div style={{marginTop:3}} >
@@ -181,6 +191,8 @@ const Index = ({clientDetail,vouchertotaldisplay,paymentgateways}) => {
 
 
                                                                             </div>}
+
+
 
                                                                         </div>
 
@@ -234,6 +246,7 @@ const Index = ({clientDetail,vouchertotaldisplay,paymentgateways}) => {
                                             </div>
 
                                         </div>
+                                    </div>
                                     </div>
                                 </div>
 

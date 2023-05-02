@@ -39,7 +39,7 @@ const Index = ({clientDetail,visitorcountry}) => {
                 render={({handleSubmit, values}) => (
                     <form onSubmit={handleSubmit}>
 
-                        <div className={'form'}>
+                        <div className={'form m-auto'} style={{maxWidth:360}}>
 
 
                             <div className={'my-3 toggle'} ref={countryRef}>
