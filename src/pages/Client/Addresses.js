@@ -12,20 +12,24 @@ import {setModal} from "../../lib/redux-store/reducer/component";
 import Select from 'react-select'
 import AddEditAddress from "./AddEditAddress";
 import store from "../../lib/redux-store/store";
+import {setDefaultAddress} from "../../lib/functions";
 
-const Index = ({clientDetail}) => {
+const Index = ({clientDetail,cart}) => {
 
 
     const dispatch = useDispatch()
     const {addresses} = clientDetail;
 
-    const addEditAddress = (address) => {
-        store.dispatch(setModal({
-            show: true,
-            title: '',
-            height: '80%',
-            component: () => <><AddEditAddress address={address}/></>
-        }))
+    const [addedit,setAddEdit] = useState(false);
+    const [address,setAddress] = useState({});
+
+    const addEditAddress = (address,key) => {
+        setAddEdit(true);
+        setAddress({...address,addressid:key})
+    }
+
+    if(addedit){
+        return <AddEditAddress address={address} setAddEdit={setAddEdit}/>
     }
 
 
@@ -34,60 +38,71 @@ const Index = ({clientDetail}) => {
         <>
             <div className={'container'}>
 
+                <div className={'d-flex flex-wrap'}>
                 {
-                    Object.values(addresses)?.map((address,index)=>{
-                        const {address1, address2,city,pin,state,country,displayname} = address;
-                        return (
-                            <div className={`addresses border p-3 rounded-3 me-2 cursor-pointer mb-3`} key={index} >
+                    Object.keys(addresses)?.map((key,index)=>{
 
-                                <div style={{marginTop:3}} >
+                        const {address1, address2,city,pin,state,country,displayname} = addresses[key];
+                        return (
+                            <div className={`addresses position-relative border p-3 rounded-3 me-2 cursor-pointer mb-3 ${addresses[key].default?'selected':''}`} key={index} >
+
+                                <div  onClick={()=>{
+                                    setDefaultAddress(key)
+                                }}>
                                     <div className={'mb-2'}><strong>{displayname}</strong></div>
                                     <div style={{opacity:0.7}}>
                                         <div>{address1}</div>
                                         <div>{address2}</div>
+                                        <div>{country} {state}</div>
                                         <div>{city} {pin}</div>
                                     </div>
                                 </div>
-                                <div className={'d-flex justify-content-between'}>
-                                    <span style={{display:"inline-block",marginTop:10}} className={'link'}  onClick={()=>{
-                                        dispatch(setClientDetail({...clientDetail}))
+
+                                {Boolean(addresses[key].default) &&  <div  style={{marginTop:10}} className={'text-primary'}>
+                                        Default Shipping address
+                                    </div>}
+
+                                {!cart &&    <div className={'justify-content-between on-hover mt-3'}>
+                                    {key !== '0' &&  <div className={'position-absolute p-3'} style={{top:0,right:0}} onClick={()=>{
+                                        addEditAddress(addresses[key],key)
                                     }}>
-                                    Default
-                                </span>
-
-                                    <div>
-
-                                    <button
-                                        className="w-100 custom-btn custom-btn--medium custom-btn--style-2"
-                                        onClick={()=>{
-                                            addEditAddress(address)
-                                        }} type="button" role="button">
-                                        Edit
-                                    </button>
-                                    </div>
-                                </div>
+                                        <i className={'fa fa-pencil'}></i>
+                                    </div>}
+                                </div>}
 
                             </div>
                         )
                     })
                 }
 
+                    <div className={`addresses  border p-3 rounded-3 me-2 cursor-pointer mb-3 d-flex justify-content-center align-items-center`}  >
 
-                <div>
-
-                    <button
-                        className="custom-btn custom-btn--medium custom-btn--style-4"
-                        onClick={()=>{
+                        <div  onClick={()=>{
                             addEditAddress({})
-                        }} type="button" role="button">
-                        + Add New Address
-                    </button>
+                        }}>
+                            <div className={'mb-2'}><strong>+ Add New Address</strong></div>
+
+                        </div>
+                    </div>
 
                 </div>
 
+
+                {!cart &&  <div className={'d-flex justify-content-between'}>
+
+                    <button
+                        className="w-100 custom-btn custom-btn--medium custom-btn--style-1"
+                        onClick={()=>{
+                             dispatch(setModal({visible:false}))
+                        }} type="button" role="button">
+                        Close
+                    </button>
+
+
+                </div>}
+
             </div>
         </>
-
 
     );
 }

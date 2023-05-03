@@ -1059,7 +1059,19 @@ b, strong {
 }
 
 .container{
-    overflow: auto;
+
+}
+
+.addresses{
+    width:48%;
+    .on-hover{
+        opacity: 0;
+    }
+    &:hover{
+        .on-hover{
+            opacity: 1;
+        }
+    }
 }
 
 .modal{

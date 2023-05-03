@@ -12,53 +12,93 @@ import {setModal} from "../../lib/redux-store/reducer/component";
 import Select from 'react-select'
 import {clone} from "../../lib/functions";
 
-const Index = ({clientDetail,address,visitorcountry}) => {
+let countryIndex = -1;
+let stateIndex = 0;
+const Index = ({clientDetail,address,visitorcountry,setAddEdit}) => {
 
 
     const dispatch = useDispatch()
 
-    const initdata = {displayname: clientDetail.clientname,...address,country:(visitorcountry || 'IN')}
-
     const tableorder = Boolean(device.tableid !== '0');
 
-    const country_options = useMemo(() => countryList, [])
-    const state_options = ([])
+    let [initdata,setInitdata] = useState({displayname: clientDetail.clientname,...address})
 
-    const defaultcountry = countryList.filter((country)=>{
-        return country.code === (visitorcountry || 'IN')
+
+
+    const country_options = useMemo(() => countryList.map((country)=>{
+        return {label:country.label,value:country.code}
+    }), [])
+
+    const defaultcountry = country_options.filter((country,index)=>{
+        if(country.value === (visitorcountry || 'IN')){
+            countryIndex = index
+            return true
+        }
     })
 
 
-    const [country, setCountry] = useState(defaultcountry[0])
-    const [state, setState] = useState({})
 
-/*    useEffect(()=>{
+    const [state_options, setstate_options] = useState()
+
+    const getStateList = (country) => {
         apiService({
             method: METHOD.GET,
             action: 'getstate',
-            queryString:{country:country.code},
-            showalert: true,
+            queryString:{country:country},
+            showalert: false,
             workspace: device.workspace,
             token: device.token,
             other: {url: urls.posUrl},
         }).then(async (result) => {
             if (result.status === STATUS.SUCCESS) {
-                setState(result.data)
+                if(result?.data) {
+
+                    const states = Object.keys(result.data).map((state) => {
+                        return {label: result.data[state].name, value: state};
+                    })
+
+                    const defaultstate = states.filter((state,index)=>{
+                        if(initdata.state === state.value){
+                            stateIndex = index
+                            return true
+                        }
+                    })
+
+                    setstate_options(states);
+
+                    let data = clone(initdata);
+                    data = {
+                        ...data,
+                        country:country_options[countryIndex],
+                        state:states[stateIndex],
+                    }
+
+                    setInitdata(data)
+
+
+                }
             }
         });
-    },[country])*/
+    }
+
+    useEffect(()=>{
+        getStateList(defaultcountry[0].value)
+    },[defaultcountry[0]])
 
 
     const updateDetail = (values) => {
 
+
         values = {
             ...values,
-            clientid:clientDetail.clientid
+            clientid:clientDetail?.clientid,
+            state:values?.state?.value,
+            country:values?.country?.value,
         }
 
         apiService({
-            method: METHOD.PUT,
-            action: ACTIONS.CLIENT,
+            method: Boolean(initdata?.addressid) ? METHOD.PUT : METHOD.POST,
+            action: ACTIONS.ADDRESS,
             body: values,
             showalert: true,
             workspace: device.workspace,
@@ -66,31 +106,33 @@ const Index = ({clientDetail,address,visitorcountry}) => {
             other: {url: urls.posUrl},
         }).then(async (result) => {
             if (result.status === STATUS.SUCCESS) {
-                let address = clone(clientDetail?.addresses) || [];
-                address.push(values)
-                values = {
-                    ...values,
-                    addresses:address
-                }
-                dispatch(setClientDetail({...clientDetail,  clientname: values.displayname, ...values}));
-                dispatch(setModal({show: false}))
+
+                let addresses = result?.data?.addresses;
+                let clientDetails = clone(clientDetail)
+
+                Object.keys(addresses).forEach((key)=>{
+                    clientDetails.addresses[key] = addresses[key]
+                })
+
+                dispatch(setClientDetail(clientDetails));
+                setAddEdit(false)
+                //dispatch(setModal({show: false}))
             }
         });
 
     }
-    const changeHandlerCountry = value => {
-        setCountry(value)
+
+    if(!state_options?.length){
+        return <></>
     }
-    const changeHandlerState = value => {
-        setCountry(value)
-    }
+
 
     return (
 
         <>
             <div className={'container'}>
 
-                <h4>{initdata?.address1?'Edit':'New'} Address</h4>
+                <h4>{initdata?.addressid?'Edit':'New'} Address</h4>
 
             <Form
                 initialValues={initdata}
@@ -151,14 +193,18 @@ const Index = ({clientDetail,address,visitorcountry}) => {
                                             <div className={'mb-3'}>
 
 
-                                                <Field name="country">
+                                                <Field name="country"  validate={composeValidators(required)}>
                                                     {({input, meta}) => (
                                                         <div className="">
-                                                            <Select isDisabled={true} options={country_options} defaultValue={country} onChange={changeHandlerCountry} className={'react-select'}/>
+                                                            <Select isDisabled={Boolean(initdata.addressid)} options={country_options} defaultValue={country_options[countryIndex]}  onChange={(value)=>{
+                                                                form.change('country',value);
+                                                                getStateList(value.value)
+                                                            }} className={'react-select'}/>
+                                                            {meta.touched && meta.error &&
+                                                                <div className={'text-danger  mt-2'}>Country  {meta.error}</div>}
                                                         </div>
                                                     )}
                                                 </Field>
-
 
                                             </div>
 
@@ -168,27 +214,21 @@ const Index = ({clientDetail,address,visitorcountry}) => {
                                                 <Field name="state"  validate={composeValidators(required)}>
                                                     {({input, meta}) => (
                                                         <div className="">
-                                                            <input className="textfield textfield2" {...input}
-                                                                   type="text" placeholder="State"/>
-                                                            {meta.touched && meta.error &&  <div   className={'text-danger  mt-2'}>State {meta.error}</div>}
+                                                            <Select options={state_options}  defaultValue={state_options[stateIndex]}  onChange={(value)=>{
+                                                                form.change('state',value)
+                                                            }} className={'react-select'}/>
+
+                                                            {meta.touched && meta.error &&
+                                                                <div className={'text-danger  mt-2'}>State  {meta.error}</div>}
+
                                                         </div>
                                                     )}
                                                 </Field>
-
-                                                {/*<Field name="state" validate={composeValidators(required)}>
-                                                    {({input, meta}) => (
-                                                        <div className="">
-                                                            <Select options={state_options} defaultValue={state} onChange={changeHandlerState} className={'react-select'}/>
-                                                        </div>
-                                                    )}
-                                                </Field>*/}
-
 
                                             </div>
 
 
                                             <div className={'mb-3 d-flex justify-content-between'}>
-
 
                                                 <Field name="city" validate={composeValidators(required)}>
                                                     {({input, meta}) => (
@@ -222,15 +262,32 @@ const Index = ({clientDetail,address,visitorcountry}) => {
                                 </div>
                             </div>
 
+                            {/*<pre>
+                                {JSON.stringify(values,0,2)}
+                            </pre>*/}
 
-                            <div className={'my-3'}>
+
+                            <div className={'my-3 d-flex justify-content-between'}>
+
+                                <button
+                                    className="w-100 custom-btn custom-btn--medium custom-btn--style-1"
+                                    onClick={() => {
+                                        setAddEdit(false)
+                                    }} type="button" role="button">
+                                    Cancel
+                                </button>
+
+                                <div style={{width:10}}></div>
+
                                 <button
                                     className="w-100 custom-btn custom-btn--medium custom-btn--style-4"
                                     onClick={() => {
+                                        console.log('helo')
                                         handleSubmit(values)
                                     }} type="button" role="button">
                                     Save
                                 </button>
+
                             </div>
 
 

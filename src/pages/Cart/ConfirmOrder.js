@@ -9,6 +9,7 @@ import store from "../../lib/redux-store/store";
 import {setModal} from "../../lib/redux-store/reducer/component";
 import Login from "../Login";
 import {resetCart} from "../../lib/redux-store/reducer/cart-data";
+import Addresses from "../Client/Addresses";
 
 const Index = ({clientDetail,vouchertotaldisplay,paymentgateways}) => {
 
@@ -149,7 +150,9 @@ const Index = ({clientDetail,vouchertotaldisplay,paymentgateways}) => {
 
                                                                             {values.ordertype === 'homedelivery' && <div className={'mt-3'}>
 
-                                                                                {
+                                                                                <Addresses cart={true}/>
+
+                                                                                {/*{
                                                                                     Object.keys(addresses)?.map((key)=>{
 
                                                                                         const {address1, address2,city,pin,state,country,displayname} = addresses[key];
@@ -165,17 +168,15 @@ const Index = ({clientDetail,vouchertotaldisplay,paymentgateways}) => {
                                                                                                         <div>{city} {pin}</div>
                                                                                                     </div>
                                                                                                 </div>
-                                                                                                {/*<span style={{display:"inline-block",marginTop:10}} className={'link'}  onClick={()=>{
+                                                                                                <span style={{display:"inline-block",marginTop:10}} className={'link'}  onClick={()=>{
                                                                                                     dispatch(setClientDetail({...clientDetail,update:true}))
                                                                                                 }}>
                                                                                                     Edit
-                                                                                                </span>*/}
+                                                                                                </span>
                                                                                             </div>
                                                                                         )
                                                                                     })
-                                                                                }
-
-
+                                                                                }*/}
 
                                                                             </div>}
 

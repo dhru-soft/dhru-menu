@@ -11,6 +11,7 @@ import Login from "../pages/Login";
 import Groups from "../pages/Groups";
 import Items from "../pages/Items";
 import Feedback from "../pages/Feedback";
+import Addresses from "../pages/Client/Addresses";
 
 class RouterComponent extends Component {
 

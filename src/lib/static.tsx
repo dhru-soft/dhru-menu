@@ -31,6 +31,7 @@ export enum ACTIONS {
     CODE = "code",
     ORDER = "order",
     CLIENT = "clientlogin",
+    ADDRESS = "address",
     ITEMS = "item",
     CATEGORY = "category",
 }
