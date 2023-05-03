@@ -282,7 +282,6 @@ const Index = ({clientDetail,address,visitorcountry,setAddEdit}) => {
                                 <button
                                     className="w-100 custom-btn custom-btn--medium custom-btn--style-4"
                                     onClick={() => {
-                                        console.log('helo')
                                         handleSubmit(values)
                                     }} type="button" role="button">
                                     Save

@@ -5,11 +5,14 @@ import {setClientDetail} from "../../lib/redux-store/reducer/client-detail";
 import store from "../../lib/redux-store/store";
 import {setModal} from "../../lib/redux-store/reducer/component";
 import Addresses from "../Client/Addresses";
+import {device} from "../../lib/static";
+import {useNavigate} from "react-router-dom";
 
 
 const Index = ({clientDetail,company}) => {
 
-    const dispatch = useDispatch()
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
     const {clientname, displayname, token} = clientDetail;
     let {tablename, locationname, address1, address2, download_url} = getCompanyDetails();
 
@@ -50,13 +53,9 @@ const Index = ({clientDetail,company}) => {
 
                             {Boolean(token) &&
                                 <div className={'d-flex'}>
-                                    <div className={'mt-3 text-muted cursor-pointer pe-3'} onClick={() => {
-                                        dispatch(setClientDetail({}))
-                                    }}>
-                                        Logout
-                                    </div>
-                                    <div className={'mt-3 text-muted cursor-pointer  pe-3'} onClick={() => {
 
+                                    <div className={'mt-3 text-muted cursor-pointer  pe-3'} onClick={() => {
+                                        navigate(`/l/${device.locationid}/myorders`);
                                     }}>
                                         My Orders
                                     </div>
@@ -64,6 +63,13 @@ const Index = ({clientDetail,company}) => {
                                         showAddresses()
                                     }}>
                                         Shipping Address
+                                    </div>
+
+                                    <div className={'mt-3 text-muted cursor-pointer pe-3'} onClick={() => {
+                                        dispatch(setClientDetail({}));
+                                        navigate(`/`);
+                                    }}>
+                                        Logout
                                     </div>
 
                                 </div>
