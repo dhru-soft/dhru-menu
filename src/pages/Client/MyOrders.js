@@ -3,9 +3,11 @@ import {connect, useDispatch} from "react-redux";
 import CompanyDetail from "../Navigation/CompanyDetail";
 import BodyClassName from 'react-body-classname';
 import Init from "../Home/Init";
-import {getInit, getWorkspaceName} from "../../lib/functions";
+import {getInit, getWorkspaceName, numberFormat} from "../../lib/functions";
 import apiService from "../../lib/api-service";
 import {ACTIONS, device, METHOD, STATUS, urls} from "../../lib/static";
+import Search from "../Cart/Search";
+import Diet from "../Cart/Diet";
 
 const Index = ({clientDetail}) => {
 
@@ -43,27 +45,40 @@ const Index = ({clientDetail}) => {
                 <div className={'container'}>
                     <div className="m-auto" >
 
+                        <div className={'mt-4'}>
                         <h4>My Orders</h4>
 
-                        <table>
-                            <tbody>
-                                {
-                                   Boolean(orders) && Object.keys(orders).map((key)=>{
-
-                                       const {data,date,ordertype,status} = orders[key];
-                                        const {clientname,vouchertotaldisplay,invoiceitems,payments} = data || {};
-
-                                        return  <tr key={key}>
-                                            <td>{date}</td>
-                                            <td>{status}</td>
-                                            <td>{ordertype}</td>
-                                            <td>{clientname}</td>
-                                            <td>{vouchertotaldisplay}</td>
+                            <div className={'bg-white p-4 rounded-4 mt-3'}>
+                                <table className={'table table-bordered'}>
+                                    <thead>
+                                        <tr>
+                                            <th>Date</th>
+                                            <th>Status</th>
+                                            <th>Order Type</th>
+                                            <th>Amount</th>
                                         </tr>
-                                    })
-                                }
-                            </tbody>
-                        </table>
+                                    </thead>
+                                    <tbody>
+                                    {
+                                        Boolean(orders) && Object.keys(orders).map((key)=>{
+
+                                            const {data,date,ordertype,status} = orders[key];
+                                            const {clientname,vouchertotaldisplay,invoiceitems,payments} = data || {};
+
+                                            return  <tr key={key}>
+                                                <td>{date}</td>
+                                                <td><badge>{status}</badge></td>
+                                                <td><div className={'text-capitalize'}>{ordertype}</div></td>
+                                                <td><div  className={'text-right'}>{numberFormat(vouchertotaldisplay)}</div> </td>
+                                            </tr>
+                                        })
+                                    }
+                                    </tbody>
+                                </table>
+                            </div>
+
+
+                        </div>
 
 
                     </div>

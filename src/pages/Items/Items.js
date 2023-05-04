@@ -134,7 +134,7 @@ export const ItemBox = memo(({item}) => {
 
                     <div className={'p-2 mt-auto '}>
                         <div className={'flex-nowrap'}>
-                            {veg && <div><i style={{color: diat[veg].color}} className={`fa fa-${diat[veg].icon}`}></i>
+                            {veg && <div><i style={{color: diat[veg]?.color}} className={`fa fa-${diat[veg]?.icon}`}></i>
                             </div>}
                             <h4 style={{fontSize: '1.8rem'}}>{itemname} </h4>
                             <h6 className={'mb-2'}> {numberFormat(price)} </h6>

@@ -55,6 +55,7 @@ const Index = ({clientDetail}) => {
             workspace: device.workspace,
             other: {url: urls.posUrl},
         }).then(async (result) => {
+
             if (result.status === STATUS.SUCCESS && Boolean(result?.data)) {
                 device.token = result.token;
 

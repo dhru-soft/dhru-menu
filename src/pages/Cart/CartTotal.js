@@ -56,7 +56,7 @@ const Index = (props) => {
                             <button className="w-100 custom-btn custom-btn--medium custom-btn--style-5"
                                     style={{padding: 5}} onClick={() => {
                                 if (page === 'final') {
-                                    placeOrder(tableid)
+                                    placeOrder()
                                 } else {
                                     navigate(`/l/${device.locationid}/t/${device.tableid}/cartdetail`);
                                 }

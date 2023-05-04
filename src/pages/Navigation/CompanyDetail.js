@@ -1,5 +1,5 @@
 import React from "react";
-import {getCompanyDetails} from "../../lib/functions";
+import {getCompanyDetails, placeOrder} from "../../lib/functions";
 import {connect, useDispatch} from "react-redux";
 import {setClientDetail} from "../../lib/redux-store/reducer/client-detail";
 import store from "../../lib/redux-store/store";
@@ -51,8 +51,10 @@ const Index = ({clientDetail,company}) => {
                             </div>}
 
 
-                            {Boolean(token) &&
+
                                 <div className={'d-flex'}>
+
+                                    {Boolean(token) ? <>
 
                                     <div className={'mt-3 text-muted cursor-pointer  pe-3'} onClick={() => {
                                         navigate(`/l/${device.locationid}/myorders`);
@@ -72,8 +74,19 @@ const Index = ({clientDetail,company}) => {
                                         Logout
                                     </div>
 
+                                    </> :
+
+                                    <>
+                                        <div className={'mt-3 text-muted cursor-pointer pe-3'} onClick={() => {
+                                            placeOrder()
+                                        }}>
+                                            Login
+                                        </div>
+                                    </>
+
+                                    }
+
                                 </div>
-                            }
 
                         </div>
 
