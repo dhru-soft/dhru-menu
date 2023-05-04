@@ -13,7 +13,8 @@ import {setClientDetail} from "./redux-store/reducer/client-detail";
 import { confirmAlert } from 'react-confirm-alert'; // Import
 import 'react-confirm-alert/src/react-confirm-alert.css';
 import ConfirmOrder from "../pages/Cart/ConfirmOrder";
-import {setGroupList} from "./redux-store/reducer/group-list"; // Import css
+import {setGroupList} from "./redux-store/reducer/group-list";
+import OrderDetail from "../pages/Client/OrderDetail"; // Import css
 
 var ls = require('local-storage');
 
@@ -735,6 +736,15 @@ export const placeOrder = () => {
     }))
 }
 
+export const orderDetail = (data) => {
+    store.dispatch(setModal({
+        show: true,
+        title: '',
+        height: '80%',
+        component: () => <><OrderDetail data={data}/></>
+    }))
+}
+
 export const setDefaultAddress = (index) => {
     let clientDetail = clone(store.getState().clientDetail);
     Object.keys(clientDetail.addresses).forEach((key)=>{
@@ -754,12 +764,10 @@ export const postOrder = (order) => {
         ...order,
         clientid:clientid,
         invoiceitems : cartData.invoiceitems.map((item)=>{
-            const {itemid,accountid,addbutton,added,addon,addons,change,clientid,hasextra,itemdescription,itemgroupid,itemimage,itemname,itemtaxgroupid,key,newitem,price,productdiscounttype,veg,...remaining} = item;
+            const {itemid,accountid,addbutton,added,addon,addons,change,clientid,hasextra,itemdescription,itemgroupid,itemimage,itemtaxgroupid,key,newitem,price,productdiscounttype,veg,...remaining} = item;
             return remaining
         })
     }
-
-    console.log('cartData',cartData)
 
     const data = {
         orderdata:cartData,

@@ -4,7 +4,7 @@ import {clone, numberFormat} from "../../lib/functions";
 import {setCartData, setUpdateCart} from "../../lib/redux-store/reducer/cart-data";
 import {itemTotalCalculation} from "../../lib/item-calculation";
 
-const TableRow = ({item}) => {
+export const TableRow = ({item}) => {
     return (
         <>
             {Boolean(item?.value) &&

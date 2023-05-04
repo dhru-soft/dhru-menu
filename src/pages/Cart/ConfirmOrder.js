@@ -17,6 +17,11 @@ const Index = ({clientDetail,vouchertotaldisplay,paymentgateways}) => {
     const {addresses} = clientDetail;
     const {tablename, locationname} = getCompanyDetails();
 
+    const defaultaddress = Object.values(addresses).filter((address)=>{
+        return address.default
+    })[0]
+
+
     const confirmOrder = (values) => {
 
         let payments = [
@@ -38,7 +43,9 @@ const Index = ({clientDetail,vouchertotaldisplay,paymentgateways}) => {
                 ]
             }
         ]
-        postOrder({...values,payments,address:addresses}).then((data)=>{
+
+
+        postOrder({...values,payments,address:defaultaddress}).then((data)=>{
             store.dispatch(setModal({show:false}))
             if(!data){
                 store.dispatch(setModal({

@@ -1251,3 +1251,9 @@ h6, .h6,{
 .addresses.selected{
     background-color: var(--bs-border-color);
 }
+
+.order-detail{
+    h6{
+        font-size: 16px;
+    }
+}

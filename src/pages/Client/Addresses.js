@@ -75,7 +75,7 @@ const Index = ({clientDetail,cart}) => {
                     })
                 }
 
-                    <div className={`addresses  border p-3 rounded-3 me-2 cursor-pointer mb-3 d-flex justify-content-center align-items-center`}  >
+                    {!cart &&  <div className={`addresses  border p-3 rounded-3 me-2 cursor-pointer mb-3 d-flex justify-content-center align-items-center`}  >
 
                         <div  onClick={()=>{
                             addEditAddress({})
@@ -83,7 +83,7 @@ const Index = ({clientDetail,cart}) => {
                             <div className={'mb-2'}><strong>+ Add New Address</strong></div>
 
                         </div>
-                    </div>
+                    </div>}
 
                 </div>
 
