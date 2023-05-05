@@ -7,16 +7,16 @@ import {device} from "../../lib/static";
 import ConfirmOrder from "../Cart/ConfirmOrder";
 import {isEmpty} from "../../lib/functions";
 
-const Index = ({clientDetail}) => {
+const Index = ({clientDetail,cartData}) => {
 
     const dispatch = useDispatch()
 
-    const {token, verifymobile, otp, clientname,address1} = clientDetail
+    const {token, verifymobile, otp, clientname,addresses} = clientDetail
 
 
     const mobilescreen = (verifymobile === '');
     const otpscreen = (verifymobile === 'inprocess' && otp === 'sent')
-    const otherdetailscreen = (!Boolean(clientname) || (!Boolean(address1) && Boolean(device.tableid === '0')))
+    const otherdetailscreen = (!Boolean(clientname) || (!Boolean(addresses) && Boolean(device.tableid === '0')))
 
 
     let Component = () => <ConfirmOrder/>
@@ -47,7 +47,7 @@ const Index = ({clientDetail}) => {
 
 const mapStateToProps = (state) => {
     return {
-        clientDetail: !isEmpty(state?.clientDetail) ? state?.clientDetail :  {verifymobile :'', otp:'', clientname:'',address1:''}
+        clientDetail: !isEmpty(state?.clientDetail) ? state?.clientDetail :  {verifymobile :'', otp:'', clientname:'',address1:''},
     }
 }
 

@@ -83,11 +83,11 @@ const Index = ({clientDetail,company}) => {
                                     </> :
 
                                     <>
-                                        {/*<div className={'mt-3 text-muted cursor-pointer pe-3'} onClick={() => {
+                                        <div className={'mt-3 text-muted cursor-pointer pe-3'} onClick={() => {
                                             placeOrder()
                                         }}>
                                             Login
-                                        </div>*/}
+                                        </div>
                                     </>
 
                                     }

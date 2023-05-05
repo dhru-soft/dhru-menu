@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import {connect, useDispatch} from "react-redux";
 import {getCompanyDetails, postOrder,setDefaultAddress} from "../../lib/functions";
 
@@ -11,7 +11,7 @@ import Login from "../Login";
 import {resetCart} from "../../lib/redux-store/reducer/cart-data";
 import Addresses from "../Client/Addresses";
 
-const Index = ({clientDetail,vouchertotaldisplay,paymentgateways}) => {
+const Index = ({clientDetail,vouchertotaldisplay,paymentgateways,cartData}) => {
 
     const dispatch = useDispatch()
     const {addresses} = clientDetail;
@@ -62,6 +62,11 @@ const Index = ({clientDetail,vouchertotaldisplay,paymentgateways}) => {
     }
 
 
+    useEffect(()=>{
+        if(!cartData?.invoiceitems?.length){
+            dispatch(setModal({visible:false}))
+        }
+    },[])
 
 
 
@@ -274,7 +279,8 @@ const mapStateToProps = (state) => {
     return {
         clientDetail: state.clientDetail,
         paymentgateways:state.restaurantDetail.settings.payment,
-        vouchertotaldisplay:state.cartData.vouchertotaldisplay
+        vouchertotaldisplay:state.cartData.vouchertotaldisplay,
+        cartData:state.cartData
     }
 }
 

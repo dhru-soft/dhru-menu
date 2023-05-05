@@ -114,9 +114,38 @@ const Index = ({clientDetail,address,visitorcountry,setAddEdit}) => {
                     clientDetails.addresses[key] = addresses[key]
                 })
 
+                if(!Boolean(initdata?.addressid)){
+
+                    clientDetails = {
+                        ...clientDetails,
+                        ...values,
+                        clientname:values.displayname,
+                        addresses:[{0:values}]
+                    }
+
+                    apiService({
+                        method:  METHOD.PUT,
+                        action: ACTIONS.CLIENT,
+                        body: clientDetails,
+                        showalert: true,
+                        workspace: device.workspace,
+                        token: device.token,
+                        other: {url: urls.posUrl},
+                    }).then(async (result) => {
+                        if (result.status === STATUS.SUCCESS) {
+
+                        }
+                    });
+                }
+
                 dispatch(setClientDetail(clientDetails));
-                setAddEdit(false)
-                //dispatch(setModal({show: false}))
+                Boolean(setAddEdit) && setAddEdit(false);
+
+                dispatch(setModal({show: false}))
+
+
+
+
             }
         });
 

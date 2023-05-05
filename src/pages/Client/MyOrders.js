@@ -59,7 +59,7 @@ const Index = ({clientDetail}) => {
                                             <th>Date</th>
                                             <th>Status</th>
                                             <th>Order Type</th>
-                                            <th>Amount</th>
+                                            <th  style={{textAlign:'right'}}>Amount</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -75,7 +75,7 @@ const Index = ({clientDetail}) => {
                                                 <td>{date}</td>
                                                 <td><div className={'badge'} style={{backgroundColor:'red'}}>{status}</div></td>
                                                 <td><div className={'text-capitalize'}>{ordertype}</div></td>
-                                                <td><div  className={'text-right'}>{numberFormat(vouchertotaldisplay)}</div> </td>
+                                                <td><div  style={{textAlign:'right'}}>{numberFormat(vouchertotaldisplay)}</div> </td>
                                             </tr>
                                         })
                                     }
