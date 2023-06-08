@@ -18,7 +18,6 @@ const Index = ({clientDetail,cartData}) => {
     const otpscreen = (verifymobile === 'inprocess' && otp === 'sent')
     const otherdetailscreen = (!Boolean(clientname) || (!Boolean(addresses) && Boolean(device.tableid === '0')))
 
-
     let Component = () => <ConfirmOrder/>
 
     if(mobilescreen){

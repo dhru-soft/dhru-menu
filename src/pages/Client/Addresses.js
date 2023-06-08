@@ -18,6 +18,9 @@ const Index = ({clientDetail,cart}) => {
 
 
     const dispatch = useDispatch()
+
+    console.log('clientDetail',clientDetail)
+
     const {addresses} = clientDetail;
 
     const [addedit,setAddEdit] = useState(false);
@@ -42,7 +45,16 @@ const Index = ({clientDetail,cart}) => {
                 {
                     Object.keys(addresses)?.map((key,index)=>{
 
-                        const {address1, address2,city,pin,state,country,displayname} = addresses[key];
+                        if(!Boolean(addresses[key])){
+                            return <></>
+                        }
+
+                        const {address1, address2,city,pin,state,country,displayname} =  addresses[key] ;
+
+                        if(!Boolean(address1)){
+                            return <></>
+                        }
+
                         return (
                             <div className={`addresses position-relative border p-3 rounded-3 me-2 cursor-pointer mb-3 ${addresses[key].default?'selected':''}`} key={index} >
 
@@ -63,7 +75,7 @@ const Index = ({clientDetail,cart}) => {
                                     </div>}
 
                                 {!cart &&    <div className={'justify-content-between on-hover mt-3'}>
-                                    {key !== '0' &&  <div className={'position-absolute p-3'} style={{top:0,right:0}} onClick={()=>{
+                                    {<div className={'position-absolute p-3'} style={{top:0,right:0}} onClick={()=>{
                                         addEditAddress(addresses[key],key)
                                     }}>
                                         <i className={'fa fa-pencil'}></i>

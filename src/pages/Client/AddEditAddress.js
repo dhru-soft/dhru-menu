@@ -108,20 +108,29 @@ const Index = ({clientDetail,address,visitorcountry,setAddEdit}) => {
             if (result.status === STATUS.SUCCESS) {
 
                 let addresses = result?.data?.addresses;
+
+                console.log('addresses',addresses)
+
                 let clientDetails = clone(clientDetail)
 
                 Object.keys(addresses).forEach((key)=>{
                     clientDetails.addresses[key] = addresses[key]
                 })
 
+                console.log('clientDetails',clientDetails)
+
                 if(!Boolean(initdata?.addressid)){
+
+                    console.log('values',values)
 
                     clientDetails = {
                         ...clientDetails,
                         ...values,
                         clientname:values.displayname,
-                        addresses:[{0:values}]
+                        //addresses:{0:values}
                     }
+
+                    console.log('clientDetails',clientDetails)
 
                     apiService({
                         method:  METHOD.PUT,
@@ -142,9 +151,6 @@ const Index = ({clientDetail,address,visitorcountry,setAddEdit}) => {
                 Boolean(setAddEdit) && setAddEdit(false);
 
                 dispatch(setModal({show: false}))
-
-
-
 
             }
         });
