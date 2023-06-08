@@ -57,7 +57,7 @@ const Index = ({clientDetail,company}) => {
                                     {Boolean(token) ? <>
 
                                             <div className={'mt-3 text-muted cursor-pointer  pe-3'} onClick={() => {
-                                                navigate(`/l/${device.locationid}`);
+                                                navigate(`/l/${device.locationid}/t/${device.tableid || 0}`);
                                             }}>
                                                 New Order
                                             </div>
