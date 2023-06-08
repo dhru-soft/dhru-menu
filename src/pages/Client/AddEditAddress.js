@@ -109,19 +109,13 @@ const Index = ({clientDetail,address,visitorcountry,setAddEdit}) => {
 
                 let addresses = result?.data?.addresses;
 
-                console.log('addresses',addresses)
-
                 let clientDetails = clone(clientDetail)
 
                 Object.keys(addresses).forEach((key)=>{
                     clientDetails.addresses[key] = addresses[key]
                 })
 
-                console.log('clientDetails',clientDetails)
-
                 if(!Boolean(initdata?.addressid)){
-
-                    console.log('values',values)
 
                     clientDetails = {
                         ...clientDetails,
@@ -129,8 +123,6 @@ const Index = ({clientDetail,address,visitorcountry,setAddEdit}) => {
                         clientname:values.displayname,
                         //addresses:{0:values}
                     }
-
-                    console.log('clientDetails',clientDetails)
 
                     apiService({
                         method:  METHOD.PUT,
