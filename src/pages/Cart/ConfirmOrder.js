@@ -103,7 +103,7 @@ const Index = ({clientDetail,vouchertotaldisplay,paymentgateways,cartData}) => {
                                                     {({input, meta}) => (
                                                         <>
 
-                                                            <div className="mb-4  d-flex align-items-center">
+                                                            <div className="mb-4  align-items-center">
                                                                 <input className="form-check-input"  {...input} checked={values.paymentgateway === key}
                                                                        onChange={(e) => {
                                                                            form.change('paymentgateway',e.target.value)
@@ -142,7 +142,7 @@ const Index = ({clientDetail,vouchertotaldisplay,paymentgateways,cartData}) => {
                                                         <>
 
                                                             {Boolean(device.tableid === '0') && <div>
-                                                                <div className="mb-4  d-flex align-items-center" >
+                                                                <div className="mb-4    align-items-center" >
 
 
 
@@ -223,7 +223,7 @@ const Index = ({clientDetail,vouchertotaldisplay,paymentgateways,cartData}) => {
                                                                 </div>
                                                             </div>}
 
-                                                            {Boolean(device.tableid) && <div>
+                                                            {(Boolean(device.tableid) && device.tableid !== '0')  && <div>
                                                                 <div className="d-flex align-items-center">
                                                                     <input className="form-check-input"  {...input}
                                                                            checked={values.ordertype === 'table'}   onChange={(e) => {

@@ -103,12 +103,12 @@ const Index = (props) => {
 
                                 {
                                     !Boolean(invoiceitems?.length) && <div className={'p-5'}>
-                                        <div className={'p-5 text-center'}>No item(s) added in cart</div>
+                                        <div className={'p-5 text-center'}>Order Placed Successfully</div>
                                         <div className={'text-center'}>
                                             <button className="custom-btn btn-primary btn" onClick={() => {
                                                 navigate(`/l/${device.locationid}/t/${device.tableid}`);
                                             }} type="button" role="button">
-                                                Browse Menu
+                                                Back to Menu
                                             </button>
                                         </div>
                                     </div>
