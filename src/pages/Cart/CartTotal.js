@@ -27,7 +27,7 @@ const Index = (props) => {
     let btnLabel = 'Next'
     if (page === 'final') {
         btnLabel = 'Send To Kitchen';
-        if (!Boolean(tableid)) {
+        if (!Boolean(tableid) || tableid === '0') {
             btnLabel = 'Place Order';
         }
     }

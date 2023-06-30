@@ -20,8 +20,8 @@ import {setModal} from "../../lib/redux-store/reducer/component";
 import {retrieveData, storeData} from "../../lib/functions";
 import {Field, Form} from 'react-final-form';
 
-import Select from 'react-select'
-import {v4 as uuid} from "uuid"
+import Select from 'react-select';
+import {v4 as uuid} from "uuid";
 import store from "../../lib/redux-store/store";
 import {setClientDetail} from "../../lib/redux-store/reducer/client-detail";
 
