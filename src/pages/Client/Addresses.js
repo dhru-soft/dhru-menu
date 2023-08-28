@@ -19,8 +19,6 @@ const Index = ({clientDetail,cart}) => {
 
     const dispatch = useDispatch()
 
-    console.log('clientDetail',clientDetail)
-
     const {addresses} = clientDetail;
 
     const [addedit,setAddEdit] = useState(false);

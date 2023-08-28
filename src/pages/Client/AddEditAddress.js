@@ -159,7 +159,7 @@ const Index = ({clientDetail,address,visitorcountry,setAddEdit}) => {
         <>
             <div className={'container'}>
 
-                <h4>{initdata?.addressid?'Edit':'New'} Address</h4>
+                {/*<h4>{initdata?.addressid?'Edit':'New'}</h4>*/}
 
             <Form
                 initialValues={initdata}
