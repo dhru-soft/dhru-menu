@@ -39,7 +39,7 @@ const Index = ({clientDetail,cart}) => {
         <>
             <div className={'container'}>
 
-                <div className={'d-flex flex-wrap'}>
+                <div className={'d-flex flex-wrap 123'}>
                 {
                     Object.keys(addresses)?.map((key,index)=>{
 
