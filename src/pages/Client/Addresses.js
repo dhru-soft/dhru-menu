@@ -44,13 +44,13 @@ const Index = ({clientDetail,cart}) => {
                     Object.keys(addresses)?.map((key,index)=>{
 
                         if(!Boolean(addresses[key])){
-                            return <></>
+                            return <View key={index}></View>
                         }
 
                         const {address1, address2,city,pin,state,country,displayname} =  addresses[key] ;
 
                         if(!Boolean(address1)){
-                            return <></>
+                            return <View key={index}></View>
                         }
 
                         return (

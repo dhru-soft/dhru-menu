@@ -92,6 +92,7 @@ const Index = ({clientDetail,address,visitorcountry,setAddEdit}) => {
         values = {
             ...values,
             clientid:clientDetail?.clientid,
+            clientname:clientDetail?.clientname,
             state:values?.state?.value,
             country:values?.country?.value,
         }
@@ -187,8 +188,9 @@ const Index = ({clientDetail,address,visitorcountry,setAddEdit}) => {
                                             </Field>
                                         </div>
 
+                                         {/*!tableorder  &&*/}
 
-                                        {!tableorder  && <>
+                                        {<>
 
                                            <div className={'mb-3'}>
                                                 <Field name="address1" validate={composeValidators(required)}>

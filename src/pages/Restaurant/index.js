@@ -9,7 +9,6 @@ import {device} from "../../lib/static";
 
 import BodyClassName from 'react-body-classname';
 import Theme from "../Home/Theme";
-import Footer from "../Navigation/Footer";
 
 const Index = (props) => {
 

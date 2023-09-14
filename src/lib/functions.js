@@ -757,12 +757,13 @@ export const setDefaultAddress = (index) => {
 export const postOrder = (order) => {
 
     let cartData = store.getState().cartData;
-    const {clientid} = store.getState().clientDetail;
+    const {clientid,clientname} = store.getState().clientDetail;
 
     cartData = {
         ...cartData,
         ...order,
         clientid:clientid,
+        clientname:clientname,
         invoiceitems : cartData.invoiceitems.map((item)=>{
             const {itemid,accountid,addbutton,added,addon,addons,change,clientid,hasextra,itemdescription,itemgroupid,itemimage,itemtaxgroupid,key,newitem,price,productdiscounttype,veg,...remaining} = item;
             return remaining
