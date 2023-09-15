@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from "react";
 import {connect, useDispatch} from "react-redux";
-import {getCompanyDetails, postOrder,setDefaultAddress} from "../../lib/functions";
+import {clone, getCompanyDetails, isEmpty, postOrder, setDefaultAddress} from "../../lib/functions";
 
 import {Field, Form} from 'react-final-form';
 import {device} from "../../lib/static";
@@ -22,7 +22,10 @@ const Index = ({clientDetail,vouchertotaldisplay,paymentgateways,cartData}) => {
     })[0]
 
 
+
     const confirmOrder = (values) => {
+
+        const b = getGatewayDetailByKey(values.paymentgateway, 'displayname');
 
         let payments = [
             {
@@ -31,7 +34,7 @@ const Index = ({clientDetail,vouchertotaldisplay,paymentgateways,cartData}) => {
                 "paymentgateways": [
                     {
                         "gid": values.paymentgateway,
-                        "gatewayname": paymentgateways[values.paymentgateway].name,
+                        "gatewayname": b.value,
                         "pay": vouchertotaldisplay,
                         "paysystem": vouchertotaldisplay,
                         "receipt": "",
@@ -61,6 +64,25 @@ const Index = ({clientDetail,vouchertotaldisplay,paymentgateways,cartData}) => {
         })
     }
 
+    const getGatewayDetailByKey = (key, value) => {
+        const gatewayname = Object.keys(paymentgateways[key]).filter((key) => key !== "settings");
+        let displayname = paymentgateways[key] && paymentgateways[key][gatewayname] && paymentgateways[key][gatewayname].find((a) => a.input === value)
+        let gatewaytype = paymentgateways[key] && paymentgateways[key][gatewayname] && paymentgateways[key][gatewayname].find((a) => a.input === 'type');
+        return {...displayname,online:Boolean(gatewaytype?.value === 'online'), type: gatewayname[0]}
+    }
+
+
+    const getPaymentgateways = () => {
+
+        return Object.keys(paymentgateways).map((key) => {
+            const b = getGatewayDetailByKey(key, 'displayname');
+            let item = {label: b.value, value: key,online:b.online, type: b.type, paymentby: b.value, paymentmethod: key};
+            return item
+
+        })
+    }
+
+    const [paymentMethods, setPaymentMethods] = useState(getPaymentgateways());
 
     useEffect(()=>{
         if(!cartData?.invoiceitems?.length){
@@ -88,15 +110,13 @@ const Index = ({clientDetail,vouchertotaldisplay,paymentgateways,cartData}) => {
                     render={({handleSubmit,form, values}) => (
                         <form onSubmit={handleSubmit}>
 
-
                             <div className={'form'}>
-
                                 <h5>Payment Detail</h5>
-
-
                                 {
-                                    Object.keys(paymentgateways).map((key,index)=>{
-                                        const {name,account} = paymentgateways[key]
+                                    paymentMethods.filter((item)=>{
+                                        return item.online
+                                    }).map((item,index)=>{
+
                                         return (
                                             <div className={'mb-3'} key={index}>
                                                 <Field name="paymentgateway">
@@ -104,14 +124,14 @@ const Index = ({clientDetail,vouchertotaldisplay,paymentgateways,cartData}) => {
                                                         <>
 
                                                             <div className="mb-4  align-items-center">
-                                                                <input className="form-check-input"  {...input} checked={values.paymentgateway === key}
+                                                                <input className="form-check-input"  {...input} checked={values.paymentgateway === item.value}
                                                                        onChange={(e) => {
                                                                            form.change('paymentgateway',e.target.value)
-                                                                       }} id={`payment-${key}`} type="radio"
-                                                                       value={key}/>
+                                                                       }} id={`payment-${index}`} type="radio"
+                                                                       value={item.value}/>
                                                                 <label className="form-check-label"
-                                                                       htmlFor={`payment-${key}`}>
-                                                                    {name}
+                                                                       htmlFor={`payment-${index}`}>
+                                                                    {item.label}
                                                                 </label>
                                                             </div>
                                                         </>
@@ -191,17 +211,8 @@ const Index = ({clientDetail,vouchertotaldisplay,paymentgateways,cartData}) => {
                                                                                 }*/}
 
                                                                             </div>}
-
-
-
                                                                         </div>
-
-
-
-
-
                                                                     </div>
-
 
                                                                 </div>
 

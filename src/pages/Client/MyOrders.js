@@ -73,7 +73,7 @@ const Index = ({clientDetail}) => {
                                                 orderDetail(data)
                                             }}>
                                                 <td>{date}</td>
-                                                <td><div className={'badge'} style={{backgroundColor:'red'}}>{status}</div></td>
+                                                <td><div className={'badge'} style={{textTransform:'uppercase',fontWeight:'normal',backgroundColor:status==='reject'?'red':'#409df9'}}>{status}</div></td>
                                                 <td><div className={'text-capitalize'}>{ordertype}</div></td>
                                                 <td><div  style={{textAlign:'right'}}>{numberFormat(vouchertotaldisplay)}</div> </td>
                                             </tr>

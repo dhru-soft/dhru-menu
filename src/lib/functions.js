@@ -764,6 +764,7 @@ export const postOrder = (order) => {
         ...order,
         clientid:clientid,
         clientname:clientname,
+        client:store.getState().clientDetail,
         invoiceitems : cartData.invoiceitems.map((item)=>{
             const {itemid,accountid,addbutton,added,addon,addons,change,clientid,hasextra,itemdescription,itemgroupid,itemimage,itemtaxgroupid,key,newitem,price,productdiscounttype,veg,...remaining} = item;
             return remaining
