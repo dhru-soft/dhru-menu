@@ -38,7 +38,6 @@ const Index = (props) => {
 
     const {workspace, groupList} = props;
 
-
     useEffect(() => {
         getGroups(groupList).then()
     }, [])

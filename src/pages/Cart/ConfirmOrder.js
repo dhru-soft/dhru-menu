@@ -82,15 +82,15 @@ const Index = ({clientDetail,vouchertotaldisplay,paymentgateways,cartData}) => {
         })
     }
 
-    const [paymentMethods, setPaymentMethods] = useState(getPaymentgateways());
+    const [paymentMethods, setPaymentMethods] = useState(getPaymentgateways().filter((item)=>{
+        return item.online
+    }));
 
     useEffect(()=>{
         if(!cartData?.invoiceitems?.length){
             dispatch(setModal({visible:false}))
         }
     },[])
-
-
 
 
     /*if(update){
@@ -105,7 +105,7 @@ const Index = ({clientDetail,vouchertotaldisplay,paymentgateways,cartData}) => {
 
 
                 <Form
-                    initialValues={{paymentgateway:'c02fc4ca-8d89-4c91-bd66-2dd29bc34e43',ordertype: Boolean(device.tableid !== '0')?'table':'homedelivery'}}
+                    initialValues={{paymentgateway:paymentMethods[0]['value'],ordertype: Boolean(device.tableid !== '0')?'table':'homedelivery'}}
                     onSubmit={confirmOrder}
                     render={({handleSubmit,form, values}) => (
                         <form onSubmit={handleSubmit}>
@@ -113,9 +113,7 @@ const Index = ({clientDetail,vouchertotaldisplay,paymentgateways,cartData}) => {
                             <div className={'form'}>
                                 <h5>Payment Detail</h5>
                                 {
-                                    paymentMethods.filter((item)=>{
-                                        return item.online
-                                    }).map((item,index)=>{
+                                    paymentMethods.map((item,index)=>{
 
                                         return (
                                             <div className={'mb-3'} key={index}>

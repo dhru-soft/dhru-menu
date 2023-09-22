@@ -880,7 +880,8 @@ export  const getGroups = async (groupList) => {
             other: {url: urls.posUrl},
         }).then(async (result) => {
             if (result.status === STATUS.SUCCESS && Boolean(result?.data)) {
-                store.dispatch(setGroupList(result?.data?.itemgroup))
+                let groupArray = Object.values(result?.data?.itemgroup);
+                store.dispatch(setGroupList(groupArray.sort(function(a, b){return a.order - b.order})))
             }
         });
     }
