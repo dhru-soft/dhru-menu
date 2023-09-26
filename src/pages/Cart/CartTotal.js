@@ -32,6 +32,16 @@ const Index = (props) => {
         }
     }
 
+    const totalOrderQnt = (invoiceitems) => {
+        let totalqnt = 0;
+        invoiceitems.filter((item)=>{
+            return item?.treatitem !== 'charges'
+        }).map((item) => {
+            totalqnt += +item.productqnt
+        })
+        return totalqnt
+    }
+
     return (
         <div className={'position-fixed '} style={{zIndex: 999, bottom: 5, left: 0, right: 0}}>
 
@@ -43,7 +53,7 @@ const Index = (props) => {
 
                     <div className={'d-flex  justify-content-between align-items-center'}>
                         <div className={'cursor-pointer invert-effect'} onClick={() => setSummary(!summary)}>
-                            <div><h6>Items : {invoiceitems?.length}</h6></div>
+                            <div><h6>Items : {totalOrderQnt(invoiceitems)}</h6></div>
                             <h4 className={'mb-0'}> {numberFormat(vouchertotaldisplay)}</h4>
                         </div>
                         <div className={'  invert-effect'}>
