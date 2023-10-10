@@ -27,7 +27,7 @@ const Index = ({clientDetail,cartData}) => {
         Component = () => <Otp/>
     }
     else if(otherdetailscreen){
-        Component = () => <AddEditAddress/>
+        Component = () => <AddEditAddress disableaddress={true} />
     }
 
 

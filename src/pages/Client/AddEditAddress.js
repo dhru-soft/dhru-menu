@@ -14,7 +14,7 @@ import {clone} from "../../lib/functions";
 
 let countryIndex = -1;
 let stateIndex = 0;
-const Index = ({clientDetail,address,visitorcountry,setAddEdit}) => {
+const Index = ({clientDetail,address,visitorcountry,setAddEdit,addaddress,disableaddress}) => {
 
 
     const dispatch = useDispatch()
@@ -188,9 +188,8 @@ const Index = ({clientDetail,address,visitorcountry,setAddEdit}) => {
                                             </Field>
                                         </div>
 
-                                         {/*!tableorder  &&*/}
 
-                                        {<>
+                                        {((!tableorder || addaddress) && !disableaddress)  && <>
 
                                            <div className={'mb-3'}>
                                                 <Field name="address1" validate={composeValidators(required)}>
@@ -296,12 +295,13 @@ const Index = ({clientDetail,address,visitorcountry,setAddEdit}) => {
                             </pre>*/}
 
 
-                            <div className={'my-3 d-flex justify-content-between'}>
+                            { <div className={'my-3 d-flex justify-content-between'}>
 
                                 <button
                                     className="w-100 custom-btn custom-btn--medium custom-btn--style-1"
                                     onClick={() => {
-                                        setAddEdit(false)
+                                        dispatch(setModal({show: false}))
+                                       // setAddEdit(false)
                                     }} type="button" role="button">
                                     Cancel
                                 </button>
@@ -316,7 +316,7 @@ const Index = ({clientDetail,address,visitorcountry,setAddEdit}) => {
                                     Save
                                 </button>
 
-                            </div>
+                            </div>}
 
 
                         </div>

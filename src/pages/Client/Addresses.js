@@ -1,8 +1,10 @@
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import {connect, useDispatch} from "react-redux";
 import {setModal} from "../../lib/redux-store/reducer/component";
 import AddEditAddress from "./AddEditAddress";
 import {setDefaultAddress} from "../../lib/functions";
+import store from "../../lib/redux-store/store";
+import Login from "../Login";
 
 const Index = ({clientDetail, cart}) => {
 
@@ -15,9 +17,19 @@ const Index = ({clientDetail, cart}) => {
     const [address, setAddress] = useState({});
 
     const addEditAddress = (address, key) => {
-        setAddEdit(true);
-        setAddress({...address, addressid: key})
+
+        store.dispatch(setModal({
+            show: true,
+            title: '',
+            height: '80%',
+            component: () => <><AddEditAddress address={address} setAddEdit={setAddEdit}/></>
+        }))
+
+       // setAddEdit(true);
+        //setAddress({...address, addressid: key})
     }
+
+
 
     if (addedit) {
         return <AddEditAddress address={address} setAddEdit={setAddEdit}/>
@@ -79,7 +91,7 @@ const Index = ({clientDetail, cart}) => {
                         })
                     }
 
-                    {!cart && <div
+                    {<div
                         className={`addresses  border p-3 rounded-3 me-2 cursor-pointer mb-3 d-flex justify-content-center align-items-center`}>
 
                         <div onClick={() => {

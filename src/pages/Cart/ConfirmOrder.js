@@ -17,10 +17,9 @@ const Index = ({clientDetail,vouchertotaldisplay,paymentgateways,cartData}) => {
     const {addresses} = clientDetail;
     const {tablename, locationname} = getCompanyDetails();
 
-    const defaultaddress = Object.values(addresses).filter((address)=>{
-        return address.default
+    const defaultaddress = Boolean(addresses) && Object.values(addresses).filter((address)=>{
+        return address?.default
     })[0]
-
 
 
     const confirmOrder = (values) => {
@@ -98,6 +97,7 @@ const Index = ({clientDetail,vouchertotaldisplay,paymentgateways,cartData}) => {
     }*/
 
 
+
     return (
         <div>
 
@@ -113,6 +113,9 @@ const Index = ({clientDetail,vouchertotaldisplay,paymentgateways,cartData}) => {
                             <div className={'form'}>
                                 <h5>Payment Detail</h5>
                                 {
+
+
+
                                     paymentMethods.map((item,index)=>{
 
                                         return (
@@ -182,31 +185,6 @@ const Index = ({clientDetail,vouchertotaldisplay,paymentgateways,cartData}) => {
 
                                                                                 <Addresses cart={true}/>
 
-                                                                                {/*{
-                                                                                    Object.keys(addresses)?.map((key)=>{
-
-                                                                                        const {address1, address2,city,pin,state,country,displayname} = addresses[key];
-                                                                                        return (
-                                                                                            <div className={`addresses border p-3 rounded-3 me-2 ${addresses[key].default === 1?'selected':''}`} key={key}   onClick={()=>{
-                                                                                                setDefaultAddress(key)
-                                                                                            }}>
-                                                                                                <div style={{marginTop:3}} >
-                                                                                                    <div className={'mb-2'}><strong>{displayname}</strong></div>
-                                                                                                    <div style={{opacity:0.7}}>
-                                                                                                        <div>{address1}</div>
-                                                                                                        <div>{address2}</div>
-                                                                                                        <div>{city} {pin}</div>
-                                                                                                    </div>
-                                                                                                </div>
-                                                                                                <span style={{display:"inline-block",marginTop:10}} className={'link'}  onClick={()=>{
-                                                                                                    dispatch(setClientDetail({...clientDetail,update:true}))
-                                                                                                }}>
-                                                                                                    Edit
-                                                                                                </span>
-                                                                                            </div>
-                                                                                        )
-                                                                                    })
-                                                                                }*/}
 
                                                                             </div>}
                                                                         </div>
@@ -260,7 +238,7 @@ const Index = ({clientDetail,vouchertotaldisplay,paymentgateways,cartData}) => {
                                 </div>
 
 
-                                <div className={'my-3'}>
+                                {((values.ordertype === 'homedelivery' && Boolean(defaultaddress)) || (values.ordertype !== 'homedelivery'))  &&  <div className={'my-3'}>
                                     <button
                                         className="w-100 custom-btn custom-btn--medium custom-btn--style-4"
                                         onClick={() => {
@@ -268,7 +246,7 @@ const Index = ({clientDetail,vouchertotaldisplay,paymentgateways,cartData}) => {
                                         }} type="button" role="button">
                                         Confirm
                                     </button>
-                                </div>
+                                </div>}
 
 
                             </div>
