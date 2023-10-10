@@ -14,7 +14,7 @@ import {clone} from "../../lib/functions";
 
 let countryIndex = -1;
 let stateIndex = 0;
-const Index = ({clientDetail,address,visitorcountry,setAddEdit,addaddress,disableaddress}) => {
+const Index = ({clientDetail,address,visitorcountry,addressid,setAddEdit,addaddress,disableaddress}) => {
 
 
     const dispatch = useDispatch()
@@ -22,7 +22,6 @@ const Index = ({clientDetail,address,visitorcountry,setAddEdit,addaddress,disabl
     const tableorder = Boolean(device.tableid !== '0');
 
     let [initdata,setInitdata] = useState({displayname: clientDetail.clientname,...address})
-
 
 
     const country_options = useMemo(() => countryList.map((country)=>{
@@ -97,8 +96,15 @@ const Index = ({clientDetail,address,visitorcountry,setAddEdit,addaddress,disabl
             country:values?.country?.value,
         }
 
+        if(Boolean(addressid)){
+            values = {
+                ...values,
+                addressid:addressid
+            }
+        }
+
         apiService({
-            method: Boolean(initdata?.addressid) ? METHOD.PUT : METHOD.POST,
+            method: Boolean(addressid) ? METHOD.PUT : METHOD.POST,
             action: ACTIONS.ADDRESS,
             body: values,
             showalert: true,
@@ -113,10 +119,12 @@ const Index = ({clientDetail,address,visitorcountry,setAddEdit,addaddress,disabl
                 let clientDetails = clone(clientDetail)
 
                 Object.keys(addresses).forEach((key)=>{
-                    clientDetails.addresses[key] = addresses[key]
+                    if(Boolean(addresses[key]?.address1)) {
+                        clientDetails.addresses[key] = addresses[key]
+                    }
                 })
 
-                if(!Boolean(initdata?.addressid)){
+                if(!Boolean(values?.addressid)){
 
                     clientDetails = {
                         ...clientDetails,

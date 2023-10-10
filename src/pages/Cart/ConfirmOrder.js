@@ -10,8 +10,9 @@ import {setModal} from "../../lib/redux-store/reducer/component";
 import Login from "../Login";
 import {resetCart} from "../../lib/redux-store/reducer/cart-data";
 import Addresses from "../Client/Addresses";
+import {setClientDetail} from "../../lib/redux-store/reducer/client-detail";
 
-const Index = ({clientDetail,vouchertotaldisplay,paymentgateways,cartData}) => {
+const Index = ({clientDetail,vouchertotaldisplay,paymentgateways,cartData,location}) => {
 
     const dispatch = useDispatch()
     const {addresses} = clientDetail;
@@ -21,6 +22,8 @@ const Index = ({clientDetail,vouchertotaldisplay,paymentgateways,cartData}) => {
         return address?.default
     })[0]
 
+
+    const takeorder = location[device?.locationid]?.cantakeorder || {delivery:false,pickup:false,qsr:false};
 
     const confirmOrder = (values) => {
 
@@ -97,7 +100,6 @@ const Index = ({clientDetail,vouchertotaldisplay,paymentgateways,cartData}) => {
     }*/
 
 
-
     return (
         <div>
 
@@ -105,7 +107,7 @@ const Index = ({clientDetail,vouchertotaldisplay,paymentgateways,cartData}) => {
 
 
                 <Form
-                    initialValues={{paymentgateway:paymentMethods[0]['value'],ordertype: Boolean(device.tableid !== '0')?'table':'homedelivery'}}
+                    initialValues={{paymentgateway:paymentMethods[0]['value'],ordertype: Boolean(device.tableid !== '0')?'table': takeorder.delivery?'homedelivery':''}}
                     onSubmit={confirmOrder}
                     render={({handleSubmit,form, values}) => (
                         <form onSubmit={handleSubmit}>
@@ -163,10 +165,8 @@ const Index = ({clientDetail,vouchertotaldisplay,paymentgateways,cartData}) => {
                                                         <>
 
                                                             {Boolean(device.tableid === '0') && <div>
-                                                                <div className="mb-4    align-items-center" >
 
-
-
+                                                                {takeorder.delivery &&  <div className="mb-4    align-items-center" >
                                                                     <div className={'justify-content-between align-items-start'}>
                                                                         <div>
 
@@ -190,14 +190,14 @@ const Index = ({clientDetail,vouchertotaldisplay,paymentgateways,cartData}) => {
                                                                         </div>
                                                                     </div>
 
-                                                                </div>
+                                                                </div>}
 
 
 
 
 
 
-                                                                <div className="mb-4 d-flex align-items-center">
+                                                                {takeorder.pickup && <div className="mb-4 d-flex align-items-center">
                                                                     <input className="form-check-input"  checked={values.ordertype === 'takeaway'}  {...input}
                                                                            onChange={(e) => {
                                                                                form.change('ordertype',e.target.value)
@@ -207,7 +207,8 @@ const Index = ({clientDetail,vouchertotaldisplay,paymentgateways,cartData}) => {
                                                                            htmlFor="radio2">
                                                                         Take away
                                                                     </label>
-                                                                </div>
+                                                                </div>}
+
                                                             </div>}
 
                                                             {(Boolean(device.tableid) && device.tableid !== '0')  && <div>
@@ -238,7 +239,7 @@ const Index = ({clientDetail,vouchertotaldisplay,paymentgateways,cartData}) => {
                                 </div>
 
 
-                                {((values.ordertype === 'homedelivery' && Boolean(defaultaddress)) || (values.ordertype !== 'homedelivery'))  &&  <div className={'my-3'}>
+                                {((values.ordertype === 'homedelivery' && Boolean(defaultaddress)) || (values.ordertype !== 'homedelivery'))  &&  values.ordertype && <div className={'my-3'}>
                                     <button
                                         className="w-100 custom-btn custom-btn--medium custom-btn--style-4"
                                         onClick={() => {
@@ -265,6 +266,7 @@ const Index = ({clientDetail,vouchertotaldisplay,paymentgateways,cartData}) => {
 const mapStateToProps = (state) => {
     return {
         clientDetail: state.clientDetail,
+        location:state.restaurantDetail.location,
         paymentgateways:state.restaurantDetail.settings.payment,
         vouchertotaldisplay:state.cartData.vouchertotaldisplay,
         cartData:state.cartData

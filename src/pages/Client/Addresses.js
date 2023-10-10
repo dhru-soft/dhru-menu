@@ -22,7 +22,7 @@ const Index = ({clientDetail, cart}) => {
             show: true,
             title: '',
             height: '80%',
-            component: () => <><AddEditAddress address={address} setAddEdit={setAddEdit}/></>
+            component: () => <><AddEditAddress address={address} addressid={key} setAddEdit={setAddEdit}/></>
         }))
 
        // setAddEdit(true);

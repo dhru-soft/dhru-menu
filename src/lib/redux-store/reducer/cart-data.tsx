@@ -29,7 +29,7 @@ let intialState: any = {
     isPaymentReceived: false,
     selectedindex: [],
     kots: [],
-    ordersource: "POS",
+    ordersource: "Online Order",
     vouchersubtotaldisplay:0,
     vouchertotaldisplay:0,
     globaldiscountvalue:0,

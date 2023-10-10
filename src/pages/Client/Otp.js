@@ -36,7 +36,7 @@ const OTPCounter = ({mobile}) => {
 }
 
 let otpnumber = ''
-const Index = ({clientDetail}) => {
+const Index = ({clientDetail,visitorcountry}) => {
 
     const {mobile} = clientDetail
 
@@ -57,21 +57,24 @@ const Index = ({clientDetail}) => {
         }).then(async (result) => {
 
             if (result.status === STATUS.SUCCESS && Boolean(result?.data)) {
+
                 device.token = result.token;
 
                 let {clientname,address1, address2,pin,state,country,displayname,addresses, city} = result.data;
 
-                addresses[0] = {address1, address2,city,pin,state,country,displayname:clientname}
+                addresses[0] = {address1, address2,city,pin,state,country:visitorcountry || 'IN',displayname:clientname}
 
                 clientDetail = {
                     ...clientDetail,
                     token: device.token,
                     verifymobile: 'done',
                     addresses:addresses,
-                    ...result.data
+                    ...result.data,
+                    ...addresses[0]
                 }
 
                 dispatch(setClientDetail(clientDetail));
+
             }
         });
     }
@@ -139,7 +142,8 @@ const Index = ({clientDetail}) => {
 
 const mapStateToProps = (state) => {
     return {
-        clientDetail: state.clientDetail
+        clientDetail: state.clientDetail,
+        visitorcountry: state.restaurantDetail?.settings?.visitorcountry
     }
 }
 

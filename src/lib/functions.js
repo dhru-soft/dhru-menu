@@ -753,8 +753,10 @@ export const setDefaultAddress = (index) => {
             clientDetail.addresses[key].default = 0
         }
     })
+
     clientDetail.addresses[index].default = 1
-    store.dispatch(setClientDetail(clientDetail));
+
+    store.dispatch(setClientDetail({...clientDetail,...clientDetail.addresses[index]}));
 }
 
 export const postOrder = (order) => {
@@ -781,6 +783,10 @@ export const postOrder = (order) => {
         "locationid":device.locationid,
         "source":""
     }
+
+
+
+    console.log('data',data)
 
     return new promise(async (resolve) => {
         await apiService({
