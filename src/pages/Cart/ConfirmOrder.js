@@ -84,9 +84,16 @@ const Index = ({clientDetail,vouchertotaldisplay,paymentgateways,cartData,locati
         })
     }
 
-    const [paymentMethods, setPaymentMethods] = useState(getPaymentgateways().filter((item)=>{
+    const gateways = getPaymentgateways().filter((item)=>{
         return item.online
-    }));
+    })
+
+
+    const [paymentMethods, setPaymentMethods] = useState( isEmpty(gateways) ? [{value:''}] : gateways);
+
+    let initData = {paymentgateway:paymentMethods[0]['value'],ordertype: Boolean(device.tableid !== '0')?'table': takeorder.delivery?'homedelivery':''}
+
+
 
     useEffect(()=>{
         if(!cartData?.invoiceitems?.length){
@@ -107,48 +114,44 @@ const Index = ({clientDetail,vouchertotaldisplay,paymentgateways,cartData,locati
 
 
                 <Form
-                    initialValues={{paymentgateway:paymentMethods[0]['value'],ordertype: Boolean(device.tableid !== '0')?'table': takeorder.delivery?'homedelivery':''}}
+                    initialValues={initData}
                     onSubmit={confirmOrder}
                     render={({handleSubmit,form, values}) => (
                         <form onSubmit={handleSubmit}>
 
                             <div className={'form'}>
-                                <h5>Payment Detail</h5>
-                                {
 
+                                {!isEmpty(paymentMethods) && <>
+                                    <h5>Payment Detail</h5>
+                                    {
+                                        paymentMethods.map((item,index)=>{
 
-
-                                    paymentMethods.map((item,index)=>{
-
-                                        return (
-                                            <div className={'mb-3'} key={index}>
-                                                <Field name="paymentgateway">
-                                                    {({input, meta}) => (
-                                                        <>
-
-                                                            <div className="mb-4  align-items-center">
-                                                                <input className="form-check-input"  {...input} checked={values.paymentgateway === item.value}
-                                                                       onChange={(e) => {
-                                                                           form.change('paymentgateway',e.target.value)
-                                                                       }} id={`payment-${index}`} type="radio"
-                                                                       value={item.value}/>
-                                                                <label className="form-check-label"
-                                                                       htmlFor={`payment-${index}`}>
-                                                                    {item.label}
-                                                                </label>
-                                                            </div>
-                                                        </>
-                                                    )}
-                                                </Field>
-                                            </div>
-                                        )
-                                    })
-                                }
-
-                                <br/>
-
-                                <hr/>
-
+                                            return (
+                                                <div className={'mb-3'} key={index}>
+                                                    <Field name="paymentgateway">
+                                                        {({input, meta}) => (
+                                                            <>
+                                                                {Boolean(item.value) &&  <div className="mb-4  align-items-center">
+                                                                    <input className="form-check-input"  {...input} checked={values.paymentgateway === item.value}
+                                                                           onChange={(e) => {
+                                                                               form.change('paymentgateway',e.target.value)
+                                                                           }} id={`payment-${index}`} type="radio"
+                                                                           value={item.value}/>
+                                                                    <label className="form-check-label"
+                                                                           htmlFor={`payment-${index}`}>
+                                                                        {item.label}
+                                                                    </label>
+                                                                </div>}
+                                                            </>
+                                                        )}
+                                                    </Field>
+                                                </div>
+                                            )
+                                        })
+                                    }
+                                    <br/>
+                                    <hr/>
+                                </>}
 
 
                                 <h5 className={'mt-5'}>Confirm Order Type</h5>
