@@ -68,6 +68,7 @@ const Index = ({clientDetail,vouchertotaldisplay,paymentgateways,cartData,locati
             ]
         }
 
+
         postOrder({...values,payments,address:defaultaddress}).then((data)=>{
             store.dispatch(setModal({show:false}))
             if(!data){
@@ -117,7 +118,7 @@ const Index = ({clientDetail,vouchertotaldisplay,paymentgateways,cartData,locati
 
 
     const [paymentMethods, setPaymentMethods] = useState(gateways);
-    const [initData,setInitData] = useState({paymentgateway:paymentMethods[0]['value'],ordertype: Boolean(device.tableid !== '0')?'table': takeorder.delivery?'homedelivery':''})
+    const [initData,setInitData] = useState({paymentgateway:paymentMethods[0]['value'],tablename:'Online Order',ordertype: Boolean(device.tableid !== '0')?'tableorder': takeorder.delivery?'homedelivery':''})
 
 
 
@@ -131,8 +132,6 @@ const Index = ({clientDetail,vouchertotaldisplay,paymentgateways,cartData,locati
     /*if(update){
         return (<NameAddress/>)
     }*/
-
-    console.log('initData',initData)
 
     return (
         <div>
@@ -213,10 +212,10 @@ const Index = ({clientDetail,vouchertotaldisplay,paymentgateways,cartData,locati
                                                             {(Boolean(device.tableid) && device.tableid !== '0')  && <div>
                                                                 <div className="d-flex align-items-center">
                                                                     <input className="form-check-input"  {...input}
-                                                                           checked={values.ordertype === 'table'}   onChange={(e) => {
+                                                                           checked={values.ordertype === 'tableorder'}   onChange={(e) => {
                                                                         form.change('ordertype',e.target.value)
                                                                     }} id="radio3" type="radio"
-                                                                           value={'table'}/>
+                                                                           value={'tableorder'}/>
                                                                     <label className="form-check-label"
                                                                            htmlFor="radio3">
                                                                         Table order
