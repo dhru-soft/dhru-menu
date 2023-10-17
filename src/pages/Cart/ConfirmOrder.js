@@ -10,7 +10,6 @@ import {setModal} from "../../lib/redux-store/reducer/component";
 import Login from "../Login";
 import {resetCart} from "../../lib/redux-store/reducer/cart-data";
 import Addresses from "../Client/Addresses";
-import {setClientDetail} from "../../lib/redux-store/reducer/client-detail";
 
 const Index = ({clientDetail,vouchertotaldisplay,paymentgateways,cartData,location}) => {
 
@@ -27,28 +26,47 @@ const Index = ({clientDetail,vouchertotaldisplay,paymentgateways,cartData,locati
 
     const confirmOrder = (values) => {
 
-        const b = getGatewayDetailByKey(values.paymentgateway, 'displayname');
+        let payments = []
 
-        let payments = [
-            {
-                "remainingamount": 0,
-                "totalamount": vouchertotaldisplay,
-                "paymentgateways": [
-                    {
-                        "gid": values.paymentgateway,
-                        "gatewayname": b.value,
-                        "pay": vouchertotaldisplay,
-                        "paysystem": vouchertotaldisplay,
-                        "receipt": "",
-                        "phone": "",
-                        "otp": "",
-                        "gatewaytype": "cash",
-                        "isupi": false
-                    }
-                ]
-            }
-        ]
+        if(values.paymentgateway === 'Pay Later'){
+            payments = [
+                {
+                    "remainingamount": vouchertotaldisplay,
+                    "totalamount": vouchertotaldisplay,
+                    "paymentgateways": [
+                        {
+                            "gatewayname": "Pay later",
+                            "gatewaytype": "paylater",
+                            "pay": vouchertotaldisplay
+                        }
+                    ]
+                }
+            ]
+        }
+        else{
 
+            const b = getGatewayDetailByKey(values?.paymentgateway, 'displayname');
+
+            payments = [
+                {
+                    "remainingamount": 0,
+                    "totalamount": vouchertotaldisplay,
+                    "paymentgateways": [
+                        {
+                            "gid": values.paymentgateway,
+                            "gatewayname": b.value,
+                            "pay": vouchertotaldisplay,
+                            "paysystem": vouchertotaldisplay,
+                            "receipt": "",
+                            "phone": "",
+                            "otp": "",
+                            "gatewaytype": "cash",
+                            "isupi": false
+                        }
+                    ]
+                }
+            ]
+        }
 
         postOrder({...values,payments,address:defaultaddress}).then((data)=>{
             store.dispatch(setModal({show:false}))
@@ -84,12 +102,21 @@ const Index = ({clientDetail,vouchertotaldisplay,paymentgateways,cartData,locati
         })
     }
 
-    const gateways = getPaymentgateways().filter((item)=>{
+    let gateways = getPaymentgateways().filter((item)=>{
         return item.online
     })
 
+    gateways.push({
+        label:"Pay on Counter",
+        online:false,
+        paymentby:"Pay Later",
+        paymentmethod:"",
+        type:"cash",
+        value:"Pay Later"
+    })
 
-    const [paymentMethods, setPaymentMethods] = useState( isEmpty(gateways) ? [{value:''}] : gateways);
+
+    const [paymentMethods, setPaymentMethods] = useState(gateways);
 
     let initData = {paymentgateway:paymentMethods[0]['value'],ordertype: Boolean(device.tableid !== '0')?'table': takeorder.delivery?'homedelivery':''}
 
