@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from "react";
 import {connect, useDispatch} from "react-redux";
-import {clone, getCompanyDetails, isEmpty, postOrder, setDefaultAddress} from "../../lib/functions";
+import { getCompanyDetails, isEmpty, postOrder} from "../../lib/functions";
 
 import {Field, Form} from 'react-final-form';
 import {device} from "../../lib/static";
