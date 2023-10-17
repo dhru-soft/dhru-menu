@@ -117,8 +117,7 @@ const Index = ({clientDetail,vouchertotaldisplay,paymentgateways,cartData,locati
 
 
     const [paymentMethods, setPaymentMethods] = useState(gateways);
-
-    let initData = {paymentgateway:paymentMethods[0]['value'],ordertype: Boolean(device.tableid !== '0')?'table': takeorder.delivery?'homedelivery':''}
+    const [initData,setInitData] = useState({paymentgateway:paymentMethods[0]['value'],ordertype: Boolean(device.tableid !== '0')?'table': takeorder.delivery?'homedelivery':''})
 
 
 
@@ -133,6 +132,7 @@ const Index = ({clientDetail,vouchertotaldisplay,paymentgateways,cartData,locati
         return (<NameAddress/>)
     }*/
 
+    console.log('initData',initData)
 
     return (
         <div>
@@ -148,40 +148,9 @@ const Index = ({clientDetail,vouchertotaldisplay,paymentgateways,cartData,locati
 
                             <div className={'form'}>
 
-                                {!isEmpty(paymentMethods) && <>
-                                    <h5>Payment Detail</h5>
-                                    {
-                                        paymentMethods.map((item,index)=>{
-
-                                            return (
-                                                <div className={'mb-3'} key={index}>
-                                                    <Field name="paymentgateway">
-                                                        {({input, meta}) => (
-                                                            <>
-                                                                {Boolean(item.value) &&  <div className="mb-4  align-items-center">
-                                                                    <input className="form-check-input"  {...input} checked={values.paymentgateway === item.value}
-                                                                           onChange={(e) => {
-                                                                               form.change('paymentgateway',e.target.value)
-                                                                           }} id={`payment-${index}`} type="radio"
-                                                                           value={item.value}/>
-                                                                    <label className="form-check-label"
-                                                                           htmlFor={`payment-${index}`}>
-                                                                        {item.label}
-                                                                    </label>
-                                                                </div>}
-                                                            </>
-                                                        )}
-                                                    </Field>
-                                                </div>
-                                            )
-                                        })
-                                    }
-                                    <br/>
-                                    <hr/>
-                                </>}
 
 
-                                <h5 className={'mt-5'}>Confirm Order Type</h5>
+                                <h5>Confirm Order Type</h5>
 
 
                                 <div className={'mt-3'}>
@@ -267,6 +236,42 @@ const Index = ({clientDetail,vouchertotaldisplay,paymentgateways,cartData,locati
                                     </div>
                                     </div>
                                 </div>
+
+
+                                {!isEmpty(paymentMethods) && <>
+
+                                    <hr/>
+
+                                    <h5  className={'py-3'}>Payment Detail</h5>
+                                    {
+                                        paymentMethods.map((item,index)=>{
+
+                                            return (
+                                                <div className={'mb-3'} key={index}>
+                                                    <Field name="paymentgateway">
+                                                        {({input, meta}) => (
+                                                            <>
+                                                                {Boolean(item.value) &&  <div className="mb-4  align-items-center">
+                                                                    <input className="form-check-input"  {...input} checked={values.paymentgateway === item.value}
+                                                                           onChange={(e) => {
+                                                                               form.change('paymentgateway',e.target.value)
+                                                                           }} id={`payment-${index}`} type="radio"
+                                                                           value={item.value}/>
+                                                                    <label className="form-check-label"
+                                                                           htmlFor={`payment-${index}`}>
+                                                                        {item.label}
+                                                                    </label>
+                                                                </div>}
+                                                            </>
+                                                        )}
+                                                    </Field>
+                                                </div>
+                                            )
+                                        })
+                                    }
+
+                                </>}
+
 
 
                                 {((values.ordertype === 'homedelivery' && Boolean(defaultaddress)) || (values.ordertype !== 'homedelivery'))  &&  values.ordertype && <div className={'my-3'}>
