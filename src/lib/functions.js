@@ -587,6 +587,7 @@ export const setItemRowData = (data) => {
         let additem = {
             productid: itemid || productid,
             itemname,
+            productdisplayname:itemname,
             productqnt: productqnt || (Boolean(itemminqnt) ? itemminqnt : 1),
             producttaxgroupid,
             price,
