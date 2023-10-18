@@ -781,12 +781,11 @@ export const postOrder = (order) => {
         "ordertype":order.ordertype,
         "reference":cartData?.tableid,
         "locationid":device.locationid,
-        "source":""
+        "source":"",
+        currentpax:'all'
     }
 
 
-
-    console.log('data',data)
 
     return new promise(async (resolve) => {
         await apiService({
