@@ -23,8 +23,7 @@ export const GroupBox = ({item}) => {
 
                     style={{maxWidth: '100%', borderRadius: 10}}/> : <div></div>}
 
-                <h5 className={`__title text-center position-absolute ${withimage ? 'text-white' : ''} p-3`}
-                    style={{top: 0}}>{item.itemgroupname} </h5>
+                <h5 className={`__title text-center position-absolute ${withimage ? 'text-white' : ''} p-3`}  style={{top: 0}}>{item.itemgroupname} </h5>
             </div>
         </>
     )
@@ -50,7 +49,6 @@ const Index = (props) => {
         <section>
 
             <div className="row">
-
                 {
                     Object.values(groupList).filter((group) => {
                         return group?.itemgroupmid === '0'
@@ -66,9 +64,7 @@ const Index = (props) => {
                         </div>
                     })
                 }
-
             </div>
-
 
         </section>
     )

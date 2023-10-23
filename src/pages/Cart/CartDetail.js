@@ -69,7 +69,7 @@ const Index = (props) => {
                                                     }))
                                                 }}>
 
-                                                    <div className={'p-2 mt-auto '}>
+                                                    <div className={'p-2 mt-auto'}>
                                                         <div>
                                                             <h4 style={{fontSize: '1.8rem'}}>{itemname} </h4>
                                                             <small className={'mb-2'}> {productqnt} x {numberFormat(productratedisplay)} = {numberFormat(productqnt * productratedisplay)} </small>

@@ -9,6 +9,7 @@ import restaurantDetail from "./reducer/restaurant-data";
 import groupList from "./reducer/group-list";
 import cartData from "./reducer/cart-data";
 import itemList from "./reducer/item-list";
+import addonList from "./reducer/addon-list";
 
 import selectedData from "./reducer/selected-data";
 
@@ -22,6 +23,7 @@ export default configureStore({
         cartData,
         groupList,
         itemList,
+        addonList
     },
     middleware: getDefaultMiddleware => getDefaultMiddleware({
         serializableCheck: false

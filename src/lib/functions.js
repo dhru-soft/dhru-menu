@@ -14,7 +14,8 @@ import { confirmAlert } from 'react-confirm-alert'; // Import
 import 'react-confirm-alert/src/react-confirm-alert.css';
 import ConfirmOrder from "../pages/Cart/ConfirmOrder";
 import {setGroupList} from "./redux-store/reducer/group-list";
-import OrderDetail from "../pages/Client/OrderDetail"; // Import css
+import OrderDetail from "../pages/Client/OrderDetail";
+import {setAddonList} from "./redux-store/reducer/addon-list"; // Import css
 
 var ls = require('local-storage');
 
@@ -176,11 +177,17 @@ export const map = (object, callback) => {
     });
 };
 
-export const findObject = (array, field, value) => {
-    let find = array.filter(function (item) {
-        return item[field] === value
-    });
-    return find[0];
+export const findObject = (array, field, value, onlyOne) => {
+    if (Boolean(array && array.length)) {
+        let find = array.filter(function (item) {
+            if (!Boolean(item[field])) {
+                return false;
+            }
+            return item[field] && item[field]?.toString() === value?.toString();
+        });
+        return onlyOne ? find[0] : find;
+    }
+    return []
 };
 
 
@@ -315,6 +322,11 @@ export const getInit = async (workspace) => {
                     device.token = client?.token;
                     store.dispatch(setClientDetail(client));
                 })
+
+                getAddonList().then((data) => {
+                    store.dispatch(setAddonList(data))
+                })
+
                 resolve(true)
             } else {
                 device.workspace = ''
@@ -634,6 +646,28 @@ export const getItemById = async (itemid) => {
 }
 
 
+export const getAddonList = async () => {
+    return new promise(async (resolve) => {
+
+        await apiService({
+            method: METHOD.GET,
+            action: ACTIONS.ADDON,
+            queryString: {locationid: device.locationid},
+            hideLoader: true,
+            workspace: device.workspace,
+            other: {url: urls.posUrl},
+        }).then(async (result) => {
+            if (result.status === STATUS.SUCCESS && Boolean(result?.data)) {
+                let {addon} = result?.data;
+                resolve(addon)
+            } else {
+                resolve(false)
+            }
+        });
+    })
+
+}
+
 export const getItemList = async (queryString) => {
     return new promise(async (resolve) => {
 
@@ -648,6 +682,7 @@ export const getItemList = async (queryString) => {
         }).then(async (result) => {
             if (result.status === STATUS.SUCCESS && Boolean(result?.data)) {
                 let {items} = result?.data;
+
                 resolve(items)
             } else {
                 resolve(false)

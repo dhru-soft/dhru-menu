@@ -19,6 +19,7 @@ const Index = (props) => {
     }
 
     const [updateItem, setUpdateItem] = useState(itemDetail);
+    const [validate,setValidate] = useState(Boolean(itemDetail?.addtags))
 
 
 
@@ -43,6 +44,8 @@ const Index = (props) => {
         return <Loader3/>
     }
 
+    console.log('validate',validate)
+
     return (
         <div className={'col-12'}>
 
@@ -63,7 +66,7 @@ const Index = (props) => {
                         </div>
 
 
-                        <Addons itemDetail={updateItem} updateItem={setUpdateItem} key={uuid}/>
+                        <Addons itemDetail={updateItem} updateItem={setUpdateItem} key={uuid} setValidate={setValidate}/>
                         {/*<TagsNotes/>*/}
 
                         <div className={'form mt-3'}>
@@ -81,7 +84,7 @@ const Index = (props) => {
 
                     <div>
                         <div>
-                            <div className={'d-flex justify-content-between align-items-center'}>
+                            {validate  && <div className={'d-flex justify-content-between align-items-center'}>
                                 <div>
                                     {<AddButton item={{...updateItem}} fromCart={true} minqnt={1} updateItem={setUpdateItem}/>}
                                 </div>
@@ -90,7 +93,7 @@ const Index = (props) => {
                                     <AddButton custom={true} fromCart={cart} item={updateItem}
                                                updateItem={updateListItem}/>
                                 </div>
-                            </div>
+                            </div>}
                         </div>
                     </div>
 

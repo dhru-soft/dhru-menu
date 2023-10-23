@@ -33,6 +33,7 @@ export enum ACTIONS {
     CLIENT = "clientlogin",
     ADDRESS = "address",
     ITEMS = "item",
+    ADDON = "addon",
     CATEGORY = "category",
 }
 
