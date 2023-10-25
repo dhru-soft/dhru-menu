@@ -13,7 +13,6 @@ import store from "../../lib/redux-store/store";
 import {setModal} from "../../lib/redux-store/reducer/component";
 import ItemDetails from "./ItemDetails";
 import BodyClassName from 'react-body-classname';
-import Footer from "../Navigation/Footer";
 
 const Index = (props) => {
 

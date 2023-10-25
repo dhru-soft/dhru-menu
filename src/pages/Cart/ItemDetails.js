@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from "react";
 import Addons from "./Addons";
-import {getItemById, numberFormat} from "../../lib/functions";
+import {clone, getItemById, numberFormat} from "../../lib/functions";
 
 import Loader3 from "../../components/Loader/Loader3";
 import AddButton from "./AddButton";
@@ -44,7 +44,7 @@ const Index = (props) => {
         return <Loader3/>
     }
 
-    console.log('validate',validate)
+
 
     return (
         <div className={'col-12'}>
@@ -66,7 +66,7 @@ const Index = (props) => {
                         </div>
 
 
-                        <Addons itemDetail={updateItem} updateItem={setUpdateItem} key={uuid} setValidate={setValidate}/>
+                        <Addons itemDetail={updateItem} selectedaddon={clone(itemDetail.itemaddon)}   updateItem={setUpdateItem} key={uuid} setValidate={setValidate}/>
                         {/*<TagsNotes/>*/}
 
                         <div className={'form mt-3'}>

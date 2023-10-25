@@ -5,9 +5,10 @@ import {clone, findObject, getFromSetting, isEmpty, numberFormat, setItemRowData
 import {v4 as uuid} from "uuid";
 
 
-const Index = ({itemDetail,updateItem,settings,addonList,setValidate}) => {
+const Index = ({itemDetail,selectedaddon,updateItem,settings,addonList,setValidate}) => {
 
     let {itemaddon,addon} = itemDetail;
+    let copyaddonList = clone(addonList)
 
 
     let addtags = itemDetail?.addons || {}
@@ -18,123 +19,114 @@ const Index = ({itemDetail,updateItem,settings,addonList,setValidate}) => {
     let {addongroupid, addonid,autoaddon} = addtags || {addongroupid: [], addonid: [],autoaddon:[]};
 
 
-    const [moreaddon, setMoreAddon] = useState(clone(addon));
 
+    if(!isEmpty(selectedaddon)){
+        selectedaddon?.map((addon)=>{
+            if(!isEmpty(copyaddonList[addon.productid])) {
+                copyaddonList[addon.productid] = {
+                    ...copyaddonList[addon.productid],
+                    ...addon
+                }
+            }
+        })
+    }
+
+    const [moreaddon, setMoreAddon] = useState(clone(copyaddonList));
 
     const [addons,setAddons] = useState(addtags);
 
 
+
     useEffect(() => {
 
-        if(isEmpty(addtags?.addongroupiddata)){
-            addtags = {
-                ...addtags,
-                addongroupiddata:{
-                    '0000':{
-                        ...addtags?.addoniddata,
-                        selecteditems:addtags?.addonid.map((item)=>{
-                            return {"itemid": item}
-                        }),
+        try {
+            if (isEmpty(addtags?.addongroupiddata)) {
+                addtags = {
+                    ...addtags,
+                    addongroupiddata: {
+                        '0000': {
+                            ...addtags?.addoniddata,
+                            selecteditems: addtags?.addonid?.map((item) => {
+                                return {
+                                    "itemid": item,
+                                    productrate: copyaddonList[item].price,
+                                    productratedisplay: copyaddonList[item].price
+                                }
+                            }),
+                        }
                     }
                 }
+                setAddons(addtags)
             }
-            setAddons(addtags)
-        }
 
 
-        addongroupid?.map((ag) => {
-            const findaddons = Object.values(moreaddon)?.filter((addon) => {
-                return ag === addon.itemgroupid
-            }).map((item) => {
-                return item.itemid
+            addongroupid?.map((ag) => {
+                const findaddons = Object.values(moreaddon)?.filter((addon) => {
+                    return ag === addon.itemgroupid
+                }).map((item) => {
+                    return item.itemid
+                })
+
+                if (Boolean(findaddons?.length)) {
+                    addonid = addonid.concat(findaddons)
+                }
             })
 
-            if (Boolean(findaddons.length)) {
-                addonid = addonid.concat(findaddons)
-            }
-        })
-
-        addonid.map((addon, key) => {
-            const find = findObject(itemaddon, 'itemid', addon, true);
-            if (Boolean(find)) {
-                moreaddon[addon] = {
-                    ...moreaddon[addon],
-                    ...find,
-                }
-            }
-        })
-
-        setMoreAddon(clone(moreaddon));
-
-        setTimeout(()=>{
-
-            if(!isEmpty(autoaddon)) {
-                autoaddon?.map((addon) => {
-                    if (!Boolean(moreaddon[addon].productqnt)) {
-                        updateQnt(addon, 'autoadd')
+            addonid?.map((addon, key) => {
+                const find = findObject(itemaddon, 'itemid', addon, true);
+                if (Boolean(find)) {
+                    moreaddon[addon] = {
+                        ...moreaddon[addon],
+                        ...find
                     }
-                })
-            }
-            else {
-                Object.keys(addtags?.addongroupiddata).map((key) => {
-                    const adddongroup = addtags?.addongroupiddata[key];
-                    adddongroup?.autoadditems?.map((addon) => {
-                        if (!Boolean(moreaddon[addon].productqnt)) {
-                            updateQnt(addon, 'autoadd',key)
-                        }
-                    })
-                })
-            }
+                }
+            })
 
-        })
+            setMoreAddon(clone(moreaddon));
+        }
+        catch (e){
+            console.log('e',e)
+        }
 
-        let totalmin = addtags?.addoniddata?.minrequired || 0;
-        Object.values(addtags?.addongroupiddata).map((addon)=>{
-            totalmin += addon?.minrequired;
-        });
-
-        setValidate(!Boolean(totalmin))
 
     }, [])
 
 
-    const updateQnt1 = (key, action) => {
+    useEffect(() => {
 
-        let productqnt  =  0;
 
-        if (action === 'add') {
-            productqnt = 1
-        } else if (action === 'remove') {
-            productqnt = 0
+
+
+
+        if(!isEmpty(autoaddon)) {
+            autoaddon?.map((addon) => {
+                if (!Boolean(moreaddon[addon].productqnt)) {
+                    updateQnt(addon, 'autoadd')
+                }
+            })
+        }
+        else if(Boolean(addons) && Boolean(addons?.addongroupiddata)){
+           Object.keys(addons?.addongroupiddata).map((key) => {
+                const adddongroup = addons?.addongroupiddata[key];
+                adddongroup?.autoadditems?.map((addon) => {
+                    if (!Boolean(moreaddon[addon].productqnt)) {
+                        updateQnt(addon, 'autoadd',key)
+                    }
+                })
+            })
         }
 
-        let uuidn = uuid();
-
-        moreaddon[key] = {
-            ...moreaddon[key],
-            itemid:key,
-            productqnt: productqnt,
-            key: uuidn,
+        if(!isEmpty(selectedaddon)){
+            setValidate(true)
         }
 
-        let selectedAddons = Object.values(moreaddon).filter((addon) => {
-            return addon.productqnt > 0
-        })
 
-        selectedAddons = selectedAddons.map((addon)=>{
-            return setItemRowData(addon)
-        })
-
-        setMoreAddon(clone(moreaddon));
-        updateItem({...itemDetail,itemaddon:selectedAddons})
-    }
+    }, [addons]);
 
 
     const updateQnt = (key, action,addonid) => {
 
         let productqnt = moreaddon[key].productqnt || 0;
-
-
 
         if (action === 'autoadd') {
             productqnt =   1
@@ -151,7 +143,6 @@ const Index = ({itemDetail,updateItem,settings,addonList,setValidate}) => {
             itemid:key,
             displayunitcode: '',
             productqnt: productqnt,
-
             key: uuidn,
             ref_id:uuidn,
         }
@@ -162,9 +153,9 @@ const Index = ({itemDetail,updateItem,settings,addonList,setValidate}) => {
             const find = addons?.addongroupiddata[addonid]?.selecteditems?.filter((item) => {
                 return item.itemid === key
             })
-           /* if (Boolean(find[0]?.productrate)) {
-                moreaddon[key].pricing.price.default[0]['onetime'].baseprice = find[0]?.productrate;
-            }*/
+            if (Boolean(find[0]?.productrate)) {
+                moreaddon[key].price = find[0]?.productrate;
+            }
         }
         //////// CHANGE ADDON PRICE IF CHANGED //////////
 
@@ -184,17 +175,17 @@ const Index = ({itemDetail,updateItem,settings,addonList,setValidate}) => {
 
 
         //////// VALIDATE ADD BUTTON //////////
-        let totalmin = addtags?.addoniddata?.minrequired || 0;
-
+       // let totalmin = addons?.addoniddata?.minrequired || 0;
+        let totalmin =  0;
         let allval = 0
-        Object.keys(addtags?.addongroupiddata).map((key)=>{
 
-            let addon = addtags?.addongroupiddata[key]
+        Object.keys(addons?.addongroupiddata).map((key)=>{
+
+            let addon = addons?.addongroupiddata[key];
+
             let totalgroupselected = selectedAddons?.filter((s)=>{
-                return s.itemgroupid == key && Boolean(addon.minrequired)
+                return (s.itemgroupid == key && Boolean(addon.minrequired)) || key === '0000'
             })
-
-            console.log('totalgroupselected',totalgroupselected)
 
             if(totalgroupselected.length >= addon.minrequired){
                 allval += totalgroupselected.length
@@ -203,9 +194,8 @@ const Index = ({itemDetail,updateItem,settings,addonList,setValidate}) => {
             totalmin += addon.minrequired;
         });
 
-        console.log('allval',allval,totalmin)
 
-        if(allval >= totalmin){
+        if(+allval >= +totalmin && ((totalmin === addons?.addoniddata?.minrequired) || !Boolean(addons?.addoniddata?.minrequired))){
             setValidate(true)
         }
         else{
@@ -217,6 +207,7 @@ const Index = ({itemDetail,updateItem,settings,addonList,setValidate}) => {
 
 
     useEffect(() => {
+
         if(Boolean(itemaddon)) {
 
             addonid?.map((addon, key) => {
@@ -232,13 +223,6 @@ const Index = ({itemDetail,updateItem,settings,addonList,setValidate}) => {
         }
 
         setMoreAddon(clone(moreaddon));
-
-        /*setTimeout(()=>{
-            autoaddon?.map((addon)=>{
-                updateQnt(addon,'add')
-
-            })
-        })*/
 
     }, [])
 
@@ -273,19 +257,17 @@ const Index = ({itemDetail,updateItem,settings,addonList,setValidate}) => {
                        {
                            selecteditems?.map((item, key) => {
 
-                               let {itemname, pricing, productqnt} = moreaddon[item.itemid];
 
-                               const pricingtype = pricing?.type;
+                               let {itemname,  productqnt} = moreaddon[item.itemid];
 
-                               const baseprice = item.productrate || pricing?.price?.default[0][pricingtype]?.baseprice || 0;
+                               const baseprice = item.productrate  || 0;
 
                                const addeditems = moreaddon && Object.values(moreaddon).filter((addon)=>{
                                    const find = Object.values(selecteditems).filter((item)=>{
-                                       return item.itemid === addon.itemid && Boolean(addon?.productqnt)
+                                       return (item.itemid === addon.itemid || item.itemid === addon.productid) && Boolean(addon?.productqnt)
                                    })
                                    return Boolean(find?.length);
                                }).length + 1;
-
 
                                return (
                                    <div
@@ -338,51 +320,6 @@ const Index = ({itemDetail,updateItem,settings,addonList,setValidate}) => {
 
                })
            }
-
-
-
-
-            {/*{Boolean(addonid?.length > 0) && <>
-
-                <h6>Addons</h6>
-
-                <div>
-
-                {
-                    addonid?.map((addon, key) => {
-
-                        let {itemname, price,productqnt} = moreaddon[addon] || {};
-
-                        return (
-                            <div className={`${key!== 0 && 'border-top'} py-3`} key={key}>
-                                <div  key={key}  className={'d-flex justify-content-between'}>
-
-                                    <div>
-                                        <div className="form-check" style={{paddingLeft:22}}>
-                                            <input className="form-check-input" type="checkbox" checked={Boolean(productqnt)} value="1"
-                                                   id={`checkbox${key}`} onChange={(e)=>handleCheckboxChange(addon,e)}  />
-                                                <label className="form-check-label" htmlFor={`checkbox${key}`}>
-                                                    {`${itemname}`}
-                                                </label>
-                                        </div>
-                                        <div>
-
-                                        </div>
-                                    </div>
-
-
-                                    <div>
-                                        <span>{numberFormat(price)}</span>
-                                    </div>
-
-                                </div>
-                            </div>
-                        )
-                    })
-                }
-                </div>
-            </>}*/}
-
 
 
         </div>

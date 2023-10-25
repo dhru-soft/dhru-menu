@@ -578,6 +578,7 @@ export const setItemRowData = (data) => {
             itemname,
             itemtaxgroupid,
             price,
+            itemgroupid,
             productqnt,
             itemhsncode,
             itemminqnt,
@@ -599,6 +600,7 @@ export const setItemRowData = (data) => {
         let additem = {
             productid: itemid || productid,
             itemname,
+            itemgroupid,
             productdisplayname:itemname,
             productqnt: productqnt || (Boolean(itemminqnt) ? itemminqnt : 1),
             producttaxgroupid,
