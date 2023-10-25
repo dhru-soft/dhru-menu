@@ -115,6 +115,9 @@ const Index = ({itemDetail,selectedaddon,updateItem,settings,addonList,setValida
                 })
             })
         }
+        else{
+            setValidate(true)
+        }
 
         if(!isEmpty(selectedaddon)){
             setValidate(true)
