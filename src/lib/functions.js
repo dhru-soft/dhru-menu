@@ -323,9 +323,9 @@ export const getInit = async (workspace) => {
                     store.dispatch(setClientDetail(client));
                 })
 
-                getAddonList().then((data) => {
+                /*getAddonList().then((data) => {
                     store.dispatch(setAddonList(data))
-                })
+                })*/
 
                 resolve(true)
             } else {

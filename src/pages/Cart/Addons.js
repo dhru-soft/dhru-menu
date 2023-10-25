@@ -5,10 +5,10 @@ import {clone, findObject, getFromSetting, isEmpty, numberFormat, setItemRowData
 import {v4 as uuid} from "uuid";
 
 
-const Index = ({itemDetail,selectedaddon,updateItem,settings,addonList,setValidate}) => {
+const Index = ({itemDetail,selectedaddon,updateItem,settings,setValidate}) => {
 
     let {itemaddon,addon} = itemDetail;
-    let copyaddonList = clone(addonList)
+    let copyaddonList = clone(addon)
 
 
     let addtags = itemDetail?.addons || {}
@@ -333,7 +333,7 @@ const Index = ({itemDetail,selectedaddon,updateItem,settings,addonList,setValida
 const mapStateToProps = (state) => {
     return {
         settings: state.restaurantDetail.settings,
-        addonList: state.addonList,
+
     }
 }
 
