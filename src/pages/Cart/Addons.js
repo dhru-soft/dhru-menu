@@ -10,7 +10,6 @@ const Index = ({itemDetail,selectedaddon,updateItem,settings,setValidate}) => {
     let {itemaddon,addon} = itemDetail;
     let copyaddonList = clone(addon)
 
-
     let addtags = itemDetail?.addons || {}
 
     const {addongroups} = settings;
@@ -56,8 +55,35 @@ const Index = ({itemDetail,selectedaddon,updateItem,settings,setValidate}) => {
                         }
                     }
                 }
-                setAddons(addtags)
+
+               // setAddons(addtags)
             }
+
+
+            Object.keys(addtags.addongroupiddata).map((key)=>{
+                if (isEmpty(addtags?.addongroupiddata[key]?.selecteditems)) {
+
+                    addtags = {
+                        ...addtags,
+                        addongroupiddata:{
+                            ...addtags.addongroupiddata,
+                            [key]:{
+                                ...addtags.addongroupiddata[key],
+                                selecteditems: Object.values(addon).map((item)=>{
+                                    return {
+                                        "itemid": item.itemid,
+                                        productrate:  item.price,
+                                        productratedisplay: item.price
+                                    }
+                                })
+                            }
+                        }
+                    }
+
+                }
+            })
+            setAddons(addtags)
+
 
 
             addongroupid?.map((ag) => {
@@ -99,6 +125,7 @@ const Index = ({itemDetail,selectedaddon,updateItem,settings,setValidate}) => {
 
 
         if(!isEmpty(autoaddon)) {
+
             autoaddon?.map((addon) => {
                 if (!Boolean(moreaddon[addon].productqnt)) {
                     updateQnt(addon, 'autoadd')
@@ -106,14 +133,20 @@ const Index = ({itemDetail,selectedaddon,updateItem,settings,setValidate}) => {
             })
         }
         else if(Boolean(addons) && Boolean(addons?.addongroupiddata)){
+            let minr = 0;
            Object.keys(addons?.addongroupiddata).map((key) => {
+               const {minrequired} = addons.addongroupiddata[key];
                 const adddongroup = addons?.addongroupiddata[key];
                 adddongroup?.autoadditems?.map((addon) => {
                     if (!Boolean(moreaddon[addon].productqnt)) {
                         updateQnt(addon, 'autoadd',key)
                     }
                 })
+               minr +=minrequired
             })
+            if(!Boolean(minr)){
+                setValidate(true)
+            }
         }
         else{
             setValidate(true)
@@ -194,9 +227,8 @@ const Index = ({itemDetail,selectedaddon,updateItem,settings,setValidate}) => {
                 allval += totalgroupselected.length
             }
 
-            totalmin += addon.minrequired;
+            totalmin += addon.minrequired || 0;
         });
-
 
         if(+allval >= +totalmin && ((totalmin === addons?.addoniddata?.minrequired) || !Boolean(addons?.addoniddata?.minrequired))){
             setValidate(true)
