@@ -8,7 +8,6 @@ import CartTotal from "../Cart/CartTotal";
 import CartHeader from "../Cart/CartHeader";
 import BodyClassName from 'react-body-classname';
 import Theme from "../Home/Theme";
-import Footer from "../Navigation/Footer";
 
 
 const Index = (props) => {

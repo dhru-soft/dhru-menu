@@ -16,6 +16,7 @@ const Index = ({clientDetail,vouchertotaldisplay,paymentgateways,cartData,locati
     const dispatch = useDispatch()
     const {addresses} = clientDetail;
     const {tablename, locationname} = getCompanyDetails();
+    const [codlabel,setCodlabel] = useState('Cash on delivery')
 
     const defaultaddress = Boolean(addresses) && Object.values(addresses).filter((address)=>{
         return address?.default
@@ -23,6 +24,7 @@ const Index = ({clientDetail,vouchertotaldisplay,paymentgateways,cartData,locati
 
 
     const takeorder = location[device?.locationid]?.cantakeorder || {delivery:false,pickup:false,qsr:false};
+    const maxamountforcod = location[device?.locationid]?.maxamountforcod
 
     const confirmOrder = (values) => {
 
@@ -44,9 +46,7 @@ const Index = ({clientDetail,vouchertotaldisplay,paymentgateways,cartData,locati
             ]
         }
         else{
-
             const b = getGatewayDetailByKey(values?.paymentgateway, 'displayname');
-
             payments = [
                 {
                     "remainingamount": 0,
@@ -107,19 +107,10 @@ const Index = ({clientDetail,vouchertotaldisplay,paymentgateways,cartData,locati
         return item.online
     })
 
-    gateways.push({
-        label:"Pay on Counter",
-        online:false,
-        paymentby:"Pay Later",
-        paymentmethod:"",
-        type:"cash",
-        value:"Pay Later"
-    })
 
 
     const [paymentMethods, setPaymentMethods] = useState(gateways);
     const [initData,setInitData] = useState({paymentgateway:paymentMethods[0]['value'],tablename:'Online Order',ordertype: Boolean(device.tableid !== '0')?'tableorder': takeorder.delivery?'homedelivery':''})
-
 
 
     useEffect(()=>{
@@ -171,6 +162,7 @@ const Index = ({clientDetail,vouchertotaldisplay,paymentgateways,cartData,locati
                                                                             <input className="form-check-input" {...input}
                                                                                    checked={values.ordertype === 'homedelivery'} onChange={(e) => {
                                                                                 form.change('ordertype',e.target.value)
+                                                                                setCodlabel('Cash on delivery')
                                                                             }} id="radio1" type="radio"
                                                                                    value={'homedelivery'}/>
                                                                             <label className="form-check-label"
@@ -199,6 +191,7 @@ const Index = ({clientDetail,vouchertotaldisplay,paymentgateways,cartData,locati
                                                                     <input className="form-check-input"  checked={values.ordertype === 'takeaway'}  {...input}
                                                                            onChange={(e) => {
                                                                                form.change('ordertype',e.target.value)
+                                                                               setCodlabel('Pay on counter')
                                                                            }} id="radio2" type="radio"
                                                                            value={'takeaway'}/>
                                                                     <label className="form-check-label"
@@ -268,6 +261,27 @@ const Index = ({clientDetail,vouchertotaldisplay,paymentgateways,cartData,locati
                                             )
                                         })
                                     }
+
+                                    {((+maxamountforcod >= +vouchertotaldisplay && values.ordertype === 'homedelivery') || (values.ordertype !== 'homedelivery'))  &&  <div className={'mb-3'} >
+                                        <Field name="paymentgateway">
+                                            {({input, meta}) => (
+                                                <>
+                                                    <div className="mb-4  align-items-center">
+                                                        <input className="form-check-input"  {...input} checked={values.paymentgateway === 'Pay Later'}
+                                                               onChange={(e) => {
+                                                                   form.change('paymentgateway',e.target.value)
+                                                               }} id={`payment-1000`} type="radio"
+                                                               value={'Pay Later'}/>
+                                                        <label className="form-check-label"
+                                                               htmlFor={`payment-1000`}>
+                                                            {values.ordertype === 'takeaway'?'Pay on counter':'Cash on delivery'}
+
+                                                        </label>
+                                                    </div>
+                                                </>
+                                            )}
+                                        </Field>
+                                    </div>}
 
                                 </>}
 
