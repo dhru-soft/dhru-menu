@@ -2,11 +2,12 @@ import React, {useEffect, useState} from "react";
 import {useDispatch} from "react-redux";
 import {addToCart, clone, isEmpty, removeItem} from "../../lib/functions";
 import store from "../../lib/redux-store/store";
-import {changeCartItem} from "../../lib/redux-store/reducer/cart-data";
+import {changeCartItem, setCartData, setUpdateCart} from "../../lib/redux-store/reducer/cart-data";
 import {v4 as uuid} from "uuid";
 import {setModal} from "../../lib/redux-store/reducer/component";
 import ItemDetails from "./ItemDetails";
 import {AddonAction} from "../Items/Items";
+import {itemTotalCalculation} from "../../lib/item-calculation";
 
 
 export const updateCartItem = async (values) => {
@@ -71,6 +72,10 @@ const Index = ({item, updateItem, custom, fromCart,minqnt,merger}) => {
                 ...item, productqnt: productqnt || 1, key
             }
             addToCart(item).then(r => {
+                const cartData = store.getState().cartData
+                let data = itemTotalCalculation(clone(cartData), undefined, undefined, undefined, undefined, 2, 2, false, false);
+                dispatch(setCartData(clone(data)));
+                dispatch(setUpdateCart());
             })
 
             setQnt(productqnt || 1)
@@ -118,6 +123,10 @@ const Index = ({item, updateItem, custom, fromCart,minqnt,merger}) => {
 
     const updatecartItem = () => {
         updateCartItem(item).then(r => {
+            const cartData = store.getState().cartData
+            let data = itemTotalCalculation(clone(cartData), undefined, undefined, undefined, undefined, 2, 2, false, false);
+            dispatch(setCartData(clone(data)));
+            dispatch(setUpdateCart());
         })
         dispatch(setModal({show: false}))
     }

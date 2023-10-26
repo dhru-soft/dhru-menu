@@ -3,12 +3,15 @@ import React, { useEffect, useState} from "react";
 import {connect} from "react-redux";
 import {clone, findObject, getFromSetting, isEmpty, numberFormat, setItemRowData,} from "../../lib/functions";
 import {v4 as uuid} from "uuid";
+import Select from "../../components/Select";
 
 
 const Index = ({itemDetail,selectedaddon,updateItem,settings,setValidate}) => {
 
     let {itemaddon,addon} = itemDetail;
     let copyaddonList = clone(addon)
+
+
 
     let addtags = itemDetail?.addons || {}
 
@@ -49,7 +52,8 @@ const Index = ({itemDetail,selectedaddon,updateItem,settings,setValidate}) => {
                                 return {
                                     "itemid": item,
                                     productrate: copyaddonList[item].price,
-                                    productratedisplay: copyaddonList[item].price
+                                    productratedisplay: copyaddonList[item].price,
+                                    maxsell:copyaddonList[item].maxsell
                                 }
                             }),
                         }
@@ -160,6 +164,7 @@ const Index = ({itemDetail,selectedaddon,updateItem,settings,setValidate}) => {
     }, [addons]);
 
 
+
     const updateQnt = (key, action,addonid) => {
 
         let productqnt = moreaddon[key].productqnt || 0;
@@ -213,7 +218,7 @@ const Index = ({itemDetail,selectedaddon,updateItem,settings,setValidate}) => {
         //////// VALIDATE ADD BUTTON //////////
        // let totalmin = addons?.addoniddata?.minrequired || 0;
         let totalmin =  0;
-        let allval = 0
+        let allval = 0;
 
         Object.keys(addons?.addongroupiddata).map((key)=>{
 
@@ -270,7 +275,6 @@ const Index = ({itemDetail,selectedaddon,updateItem,settings,setValidate}) => {
         updateQnt(addon,e.target.checked?'add':'remove')
     }
 
-
    return (<div className={'mt-5'}>
 
 
@@ -282,7 +286,7 @@ const Index = ({itemDetail,selectedaddon,updateItem,settings,setValidate}) => {
                    const {addonselectiontype,anynumber,minrequired,selecteditems} = addons.addongroupiddata[addonid];
 
                    if(isEmpty(selecteditems)){
-                       return <></>
+                       return <div key={addonid}></div>
                    }
 
                    return <div key={addonid}>
@@ -292,8 +296,7 @@ const Index = ({itemDetail,selectedaddon,updateItem,settings,setValidate}) => {
                        {
                            selecteditems?.map((item, key) => {
 
-
-                               let {itemname,  productqnt} = moreaddon[item.itemid];
+                               let {itemname,  productqnt,maxsell} = moreaddon[item.itemid];
 
                                const baseprice = item.productrate  || 0;
 
@@ -308,11 +311,11 @@ const Index = ({itemDetail,selectedaddon,updateItem,settings,setValidate}) => {
                                    <div
                                        key={key}>
 
-                                       <div className={`${key!== 0 && 'border-top'} py-3`} >
+                                       <div className={`${key!== 0 && 'border-top'} py-2`} >
 
-                                           <div    className={'d-flex justify-content-between'}>
+                                           <div    className={'d-flex justify-content-between align-items-center'}>
 
-                                               <div>
+                                               <div className={'w-100'}>
                                                    <div className="form-check" style={{paddingLeft:22}}>
                                                        <input className="form-check-input" type="checkbox" checked={Boolean(productqnt)}  disabled={(anynumber < addeditems && addonselectiontype === 'selectanyone') && !Boolean(productqnt)}    value="1"
                                                               id={`checkbox${key}${addonid}`} onChange={(e)=> {
@@ -336,8 +339,25 @@ const Index = ({itemDetail,selectedaddon,updateItem,settings,setValidate}) => {
                                                    </div>
                                                </div>
 
+                                               <div style={{height:38}}>
+                                                   {Boolean(productqnt) &&  <>
+                                                       <div className={'border rounded-3 btn-add p-0 '}>
+                                                           <div className={'d-flex justify-content-between align-items-center'}>
+                                                               <div className={'p-3  px-4 cursor-pointer'} onClick={() => ((productqnt > 1)) &&   updateQnt(item.itemid,'remove',addonid)}> -</div>
+                                                               <div className={'bg-white'} style={{
+                                                                   height: '34px',
+                                                                   width: '40px',
+                                                                   display: 'flex',
+                                                                   justifyContent: 'center',
+                                                                   alignItems: 'center'
+                                                               }}> {productqnt} </div>
+                                                               <div className={'p-3 px-4 cursor-pointer'} onClick={() => ((productqnt < maxsell) || maxsell === 0) &&  updateQnt(item.itemid,'add',addonid)}> +</div>
+                                                           </div>
+                                                       </div>
+                                                   </>}
 
-                                               <div>
+                                               </div>
+                                               <div style={{width:120,textAlign:'right'}}>
                                                    <span>{numberFormat(baseprice)}</span>
                                                </div>
 

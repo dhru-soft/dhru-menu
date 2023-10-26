@@ -1,5 +1,5 @@
 import React, {useEffect} from "react";
-import {connect} from "react-redux";
+import {connect, useDispatch} from "react-redux";
 
 import CompanyDetail from "../Navigation/CompanyDetail";
 import {useNavigate, useParams} from "react-router-dom";
@@ -7,7 +7,7 @@ import Init from "../Home/Init";
 import {device} from "../../lib/static";
 import CartTotal from "./CartTotal";
 import AddButton from "./AddButton";
-import {numberFormat} from "../../lib/functions";
+import {clone, numberFormat} from "../../lib/functions";
 import {v4 as uuid} from "uuid";
 import store from "../../lib/redux-store/store";
 import {setModal} from "../../lib/redux-store/reducer/component";
@@ -20,7 +20,6 @@ const Index = (props) => {
     const navigate = useNavigate()
 
     const {invoiceitems} = props;
-
 
 
     return (
@@ -63,6 +62,7 @@ const Index = (props) => {
                                                     store.dispatch(setModal({
                                                         show: true,
                                                         title: itemname,
+                                                        disableclose:true,
                                                         height: '80%',
                                                         component: () => <><ItemDetails itemDetail={item} cart={true}   /></>
                                                     }))
@@ -77,7 +77,7 @@ const Index = (props) => {
                                                         {Boolean(itemaddon?.length > 0) && <div>
                                                             {
                                                                 itemaddon?.map((addon,key)=>{
-                                                                    const {itemname, productratedisplay} = addon;
+                                                                    const {itemname,productqnt, productratedisplay} = addon;
                                                                     return (
                                                                         <div key={key} ><small className={'mb-2'}> {productqnt} x {itemname} =  {numberFormat(productqnt * productratedisplay)} </small></div>
                                                                     )

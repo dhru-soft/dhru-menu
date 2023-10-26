@@ -1,11 +1,13 @@
 import React, {useState} from "react";
-import {connect} from "react-redux";
-import {createUniqueStore, numberFormat, placeOrder, sessionStore} from "../../lib/functions";
+import {connect, useDispatch} from "react-redux";
+import {clone, createUniqueStore, numberFormat, placeOrder, sessionStore} from "../../lib/functions";
 
 import {device} from "../../lib/static";
 import CartSummary from "./CartSummary";
 import 'react-confirm-alert/src/react-confirm-alert.css';
 import {useNavigate} from "react-router-dom";
+import {itemTotalCalculation} from "../../lib/item-calculation";
+import {setCartData, setUpdateCart} from "../../lib/redux-store/reducer/cart-data";
 
 const Index = (props) => {
 
@@ -15,6 +17,7 @@ const Index = (props) => {
     const themecolor = device?.order?.themecolor || '#5C933FFF'
 
     const [summary, setSummary] = useState(false)
+    const dispatch = useDispatch()
 
 
     ////// STORE CART
@@ -68,6 +71,7 @@ const Index = (props) => {
                                 if (page === 'final') {
                                     placeOrder()
                                 } else {
+
                                     navigate(`/l/${device.locationid}/t/${device.tableid}/cartdetail`);
                                 }
                             }} type="button" role="button">

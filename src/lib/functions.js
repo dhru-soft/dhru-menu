@@ -570,7 +570,7 @@ export const setItemRowData = (data) => {
 
         let {cartData} = store.getState();
 
-        let pricingTemplate = undefined
+        let pricingTemplate = undefined;
 
         let {
             itemid,

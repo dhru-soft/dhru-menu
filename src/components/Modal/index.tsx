@@ -6,26 +6,28 @@ import {connect} from "react-redux";
 import { BrowserView, MobileView, isBrowser, isMobile } from 'react-device-detect';
 
 import Sheet from 'react-modal-sheet';
-import Login from "../../pages/Login";
 
 const Index = (props: any) => {
-    const {component: Component, title, show, maxWidth, className, backdrop, keyboard} = props.modal;
+    const {component: Component, title, show,disableclose, maxWidth, className, backdrop, keyboard} = props.modal;
 
     const [isOpen, setOpen] = useState(false);
 
     const handleClose = () => {
+
         const {setModal} = props;
         setOpen(false)
         setModal({
             show: false,
         });
+
     }
 
 
         return (
             <Modal isOpen={show}  toggle={handleClose} size={maxWidth ? maxWidth : 'xs'} className={`${isMobile?'mobile':'desktop'}`}
                    backdrop={backdrop ? backdrop : true} keyboard={keyboard ? keyboard : true}>
-                <ModalHeader toggle={handleClose}>{title ? title : ''}</ModalHeader>
+                {!disableclose && <ModalHeader toggle={handleClose} >{title ? title : ''}</ModalHeader>}
+                {disableclose && <ModalHeader >{title ? title : ''}</ModalHeader>}
                 <ModalBody>
                     {show && <Component/>}
                 </ModalBody>
