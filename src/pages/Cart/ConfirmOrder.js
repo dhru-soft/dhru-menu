@@ -262,7 +262,7 @@ const Index = ({clientDetail,vouchertotaldisplay,paymentgateways,cartData,locati
                                         })
                                     }
 
-                                    {((+maxamountforcod >= +vouchertotaldisplay && values.ordertype === 'homedelivery') || (values.ordertype !== 'homedelivery'))  &&  <div className={'mb-3'} >
+                                    {((+maxamountforcod >= +vouchertotaldisplay && values.ordertype === 'homedelivery') || (values.ordertype !== 'homedelivery') || !Boolean(maxamountforcod))  &&  <div className={'mb-3'} >
                                         <Field name="paymentgateway">
                                             {({input, meta}) => (
                                                 <>
