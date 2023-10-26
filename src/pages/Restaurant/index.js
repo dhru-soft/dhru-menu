@@ -3,15 +3,13 @@ import {connect} from "react-redux";
 
 
 import {useNavigate, useParams} from "react-router-dom";
-import {getAddonList, getInit, isEmpty, postQrCode} from "../../lib/functions";
+import { getInit, isEmpty, postQrCode} from "../../lib/functions";
 
 import {device} from "../../lib/static";
 
 import BodyClassName from 'react-body-classname';
 import Theme from "../Home/Theme";
-import {setItemList} from "../../lib/redux-store/reducer/item-list";
-import {setAddonList} from "../../lib/redux-store/reducer/addon-list";
-import store from "../../lib/redux-store/store";
+
 
 const Index = (props) => {
 
@@ -51,7 +49,7 @@ const Index = (props) => {
         </div>
     }
 
-    const {general: {legalname, logo}, location, tabledetail: {tablename, locationid}} = restaurantDetail;
+    const {general: {legalname, logo}, location, tabledetail: {tablename}} = restaurantDetail;
 
     const isRestaurant = Boolean(Object.values(location).filter((values)=>{
          return values.industrytype === 'foodservices'

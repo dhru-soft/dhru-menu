@@ -1,24 +1,19 @@
 import React, {useState} from "react";
-import {connect, useDispatch} from "react-redux";
-import {clone, createUniqueStore, numberFormat, placeOrder, sessionStore} from "../../lib/functions";
+import {connect} from "react-redux";
+import { createUniqueStore, numberFormat, placeOrder, sessionStore} from "../../lib/functions";
 
 import {device} from "../../lib/static";
 import CartSummary from "./CartSummary";
 import 'react-confirm-alert/src/react-confirm-alert.css';
 import {useNavigate} from "react-router-dom";
-import {itemTotalCalculation} from "../../lib/item-calculation";
-import {setCartData, setUpdateCart} from "../../lib/redux-store/reducer/cart-data";
 
 const Index = (props) => {
 
     const navigate = useNavigate();
 
     const {cartData, page, cartData: {vouchertotaldisplay, invoiceitems, tableid}} = props;
-    const themecolor = device?.order?.themecolor || '#5C933FFF'
 
     const [summary, setSummary] = useState(false)
-    const dispatch = useDispatch()
-
 
     ////// STORE CART
     sessionStore(createUniqueStore(), cartData).then();

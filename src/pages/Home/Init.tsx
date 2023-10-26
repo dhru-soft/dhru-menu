@@ -5,8 +5,8 @@ import {
     getInit,
     getWorkspaceName,
     isEmpty,
-    retrieveData,
-    sessionRetrieve
+    sessionRetrieve,
+    voucherData
 } from "../../lib/functions";
 import {connect, useDispatch} from "react-redux";
 import {setCartData} from "../../lib/redux-store/reducer/cart-data";
@@ -28,26 +28,27 @@ const Index = (props: any) => {
     const legalname: any = props?.general?.legalname
 
     if (!Boolean(legalname)) {
-        getInit(getWorkspaceName()).then(()=>{ })
+        getInit(getWorkspaceName()).then(() => {
+        })
     }
 
     ////// RETRIVE CART AND INIT FOR STATE
-    sessionRetrieve(createUniqueStore()).then((data)=>{
-        if(!isEmpty(data)) {
-            dispatch(setCartData(data));
+    sessionRetrieve(createUniqueStore()).then((data) => {
+        if (!isEmpty(data)) {
+            dispatch(setCartData({...data, ...voucherData()}));
         }
     })
 
 
-    useEffect(()=>{
+    useEffect(() => {
 
         const {groupids} = props || []
 
-        const index = groupids?.findIndex(function(key:any) {
-            return key == device.groupid
+        const index = groupids?.findIndex(function (key: any) {
+            return key === device.groupid
         });
 
-        if(Boolean(device.groupid)) {
+        if (Boolean(device.groupid)) {
 
             if (index === 0) {
                 const newgroupids = groupids?.slice(0, index + 1);
@@ -65,29 +66,23 @@ const Index = (props: any) => {
                     dispatch(setSelected({groupids: groups}))
                 }
             }
+        } else {
+            // dispatch(setSelected({groupids: ''}))
         }
-        else{
-           // dispatch(setSelected({groupids: ''}))
-        }
 
 
+    }, [params?.groupid])
 
 
-    },[params?.groupid])
-
-
-    return (
-        <>
+    return (<>
             <div></div>
-        </>
-    )
+        </>)
 }
 
 
 const mapStateToProps = (state: any) => {
     return {
-        general: state.restaurantDetail?.general,
-        ...state.selectedData
+        general: state.restaurantDetail?.general, ...state.selectedData
     }
 }
 

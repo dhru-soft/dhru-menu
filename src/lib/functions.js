@@ -4,9 +4,16 @@ import apiService from "./api-service";
 import {ACTIONS, device, localredux, METHOD, STATUS, urls} from "./static";
 import {setrestaurantData} from "./redux-store/reducer/restaurant-data";
 import store from "./redux-store/store";
-import {resetCart, setCartItems, updateCartField, updateCartItems} from "./redux-store/reducer/cart-data";
+import {
+    refreshCartData,
+    resetCart,
+    setCartData,
+    setCartItems, setUpdateCart,
+    updateCartField,
+    updateCartItems
+} from "./redux-store/reducer/cart-data";
 import promise from "promise";
-import {getProductData} from "./item-calculation";
+import {getProductData, itemTotalCalculation} from "./item-calculation";
 import {setModal} from "./redux-store/reducer/component";
 import Login from "../pages/Login";
 import {setClientDetail} from "./redux-store/reducer/client-detail";
@@ -15,7 +22,8 @@ import 'react-confirm-alert/src/react-confirm-alert.css';
 import ConfirmOrder from "../pages/Cart/ConfirmOrder";
 import {setGroupList} from "./redux-store/reducer/group-list";
 import OrderDetail from "../pages/Client/OrderDetail";
-import {setAddonList} from "./redux-store/reducer/addon-list"; // Import css
+import {setAddonList} from "./redux-store/reducer/addon-list";
+import moment from "moment"; // Import css
 
 var ls = require('local-storage');
 
@@ -323,9 +331,6 @@ export const getInit = async (workspace) => {
                     store.dispatch(setClientDetail(client));
                 })
 
-                /*getAddonList().then((data) => {
-                    store.dispatch(setAddonList(data))
-                })*/
 
                 resolve(true)
             } else {
@@ -414,42 +419,26 @@ export const getDefaultPayment = () => {
 }
 
 
-/* export const voucherData = (voucherKey, isPayment = true, isTaxInvoice= false) => {
+export const getDateWithFormat = (date, dateFormat) => {
+    //crashlytics().log('getDateWithFormat');
+    if (!dateFormat) {
+        dateFormat = "YYYY-MM-DD HH:mm:ss"
+    }
+    return moment(date).format(`${dateFormat}`)
+}
 
-    let {initData, licenseData, staffData, localSettingsData, loginuserData} = localredux;
+  export const voucherData = () => {
 
+    const {salesvoucher} = store.getState().restaurantDetail?.settings;
     let payment = getDefaultPayment()
-
-    let paymentmethod = Object.keys(initData?.paymentgateway).find((key) => {
-        let data1 = Object.keys(initData?.paymentgateway[key]).filter((k1) => k1 !== "settings");
-        return isEmpty(data1) ? false : data1[0] === 'cash'
-    })
-
-    if (paymentmethod) {
-        let paymentby = initData?.paymentgateway[paymentmethod]["cash"].find(({input}) => input === "displayname")
-        payment = [{paymentmethod, paymentby: paymentby?.value, type: "cash"}]
-    }
-
-    if (Boolean(localSettingsData?.taxInvoice)) {
-        let taxVoucherKey = getVoucherKey("vouchertypename", "Tax Invoices");
-        if (taxVoucherKey) {
-            voucherKey = taxVoucherKey;
-            payment = [{paymentby: "Pay Later"}]
-        }
-    }
-
-    let voucherTypeData = initData?.voucher[voucherKey]
-
     const utcDate = moment().format("YYYY-MM-DD HH:mm:ss")
 
     let date = getDateWithFormat(utcDate, "YYYY-MM-DD"),
         vouchercreatetime = getDateWithFormat(utcDate, 'HH:mm:ss')
 
-    let currencyData = getCurrencyData();
+    let currencyData = getDefaultCurrency();
 
     let local = utcDate;
-
-    const {state} = initData.general
 
     let data = {
         localdatetime: local,
@@ -460,37 +449,33 @@ export const getDefaultPayment = () => {
         time: moment(utcDate).unix(),
         currency: currencyData.__key,
         currentDecimalPlace: currencyData?.decimalplace || 2,
-        locationid: licenseData?.data?.location_id,
-        terminalid: localredux?.licenseData?.data?.terminal_id,
-        terminalname: localredux?.licenseData?.data?.terminal_name,
-        staffid: parseInt(loginuserData?.adminid),
-        staffname: loginuserData?.username,
         vouchercurrencyrate: currencyData.rate,
-        vouchertaxtype: voucherTypeData?.defaulttaxtype || Object.keys(taxTypes)[0],
-        roundoffselected: voucherTypeData?.voucherroundoff,
-        voucherdiscountplace: voucherTypeData?.discountplace,
-        vouchertransitionaldiscount: Boolean(voucherTypeData?.vouchertransitionaldiscount) || voucherTypeData?.vouchertransitionaldiscount === "1",
-        canchangediscoutnaccount: Boolean(voucherTypeData?.vouchertransitionaldiscount) || voucherTypeData?.vouchertransitionaldiscount === "1",
-        discountaccunt: voucherTypeData?.defaultdiscountaccount,
-        vouchertypeid: voucherTypeData?.vouchertypeid,
-        vouchertype: voucherTypeData?.vouchertype,
-        vouchernotes: voucherTypeData?.defaultcustomernotes,
-        toc: voucherTypeData?.defaultterms,
-        selectedtemplate: voucherTypeData?.printtemplate,
+        vouchertaxtype: salesvoucher?.defaulttaxtype  ,
+        roundoffselected: salesvoucher?.voucherroundoff,
+        voucherdiscountplace: salesvoucher?.discountplace,
+        vouchertransitionaldiscount: Boolean(salesvoucher?.vouchertransitionaldiscount) || salesvoucher?.vouchertransitionaldiscount === "1",
+        canchangediscoutnaccount: Boolean(salesvoucher?.vouchertransitionaldiscount) || salesvoucher?.vouchertransitionaldiscount === "1",
+        discountaccunt: salesvoucher?.defaultdiscountaccount,
+        vouchertypeid: salesvoucher?.vouchertypeid,
+        vouchertype: salesvoucher?.vouchertype,
+        vouchernotes: salesvoucher?.defaultcustomernotes,
+        toc: salesvoucher?.defaultterms,
+        selectedtemplate: salesvoucher?.printtemplate,
         paymentmethod: payment[0]?.paymentmethod,
         payment: payment,
+        isadjustment: salesvoucher?.isadjustment,
         edit: true,
-        paxes: 1,
-        deviceid:device.uniqueid,
-        "placeofsupply": state,
+        deviceid: device.uniqueid,
+
         "updatecart": false,
         "debugPrint": true,
         "shifttable": false,
         "taxInvoice": false,
+        "currentpax":  1
     }
 
     return data;
-}*/
+}
 
 
 export const voucherTotal = (items, vouchertaxtype) => {
@@ -766,6 +751,12 @@ export const getFromSetting = (key) => {
 
 
 export const placeOrder = () => {
+
+    const cartData = store.getState().cartData
+    let data = itemTotalCalculation(clone(cartData), undefined, undefined, undefined, undefined, 2, 2, false, false);
+    store.dispatch(setCartData(clone(data)));
+    store.dispatch(setUpdateCart());
+
     store.dispatch(setModal({
         show: true,
         title: '',

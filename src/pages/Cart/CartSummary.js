@@ -31,7 +31,6 @@ const Index = (props) => {
             vouchersubtotaldisplay,
             globaltax,
             voucherroundoffdisplay,
-            vouchertotaldisplay,
             vouchertotaldiscountamountdisplay,
             voucherinlinediscountdisplay
         }
@@ -39,6 +38,7 @@ const Index = (props) => {
 
     useEffect(() => {
         setTimeout(() => {
+
             let data = itemTotalCalculation(clone(cartData), undefined, undefined, undefined, undefined, 2, 2, false, false);
             dispatch(setCartData(clone(data)));
             dispatch(setUpdateCart());

@@ -1,4 +1,4 @@
-import React, {useEffect} from "react";
+import React from "react";
 import {connect} from "react-redux";
 import Groups from "./Groups";
 
@@ -9,61 +9,57 @@ import ItemList from "../Items/Items";
 import CartHeader from "../Cart/CartHeader";
 import BodyClassName from 'react-body-classname';
 import Theme from "../Home/Theme";
-import Footer from "../Navigation/Footer";
 
 const Index = (props) => {
 
     let {searchitem} = props;
 
 
-
-    return (
-        <BodyClassName className="groups">
+    return (<BodyClassName className="groups">
             <section>
 
                 <Theme/>
 
-            <Init/>
+                <Init/>
 
-            <div className="">
+                <div className="">
 
-                <CompanyDetail/>
+                    <CompanyDetail/>
 
-                <div className={'col-12'}>
+                    <div className={'col-12'}>
 
-                    <div>
-                        <div className="container">
+                        <div>
+                            <div className="container">
 
-                            <div>
+                                <div>
 
-                                <CartHeader/>
+                                    <CartHeader/>
 
-                                {(!Boolean(searchitem)) ? <Groups/> : <ItemList/>}
+                                    {(!Boolean(searchitem)) ? <Groups/> : <ItemList/>}
+
+                                </div>
+
+
+                                <CartTotal page={'detailview'}/>
 
                             </div>
 
 
-                            <CartTotal page={'detailview'}/>
-
                         </div>
-
 
                     </div>
 
                 </div>
 
-            </div>
 
-
-        </section>
-        </BodyClassName>
-    )
+            </section>
+        </BodyClassName>)
 }
 
 
 const mapStateToProps = (state) => {
     return {
-        searchitem : state.selectedData.searchitem,
+        searchitem: state.selectedData.searchitem,
     }
 }
 
