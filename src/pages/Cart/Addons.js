@@ -351,7 +351,7 @@ const Index = ({itemDetail,selectedaddon,updateItem,settings,setValidate}) => {
                                                                    justifyContent: 'center',
                                                                    alignItems: 'center'
                                                                }}> {productqnt} </div>
-                                                               <div className={'p-3 px-4 cursor-pointer'} onClick={() => ((productqnt < maxsell) || maxsell === 0) &&  updateQnt(item.itemid,'add',addonid)}> +</div>
+                                                               <div className={'p-3 px-4 cursor-pointer'} onClick={() => ((productqnt < maxsell) || maxsell === 0 || !Boolean(maxsell)) &&  updateQnt(item.itemid,'add',addonid)}> +</div>
                                                            </div>
                                                        </div>
                                                    </>}
