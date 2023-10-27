@@ -6,12 +6,10 @@ import {v4 as uuid} from "uuid";
 import Select from "../../components/Select";
 
 
-const Index = ({itemDetail,selectedaddon,updateItem,settings,setValidate}) => {
+const Index = ({itemDetail,selectedaddon,updateItem,addonList,settings,setValidate}) => {
 
     let {itemaddon,addon} = itemDetail;
-    let copyaddonList = clone(addon)
-
-
+    let copyaddonList = clone(addonList)
 
     let addtags = itemDetail?.addons || {}
 
@@ -66,7 +64,6 @@ const Index = ({itemDetail,selectedaddon,updateItem,settings,setValidate}) => {
 
             Object.keys(addtags.addongroupiddata).map((key)=>{
                 if (isEmpty(addtags?.addongroupiddata[key]?.selecteditems)) {
-
                     addtags = {
                         ...addtags,
                         addongroupiddata:{
@@ -83,9 +80,10 @@ const Index = ({itemDetail,selectedaddon,updateItem,settings,setValidate}) => {
                             }
                         }
                     }
-
                 }
             })
+
+
             setAddons(addtags)
 
 
@@ -142,7 +140,7 @@ const Index = ({itemDetail,selectedaddon,updateItem,settings,setValidate}) => {
                const {minrequired} = addons.addongroupiddata[key];
                 const adddongroup = addons?.addongroupiddata[key];
                 adddongroup?.autoadditems?.map((addon) => {
-                    if (!Boolean(moreaddon[addon].productqnt)) {
+                    if (!Boolean(moreaddon[addon]?.productqnt)) {
                         updateQnt(addon, 'autoadd',key)
                     }
                 })
@@ -167,7 +165,7 @@ const Index = ({itemDetail,selectedaddon,updateItem,settings,setValidate}) => {
 
     const updateQnt = (key, action,addonid) => {
 
-        let productqnt = moreaddon[key].productqnt || 0;
+        let productqnt = moreaddon[key]?.productqnt || 0;
 
         if (action === 'autoadd') {
             productqnt =   1
@@ -178,6 +176,17 @@ const Index = ({itemDetail,selectedaddon,updateItem,settings,setValidate}) => {
         }
 
         let uuidn = uuid();
+
+        const {addonselectiontype,anynumber,selecteditems} = addons?.addongroupiddata[addonid]
+
+        if(addonselectiontype === 'selectanyone' && anynumber === 1) {
+            Object.keys(moreaddon).map((key)=>{
+                if(addonid === moreaddon[key].itemgroupid) {
+                    moreaddon[key].productqnt = 0
+                }
+            })
+
+        }
 
         moreaddon[key] = {
             ...moreaddon[key],
@@ -271,9 +280,10 @@ const Index = ({itemDetail,selectedaddon,updateItem,settings,setValidate}) => {
         return <></>
     }
 
-    const handleCheckboxChange = (addon,e) => {
-        updateQnt(addon,e.target.checked?'add':'remove')
+    const handleCheckboxChange = (addon,e,addonid) => {
+        updateQnt(addon,e.target.checked?'add':'remove',addonid)
     }
+
 
    return (<div className={'mt-5'}>
 
@@ -296,7 +306,8 @@ const Index = ({itemDetail,selectedaddon,updateItem,settings,setValidate}) => {
                        {
                            selecteditems?.map((item, key) => {
 
-                               let {itemname,  productqnt,maxsell} = moreaddon[item.itemid];
+
+                               let {itemname,  productqnt,maxsell} = moreaddon[item.itemid] || {};
 
                                const baseprice = item.productrate  || 0;
 
@@ -317,22 +328,47 @@ const Index = ({itemDetail,selectedaddon,updateItem,settings,setValidate}) => {
 
                                                <div className={'w-100'}>
                                                    <div className="form-check" style={{paddingLeft:22}}>
-                                                       <input className="form-check-input" type="checkbox" checked={Boolean(productqnt)}  disabled={(anynumber < addeditems && addonselectiontype === 'selectanyone') && !Boolean(productqnt)}    value="1"
-                                                              id={`checkbox${key}${addonid}`} onChange={(e)=> {
 
-                                                           if((anynumber >= addeditems && addonselectiontype === 'selectanyone') || addonselectiontype === 'selectany') {
-                                                               item = {
-                                                                   ...item,
-                                                                   selected:Boolean(productqnt)
-                                                               }
-                                                           }
+                                                       {addonselectiontype === 'selectanyone' && anynumber === 1 ?
+                                                            <>
+                                                               <div className="align-items-center">
+                                                                   <input className="form-check-input"
+                                                                          name={`radio${addonid}`}
+                                                                          checked={Boolean(productqnt)}
+                                                                          onChange={(e)=> {
+                                                                              if((anynumber >= addeditems && addonselectiontype === 'selectanyone') || addonselectiontype === 'selectany') {
+                                                                                  item = {
+                                                                                      ...item,
+                                                                                      selected:Boolean(productqnt)
+                                                                                  }
+                                                                              }
+                                                                              handleCheckboxChange(item.itemid, e,addonid)
+                                                                          }} id={`radio${key}${addonid}`} type="radio"
+                                                                          value={item.value}/>
+                                                               </div>
+                                                               <label className="form-check-label" htmlFor={`radio${key}${addonid}`}>
+                                                                   {`${itemname}`}
+                                                               </label>
+                                                           </>
+                                                       :
+                                                           <>
+                                                               <input className="form-check-input" type="checkbox" checked={Boolean(productqnt)}  disabled={(anynumber < addeditems && addonselectiontype === 'selectanyone') && !Boolean(productqnt)}    value="1"
+                                                                      id={`checkbox${key}${addonid}`} onChange={(e)=> {
+                                                                   if((anynumber >= addeditems && addonselectiontype === 'selectanyone') || addonselectiontype === 'selectany') {
+                                                                       item = {
+                                                                           ...item,
+                                                                           selected:Boolean(productqnt)
+                                                                       }
+                                                                   }
+                                                                   handleCheckboxChange(item.itemid, e,addonid)
+                                                               }}  />
+                                                               <label className="form-check-label" htmlFor={`checkbox${key}${addonid}`}>
+                                                                   {`${itemname}`}
+                                                               </label>
+                                                           </>
+                                                       }
 
-                                                           handleCheckboxChange(item.itemid, e)
 
-                                                       }}  />
-                                                       <label className="form-check-label" htmlFor={`checkbox${key}${addonid}`}>
-                                                           {`${itemname}`}
-                                                       </label>
                                                    </div>
                                                    <div>
 
@@ -385,7 +421,7 @@ const Index = ({itemDetail,selectedaddon,updateItem,settings,setValidate}) => {
 const mapStateToProps = (state) => {
     return {
         settings: state.restaurantDetail.settings,
-
+        addonList:state.addonList
     }
 }
 

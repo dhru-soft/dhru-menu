@@ -5,19 +5,14 @@ import {ACTIONS, device, localredux, METHOD, STATUS, urls} from "./static";
 import {setrestaurantData} from "./redux-store/reducer/restaurant-data";
 import store from "./redux-store/store";
 import {
-    refreshCartData,
-    resetCart,
-    setCartData,
-    setCartItems, setUpdateCart,
-    updateCartField,
-    updateCartItems
+    refreshCartData, resetCart, setCartData, setCartItems, setUpdateCart, updateCartField, updateCartItems
 } from "./redux-store/reducer/cart-data";
 import promise from "promise";
 import {getProductData, itemTotalCalculation} from "./item-calculation";
 import {setModal} from "./redux-store/reducer/component";
 import Login from "../pages/Login";
 import {setClientDetail} from "./redux-store/reducer/client-detail";
-import { confirmAlert } from 'react-confirm-alert'; // Import
+import {confirmAlert} from 'react-confirm-alert'; // Import
 import 'react-confirm-alert/src/react-confirm-alert.css';
 import ConfirmOrder from "../pages/Cart/ConfirmOrder";
 import {setGroupList} from "./redux-store/reducer/group-list";
@@ -41,8 +36,7 @@ export const scrollToTop = () => {
 
 export const transformRequest = (array) => {
     let str = [];
-    for (let p in array)
-        str.push(encodeURIComponent(p) + "=" + encodeURIComponent(array[p]));
+    for (let p in array) str.push(encodeURIComponent(p) + "=" + encodeURIComponent(array[p]));
     return str.join("&");
 }
 
@@ -51,8 +45,7 @@ export const _accordion = () => {
 
     if (oAccordion.length > 0) {
 
-        var oAccItem = oAccordion.find('.accordion-item'),
-            oAccTrigger = oAccordion.find('.accordion-toggler');
+        var oAccItem = oAccordion.find('.accordion-item'), oAccTrigger = oAccordion.find('.accordion-toggler');
 
         oAccordion.each(function (i, accordion) {
             $(accordion).find('.accordion-item:eq(0)').addClass('active');
@@ -61,9 +54,7 @@ export const _accordion = () => {
         oAccTrigger.on('click', function (j) {
             j.preventDefault();
 
-            var $this = $(this),
-                parent = $this.parent(),
-                dropDown = $this.next('article');
+            var $this = $(this), parent = $this.parent(), dropDown = $this.next('article');
 
             parent.toggleClass('active').siblings(oAccItem).removeClass('active').find('article').not(dropDown).slideUp();
 
@@ -90,8 +81,7 @@ export const numberFormat = (value) => {
     const {decimalplace, code} = getDefaultCurrency()
 
     return new Intl.NumberFormat('en-US', {
-        style: 'currency',
-        currency: code,
+        style: 'currency', currency: code,
     }).format(value);
 }
 export const scrollTo = (hash) => {
@@ -269,9 +259,7 @@ export const getCompanyDetails = () => {
 
     let {
         restaurantDetail: {
-            general,
-            location,
-            tabledetail: {tablename, locationname, address1, address2, order}
+            general, location, tabledetail: {tablename, locationname, address1, address2, order}
         }
     } = store.getState();
     const download_url = general?.logo?.download_url || ''
@@ -292,12 +280,9 @@ export const getCompanyDetails = () => {
 export const postQrCode = async (accesscode) => {
     return new promise(async (resolve) => {
         await apiService({
-            method: METHOD.GET,
-            action: ACTIONS.CODE,
-            queryString: {code: accesscode},
+            method: METHOD.GET, action: ACTIONS.CODE, queryString: {code: accesscode},
 
-            workspace: 'dev',
-            other: {url: urls.posUrl},
+            workspace: 'dev', other: {url: urls.posUrl},
         }).then(async (result) => {
             if (result.status === STATUS.SUCCESS && Boolean(result?.data)) {
                 resolve(result.data)
@@ -326,7 +311,7 @@ export const getInit = async (workspace) => {
                 const {settings} = result.data
                 localredux.settings = settings;
                 store.dispatch(setrestaurantData({...result.data}));
-                sessionRetrieve('client').then((client)=>{
+                sessionRetrieve('client').then((client) => {
                     device.token = client?.token;
                     store.dispatch(setClientDetail(client));
                 })
@@ -393,8 +378,7 @@ export const createUniqueStore = () => {
 export const saveLocalSettings = async (key, setting) => {
     await retrieveData(`fusion-dhru-menu-settings`).then(async (data) => {
         data = {
-            ...data,
-            [key]: setting
+            ...data, [key]: setting
         }
         await storeData('settings', data)
     })
@@ -427,14 +411,13 @@ export const getDateWithFormat = (date, dateFormat) => {
     return moment(date).format(`${dateFormat}`)
 }
 
-  export const voucherData = () => {
+export const voucherData = () => {
 
     const {salesvoucher} = store.getState().restaurantDetail?.settings;
     let payment = getDefaultPayment()
     const utcDate = moment().format("YYYY-MM-DD HH:mm:ss")
 
-    let date = getDateWithFormat(utcDate, "YYYY-MM-DD"),
-        vouchercreatetime = getDateWithFormat(utcDate, 'HH:mm:ss')
+    let date = getDateWithFormat(utcDate, "YYYY-MM-DD"), vouchercreatetime = getDateWithFormat(utcDate, 'HH:mm:ss')
 
     let currencyData = getDefaultCurrency();
 
@@ -450,7 +433,7 @@ export const getDateWithFormat = (date, dateFormat) => {
         currency: currencyData.__key,
         currentDecimalPlace: currencyData?.decimalplace || 2,
         vouchercurrencyrate: currencyData.rate,
-        vouchertaxtype: salesvoucher?.defaulttaxtype  ,
+        vouchertaxtype: salesvoucher?.defaulttaxtype,
         roundoffselected: salesvoucher?.voucherroundoff,
         voucherdiscountplace: salesvoucher?.discountplace,
         vouchertransitionaldiscount: Boolean(salesvoucher?.vouchertransitionaldiscount) || salesvoucher?.vouchertransitionaldiscount === "1",
@@ -471,7 +454,7 @@ export const getDateWithFormat = (date, dateFormat) => {
         "debugPrint": true,
         "shifttable": false,
         "taxInvoice": false,
-        "currentpax":  1
+        "currentpax": 1
     }
 
     return data;
@@ -508,7 +491,6 @@ export const voucherTotal = (items, vouchertaxtype) => {
             if (!isEmpty(taxesList) && !isEmpty(taxesList[itemtaxgroupid]) && vouchertaxtype === 'exclusive') {
                 vouchertotaldisplay += taxCalculation(taxesList[itemtaxgroupid], productratedisplay, productqnt)
             }
-
 
 
             if (Boolean(item?.itemaddon?.length)) {
@@ -586,7 +568,7 @@ export const setItemRowData = (data) => {
             productid: itemid || productid,
             itemname,
             itemgroupid,
-            productdisplayname:itemname,
+            productdisplayname: itemname,
             productqnt: productqnt || (Boolean(itemminqnt) ? itemminqnt : 1),
             producttaxgroupid,
             price,
@@ -595,8 +577,7 @@ export const setItemRowData = (data) => {
             productdiscounttype: "%",
             hsn: itemhsncode,
             notes,
-            itemaddon,
-            ...getProductData(data, defaultCurrency, defaultCurrency, undefined, undefined, isInward, pricingTemplate)
+            itemaddon, ...getProductData(data, defaultCurrency, defaultCurrency, undefined, undefined, isInward, pricingTemplate)
         }
 
 
@@ -634,24 +615,27 @@ export const getItemById = async (itemid) => {
 
 
 export const getAddonList = async () => {
-    return new promise(async (resolve) => {
+    
+    if (Boolean(device.locationid)) {
+        return new promise(async (resolve) => {
+            await apiService({
+                method: METHOD.GET,
+                action: ACTIONS.ADDON,
+                queryString: {locationid: device.locationid},
+                hideLoader: true,
+                workspace: device.workspace,
+                other: {url: urls.posUrl},
+            }).then(async (result) => {                 
+                if (result.status === STATUS.SUCCESS && Boolean(result?.data)) {
+                    let {addon} = result?.data;
+                    resolve(addon)
+                } else {
+                    resolve(false)
+                }
+            });
+        })
+    }
 
-        await apiService({
-            method: METHOD.GET,
-            action: ACTIONS.ADDON,
-            queryString: {locationid: device.locationid},
-            hideLoader: true,
-            workspace: device.workspace,
-            other: {url: urls.posUrl},
-        }).then(async (result) => {
-            if (result.status === STATUS.SUCCESS && Boolean(result?.data)) {
-                let {addon} = result?.data;
-                resolve(addon)
-            } else {
-                resolve(false)
-            }
-        });
-    })
 
 }
 
@@ -659,13 +643,9 @@ export const getItemList = async (queryString) => {
     return new promise(async (resolve) => {
 
         await apiService({
-            method: METHOD.GET,
-            action: ACTIONS.ITEMS,
-            queryString: queryString,
-            hideLoader: true,
+            method: METHOD.GET, action: ACTIONS.ITEMS, queryString: queryString, hideLoader: true,
 
-            workspace: device.workspace,
-            other: {url: urls.posUrl},
+            workspace: device.workspace, other: {url: urls.posUrl},
         }).then(async (result) => {
             if (result.status === STATUS.SUCCESS && Boolean(result?.data)) {
                 let {items} = result?.data;
@@ -689,17 +669,12 @@ export const addToCart = async (item) => {
 
     try {
         item = {
-            ...item,
-            ...getdetail,
-            added: true,
-            hasextra: !isEmpty(getdetail?.addons),
-            deviceid: 'browser'
+            ...item, ...getdetail, added: true, hasextra: !isEmpty(getdetail?.addons), deviceid: 'browser'
         }
 
         const itemRowData = setItemRowData(item);
         item = {
-            ...item,
-            ...itemRowData,
+            ...item, ...itemRowData,
         }
 
         await store.dispatch(setCartItems(item))
@@ -727,11 +702,9 @@ export const getFloatValue = (value, fraxtionDigits = 4, notConvert = true, isLo
         if (Boolean(value) && !isNaN(value)) {
             const general = getFromSetting('general');
 
-            let newstring = new Intl.NumberFormat('en-IN',
-                {
-                    style: "decimal",
-                    maximumFractionDigits: fraxtionDigits
-                }).format(value)
+            let newstring = new Intl.NumberFormat('en-IN', {
+                style: "decimal", maximumFractionDigits: fraxtionDigits
+            }).format(value)
             returnValue = parseFloat(newstring.replaceAll(",", ""))
         }
         return returnValue;
@@ -758,62 +731,74 @@ export const placeOrder = () => {
     store.dispatch(setUpdateCart());
 
     store.dispatch(setModal({
-        show: true,
-        title: '',
-        height: '80%',
-        component: () => <><Login/></>
+        show: true, title: '', height: '80%', component: () => <><Login/></>
     }))
 }
 
 export const orderDetail = (data) => {
     store.dispatch(setModal({
-        show: true,
-        title: '',
-        height: '80%',
-        component: () => <><OrderDetail data={data}/></>
+        show: true, title: '', height: '80%', component: () => <><OrderDetail data={data}/></>
     }))
 }
 
 export const setDefaultAddress = (index) => {
     let clientDetail = clone(store.getState().clientDetail);
 
-    Object.keys(clientDetail.addresses).forEach((key)=>{
-        if(clientDetail?.addresses[key]) {
+    Object.keys(clientDetail.addresses).forEach((key) => {
+        if (clientDetail?.addresses[key]) {
             clientDetail.addresses[key].default = 0
         }
     })
 
     clientDetail.addresses[index].default = 1
 
-    store.dispatch(setClientDetail({...clientDetail,...clientDetail.addresses[index]}));
+    store.dispatch(setClientDetail({...clientDetail, ...clientDetail.addresses[index]}));
 }
 
 export const postOrder = (order) => {
 
     let cartData = store.getState().cartData;
-    const {clientid,clientname} = store.getState().clientDetail;
+    const {clientid, clientname} = store.getState().clientDetail;
 
     cartData = {
-        ...cartData,
-        ...order,
-        clientid:clientid,
-        clientname:clientname,
-        client:store.getState().clientDetail,
-        invoiceitems : cartData.invoiceitems.map((item)=>{
-            const {itemid,accountid,addbutton,added,addon,addons,change,clientid,hasextra,itemdescription,itemgroupid,itemimage,itemtaxgroupid,key,newitem,price,productdiscounttype,veg,...remaining} = item;
+        ...cartData, ...order,
+        clientid: clientid,
+        clientname: clientname,
+        client: store.getState().clientDetail,
+        invoiceitems: cartData.invoiceitems.map((item) => {
+            const {
+                itemid,
+                accountid,
+                addbutton,
+                added,
+                addon,
+                addons,
+                change,
+                clientid,
+                hasextra,
+                itemdescription,
+                itemgroupid,
+                itemimage,
+                itemtaxgroupid,
+                key,
+                newitem,
+                price,
+                productdiscounttype,
+                veg,
+                ...remaining
+            } = item;
             return remaining
         })
     }
 
     const data = {
-        orderdata:cartData,
-        "ordertype":order.ordertype,
-        "reference":cartData?.tableid,
-        "locationid":device.locationid,
-        "source":"",
-        currentpax:'all'
+        orderdata: cartData,
+        "ordertype": order.ordertype,
+        "reference": cartData?.tableid,
+        "locationid": device.locationid,
+        "source": "",
+        currentpax: 'all'
     }
-
 
 
     return new promise(async (resolve) => {
@@ -822,14 +807,13 @@ export const postOrder = (order) => {
             action: ACTIONS.ORDER,
             body: data,
             workspace: device.workspace,
-            showalert:true,
+            showalert: true,
             token: device.token,
             other: {url: urls.posUrl},
         }).then(async (result) => {
             if (result.status === STATUS.SUCCESS && Boolean(result?.data)) {
                 resolve(true)
-            }
-            else{
+            } else {
                 resolve(false)
             }
         });
@@ -837,32 +821,23 @@ export const postOrder = (order) => {
 }
 
 
-
 const options = {
     title: 'Confirm',
     message: 'Are you sure to place order?',
-    buttons: [
-        {
-            label: 'Yes',
-            onClick: () => {
-                postOrder()
-            }
-        },
-        {
-            label: 'No',
-            onClick: () => {
-
-            }
+    buttons: [{
+        label: 'Yes', onClick: () => {
+            postOrder()
         }
-    ],
+    }, {
+        label: 'No', onClick: () => {
+
+        }
+    }],
     closeOnEscape: true,
     closeOnClickOutside: true,
     keyCodeForClose: [8, 32],
     overlayClassName: "overlay-custom-confirmation"
 };
-
-
-
 
 
 export const requestOTP = (mobile) => {
@@ -873,20 +848,16 @@ export const requestOTP = (mobile) => {
         method: METHOD.POST,
         action: ACTIONS.CLIENT,
         workspace: device.workspace,
-        showalert:true,
-        body: {phone:mobile},
+        showalert: true,
+        body: {phone: mobile},
         other: {url: urls.posUrl},
     }).then(async (result) => {
         clientDetail = {
-            ...clientDetail,
-            mobile:mobile,
-            verifymobile: 'inprocess',
-            otp:'sent'
+            ...clientDetail, mobile: mobile, verifymobile: 'inprocess', otp: 'sent'
         }
         store.dispatch(setClientDetail(clientDetail))
     });
 }
-
 
 
 export const groupBy = (arr, property) => {
@@ -904,10 +875,9 @@ export const groupBy = (arr, property) => {
 }
 
 
+export const getGroups = async (groupList) => {
 
-export  const getGroups = async (groupList) => {
-
-    if(isEmpty(groupList)){
+    if (isEmpty(groupList)) {
         await apiService({
             method: METHOD.GET,
             action: ACTIONS.ITEMS,
@@ -918,7 +888,9 @@ export  const getGroups = async (groupList) => {
         }).then(async (result) => {
             if (result.status === STATUS.SUCCESS && Boolean(result?.data)) {
                 let groupArray = Object.values(result?.data?.itemgroup);
-                store.dispatch(setGroupList(groupArray.sort(function(a, b){return a.order - b.order})))
+                store.dispatch(setGroupList(groupArray.sort(function (a, b) {
+                    return a.order - b.order
+                })))
             }
         });
     }
@@ -926,17 +898,17 @@ export  const getGroups = async (groupList) => {
 
 
 export default function applyTheme(styles) {
-    Object.keys(styles).map((key)=>{
+    Object.keys(styles).map((key) => {
         document.documentElement.style.setProperty(key, styles[key])
     })
 }
 
-function getContrastYIQ(hexcolor){
-    hexcolor = hexcolor.replace('#','')
-    var r = parseInt(hexcolor.substr(0,2),16);
-    var g = parseInt(hexcolor.substr(2,2),16);
-    var b = parseInt(hexcolor.substr(4,2),16);
-    var yiq = ((r*299)+(g*587)+(b*114))/1000;
+function getContrastYIQ(hexcolor) {
+    hexcolor = hexcolor.replace('#', '')
+    var r = parseInt(hexcolor.substr(0, 2), 16);
+    var g = parseInt(hexcolor.substr(2, 2), 16);
+    var b = parseInt(hexcolor.substr(4, 2), 16);
+    var yiq = ((r * 299) + (g * 587) + (b * 114)) / 1000;
     return (yiq >= 128) ? 'black' : 'white';
 }
 
@@ -951,6 +923,6 @@ export const setTheme = (themecolor) => {
         '--btn-color': `${themecolor}`,
         '--textbox-border': `#dddddd`,
         '--item-hover': `${themecolor}10`,
-        '--inverse-color':getContrastYIQ(themecolor)
+        '--inverse-color': getContrastYIQ(themecolor)
     })
 }

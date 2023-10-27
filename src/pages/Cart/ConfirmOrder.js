@@ -262,7 +262,7 @@ const Index = ({clientDetail,vouchertotaldisplay,paymentgateways,cartData,locati
                                         })
                                     }
 
-                                    {((+maxamountforcod >= +vouchertotaldisplay && values.ordertype === 'homedelivery') || (values.ordertype !== 'homedelivery') || !Boolean(maxamountforcod))  &&  <div className={'mb-3'} >
+                                    {((+maxamountforcod >= +vouchertotaldisplay && values.ordertype !== 'tableorder')   || !Boolean(maxamountforcod))  &&  <div className={'mb-3'} >
                                         <Field name="paymentgateway">
                                             {({input, meta}) => (
                                                 <>
@@ -274,7 +274,7 @@ const Index = ({clientDetail,vouchertotaldisplay,paymentgateways,cartData,locati
                                                                value={'Pay Later'}/>
                                                         <label className="form-check-label"
                                                                htmlFor={`payment-1000`}>
-                                                            {values.ordertype === 'takeaway'?'Pay on counter':'Cash on delivery'}
+                                                            {(values.ordertype === 'takeaway' || values.ordertype === 'tableorder')?'Pay on counter':'Cash on delivery'}
 
                                                         </label>
                                                     </div>

@@ -1,7 +1,7 @@
 import React, {useEffect} from "react";
 import {
     clone,
-    createUniqueStore,
+    createUniqueStore, getAddonList,
     getInit,
     getWorkspaceName,
     isEmpty,
@@ -13,6 +13,8 @@ import {setCartData} from "../../lib/redux-store/reducer/cart-data";
 import {device} from "../../lib/static";
 import {useParams} from "react-router-dom";
 import {setSelected} from "../../lib/redux-store/reducer/selected-data";
+import store from "../../lib/redux-store/store";
+import {setAddonList} from "../../lib/redux-store/reducer/addon-list";
 
 
 const Index = (props: any) => {
@@ -72,6 +74,15 @@ const Index = (props: any) => {
 
 
     }, [params?.groupid])
+
+
+    useEffect(() => {
+        if(isEmpty(store.getState().addonList)) {
+            getAddonList().then((data) => {
+                store.dispatch(setAddonList(data))
+            })
+        }
+    }, []);
 
 
     return (<>
