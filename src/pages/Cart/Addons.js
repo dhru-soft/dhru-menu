@@ -15,7 +15,6 @@ const Index = ({itemDetail,selectedaddon,updateItem,addonList,settings,setValida
 
     const {addongroups} = settings;
 
-
     let {addongroupid, addonid,autoaddon} = addtags || {addongroupid: [], addonid: [],autoaddon:[]};
 
 
@@ -36,11 +35,11 @@ const Index = ({itemDetail,selectedaddon,updateItem,addonList,settings,setValida
     const [addons,setAddons] = useState(addtags);
 
 
-
     useEffect(() => {
 
         try {
             if (isEmpty(addtags?.addongroupiddata)) {
+
                 addtags = {
                     ...addtags,
                     addongroupiddata: {
@@ -55,10 +54,8 @@ const Index = ({itemDetail,selectedaddon,updateItem,addonList,settings,setValida
                                 }
                             }),
                         }
-                    }
+                    },
                 }
-
-               // setAddons(addtags)
             }
 
 
@@ -122,12 +119,7 @@ const Index = ({itemDetail,selectedaddon,updateItem,addonList,settings,setValida
 
     useEffect(() => {
 
-
-
-
-
         if(!isEmpty(autoaddon)) {
-
             autoaddon?.map((addon) => {
                 if (!Boolean(moreaddon[addon].productqnt)) {
                     updateQnt(addon, 'autoadd')
@@ -177,15 +169,16 @@ const Index = ({itemDetail,selectedaddon,updateItem,addonList,settings,setValida
 
         let uuidn = uuid();
 
-        const {addonselectiontype,anynumber,selecteditems} = addons?.addongroupiddata[addonid]
+        if(addonid) {
+            const {addonselectiontype,anynumber,selecteditems} = addons?.addongroupiddata[addonid]
 
-        if(addonselectiontype === 'selectanyone' && anynumber === 1) {
-            Object.keys(moreaddon).map((key)=>{
-                if(addonid === moreaddon[key].itemgroupid) {
-                    moreaddon[key].productqnt = 0
-                }
-            })
-
+            if (addonselectiontype === 'selectanyone' && anynumber === 1) {
+                Object.keys(moreaddon).map((key) => {
+                    if (addonid === moreaddon[key].itemgroupid || addonid === '0000') {
+                        moreaddon[key].productqnt = 0
+                    }
+                })
+            }
         }
 
         moreaddon[key] = {
@@ -285,12 +278,15 @@ const Index = ({itemDetail,selectedaddon,updateItem,addonList,settings,setValida
     }
 
 
+
    return (<div className={'mt-5'}>
 
 
 
            {
                Boolean(addons) && Boolean(addons?.addongroupiddata) &&  Object.keys(addons?.addongroupiddata).map((addonid)=>{
+
+                   console.log('addons.addongroupiddata',addons.addongroupiddata,addonid)
 
 
                    const {addonselectiontype,anynumber,minrequired,selecteditems} = addons.addongroupiddata[addonid];
