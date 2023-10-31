@@ -107,7 +107,22 @@ const Index = ({itemDetail,selectedaddon,updateItem,addonList,settings,setValida
                 }
             })
 
+            if(Boolean(itemaddon)) {
+
+                addonid?.map((addon, key) => {
+                    const find = findObject(itemaddon, 'productid', addon, true);
+
+                    if (Boolean(find)) {
+                        moreaddon[addon] = {
+                            ...moreaddon[addon],
+                            ...find,
+                        }
+                    }
+                })
+            }
+
             setMoreAddon(clone(moreaddon));
+
         }
         catch (e){
             console.log('e',e)
@@ -138,9 +153,7 @@ const Index = ({itemDetail,selectedaddon,updateItem,addonList,settings,setValida
                 })
                minr +=minrequired
             })
-            if(!Boolean(minr)){
-                setValidate(true)
-            }
+            setValidate(!Boolean(minr))
         }
         else{
             setValidate(true)
@@ -248,25 +261,6 @@ const Index = ({itemDetail,selectedaddon,updateItem,addonList,settings,setValida
     }
 
 
-    useEffect(() => {
-
-        if(Boolean(itemaddon)) {
-
-            addonid?.map((addon, key) => {
-                const find = findObject(itemaddon, 'productid', addon, true);
-
-                if (Boolean(find)) {
-                    moreaddon[addon] = {
-                        ...moreaddon[addon],
-                        ...find,
-                    }
-                }
-            })
-        }
-
-        setMoreAddon(clone(moreaddon));
-
-    }, [])
 
 
     if(!Boolean(moreaddon)){
@@ -285,9 +279,6 @@ const Index = ({itemDetail,selectedaddon,updateItem,addonList,settings,setValida
 
            {
                Boolean(addons) && Boolean(addons?.addongroupiddata) &&  Object.keys(addons?.addongroupiddata).map((addonid)=>{
-
-                   console.log('addons.addongroupiddata',addons.addongroupiddata,addonid)
-
 
                    const {addonselectiontype,anynumber,minrequired,selecteditems} = addons.addongroupiddata[addonid];
 
