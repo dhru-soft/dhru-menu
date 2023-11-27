@@ -41,6 +41,8 @@ const Index = ({clientDetail, cart}) => {
         <>
             <div className={'container'}>
 
+                <div className={'p-3 text-danger'}>Select address </div>
+
                 <div className={'d-flex flex-wrap 123'}>
                     {
                         Object.keys(addresses)?.map((key, index) => {
@@ -59,6 +61,8 @@ const Index = ({clientDetail, cart}) => {
                                 <div
                                     className={`addresses position-relative border p-3 rounded-3 me-2 cursor-pointer mb-3 ${addresses[key].default ? 'selected' : ''}`}
                                     key={index}>
+
+
 
                                     <div onClick={() => {
                                         setDefaultAddress(key)
