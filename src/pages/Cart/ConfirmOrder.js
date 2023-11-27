@@ -86,10 +86,13 @@ const Index = ({clientDetail,vouchertotaldisplay,paymentgateways,cartData,locati
     }
 
     const getGatewayDetailByKey = (key, value) => {
-        const gatewayname = Object.keys(paymentgateways[key]).filter((key) => key !== "settings");
-        let displayname = paymentgateways[key] && paymentgateways[key][gatewayname] && paymentgateways[key][gatewayname].find((a) => a.input === value)
-        let gatewaytype = paymentgateways[key] && paymentgateways[key][gatewayname] && paymentgateways[key][gatewayname].find((a) => a.input === 'type');
-        return {...displayname,online:Boolean(gatewaytype?.value === 'online'), type: gatewayname[0]}
+        if(Boolean(paymentgateways)) {
+            const gatewayname = Object.keys(paymentgateways[key]).filter((key) => key !== "settings");
+            let displayname = paymentgateways[key] && paymentgateways[key][gatewayname] && paymentgateways[key][gatewayname].find((a) => a.input === value)
+            let gatewaytype = paymentgateways[key] && paymentgateways[key][gatewayname] && paymentgateways[key][gatewayname].find((a) => a.input === 'type');
+            return {...displayname, online: Boolean(gatewaytype?.value === 'online'), type: gatewayname[0]}
+        }
+        return {}
     }
 
 
@@ -110,7 +113,10 @@ const Index = ({clientDetail,vouchertotaldisplay,paymentgateways,cartData,locati
 
 
     const [paymentMethods, setPaymentMethods] = useState(gateways);
-    const [initData,setInitData] = useState({paymentgateway:paymentMethods[0]['value'],tablename:'Online Order',ordertype: Boolean(device.tableid !== '0')?'tableorder': takeorder.delivery?'homedelivery':''})
+
+    let pm = (paymentMethods[0] && paymentMethods[0]['value'] && paymentMethods[0]['value']) || [];
+
+    const [initData,setInitData] = useState({paymentgateway:pm,tablename:'Online Order',ordertype: Boolean(device.tableid !== '0')?'tableorder': takeorder.delivery?'homedelivery':''})
 
 
     useEffect(()=>{
@@ -283,19 +289,26 @@ const Index = ({clientDetail,vouchertotaldisplay,paymentgateways,cartData,locati
                                         </Field>
                                     </div>}
 
+                                    {((values.ordertype === 'homedelivery' && Boolean(defaultaddress)) || (values.ordertype !== 'homedelivery'))  &&  values.ordertype && <div className={'my-3'}>
+                                        <button
+                                            className="w-100 custom-btn custom-btn--medium custom-btn--style-4"
+                                            onClick={() => {
+                                                handleSubmit(values)
+                                            }} type="button" role="button">
+                                            Confirm
+                                        </button>
+                                    </div>}
+
                                 </>}
 
 
+                                {
+                                    isEmpty(paymentMethods) && <>
+                                        <div className={'p-4'}>No any online payment gateway found</div>
+                                    </>
+                                }
 
-                                {((values.ordertype === 'homedelivery' && Boolean(defaultaddress)) || (values.ordertype !== 'homedelivery'))  &&  values.ordertype && <div className={'my-3'}>
-                                    <button
-                                        className="w-100 custom-btn custom-btn--medium custom-btn--style-4"
-                                        onClick={() => {
-                                            handleSubmit(values)
-                                        }} type="button" role="button">
-                                        Confirm
-                                    </button>
-                                </div>}
+
 
 
                             </div>
