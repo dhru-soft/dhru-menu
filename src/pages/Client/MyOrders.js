@@ -14,6 +14,7 @@ const Index = ({clientDetail}) => {
     const [orders,setOrders] = useState()
 
     const getorders = async () => {
+        console.log('getorders')
         if(clientDetail?.clientid) {
             await apiService({
                 method: METHOD.GET,

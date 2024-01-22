@@ -24,55 +24,46 @@ export const AddonAction = ({item, updateQnt, action}) => {
     })
 
 
-    return (
-        <div>
+    return (<div>
 
-            {
-                Boolean(filtered?.length > 1) && filtered?.map((item) => {
+            {Boolean(filtered?.length > 1) && filtered?.map((item) => {
 
-                    const {itemname, productratedisplay, productqnt, itemaddon, notes} = item || {};
+                const {itemname, productratedisplay, productqnt, itemaddon, notes} = item || {};
 
-                    return <div className="col-12    item-hover  p-2 py-4" key={uuid()}>
-                        <div className="d-flex p-2 h-100">
-                            <div className={'w-100'}>
+                return <div className="col-12    item-hover  p-2 py-4" key={uuid()}>
+                    <div className="d-flex p-2 h-100">
+                        <div className={'w-100'}>
 
-                                <div className={'p-2 mt-auto '}>
-                                    <div>
-                                        <h4 style={{fontSize: '1.8rem'}}>{itemname} </h4>
-                                        <small
-                                            className={'mb-2'}> {productqnt} x {numberFormat(productratedisplay)} = {numberFormat(productqnt * productratedisplay)} </small>
-                                    </div>
-
-                                    {Boolean(itemaddon?.length > 0) && <div>
-                                        {
-                                            itemaddon?.map((addon, key) => {
-                                                const {itemname, productratedisplay} = addon;
-                                                return (
-                                                    <div key={key}><small
-                                                        className={'mb-2'}> {productqnt} x {itemname} = {numberFormat(productqnt * productratedisplay)} </small>
-                                                    </div>
-                                                )
-                                            })
-                                        }
-                                    </div>}
-
-                                    <div>
-                                        <i className={'mb-2 text-danger'}> {notes} </i>
-                                    </div>
-
+                            <div className={'p-2 mt-auto '}>
+                                <div>
+                                    <h4 style={{fontSize: '1.8rem'}}>{itemname} </h4>
+                                    <small
+                                        className={'mb-2'}> {productqnt} x {numberFormat(productratedisplay)} = {numberFormat(productqnt * productratedisplay)} </small>
                                 </div>
-                            </div>
-                            <div className={'border-light'} style={{width: 150}}>
-                                <AddButton item={item} minqnt={action === 'add' && 1} fromCart={true}/>
+
+                                {Boolean(itemaddon?.length > 0) && <div>
+                                    {itemaddon?.map((addon, key) => {
+                                        const {itemname, productratedisplay} = addon;
+                                        return (<div key={key}><small
+                                                className={'mb-2'}> {productqnt} x {itemname} = {numberFormat(productqnt * productratedisplay)} </small>
+                                            </div>)
+                                    })}
+                                </div>}
+
+                                <div>
+                                    <i className={'mb-2 text-danger'}> {notes} </i>
+                                </div>
+
                             </div>
                         </div>
+                        <div className={'border-light'} style={{width: 150}}>
+                            <AddButton item={item} minqnt={action === 'add' && 1} fromCart={true}/>
+                        </div>
                     </div>
-                })
-            }
+                </div>
+            })}
 
-            {
-                (filtered?.length === 1) && <h5 className={'mb-5'}>{item.itemname}</h5>
-            }
+            {(filtered?.length === 1) && <h5 className={'mb-5'}>{item.itemname}</h5>}
 
             <div className={'d-flex justify-content-between align-items-center mt-3'}>
                 {action === 'add' && <div className={'w-100 me-3'}>
@@ -106,8 +97,7 @@ export const AddonAction = ({item, updateQnt, action}) => {
                     </button>
                 </div>}
             </div>
-        </div>
-    )
+        </div>)
 }
 
 export const ItemBox = memo(({item}) => {
@@ -127,15 +117,15 @@ export const ItemBox = memo(({item}) => {
         egg: {color: 'gray', icon: 'egg'}
     }
 
-    return (
-        <div className="col-12 col-sm-6 col-md-4  col-lg-3    item-hover  p-2 py-4">
+    return (<div className="col-12 col-sm-6 col-md-4  col-lg-3    item-hover  p-2 py-4">
             <div className="d-flex p-2 h-100">
                 <div className={'w-100'}>
 
                     <div className={'p-2 mt-auto '}>
                         <div className={'flex-nowrap'}>
-                            {veg && <div><i style={{color: diat[veg]?.color}} className={`fa fa-${diat[veg]?.icon}`}></i>
-                            </div>}
+                            {veg &&
+                                <div><i style={{color: diat[veg]?.color}} className={`fa fa-${diat[veg]?.icon}`}></i>
+                                </div>}
                             <h4 style={{fontSize: '1.8rem'}}>{itemname} </h4>
                             <h6 className={'mb-2'}> {numberFormat(price)} </h6>
                         </div>
@@ -163,8 +153,7 @@ export const ItemBox = memo(({item}) => {
                     {addbutton && <AddButton item={updateItem} merger={true} updateItem={setUpdateItem}/>}
                 </div>
             </div>
-        </div>
-    )
+        </div>)
 }, (r1, r2) => {
     return ((r1.item.productqnt === r2.item.productqnt) && (r1.item.mergeqnt === r2.item.mergeqnt) && (r1.item.itemid === r2.item.itemid));
 })
@@ -202,19 +191,16 @@ const Items = (props) => {
 
         if (Boolean(searchitem)) {
             queryString = {
-                ...queryString,
-                search: searchitem
+                ...queryString, search: searchitem
             }
         } else if (Boolean(itemgroupid)) {
             queryString = {
-                ...queryString,
-                itemgroupid: itemgroupid
+                ...queryString, itemgroupid: itemgroupid
             }
         }
         if (Boolean(selectedDiat)) {
             queryString = {
-                ...queryString,
-                tags: selectedDiat
+                ...queryString, tags: selectedDiat
             }
         }
 
@@ -242,8 +228,7 @@ const Items = (props) => {
                 invoiceitems?.map((item) => {
                     if (Boolean(items[item?.itemid])) {
                         items = {
-                            ...items,
-                            [item?.itemid]: {...item, mergeqnt: qntbyitem[item?.itemid] || 0},
+                            ...items, [item?.itemid]: {...item, mergeqnt: qntbyitem[item?.itemid] || 0},
                         }
                     }
                 })
@@ -266,11 +251,37 @@ const Items = (props) => {
 
     }
 
+    // OLD CODE START
+    // useEffect(() => {
+    //     getItems().then()
+    // }, [groupids, selectedtags, invoiceitems, searchitem])
+    // OLD CODE END
+
+    // NEW CODE START
     useEffect(() => {
-        getItems().then()
-    }, [groupids, selectedtags, invoiceitems, searchitem])
+        if (!isEmpty(groupids)) {
+            getItems().then()
+        }
+    }, [groupids])
 
+    useEffect(() => {
+        if (!isEmpty(selectedtags)) {
+            getItems().then()
+        }
+    }, [selectedtags])
 
+    useEffect(() => {
+        if (!isEmpty(invoiceitems)) {
+            getItems().then()
+        }
+    }, [invoiceitems])
+
+    useEffect(() => {
+        if (!isEmpty(searchitem)) {
+            getItems().then()
+        }
+    }, [searchitem])
+    // NEW CODE END
 
     if (!loader) {
         return <Loader3/>
@@ -281,28 +292,23 @@ const Items = (props) => {
     }
 
 
-    return (
-        <>
+    return (<>
             <section>
 
                 <div className="container bg-white rounded-4">
                     <div className="row">
-                        {
-                            Object.keys(items).map((key) => {
-                                return <ItemBox key={key} item={{...items[key], itemid: key, addbutton: hasAdd}}/>
-                            })
-                        }
+                        {Object.keys(items).map((key) => {
+                            return <ItemBox key={key} item={{...items[key], itemid: key, addbutton: hasAdd}}/>
+                        })}
                     </div>
                 </div>
             </section>
-        </>
-    );
+        </>);
 }
 
 const mapStateToProps = (state) => {
     return {
-        invoiceitems: state.cartData.invoiceitems,
-        ...state.selectedData
+        invoiceitems: state.cartData.invoiceitems, ...state.selectedData
     }
 }
 

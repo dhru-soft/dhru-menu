@@ -40,6 +40,7 @@ const Index = (props) => {
     const dispatch = useDispatch()
 
     const requestOTP = () => {
+        console.log('requestOTP')
         apiService({
             method: METHOD.POST,
             action: ACTIONS.CLIENT,
@@ -57,6 +58,7 @@ const Index = (props) => {
     }
 
     const verifyOTP = () => {
+        console.log('verifyOTP')
         apiService({
             method: METHOD.POST,
             action: ACTIONS.CLIENT,
@@ -91,7 +93,7 @@ const Index = (props) => {
         retrieveData('client').then((clientdetail) => {
 
             const client = {...clientdetail, ...values}
-
+            console.log('updateDetail')
             apiService({
                 method: METHOD.PUT,
                 action: ACTIONS.CLIENT,

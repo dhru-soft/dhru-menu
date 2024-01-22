@@ -35,6 +35,7 @@ export enum ACTIONS {
     ITEMS = "item",
     ADDON = "addon",
     CATEGORY = "category",
+    COUPON_CLIENT = 'couponclient'
 }
 
 const regExpJson = {
@@ -1303,3 +1304,20 @@ export const countryList = [
         "code": "ZW"
     }
 ]
+
+export enum COUPON_TYPE {
+    COMBO    = 'combo',
+    DISCOUNT = 'discount',
+    GROUP    = 'group'
+}
+
+
+export enum ITEM_TYPE {
+    ITEM     = 'items',
+    CATEGORY = 'category'
+}
+
+export enum GET_ITEM_TYPE {
+    LOWER  = 'lower',
+    HIGHER = 'higher',
+}

@@ -74,7 +74,6 @@ const Index = (props) => {
                             )
                         })
                     }
-
                     <TableRow item={{label: 'Roundoff', value: voucherroundoffdisplay}}/>
 
                 </div>

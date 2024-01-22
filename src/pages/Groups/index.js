@@ -1,4 +1,4 @@
-import React, {useEffect} from "react";
+import React from "react";
 import {connect} from "react-redux";
 import Groups from "./Groups";
 
@@ -15,48 +15,26 @@ const Index = (props) => {
 
     let {searchitem} = props;
 
-
-
-
     return (<BodyClassName className="groups">
-            <section>
-
-                <Theme/>
-
-                <Init/>
-
-                <div className="">
-
-                    <CompanyDetail/>
-
-                    <div className={'col-12'}>
-
-                        <div>
-                            <div className="container">
-
-                                <div>
-
-                                    <CartHeader/>
-
-                                    {(!Boolean(searchitem)) ? <Groups/> : <ItemList/>}
-
-                                </div>
-
-
-                                <CartTotal page={'detailview'}/>
-
+        <section>
+            <Theme/>
+            <Init/>
+            <div className="">
+                <CompanyDetail/>
+                <div className={'col-12'}>
+                    <div>
+                        <div className="container">
+                            <div>
+                                <CartHeader/>
+                                {(!Boolean(searchitem)) ? <Groups/> : <ItemList/>}
                             </div>
-
-
+                            <CartTotal page={'detailview'}/>
                         </div>
-
                     </div>
-
                 </div>
-
-
-            </section>
-        </BodyClassName>)
+            </div>
+        </section>
+    </BodyClassName>)
 }
 
 

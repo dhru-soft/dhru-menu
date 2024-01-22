@@ -14,7 +14,8 @@ const Index = ({clientDetail,company}) => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const {clientname, displayname, token} = clientDetail;
-    let {tablename, locationname, address1, address2, download_url} = getCompanyDetails();
+    let {tablename, locationname, address1, address2, download_url, order} = getCompanyDetails();
+
 
 
     const showAddresses = () => {
@@ -25,6 +26,7 @@ const Index = ({clientDetail,company}) => {
             component: () => <><Addresses/></>
         }))
     }
+
 
 
 

@@ -18,8 +18,10 @@ const Index = (props) => {
 
     const dispatch = useDispatch()
 
+
+
     const setGroups = async () => {
-        await getGroups(groupList).then()
+
 
         if(groupids?.length > 0) {
             const lastgroup = groupids[groupids.length - 1];
@@ -29,11 +31,13 @@ const Index = (props) => {
             setSubGroup(groups)
         }
         else{
+            await getGroups(groupList).then()
             setSubGroup([])
         }
     }
 
     useEffect(() => {
+        console.log("useEffect")
         setGroups().then()
     }, [groupids])
 
@@ -78,10 +82,11 @@ const Index = (props) => {
 
                                     {
                                          groupids?.map((gid,index)=>{
+                                             const foundGroup = Object.values(groupList).find((groupitem)=> Boolean(groupitem?.itemgroupid === gid))
                                             return (
                                                 <li key={index} className="breadcrumb-item py-4" onClick={()=>{
                                                     (groupids?.length - 1 !== index) && setCurrentGroup(gid)
-                                                }}><span>{groupList[gid]?.itemgroupname} </span></li>
+                                                }}><span>{foundGroup?.itemgroupname} </span></li>
                                             )
                                         })
                                     }

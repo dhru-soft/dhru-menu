@@ -1,7 +1,8 @@
 import React, {useEffect} from "react";
 import {
     clone,
-    createUniqueStore, getAddonList,
+    createUniqueStore,
+    getAddonList,
     getInit,
     getWorkspaceName,
     isEmpty,
@@ -77,7 +78,7 @@ const Index = (props: any) => {
 
 
     useEffect(() => {
-        if(isEmpty(store.getState().addonList)) {
+        if (isEmpty(store.getState().addonList)) {
             getAddonList().then((data) => {
                 store.dispatch(setAddonList(data))
             })
@@ -86,8 +87,8 @@ const Index = (props: any) => {
 
 
     return (<>
-            <div></div>
-        </>)
+        <div></div>
+    </>)
 }
 
 

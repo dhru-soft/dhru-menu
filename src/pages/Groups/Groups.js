@@ -38,7 +38,7 @@ const Index = (props) => {
     const {workspace, groupList} = props;
 
     useEffect(() => {
-        getGroups(groupList).then()
+        // getGroups(groupList).then()
     }, [])
 
     if (isEmpty(groupList)) {
@@ -47,7 +47,6 @@ const Index = (props) => {
 
     return (
         <section>
-
             <div className="row">
                 {
                     Object.values(groupList).filter((group) => {
@@ -65,7 +64,6 @@ const Index = (props) => {
                     })
                 }
             </div>
-
         </section>
     )
 

@@ -5,20 +5,23 @@ import {ACTIONS, device, localredux, METHOD, STATUS, urls} from "./static";
 import {setrestaurantData} from "./redux-store/reducer/restaurant-data";
 import store from "./redux-store/store";
 import {
-    refreshCartData, resetCart, setCartData, setCartItems, setUpdateCart, updateCartField, updateCartItems
+    setCartData,
+    setCartItems,
+    setUpdateCart,
+    updateCartField,
+    updateCartItems
 } from "./redux-store/reducer/cart-data";
 import promise from "promise";
 import {getProductData, itemTotalCalculation} from "./item-calculation";
 import {setModal} from "./redux-store/reducer/component";
 import Login from "../pages/Login";
 import {setClientDetail} from "./redux-store/reducer/client-detail";
-import {confirmAlert} from 'react-confirm-alert'; // Import
 import 'react-confirm-alert/src/react-confirm-alert.css';
-import ConfirmOrder from "../pages/Cart/ConfirmOrder";
 import {setGroupList} from "./redux-store/reducer/group-list";
 import OrderDetail from "../pages/Client/OrderDetail";
-import {setAddonList} from "./redux-store/reducer/addon-list";
-import moment from "moment"; // Import css
+import moment from "moment";
+let base64 = require('base-64');
+let utf8   = require('utf8'); // Import css
 
 var ls = require('local-storage');
 
@@ -274,14 +277,14 @@ export const getCompanyDetails = () => {
     device.order = order;
 
     setTheme(device?.order?.themecolor || '#5C933F')
-    return {download_url, locationname, address1, address2, tablename}
+    return {download_url, locationname, address1, address2, tablename, order}
 }
 
 export const postQrCode = async (accesscode) => {
+    console.log("postQrCode")
     return new promise(async (resolve) => {
         await apiService({
             method: METHOD.GET, action: ACTIONS.CODE, queryString: {code: accesscode},
-
             workspace: 'dev', other: {url: urls.posUrl},
         }).then(async (result) => {
             if (result.status === STATUS.SUCCESS && Boolean(result?.data)) {
@@ -294,7 +297,7 @@ export const postQrCode = async (accesscode) => {
 }
 
 export const getInit = async (workspace) => {
-
+    console.log("getInit")
     return new promise(async (resolve) => {
         const urlSearchParams = new URLSearchParams(window.location.search);
         const params = Object.fromEntries(urlSearchParams.entries());
@@ -595,6 +598,7 @@ export const setItemRowData = (data) => {
 }
 
 export const getItemById = async (itemid) => {
+    console.log("getItemById")
     return new promise(async (resolve) => {
         await apiService({
             method: METHOD.GET,
@@ -615,7 +619,7 @@ export const getItemById = async (itemid) => {
 
 
 export const getAddonList = async () => {
-    
+    console.log("getAddonList")
     if (Boolean(device.locationid)) {
         return new promise(async (resolve) => {
             await apiService({
@@ -625,7 +629,7 @@ export const getAddonList = async () => {
                 hideLoader: true,
                 workspace: device.workspace,
                 other: {url: urls.posUrl},
-            }).then(async (result) => {                 
+            }).then(async (result) => {
                 if (result.status === STATUS.SUCCESS && Boolean(result?.data)) {
                     let {addon} = result?.data;
                     resolve(addon)
@@ -640,6 +644,7 @@ export const getAddonList = async () => {
 }
 
 export const getItemList = async (queryString) => {
+    console.log("getItemList")
     return new promise(async (resolve) => {
 
         await apiService({
@@ -669,7 +674,7 @@ export const addToCart = async (item) => {
 
     try {
         item = {
-            ...item, ...getdetail, added: true, hasextra: !isEmpty(getdetail?.addons), deviceid: 'browser'
+            ...item, ...getdetail, added: true, hasextra: !isEmpty(getdetail?.addons), deviceid: 'browser', itemdetail: getdetail
         }
 
         const itemRowData = setItemRowData(item);
@@ -756,7 +761,7 @@ export const setDefaultAddress = (index) => {
 }
 
 export const postOrder = (order) => {
-
+    console.log("postOrder")
     let cartData = store.getState().cartData;
     const {clientid, clientname} = store.getState().clientDetail;
 
@@ -785,6 +790,7 @@ export const postOrder = (order) => {
                 price,
                 productdiscounttype,
                 veg,
+                itemdetail,
                 ...remaining
             } = item;
             return remaining
@@ -841,7 +847,7 @@ const options = {
 
 
 export const requestOTP = (mobile) => {
-
+    console.log("requestOTP")
     let clientDetail = store.getState().clientDetail
 
     apiService({
@@ -876,7 +882,7 @@ export const groupBy = (arr, property) => {
 
 
 export const getGroups = async (groupList) => {
-
+    console.log("getGroups")
     if (isEmpty(groupList)) {
         await apiService({
             method: METHOD.GET,
@@ -926,3 +932,35 @@ export const setTheme = (themecolor) => {
         '--inverse-color': getContrastYIQ(themecolor)
     })
 }
+
+
+export const isStoreOpen = (data) => {
+
+    let isOpen = false
+
+    const date = moment().format("DD/MM/YYYY");
+
+    let stringStartTime = `${date} ${data?.starttime}`, stringEndTime = `${date} ${data?.endtime}`;
+
+    const startTime = moment(stringStartTime), endTime = moment(stringEndTime),
+        currentTime = moment(moment().format("DD/MM/YYYY hh:mm A"));
+
+    let durationStartTime = moment.duration(currentTime.diff(startTime)).asMilliseconds(),
+        durationEndTime = moment.duration(endTime.diff(currentTime)).asMilliseconds();
+
+    if (durationStartTime >= 0 && durationEndTime >= 0) {
+        isOpen = true;
+    }
+
+    return isOpen;
+}
+
+
+export const base64Encode = (content: any) => {
+    if (!content) {
+        content = ' ';
+    }
+    let bytes = utf8.encode(content);
+    console.log(bytes)
+    return base64.encode(bytes);
+};

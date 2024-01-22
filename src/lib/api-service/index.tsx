@@ -1,7 +1,7 @@
 import {getWorkspaceName, wait} from "../functions";
 import {ACTIONS, device, METHOD, STATUS} from "../static";
 import store from "../redux-store/store";
-import {hideLoader, setAlert, showLoader} from "../redux-store/reducer/component";
+import {hideLoader, showLoader} from "../redux-store/reducer/component";
 import {toast} from "react-toastify";
 
 
@@ -14,7 +14,9 @@ interface configData {
     showalert?: boolean,
     token?: string,
     workspace?: string,
-    other?: any
+    other?: any,
+    headers?: any,
+    externalApi?: string
 }
 
 let controller: any = undefined;
@@ -23,10 +25,10 @@ const apiService = async (config: configData) => {
 
     controller = new AbortController();
     const signal = controller.signal;
-    let apiresponse:any = false;
+    let apiresponse: any = false;
 
     let headers: any = {
-        'Accept': 'application/json',
+        'Accept'      : 'application/json',
         'Content-Type': 'application/json',
     };
 
@@ -39,14 +41,17 @@ const apiService = async (config: configData) => {
         headers["Authorization"] = 'Bearer ' + (config.token || device.token);
     }
 
+    if (config?.headers) {
+        headers = config.headers
+    }
+
     const requestOptions: any = {
-        method: config.method,
+        method  : config.method,
         redirect: 'follow',
-        headers: new Headers(headers),
-        timeout: 10000,
+        headers : new Headers(headers),
+        timeout : 10000,
         signal
     };
-
 
 
     let apiPath: any = "http://localhost:8081/";
@@ -59,6 +64,10 @@ const apiService = async (config: configData) => {
             apiPath = `${config.other.url}`;
         }
 
+    }
+
+    if (config?.externalApi) {
+        apiPath = config.externalApi
     }
 
     if (config.action) {
@@ -79,12 +88,9 @@ const apiService = async (config: configData) => {
     console.log('apiPath', apiPath)
 
 
-
-
-
     wait(requestOptions.timeout, signal)
         .then(() => {
-            if(!apiresponse){
+            if (!apiresponse) {
                 controller.abort();
             }
         })
@@ -100,7 +106,6 @@ const apiService = async (config: configData) => {
             store.dispatch(hideLoader());
 
 
-
             if (response?.message && (response?.status === STATUS.ERROR)) {
                 /*if ((config?.action?.includes('server/')) && (response?.message?.includes('ENOTFOUND'))) {
                     store.dispatch(setAlert({visible: true, message: 'Internet connection not available'}))
@@ -108,16 +113,13 @@ const apiService = async (config: configData) => {
                     store.dispatch(setAlert({visible: true, message: response?.message}))
                 }*/
                 toast.error(response.message)
-            }
-            else if (response?.code === 401) {
+            } else if (response?.code === 401) {
                 toast.error(response.message)
                 //store.dispatch(setAlert({visible: true, message: 'Something went wrong, Please try again!'}))
-            }
-            else if ((response?.status === STATUS.SUCCESS) && config?.showalert) {
+            } else if ((response?.status === STATUS.SUCCESS) && config?.showalert) {
                 //store.dispatch(setAlert({visible: true, message: response.message}))
                 toast.success(response.message)
             }
-
 
 
             return response;
@@ -127,7 +129,7 @@ const apiService = async (config: configData) => {
 
             store.dispatch(hideLoader());
             toast.error('Something went wrong')
-           // store.dispatch(setAlert({visible: true, message: 'Something went wrong'}))
+            // store.dispatch(setAlert({visible: true, message: 'Something went wrong'}))
             //appLog("API_CATCH_ERROR", error,navigator.onLine);
 
             /*if(!navigator.onLine){
@@ -135,7 +137,7 @@ const apiService = async (config: configData) => {
             }*/
 
             return {
-                status: STATUS.ERROR,
+                status : STATUS.ERROR,
                 message: error.message
             }
         });

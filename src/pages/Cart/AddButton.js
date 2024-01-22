@@ -68,10 +68,16 @@ const Index = ({item, updateItem, custom, fromCart,minqnt,merger}) => {
                 component: () => <><ItemDetails itemDetail={item} updateListItem={updateItem}/></>
             }))
         } else {
+
             item = {
                 ...item, productqnt: productqnt || 1, key
             }
+
+
+
             addToCart(item).then(r => {
+
+
                 const cartData = store.getState().cartData
                 let data = itemTotalCalculation(clone(cartData), undefined, undefined, undefined, undefined, 2, 2, false, false);
                 dispatch(setCartData(clone(data)));
@@ -148,7 +154,6 @@ const Index = ({item, updateItem, custom, fromCart,minqnt,merger}) => {
 
 
     if (productqnt) {
-
         return (
             <div className={'border rounded-3 btn-add p-0 mt-3 '}>
                 <div className={'d-flex justify-content-between align-items-center'}>
