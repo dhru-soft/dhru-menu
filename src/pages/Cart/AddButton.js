@@ -164,7 +164,7 @@ const Index = ({item, updateItem, custom, fromCart,minqnt,merger}) => {
                         display: 'flex',
                         justifyContent: 'center',
                         alignItems: 'center'
-                    }}> {displayqnt} </div>
+                    }}> {productqnt} </div>
                     <div className={'p-3 px-4 cursor-pointer'} onClick={() => updateQnt('add')}> +</div>
                 </div>
             </div>
