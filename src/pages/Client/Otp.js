@@ -46,7 +46,6 @@ const Index = ({clientDetail,visitorcountry}) => {
 
 
     const verifyOTP = () => {
-        console.log('verifyOTP')
         apiService({
             method: METHOD.POST,
             action: ACTIONS.CLIENT,

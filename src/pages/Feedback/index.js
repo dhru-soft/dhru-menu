@@ -61,7 +61,6 @@ const Index = (props) => {
 
     const getFeedbackQns = async () => {
         await getInit(getWorkspaceName()).then(()=>{ })
-        console.log('getFeedbackQns')
         await apiService({
             method: METHOD.GET,
             action: ACTIONS.FEEDBACK,
@@ -114,7 +113,6 @@ const Index = (props) => {
     let {question,ratingStyle,star,status} = feedbackQuestions[selectedQns];
 
     const onSubmit = (values) => {
-        console.log('onSubmit')
         apiService({
             method: METHOD.POST,
             action: ACTIONS.FEEDBACK,

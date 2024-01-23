@@ -40,7 +40,6 @@ const Index = ({clientDetail,address,visitorcountry,addressid,setAddEdit,addaddr
     const [state_options, setstate_options] = useState()
 
     const getStateList = (country) => {
-        console.log('getStateList')
         apiService({
             method: METHOD.GET,
             action: 'getstate',
@@ -88,7 +87,6 @@ const Index = ({clientDetail,address,visitorcountry,addressid,setAddEdit,addaddr
 
     const updateDetail = (values) => {
 
-        console.log('updateDetail')
         values = {
             ...values,
             clientid:clientDetail?.clientid,
@@ -133,7 +131,6 @@ const Index = ({clientDetail,address,visitorcountry,addressid,setAddEdit,addaddr
                         clientname:values.displayname,
                         //addresses:{0:values}
                     }
-                    console.log('updateDetail 2')
                     apiService({
                         method:  METHOD.PUT,
                         action: ACTIONS.CLIENT,

@@ -85,8 +85,6 @@ const apiService = async (config: configData) => {
         store.dispatch(showLoader())
     }
 
-    console.log('apiPath', apiPath)
-
 
     wait(requestOptions.timeout, signal)
         .then(() => {

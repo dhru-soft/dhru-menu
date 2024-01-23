@@ -281,7 +281,6 @@ export const getCompanyDetails = () => {
 }
 
 export const postQrCode = async (accesscode) => {
-    console.log("postQrCode")
     return new promise(async (resolve) => {
         await apiService({
             method: METHOD.GET, action: ACTIONS.CODE, queryString: {code: accesscode},
@@ -297,7 +296,6 @@ export const postQrCode = async (accesscode) => {
 }
 
 export const getInit = async (workspace) => {
-    console.log("getInit")
     return new promise(async (resolve) => {
         const urlSearchParams = new URLSearchParams(window.location.search);
         const params = Object.fromEntries(urlSearchParams.entries());
@@ -598,7 +596,6 @@ export const setItemRowData = (data) => {
 }
 
 export const getItemById = async (itemid) => {
-    console.log("getItemById")
     return new promise(async (resolve) => {
         await apiService({
             method: METHOD.GET,
@@ -619,7 +616,6 @@ export const getItemById = async (itemid) => {
 
 
 export const getAddonList = async () => {
-    console.log("getAddonList")
     if (Boolean(device.locationid)) {
         return new promise(async (resolve) => {
             await apiService({
@@ -644,7 +640,6 @@ export const getAddonList = async () => {
 }
 
 export const getItemList = async (queryString) => {
-    console.log("getItemList")
     return new promise(async (resolve) => {
 
         await apiService({
@@ -761,7 +756,6 @@ export const setDefaultAddress = (index) => {
 }
 
 export const postOrder = (order) => {
-    console.log("postOrder")
     let cartData = store.getState().cartData;
     const {clientid, clientname} = store.getState().clientDetail;
 
@@ -847,7 +841,6 @@ const options = {
 
 
 export const requestOTP = (mobile) => {
-    console.log("requestOTP")
     let clientDetail = store.getState().clientDetail
 
     apiService({
@@ -882,7 +875,6 @@ export const groupBy = (arr, property) => {
 
 
 export const getGroups = async (groupList) => {
-    console.log("getGroups")
     if (isEmpty(groupList)) {
         await apiService({
             method: METHOD.GET,

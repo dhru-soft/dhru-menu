@@ -170,7 +170,6 @@ const Index = ({clientDetail, vouchertotaldisplay, paymentgateways, cartData, lo
                     const rzpay = new Razorpay({
                         key, amount: (+cartData?.vouchertotaldisplay) * 100, // Amount is in currency subunits. Default currency is INR. Hence, 50000 refers to 50000 paise
                         currency: cartData?.currency, order_id: getOrderIdResponse?.data?.orderid, handler: (res) => {
-                            console.log("RAZORPAY RESPONSE HANLDER", res)
                             if (res?.razorpay_order_id && res?.razorpay_payment_id) {
                                 apiService({
                                     action: 'razorpay', method: METHOD.POST, body: {

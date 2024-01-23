@@ -42,7 +42,6 @@ const Index = ({itemDetail, selectedaddon, updateItem, addonList, settings, setV
                         '0000': {
                             ...addtags?.addoniddata,
                             selecteditems: addtags?.addonid?.filter((item) => !isEmpty(copyaddonList[item])).map((item) => {
-                                console.log("item", item, copyaddonList[item])
                                 return {
                                     "itemid": item,
                                     productrate: copyaddonList[item]?.price,
@@ -124,7 +123,6 @@ const Index = ({itemDetail, selectedaddon, updateItem, addonList, settings, setV
 
 
     useEffect(() => {
-        console.log(autoaddon)
 
         if (!isEmpty(autoaddon)) {
             autoaddon?.map((addon) => {
@@ -233,12 +231,9 @@ const Index = ({itemDetail, selectedaddon, updateItem, addonList, settings, setV
             totalmin += addon.minrequired || 0;
         });
 
-        console.log("CHECK", allval, totalmin)
         if (+allval >= +totalmin && ((totalmin === addons?.addoniddata?.minrequired) || !Boolean(addons?.addoniddata?.minrequired))) {
-            console.log("IN")
             setValidate(true)
         } else {
-            console.log("OUT")
             setValidate(false)
         }
         //////// VALIDATE ADD BUTTON //////////

@@ -17,8 +17,6 @@ const Index = (props) => {
 
     const refGroups = useRef();
 
-    console.log("refGroups", refGroups)
-
     return (<BodyClassName className="groups">
         <section>
             <Theme/>

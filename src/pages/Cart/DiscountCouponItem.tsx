@@ -470,7 +470,6 @@ const DiscountCouponItem = (props: any) => {
 
     const buyGetCalc = async () => {
         let coupon = couponItem;
-        console.log("BUY GET")
         let cloneInvoiceItems = clone(cartData?.invoiceitems);
 
         let invoiceitems: any = [];
@@ -814,7 +813,6 @@ const DiscountCouponItem = (props: any) => {
     }
 
     const discountCalc = (afterTaxDiscount: any) => {
-        console.log("DISCOUNT COUPON")
 
         let foundCoupon = couponItem;
 
@@ -871,7 +869,6 @@ const DiscountCouponItem = (props: any) => {
              */
             if ((Boolean(foundCoupon?.data?.specificitems) && !isEmpty(foundCoupon?.data?.offeritems))) {
 
-                console.log("SPECIFIC")
 
                 let discountResponse = discountWithSpecificItems(foundCoupon, cartData);
 
@@ -888,7 +885,6 @@ const DiscountCouponItem = (props: any) => {
                 couponToggleHandler()
 
             } else {
-                console.log("COMMON")
                 let validCoupon = checkCouponValidForAfterTax(afterTaxDiscount, foundCoupon, cartData?.invoiceitems);
 
                 if (!validCoupon) {
