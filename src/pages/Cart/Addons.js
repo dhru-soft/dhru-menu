@@ -40,12 +40,14 @@ const Index = ({itemDetail, selectedaddon, updateItem, addonList, settings, setV
                 addtags = {
                     ...addtags, addongroupiddata: {
                         '0000': {
-                            ...addtags?.addoniddata, selecteditems: addtags?.addonid?.map((item) => {
+                            ...addtags?.addoniddata,
+                            selecteditems: addtags?.addonid?.filter((item) => !isEmpty(copyaddonList[item])).map((item) => {
+                                console.log("item", item, copyaddonList[item])
                                 return {
                                     "itemid": item,
-                                    productrate: copyaddonList[item].price,
-                                    productratedisplay: copyaddonList[item].price,
-                                    maxsell: copyaddonList[item].maxsell
+                                    productrate: copyaddonList[item]?.price,
+                                    productratedisplay: copyaddonList[item]?.price,
+                                    maxsell: copyaddonList[item]?.maxsell
                                 }
                             }),
                         }
@@ -122,10 +124,11 @@ const Index = ({itemDetail, selectedaddon, updateItem, addonList, settings, setV
 
 
     useEffect(() => {
+        console.log(autoaddon)
 
         if (!isEmpty(autoaddon)) {
             autoaddon?.map((addon) => {
-                if (!Boolean(moreaddon[addon].productqnt)) {
+                if (!Boolean(moreaddon[addon]?.productqnt)) {
                     updateQnt(addon, 'autoadd')
                 }
             })
@@ -230,7 +233,7 @@ const Index = ({itemDetail, selectedaddon, updateItem, addonList, settings, setV
             totalmin += addon.minrequired || 0;
         });
 
-        console.log("CHECK", allval, totalmin )
+        console.log("CHECK", allval, totalmin)
         if (+allval >= +totalmin && ((totalmin === addons?.addoniddata?.minrequired) || !Boolean(addons?.addoniddata?.minrequired))) {
             console.log("IN")
             setValidate(true)
@@ -255,7 +258,8 @@ const Index = ({itemDetail, selectedaddon, updateItem, addonList, settings, setV
     return (<div className={'mt-5'}>
 
 
-            {Boolean(addons) && Boolean(addons?.addongroupiddata) && Object.keys(addons?.addongroupiddata).map((addonid) => {
+        {Boolean(addons) && Boolean(addons?.addongroupiddata) && Object.keys(addons?.addongroupiddata)
+            .map((addonid) => {
 
                 const {addonselectiontype, anynumber, minrequired, selecteditems} = addons.addongroupiddata[addonid];
 
@@ -268,7 +272,7 @@ const Index = ({itemDetail, selectedaddon, updateItem, addonList, settings, setV
                     <h6 className={'mt-3'}>Addon
                         - {addongroups[addonid]?.addongroupname} (Any{addonselectiontype === 'selectanyone' && ` ${anynumber}`}{Boolean(minrequired) && `, Required ${minrequired}`}) </h6>
 
-                    {selecteditems?.map((item, key) => {
+                    {selecteditems?.filter((item) => !isEmpty(moreaddon[item.itemid]))?.map((item, key) => {
 
 
                         let {itemname, productqnt, maxsell} = moreaddon[item.itemid] || {};
@@ -283,100 +287,100 @@ const Index = ({itemDetail, selectedaddon, updateItem, addonList, settings, setV
                         }).length + 1;
 
                         return (<div
-                                key={key}>
+                            key={key}>
 
-                                <div className={`${key !== 0 && 'border-top'} py-2`}>
+                            <div className={`${key !== 0 && 'border-top'} py-2`}>
 
-                                    <div className={'d-flex justify-content-between align-items-center'}>
+                                <div className={'d-flex justify-content-between align-items-center'}>
 
-                                        <div className={'w-100'}>
-                                            <div className="form-check" style={{paddingLeft: 22}}>
+                                    <div className={'w-100'}>
+                                        <div className="form-check" style={{paddingLeft: 22}}>
 
-                                                {addonselectiontype === 'selectanyone' && anynumber === 1 ? <>
-                                                    <div className="align-items-center">
-                                                        <input className="form-check-input"
-                                                               name={`radio${addonid}`}
-                                                               checked={Boolean(productqnt)}
-                                                               onChange={(e) => {
-                                                                   if ((anynumber >= addeditems && addonselectiontype === 'selectanyone') || addonselectiontype === 'selectany') {
-                                                                       item = {
-                                                                           ...item, selected: Boolean(productqnt)
-                                                                       }
-                                                                   }
-                                                                   handleCheckboxChange(item.itemid, e, addonid)
-                                                               }} id={`radio${key}${addonid}`} type="radio"
-                                                               value={item.value}/>
-                                                    </div>
-                                                    <label className="form-check-label"
-                                                           htmlFor={`radio${key}${addonid}`}>
-                                                        {`${itemname}`}
-                                                    </label>
-                                                </> : <>
-                                                    <input className="form-check-input" type="checkbox"
+                                            {addonselectiontype === 'selectanyone' && anynumber === 1 ? <>
+                                                <div className="align-items-center">
+                                                    <input className="form-check-input"
+                                                           name={`radio${addonid}`}
                                                            checked={Boolean(productqnt)}
-                                                           disabled={(anynumber < addeditems && addonselectiontype === 'selectanyone') && !Boolean(productqnt)}
-                                                           value="1"
-                                                           id={`checkbox${key}${addonid}`} onChange={(e) => {
-                                                        if ((anynumber >= addeditems && addonselectiontype === 'selectanyone') || addonselectiontype === 'selectany') {
-                                                            item = {
-                                                                ...item, selected: Boolean(productqnt)
-                                                            }
-                                                        }
-                                                        handleCheckboxChange(item.itemid, e, addonid)
-                                                    }}/>
-                                                    <label className="form-check-label"
-                                                           htmlFor={`checkbox${key}${addonid}`}>
-                                                        {`${itemname}`}
-                                                    </label>
-                                                </>}
-
-
-                                            </div>
-                                            <div>
-
-                                            </div>
-                                        </div>
-
-                                        <div style={{height: 38}}>
-                                            {Boolean(productqnt) && <>
-                                                <div className={'border rounded-3 btn-add p-0 '}>
-                                                    <div
-                                                        className={'d-flex justify-content-between align-items-center'}>
-                                                        <div className={'p-3  px-4 cursor-pointer'}
-                                                             onClick={() => ((productqnt > 1)) && updateQnt(item.itemid, 'remove', addonid)}> -
-                                                        </div>
-                                                        <div className={'bg-white'} style={{
-                                                            height: '34px',
-                                                            width: '40px',
-                                                            display: 'flex',
-                                                            justifyContent: 'center',
-                                                            alignItems: 'center'
-                                                        }}> {productqnt} </div>
-                                                        <div className={'p-3 px-4 cursor-pointer'}
-                                                             onClick={() => ((productqnt < maxsell) || maxsell === 0 || !Boolean(maxsell)) && updateQnt(item.itemid, 'add', addonid)}> +
-                                                        </div>
-                                                    </div>
+                                                           onChange={(e) => {
+                                                               if ((anynumber >= addeditems && addonselectiontype === 'selectanyone') || addonselectiontype === 'selectany') {
+                                                                   item = {
+                                                                       ...item, selected: Boolean(productqnt)
+                                                                   }
+                                                               }
+                                                               handleCheckboxChange(item.itemid, e, addonid)
+                                                           }} id={`radio${key}${addonid}`} type="radio"
+                                                           value={item.value}/>
                                                 </div>
+                                                <label className="form-check-label"
+                                                       htmlFor={`radio${key}${addonid}`}>
+                                                    {`${itemname}`}
+                                                </label>
+                                            </> : <>
+                                                <input className="form-check-input" type="checkbox"
+                                                       checked={Boolean(productqnt)}
+                                                       disabled={(anynumber < addeditems && addonselectiontype === 'selectanyone') && !Boolean(productqnt)}
+                                                       value="1"
+                                                       id={`checkbox${key}${addonid}`} onChange={(e) => {
+                                                    if ((anynumber >= addeditems && addonselectiontype === 'selectanyone') || addonselectiontype === 'selectany') {
+                                                        item = {
+                                                            ...item, selected: Boolean(productqnt)
+                                                        }
+                                                    }
+                                                    handleCheckboxChange(item.itemid, e, addonid)
+                                                }}/>
+                                                <label className="form-check-label"
+                                                       htmlFor={`checkbox${key}${addonid}`}>
+                                                    {`${itemname}`}
+                                                </label>
                                             </>}
 
-                                        </div>
-                                        <div style={{width: 120, textAlign: 'right'}}>
-                                            <span>{numberFormat(baseprice)}</span>
-                                        </div>
 
+                                        </div>
+                                        <div>
+
+                                        </div>
+                                    </div>
+
+                                    <div style={{height: 38}}>
+                                        {Boolean(productqnt) && <>
+                                            <div className={'border rounded-3 btn-add p-0 '}>
+                                                <div
+                                                    className={'d-flex justify-content-between align-items-center'}>
+                                                    <div className={'p-3  px-4 cursor-pointer'}
+                                                         onClick={() => ((productqnt > 1)) && updateQnt(item.itemid, 'remove', addonid)}> -
+                                                    </div>
+                                                    <div className={'bg-white'} style={{
+                                                        height: '34px',
+                                                        width: '40px',
+                                                        display: 'flex',
+                                                        justifyContent: 'center',
+                                                        alignItems: 'center'
+                                                    }}> {productqnt} </div>
+                                                    <div className={'p-3 px-4 cursor-pointer'}
+                                                         onClick={() => ((productqnt < maxsell) || maxsell === 0 || !Boolean(maxsell)) && updateQnt(item.itemid, 'add', addonid)}> +
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </>}
+
+                                    </div>
+                                    <div style={{width: 120, textAlign: 'right'}}>
+                                        <span>{numberFormat(baseprice)}</span>
                                     </div>
 
                                 </div>
 
+                            </div>
 
-                            </div>)
+
+                        </div>)
                     })}
                 </div>
 
             })}
 
 
-        </div>)
+    </div>)
 }
 
 
