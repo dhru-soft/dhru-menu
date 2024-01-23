@@ -1,4 +1,4 @@
-import React, {useEffect} from "react";
+import React, {forwardRef, useEffect, useImperativeHandle, useState} from "react";
 import {connect, useDispatch} from "react-redux";
 import {setSelected} from "../../lib/redux-store/reducer/selected-data";
 import {device} from "../../lib/static";
@@ -29,13 +29,16 @@ export const GroupBox = ({item}) => {
     )
 }
 
-const Index = (props) => {
+const Index = forwardRef((props, ref) => {
 
 
     const dispatch = useDispatch()
     const navigate = useNavigate()
+    const [loader, setLoader] = useState(false)
 
     const {workspace, groupList} = props;
+
+    useImperativeHandle(ref,()=>({setLoader}))
 
     useEffect(() => {
         // getGroups(groupList).then()
@@ -67,7 +70,7 @@ const Index = (props) => {
         </section>
     )
 
-}
+})
 
 const mapStateToProps = (state) => {
     return {

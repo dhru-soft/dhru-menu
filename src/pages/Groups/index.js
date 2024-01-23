@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useRef} from "react";
 import {connect} from "react-redux";
 import Groups from "./Groups";
 
@@ -15,6 +15,10 @@ const Index = (props) => {
 
     let {searchitem} = props;
 
+    const refGroups = useRef();
+
+    console.log("refGroups", refGroups)
+
     return (<BodyClassName className="groups">
         <section>
             <Theme/>
@@ -26,7 +30,7 @@ const Index = (props) => {
                         <div className="container">
                             <div>
                                 <CartHeader/>
-                                {(!Boolean(searchitem)) ? <Groups/> : <ItemList/>}
+                                {(!Boolean(searchitem)) ? <Groups ref={refGroups} /> : <ItemList refGroups={refGroups}/>}
                             </div>
                             <CartTotal page={'detailview'}/>
                         </div>

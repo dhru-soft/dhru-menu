@@ -1097,6 +1097,9 @@ b, strong {
     }
 }
 
+.blankHeader{
+    height: 190px;
+}
 
 .fixedTop {
     position: fixed;
@@ -1112,6 +1115,7 @@ b, strong {
         padding-bottom: 0;
     }
 }
+
 .fixedTop + section{
     margin-top: 180px;
 }
@@ -1255,6 +1259,7 @@ h6, .h6,{
 .order-detail{
     h6{
         font-size: 16px;
+        color: black !important;
     }
 }
 

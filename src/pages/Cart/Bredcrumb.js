@@ -1,5 +1,5 @@
 import React, {Component, useEffect, useState} from "react";
-import {connect, useDispatch} from "react-redux";
+import {connect, useDispatch, useSelector} from "react-redux";
 import {clone, getGroups} from "../../lib/functions";
 import {setSelected} from "../../lib/redux-store/reducer/selected-data";
 import {GroupBox} from "../Groups/Groups";
@@ -14,32 +14,9 @@ const Index = (props) => {
 
     const {groupList,groupids,searchitem} = props;
 
-    const [subgroup, setSubGroup] = useState([]);
-
     const dispatch = useDispatch()
 
 
-
-    const setGroups = async () => {
-
-
-        if(groupids?.length > 0) {
-            const lastgroup = groupids[groupids.length - 1];
-            let groups = Object.values(groupList).filter((group) => {
-                return group?.itemgroupmid === lastgroup
-            })
-            setSubGroup(groups)
-        }
-        else{
-            await getGroups(groupList).then()
-            setSubGroup([])
-        }
-    }
-
-    useEffect(() => {
-        console.log("useEffect")
-        setGroups().then()
-    }, [groupids])
 
 
 
@@ -98,20 +75,6 @@ const Index = (props) => {
                     </div> }
 
 
-                    <div className="row">
-                    {
-                       device.groupid && subgroup?.map((group,index)=>{
-                            return (
-                                <div  key={index}  onClick={()=>{
-                                    navigate(`/l/${device.locationid}/t/${device.tableid}/g/${group?.itemgroupid}`)
-                                }}  className="text-center col-sm-4 col-lg-2 col-md-3 col-6 mb-3 cursor-pointer">
-                                    <GroupBox item={group}/>
-                                </div>
-                            )
-                        })
-                    }
-
-                    </div>
 
                 </div>
             </div>

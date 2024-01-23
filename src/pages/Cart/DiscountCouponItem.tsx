@@ -943,9 +943,6 @@ const DiscountCouponItem = (props: any) => {
     }
 
     const onClickCouponHandler = async () => {
-        console.clear();
-        console.log("coupon", couponItem)
-        console.log("cartData", cartData)
 
         // CHECK DATE RANGE
         let isValidRange = isCouponInDateRange();

@@ -1,4 +1,4 @@
-import React, {memo, useEffect, useState} from "react";
+import React, {forwardRef, memo, useEffect, useImperativeHandle, useState} from "react";
 import {connect, useDispatch} from "react-redux";
 import {device} from "../../lib/static";
 
@@ -7,7 +7,7 @@ import ReactReadMoreReadLess from "react-read-more-read-less";
 import Loader3 from "../../components/Loader/Loader3";
 import AddButton from "../Cart/AddButton";
 import store from "../../lib/redux-store/store";
-import {setModal} from "../../lib/redux-store/reducer/component";
+import {itemLoadingDisabled, itemLoadingEnable, setModal} from "../../lib/redux-store/reducer/component";
 import ItemDetails from "../Cart/ItemDetails";
 import {setItemList} from "../../lib/redux-store/reducer/item-list";
 import {LazyLoadImage} from "react-lazy-load-image-component";
@@ -26,78 +26,78 @@ export const AddonAction = ({item, updateQnt, action}) => {
 
     return (<div>
 
-            {Boolean(filtered?.length > 1) && filtered?.map((item) => {
+        {Boolean(filtered?.length > 1) && filtered?.map((item) => {
 
-                const {itemname, productratedisplay, productqnt, itemaddon, notes} = item || {};
+            const {itemname, productratedisplay, productqnt, itemaddon, notes} = item || {};
 
-                return <div className="col-12    item-hover  p-2 py-4" key={uuid()}>
-                    <div className="d-flex p-2 h-100">
-                        <div className={'w-100'}>
+            return <div className="col-12    item-hover  p-2 py-4" key={uuid()}>
+                <div className="d-flex p-2 h-100">
+                    <div className={'w-100'}>
 
-                            <div className={'p-2 mt-auto '}>
-                                <div>
-                                    <h4 style={{fontSize: '1.8rem'}}>{itemname} </h4>
-                                    <small
-                                        className={'mb-2'}> {productqnt} x {numberFormat(productratedisplay)} = {numberFormat(productqnt * productratedisplay)} </small>
-                                </div>
-
-                                {Boolean(itemaddon?.length > 0) && <div>
-                                    {itemaddon?.map((addon, key) => {
-                                        const {itemname, productratedisplay} = addon;
-                                        return (<div key={key}><small
-                                                className={'mb-2'}> {productqnt} x {itemname} = {numberFormat(productqnt * productratedisplay)} </small>
-                                            </div>)
-                                    })}
-                                </div>}
-
-                                <div>
-                                    <i className={'mb-2 text-danger'}> {notes} </i>
-                                </div>
-
+                        <div className={'p-2 mt-auto '}>
+                            <div>
+                                <h4 style={{fontSize: '1.8rem'}}>{itemname} </h4>
+                                <small
+                                    className={'mb-2'}> {productqnt} x {numberFormat(productratedisplay)} = {numberFormat(productqnt * productratedisplay)} </small>
                             </div>
-                        </div>
-                        <div className={'border-light'} style={{width: 150}}>
-                            <AddButton item={item} minqnt={action === 'add' && 1} fromCart={true}/>
+
+                            {Boolean(itemaddon?.length > 0) && <div>
+                                {itemaddon?.map((addon, key) => {
+                                    const {itemname, productratedisplay} = addon;
+                                    return (<div key={key}><small
+                                        className={'mb-2'}> {productqnt} x {itemname} = {numberFormat(productqnt * productratedisplay)} </small>
+                                    </div>)
+                                })}
+                            </div>}
+
+                            <div>
+                                <i className={'mb-2 text-danger'}> {notes} </i>
+                            </div>
+
                         </div>
                     </div>
+                    <div className={'border-light'} style={{width: 150}}>
+                        <AddButton item={item} minqnt={action === 'add' && 1} fromCart={true}/>
+                    </div>
                 </div>
-            })}
-
-            {(filtered?.length === 1) && <h5 className={'mb-5'}>{item.itemname}</h5>}
-
-            <div className={'d-flex justify-content-between align-items-center mt-3'}>
-                {action === 'add' && <div className={'w-100 me-3'}>
-
-                    <button className="w-100 custom-btn custom-btn--medium custom-btn--style-4" onClick={() => {
-                        dispatch(setModal({
-                            show: true,
-                            title: item.itemname,
-                            height: '80%',
-                            component: () => <><ItemDetails itemDetail={{...item, productqnt: 1, key: ''}}/></>
-                        }))
-                    }} type="button" role="button">
-                        Add New
-                    </button>
-                </div>}
-
-                {filtered?.length > 1 && <div className={'w-100'}>
-                    <button className="w-100 custom-btn custom-btn--medium custom-btn--style-2" onClick={() => {
-                        dispatch(setModal({show: false}));
-                    }} type="button" role="button">
-                        Update Qnt
-                    </button>
-                </div>}
-
-                {filtered?.length === 1 && <div className={'w-100'}>
-                    <button className="w-100 custom-btn custom-btn--medium custom-btn--style-2" onClick={() => {
-                        updateQnt('add', true);
-                        dispatch(setModal({show: false}));
-                    }} type="button" role="button">
-                        Repeat
-                    </button>
-                </div>}
             </div>
-        </div>)
+        })}
+
+        {(filtered?.length === 1) && <h5 className={'mb-5'}>{item.itemname}</h5>}
+
+        <div className={'d-flex justify-content-between align-items-center mt-3'}>
+            {action === 'add' && <div className={'w-100 me-3'}>
+
+                <button className="w-100 custom-btn custom-btn--medium custom-btn--style-4" onClick={() => {
+                    dispatch(setModal({
+                        show: true,
+                        title: item.itemname,
+                        height: '80%',
+                        component: () => <><ItemDetails itemDetail={{...item, productqnt: 1, key: ''}}/></>
+                    }))
+                }} type="button" role="button">
+                    Add New
+                </button>
+            </div>}
+
+            {filtered?.length > 1 && <div className={'w-100'}>
+                <button className="w-100 custom-btn custom-btn--medium custom-btn--style-2" onClick={() => {
+                    dispatch(setModal({show: false}));
+                }} type="button" role="button">
+                    Update Qnt
+                </button>
+            </div>}
+
+            {filtered?.length === 1 && <div className={'w-100'}>
+                <button className="w-100 custom-btn custom-btn--medium custom-btn--style-2" onClick={() => {
+                    updateQnt('add', true);
+                    dispatch(setModal({show: false}));
+                }} type="button" role="button">
+                    Repeat
+                </button>
+            </div>}
+        </div>
+    </div>)
 }
 
 export const ItemBox = memo(({item}) => {
@@ -118,48 +118,47 @@ export const ItemBox = memo(({item}) => {
     }
 
     return (<div className="col-12 col-sm-6 col-md-4  col-lg-3    item-hover  p-2 py-4">
-            <div className="d-flex p-2 h-100">
-                <div className={'w-100'}>
+        <div className="d-flex p-2 h-100">
+            <div className={'w-100'}>
 
-                    <div className={'p-2 mt-auto '}>
-                        <div className={'flex-nowrap'}>
-                            {veg &&
-                                <div><i style={{color: diat[veg]?.color}} className={`fa fa-${diat[veg]?.icon}`}></i>
-                                </div>}
-                            <h4 style={{fontSize: '1.8rem'}}>{itemname} </h4>
-                            <h6 className={'mb-2'}> {numberFormat(price)} </h6>
-                        </div>
-                        <div className={'mt-3'}>
-                            <ReactReadMoreReadLess
-                                charLimit={50}
-                                readMoreText={"Read more"}
-                                readLessText={""}
-                                readMoreStyle={{color: 'black'}}
-                            >
-                                {itemdescription}
-                            </ReactReadMoreReadLess>
-                        </div>
+                <div className={'p-2 mt-auto '}>
+                    <div className={'flex-nowrap'}>
+                        {veg && <div><i style={{color: diat[veg]?.color}} className={`fa fa-${diat[veg]?.icon}`}></i>
+                        </div>}
+                        <h4 style={{fontSize: '1.8rem'}}>{itemname} </h4>
+                        <h6 className={'mb-2'}> {numberFormat(price)} </h6>
                     </div>
-                </div>
-                <div className={'border-light  rounded-3 p-2'} style={{width: 150}}>
-                    <div>
-
-                        {itemimage && <LazyLoadImage
-                            alt={''}
-                            src={`https://${itemimage}`}
-                            style={{maxWidth: '100%', borderRadius: 5}}
-                        />}
+                    <div className={'mt-3'}>
+                        <ReactReadMoreReadLess
+                            charLimit={50}
+                            readMoreText={"Read more"}
+                            readLessText={""}
+                            readMoreStyle={{color: 'black'}}
+                        >
+                            {itemdescription}
+                        </ReactReadMoreReadLess>
                     </div>
-                    {addbutton && <AddButton item={updateItem} merger={true} updateItem={setUpdateItem}/>}
                 </div>
             </div>
-        </div>)
+            <div className={'border-light  rounded-3 p-2'} style={{width: 150}}>
+                <div>
+
+                    {itemimage && <LazyLoadImage
+                        alt={''}
+                        src={`https://${itemimage}`}
+                        style={{maxWidth: '100%', borderRadius: 5}}
+                    />}
+                </div>
+                {addbutton && <AddButton item={updateItem} merger={true} updateItem={setUpdateItem}/>}
+            </div>
+        </div>
+    </div>)
 }, (r1, r2) => {
     return ((r1.item.productqnt === r2.item.productqnt) && (r1.item.mergeqnt === r2.item.mergeqnt) && (r1.item.itemid === r2.item.itemid));
 })
 
 
-const Items = (props) => {
+const Items = forwardRef((props, ref) => {
 
 
     const dispatch = useDispatch()
@@ -171,10 +170,11 @@ const Items = (props) => {
     const params = Object.fromEntries(urlSearchParams.entries());
 
     const {tableorder, online} = device?.order || {};
-    const {groupids, selectedtags, searchitem, invoiceitems} = props;
+    const {groupids, selectedtags, searchitem, invoiceitems, refGroups} = props;
 
     const hasAdd = (tableorder && params.table) || ((online || tableorder) && !params.table)
 
+    useImperativeHandle(ref, () => ({loader}))
 
     const getItems = async () => {
 
@@ -257,6 +257,15 @@ const Items = (props) => {
     // }, [groupids, selectedtags, invoiceitems, searchitem])
     // OLD CODE END
 
+
+    useEffect(() => {
+        if (loader) {
+            dispatch(itemLoadingEnable())
+        } else {
+            dispatch(itemLoadingDisabled())
+        }
+    }, [loader])
+
     // NEW CODE START
     useEffect(() => {
         if (!isEmpty(groupids)) {
@@ -293,18 +302,18 @@ const Items = (props) => {
 
 
     return (<>
-            <section>
+        <section>
 
-                <div className="container bg-white rounded-4">
-                    <div className="row">
-                        {Object.keys(items).map((key) => {
-                            return <ItemBox key={key} item={{...items[key], itemid: key, addbutton: hasAdd}}/>
-                        })}
-                    </div>
+            <div className="container bg-white rounded-4">
+                <div className="row">
+                    {Object.keys(items).map((key) => {
+                        return <ItemBox key={key} item={{...items[key], itemid: key, addbutton: hasAdd}}/>
+                    })}
                 </div>
-            </section>
-        </>);
-}
+            </div>
+        </section>
+    </>);
+})
 
 const mapStateToProps = (state) => {
     return {

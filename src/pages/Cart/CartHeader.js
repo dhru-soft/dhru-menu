@@ -5,6 +5,7 @@ import Search from "./Search";
 import Diet from "./Diet";
 import Bredcrumb from "./Bredcrumb";
 import {device} from "../../lib/static";
+import SubGroups from "./SubGroups";
 
 
 
@@ -15,12 +16,15 @@ const Index = (props) => {
     const stickyHeader = useRef()
     useLayoutEffect(() => {
         const mainHeader = document.getElementById('mainHeader')
+        const blankHeader = document.getElementById('blankHeader')
         let fixedTop = stickyHeader.current.offsetTop
         const fixedHeader = () => {
             if (window.pageYOffset > fixedTop) {
                 mainHeader.classList.add('fixedTop')
+                blankHeader.classList.add('blankHeader')
             } else {
                 mainHeader.classList.remove('fixedTop')
+                blankHeader.classList.remove('blankHeader')
             }
         }
         window.addEventListener('scroll', fixedHeader)
@@ -29,7 +33,6 @@ const Index = (props) => {
 
     return (
         <>
-
             <div className={'mainHeader'}  id="mainHeader" ref={stickyHeader}>
                 <div className={'supported  pt-3'}>
                     <div className={'bg-white p-4 rounded-4 shadow'} >
@@ -42,6 +45,11 @@ const Index = (props) => {
                 </div>
             </div>
 
+            <div id={"blankHeader"}>
+
+            </div>
+
+            <SubGroups/>
         </>
     )
 }
