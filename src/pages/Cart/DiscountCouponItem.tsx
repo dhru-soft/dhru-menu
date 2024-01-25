@@ -8,6 +8,7 @@ import {clone, getFloatValue, isEmpty} from "../../lib/functions";
 import {v4 as uuidv4} from 'uuid';
 import {getProductData, itemTotalCalculation} from "../../lib/item-calculation";
 import {setCartData, setUpdateCart} from "../../lib/redux-store/reducer/cart-data";
+import CouponCode from "./CouponCode";
 
 const invoiceItemSortHighToLow = (aItem: any, bItem: any) => {
     return bItem.productratedisplay - aItem.productratedisplay;
@@ -28,7 +29,7 @@ const DiscountCouponItem = (props: any) => {
 
     const cartData = useSelector((state: any) => state?.cartData)
 
-    const isInclusive = cartData?.vouchertaxtype === 'inclusive'
+    let isInclusive = cartData?.vouchertaxtype === 'inclusive'
 
     const couponsData = useSelector((state: any) => state?.restaurantDetail?.coupon)
 
@@ -788,12 +789,28 @@ const DiscountCouponItem = (props: any) => {
                 };
             });
 
+            console.log("A", coupon?.coupon)
             let newCartData: any = {
                 ...cartData,
                 invoiceitems        : clone(invoiceitems),
                 combocoupon         : true,
                 couponsname         : coupon?.coupon,
-                voucherdiscountplace: 'beforetax'
+                voucherdiscountplace: 'beforetax',
+            };
+
+            if (isEmpty(newCartData?.coupons)) {
+                newCartData = {
+                    ...newCartData,
+                    coupons: []
+                };
+            }
+
+            newCartData = {
+                ...newCartData,
+                coupons    : [...newCartData?.coupons, {
+                    ...coupon,
+                    name: coupon?.coupon
+                }]
             };
 
             if (coupon?.data?.discountplace) {
@@ -867,17 +884,31 @@ const DiscountCouponItem = (props: any) => {
             /**
              * CHECK DISCOUNT ON SOME SPECIFIC ITEMS OR CATEGORY
              */
-            if ((Boolean(foundCoupon?.data?.specificitems) && !isEmpty(foundCoupon?.data?.offeritems))) {
+            if (!afterTaxDiscount && (Boolean(foundCoupon?.data?.specificitems) && !isEmpty(foundCoupon?.data?.offeritems))) {
 
 
                 let discountResponse = discountWithSpecificItems(foundCoupon, cartData);
-
+                console.log("B", discountResponse?.coupon)
                 let newCartData: any = {
                     ...cartData,
                     invoiceitems        : discountResponse.invoiceitems,
-                    couponsname         : discountResponse?.coupon,
+                    couponsname         : discountResponse?.coupon?.coupon,
                     combocoupon         : true,
                     voucherdiscountplace: foundCoupon?.data?.discountplace || 'beforetax'
+                };
+                if (isEmpty(newCartData?.coupons)) {
+                    newCartData = {
+                        ...newCartData,
+                        coupons: []
+                    };
+                }
+
+                newCartData = {
+                    ...newCartData,
+                    coupons: [...newCartData?.coupons, {
+                        ...foundCoupon,
+                        name: foundCoupon?.coupon
+                    }]
                 };
                 let data = itemTotalCalculation(clone(newCartData), undefined, undefined, undefined, undefined, 2, 2, false, false);
                 dispatch(setCartData(clone(data)));
@@ -885,6 +916,7 @@ const DiscountCouponItem = (props: any) => {
                 couponToggleHandler()
 
             } else {
+
                 let validCoupon = checkCouponValidForAfterTax(afterTaxDiscount, foundCoupon, cartData?.invoiceitems);
 
                 if (!validCoupon) {
@@ -897,6 +929,7 @@ const DiscountCouponItem = (props: any) => {
                 discounttype = foundCoupon?.discounttype == 'percentage' ? '%' : '$';
                 if (afterTaxDiscount) {
                     if (foundCoupon?.campaigndetail?.campaigntype != 'coupon') {
+
                         foundCoupon = {
                             ...foundCoupon,
                             amount: 100
@@ -905,6 +938,10 @@ const DiscountCouponItem = (props: any) => {
                 }
 
                 let passamount = foundCoupon.amount;
+
+                if (afterTaxDiscount) {
+                    isInclusive = false;
+                }
 
                 let invoiceitems: any = cartData.invoiceitems.map((item: any) => {
                     if (isInclusive) {
@@ -919,16 +956,31 @@ const DiscountCouponItem = (props: any) => {
                         change: true
                     };
                 });
-
+                console.log("C", foundCoupon?.coupon)
                 let newCartData: any = {
                     ...cartData,
                     invoiceitems,
                     couponsname         : foundCoupon?.coupon,
                     combocoupon         : true,
                     voucherdiscountplace: foundCoupon?.data?.discountplace || 'beforetax',
-                    globaldiscountvalue: isInclusive ? 0 : passamount,
-                    discounttype       : discounttype,
-                    updatecart         : true,
+                    globaldiscountvalue : isInclusive ? 0 : passamount,
+                    discounttype        : discounttype,
+                    updatecart          : true,
+                };
+
+                if (isEmpty(newCartData?.coupons)) {
+                    newCartData = {
+                        ...newCartData,
+                        coupons: []
+                    };
+                }
+
+                newCartData = {
+                    ...newCartData,
+                    coupons: [...newCartData?.coupons, {
+                        ...foundCoupon,
+                        name: foundCoupon?.coupon
+                    }]
                 };
                 let data = itemTotalCalculation(clone(newCartData), undefined, undefined, undefined, undefined, 2, 2, false, false);
                 dispatch(setCartData(clone(data)));
@@ -1152,8 +1204,7 @@ const DiscountCouponItem = (props: any) => {
     return <div className={'border border-2 mb-4 radius-5px '}>
         <div className={"p-3"}>
             <h6>{couponItem?.campaigndetail?.campaignname}</h6>
-            <span
-                className={'border border-1 px-2 py-1 radius-5px d-inline-block border-success border-style-dashed m-0'}>{couponItem?.coupon}</span>
+            <CouponCode>{couponItem?.coupon}</CouponCode>
         </div>
 
         <div>

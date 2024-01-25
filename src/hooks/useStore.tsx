@@ -49,7 +49,6 @@ export default (location?: any) => {
                 endTime = moment(stringEndDateTime, dateTimeFormat).add(1, 'day')
             }
         }
-
         let durationStartTime = moment.duration(currentTime.diff(startTime)).asSeconds(),
             durationEndTime = moment.duration(endTime.diff(currentTime)).asSeconds();
 

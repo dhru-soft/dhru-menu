@@ -18,6 +18,7 @@ const Index = (props) => {
             {label:'Non Veg',value:'nonveg',selected:false,icon:'meat',color:'#ee4c4c',label2:'Only Non Veg'},
             {label:'Egg',value:'egg',selected:false,icon:'egg',color:'gray',label2:'Only Egg'},
         ]?.filter((tag)=>{
+            console.log(options)
             return options && Boolean(options[tag?.value])
         }))
     },[options])
@@ -25,6 +26,8 @@ const Index = (props) => {
     if(hidetag){
         return <></>
     }
+
+    console.log(tags, )
 
     if(Boolean(tags?.length === 1)){
         const {label2,icon,color} = tags[0]

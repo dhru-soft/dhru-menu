@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from "react";
 import {connect, useDispatch, useSelector} from "react-redux";
-import {getCompanyDetails, getFloatValue, isEmpty, numberFormat, postOrder} from "../../lib/functions";
+import {clone, getCompanyDetails, getFloatValue, isEmpty, numberFormat, postOrder} from "../../lib/functions";
 
 import {Field, Form} from 'react-final-form';
 import {device, METHOD, STATUS, urls} from "../../lib/static";
@@ -8,11 +8,13 @@ import {device, METHOD, STATUS, urls} from "../../lib/static";
 import store from "../../lib/redux-store/store";
 import {setModal} from "../../lib/redux-store/reducer/component";
 import Login from "../Login";
-import {resetCart} from "../../lib/redux-store/reducer/cart-data";
+import {resetCart, setCartData, setUpdateCart} from "../../lib/redux-store/reducer/cart-data";
 import Addresses from "../Client/Addresses";
 import DiscountCouponItem from "./DiscountCouponItem";
 import useRazorpay from "react-razorpay";
 import apiService from "../../lib/api-service";
+import CouponCode from "./CouponCode";
+import {itemTotalCalculation, resetDiscountData} from "../../lib/item-calculation";
 
 const Index = ({clientDetail, vouchertotaldisplay, paymentgateways, cartData, location}) => {
 
@@ -187,6 +189,12 @@ const Index = ({clientDetail, vouchertotaldisplay, paymentgateways, cartData, lo
         })
     }
 
+    const onClickClearCoupon = () => {
+        const newCartData = resetDiscountData(cartData)
+        let data = itemTotalCalculation(clone(newCartData), undefined, undefined, undefined, undefined, 2, 2, false, false);
+        dispatch(setCartData(clone(data)));
+        dispatch(setUpdateCart());
+    }
 
     return (<div>
         <div className={'container'}>
@@ -198,7 +206,6 @@ const Index = ({clientDetail, vouchertotaldisplay, paymentgateways, cartData, lo
                     <div className={'form'}>
 
                         <h5>Confirm Order Type</h5>
-
 
                         <div className={'mt-3'}>
                             <div>
@@ -344,16 +351,31 @@ const Index = ({clientDetail, vouchertotaldisplay, paymentgateways, cartData, lo
                                 <div></div>
 
                                 <div className={"text-align-right d-flex align-items-baseline"}>
-                                    {/*{!isEmpty(coupon) && <h5*/}
-                                    {/*    className={"m-0 cursor-pointer link link-danger"}*/}
-                                    {/*    onClick={couponToggleHandler}*/}
-                                    {/*>*/}
-                                    {/*    View Offers -*/}
-                                    {/*</h5>}*/}
+                                    {!isEmpty(coupon) && <h5
+                                        className={"m-0 cursor-pointer link link-danger"}
+                                        onClick={couponToggleHandler}
+                                    >
+                                        View Offers -
+                                    </h5>}
                                     <h3 className={"m-0"}>{numberFormat(cartData?.vouchertotaldisplay)}</h3>
                                 </div>
 
                             </div>
+
+                            {
+                                !isEmpty(cartData?.coupons) && <div>
+                                    Applied Coupon :&nbsp;&nbsp;
+                                    {cartData?.coupons.map((c) => {
+                                        return <CouponCode key={c?.campaignid}>
+                                            <div className={"d-flex"}>
+                                                <div>{c?.name}</div>
+                                            </div>
+                                        </CouponCode>
+                                    })}
+                                    <span onClick={onClickClearCoupon} className={"text-danger cursor-pointer"}>Clear Coupon</span>
+                                </div>
+                            }
+
 
                             {((values.ordertype === 'homedelivery' && Boolean(defaultaddress)) || (values.ordertype !== 'homedelivery')) && values.ordertype &&
                                 <div className={'my-3'}>

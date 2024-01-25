@@ -7,7 +7,7 @@ import {v4 as uuid} from "uuid";
 import {setModal} from "../../lib/redux-store/reducer/component";
 import ItemDetails from "./ItemDetails";
 import {AddonAction} from "../Items/Items";
-import {itemTotalCalculation} from "../../lib/item-calculation";
+import {itemTotalCalculation, resetDiscountData} from "../../lib/item-calculation";
 
 
 export const updateCartItem = async (values) => {
@@ -25,10 +25,7 @@ export const updateCartItem = async (values) => {
 
 
         let finditem = {
-            ...filtered[0],
-            ...values,
-            change: true,
-            product_qnt: values.productqnt,
+            ...filtered[0], ...values, change: true, product_qnt: values.productqnt,
         }
 
         if (values.productqnt <= 0) {
@@ -44,10 +41,10 @@ export const updateCartItem = async (values) => {
     }
 }
 
-const Index = ({item, updateItem, custom, fromCart,minqnt,merger}) => {
+const Index = ({item, updateItem, custom, fromCart, minqnt, merger}) => {
 
     const [productqnt, setQnt] = useState(item?.productqnt || 0);
-    const displayqnt =  merger ? item.mergeqnt : productqnt;
+    const displayqnt = merger ? item.mergeqnt : productqnt;
     const dispatch = useDispatch()
 
     useEffect(() => {
@@ -74,11 +71,9 @@ const Index = ({item, updateItem, custom, fromCart,minqnt,merger}) => {
             }
 
 
-
             addToCart(item).then(r => {
-
-
-                const cartData = store.getState().cartData
+                let cartData = store.getState().cartData
+                cartData = resetDiscountData(cartData);
                 let data = itemTotalCalculation(clone(cartData), undefined, undefined, undefined, undefined, 2, 2, false, false);
                 dispatch(setCartData(clone(data)));
                 dispatch(setUpdateCart());
@@ -96,12 +91,9 @@ const Index = ({item, updateItem, custom, fromCart,minqnt,merger}) => {
 
         const {hasextra, key} = item;
 
-        if (hasextra && key && (!fromCart) && ((action === 'add') ) && (!isRepeat)) {
+        if (hasextra && key && (!fromCart) && ((action === 'add')) && (!isRepeat)) {
             store.dispatch(setModal({
-                show: true,
-                title: '',
-                height: '80%',
-                component: () => <>
+                show: true, title: '', height: '80%', component: () => <>
                     <AddonAction item={clone(item)} action={action} updateQnt={updateQnt}/>
                 </>
             }))
@@ -114,9 +106,7 @@ const Index = ({item, updateItem, custom, fromCart,minqnt,merger}) => {
                 qnt = qnt - 1;
             }
             item = {
-                ...item,
-                productqnt: qnt,
-                hasextra: !isEmpty(item?.addons),
+                ...item, productqnt: qnt, hasextra: !isEmpty(item?.addons),
             }
             setQnt(qnt)
             Boolean(updateItem) && updateItem({...item});
@@ -129,7 +119,8 @@ const Index = ({item, updateItem, custom, fromCart,minqnt,merger}) => {
 
     const updatecartItem = () => {
         updateCartItem(item).then(r => {
-            const cartData = store.getState().cartData
+            let cartData = store.getState().cartData;
+            cartData = resetDiscountData(cartData);
             let data = itemTotalCalculation(clone(cartData), undefined, undefined, undefined, undefined, 2, 2, false, false);
             dispatch(setCartData(clone(data)));
             dispatch(setUpdateCart());
@@ -139,8 +130,7 @@ const Index = ({item, updateItem, custom, fromCart,minqnt,merger}) => {
 
 
     if (custom) {
-        return (
-            <button className="custom-btn custom-btn--medium custom-btn--style-4 mt-3" onClick={() => {
+        return (<button className="custom-btn custom-btn--medium custom-btn--style-4 mt-3" onClick={() => {
                 if (fromCart) {
                     updatecartItem()
                 } else {
@@ -148,38 +138,31 @@ const Index = ({item, updateItem, custom, fromCart,minqnt,merger}) => {
                 }
             }} type="button" role="button">
                 {fromCart ? 'Update' : 'Add'}
-            </button>
-        )
+            </button>)
     }
 
 
     if (productqnt) {
-        return (
-            <div className={'border rounded-3 btn-add p-0 mt-3 '}>
+        return (<div className={'border rounded-3 btn-add p-0 mt-3 '}>
                 <div className={'d-flex justify-content-between align-items-center'}>
-                    <div className={'p-3  px-4 cursor-pointer'} onClick={() => ((productqnt > minqnt) || !Boolean(minqnt)) && updateQnt('remove')}> -</div>
+                    <div className={'p-3  px-4 cursor-pointer'}
+                         onClick={() => ((productqnt > minqnt) || !Boolean(minqnt)) && updateQnt('remove')}> -
+                    </div>
                     <div className={'bg-white'} style={{
-                        height: '34px',
-                        width: '40px',
-                        display: 'flex',
-                        justifyContent: 'center',
-                        alignItems: 'center'
+                        height: '34px', width: '40px', display: 'flex', justifyContent: 'center', alignItems: 'center'
                     }}> {productqnt} </div>
                     <div className={'p-3 px-4 cursor-pointer'} onClick={() => updateQnt('add')}> +</div>
                 </div>
-            </div>
-        )
+            </div>)
     }
 
-    return (
-        <div className={'mt-3 text-center'}>
+    return (<div className={'mt-3 text-center'}>
             <button className=" btn-add btn" onClick={() => {
                 addQnt()
             }} type="button" role="button">
                 ADD
             </button>
-        </div>
-    )
+        </div>)
 }
 
 

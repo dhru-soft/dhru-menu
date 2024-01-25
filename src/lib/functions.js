@@ -12,7 +12,7 @@ import {
     updateCartItems
 } from "./redux-store/reducer/cart-data";
 import promise from "promise";
-import {getProductData, itemTotalCalculation} from "./item-calculation";
+import {getProductData, itemTotalCalculation, resetDiscountData} from "./item-calculation";
 import {setModal} from "./redux-store/reducer/component";
 import Login from "../pages/Login";
 import {setClientDetail} from "./redux-store/reducer/client-detail";
@@ -299,7 +299,6 @@ export const getInit = async (workspace) => {
     return new promise(async (resolve) => {
         const urlSearchParams = new URLSearchParams(window.location.search);
         const params = Object.fromEntries(urlSearchParams.entries());
-
         await apiService({
             method: METHOD.GET,
             action: ACTIONS.INIT,
@@ -316,18 +315,13 @@ export const getInit = async (workspace) => {
                     device.token = client?.token;
                     store.dispatch(setClientDetail(client));
                 })
-
-
                 resolve(true)
             } else {
                 device.workspace = ''
                 resolve(false)
             }
-
         });
     })
-
-
 }
 
 
@@ -724,8 +718,8 @@ export const getFromSetting = (key) => {
 
 
 export const placeOrder = () => {
-
-    const cartData = store.getState().cartData
+    let cartData = store.getState().cartData
+    cartData = resetDiscountData(cartData)
     let data = itemTotalCalculation(clone(cartData), undefined, undefined, undefined, undefined, 2, 2, false, false);
     store.dispatch(setCartData(clone(data)));
     store.dispatch(setUpdateCart());
