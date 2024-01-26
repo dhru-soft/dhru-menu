@@ -992,6 +992,11 @@ const DiscountCouponItem = (props: any) => {
 
     const onClickCouponHandler = async () => {
 
+        if (!isEmpty(cartData?.coupons)){
+            toast("One Coupon Applied, clear coupon to use another coupon")
+            return;
+        }
+
         // CHECK DATE RANGE
         let isValidRange = isCouponInDateRange();
 
