@@ -807,7 +807,7 @@ const DiscountCouponItem = (props: any) => {
 
             newCartData = {
                 ...newCartData,
-                coupons    : [...newCartData?.coupons, {
+                coupons: [...newCartData?.coupons, {
                     ...coupon,
                     name: coupon?.coupon
                 }]
@@ -929,7 +929,6 @@ const DiscountCouponItem = (props: any) => {
                 discounttype = foundCoupon?.discounttype == 'percentage' ? '%' : '$';
                 if (afterTaxDiscount) {
                     if (foundCoupon?.campaigndetail?.campaigntype != 'coupon') {
-
                         foundCoupon = {
                             ...foundCoupon,
                             amount: 100
@@ -938,6 +937,24 @@ const DiscountCouponItem = (props: any) => {
                 }
 
                 let passamount = foundCoupon.amount;
+
+                console.log("passamount 1", passamount)
+                if (!isInclusive) {
+                    console.log("passamount 2", passamount, discounttype)
+                    if (discounttype === '$') {
+                        let totalAmount = cartData?.vouchertaxabledisplay;
+                        console.log("passamount 3", passamount)
+                        if (afterTaxDiscount) {
+                            totalAmount = cartData?.totalwithoutroundoffdisplay;
+                            console.log("passamount 4", passamount)
+                        }
+                        console.log("passamount 5", passamount)
+                        passamount = totalAmount < passamount ? totalAmount : passamount;
+                        console.log("passamount 6", passamount)
+                    }
+                }
+
+                console.log("passamount 7", passamount)
 
                 if (afterTaxDiscount) {
                     isInclusive = false;
@@ -992,7 +1009,7 @@ const DiscountCouponItem = (props: any) => {
 
     const onClickCouponHandler = async () => {
 
-        if (!isEmpty(cartData?.coupons)){
+        if (!isEmpty(cartData?.coupons)) {
             toast("One Coupon Applied, clear coupon to use another coupon")
             return;
         }
@@ -1118,6 +1135,17 @@ const DiscountCouponItem = (props: any) => {
                     };
                 }
             }
+        } else if (coupon?.discounttype == 'fixed' && +coupon?.maxdiscount) {
+            let totalAmount = cartData?.vouchertaxabledisplay;
+            if (afterTaxDiscount) {
+                totalAmount = cartData?.totalwithoutroundoffdisplay;
+            }
+            let amount = totalAmount < coupon?.maxdiscount ? totalAmount : coupon?.maxdiscount;
+            coupon = {
+                ...coupon,
+                amount,
+                discounttype: 'fixed'
+            };
         }
         return coupon;
     };
@@ -1129,12 +1157,12 @@ const DiscountCouponItem = (props: any) => {
                 ...coupon,
                 maxdiscount: coupon?.amount
             };
+        } else {
+            coupon = {
+                ...coupon,
+                discounttype: 'percentage'
+            };
         }
-
-        coupon = {
-            ...coupon,
-            discounttype: 'percentage'
-        };
 
         let decimalValue = cartData?.currentDecimalPlace || 2;
 
