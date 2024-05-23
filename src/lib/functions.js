@@ -834,7 +834,7 @@ const options = {
 };
 
 
-export const requestOTP = (mobile) => {
+export const requestOTP = (mobile, countrycode, countrylabel) => {
     let clientDetail = store.getState().clientDetail
 
     apiService({
@@ -842,11 +842,17 @@ export const requestOTP = (mobile) => {
         action: ACTIONS.CLIENT,
         workspace: device.workspace,
         showalert: true,
-        body: {phone: mobile},
+        body: {phone: mobile, countrycode},
         other: {url: urls.posUrl},
     }).then(async (result) => {
         clientDetail = {
-            ...clientDetail, mobile: mobile, verifymobile: 'inprocess', otp: 'sent'
+            ...clientDetail, mobile: mobile, verifymobile: 'inprocess', otp: 'sent', countrycode,
+        }
+        if (countrylabel){
+            clientDetail = {
+                ...clientDetail,
+                countrylabel
+            }
         }
         store.dispatch(setClientDetail(clientDetail))
     });

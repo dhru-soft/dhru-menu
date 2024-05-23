@@ -13,7 +13,7 @@ const Index = ({clientDetail,visitorcountry}) => {
     const [mobile, setMobile] = useState(clientDetail?.mobile)
 
      const defaultcountry = countryList.filter((country)=>{
-        return country.code === (visitorcountry || 'IN')
+        return country.code === (clientDetail?.countrylabel || visitorcountry || 'VA')
     })
 
     const [country, setCountry] = useState(defaultcountry[0])
@@ -24,7 +24,7 @@ const Index = ({clientDetail,visitorcountry}) => {
     }
 
     const sendOTP = async (values) => {
-        requestOTP(values.mobile)
+         requestOTP(values.mobile, country?.value, country?.code)
     }
 
 

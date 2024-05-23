@@ -36,7 +36,7 @@ const Index = (props) => {
     const [otpverify, setOtpVerify] = useState(Boolean(device.client))
     const [mobile, setMobile] = useState('8866522619')
     const [otp, setOTP] = useState('')
-
+    const [country, setCountry] = useState({label: 'India', value: '+91', code: 'IN'})
     const dispatch = useDispatch()
 
     const requestOTP = () => {
@@ -45,7 +45,7 @@ const Index = (props) => {
             action: ACTIONS.CLIENT,
             workspace: device.workspace,
             showalert: true,
-            body: {phone: mobile},
+            body: {phone: mobile, countrycode:country},
             other: {url: urls.posUrl},
         }).then(async (result) => {
             otpverifyRef.current.style.display = 'block';
@@ -116,7 +116,7 @@ const Index = (props) => {
         }
     };
 
-    const [country, setCountry] = useState({label: 'India', value: '+91', code: 'IN'})
+
     const options = useMemo(() => countryList, [])
 
     const changeHandler = value => {
@@ -139,9 +139,7 @@ const Index = (props) => {
 
 
     return (
-
         <>
-
             <section className="h-100">
 
                 <div className="container h-100">
@@ -329,8 +327,6 @@ const Index = (props) => {
 
             </section>
         </>
-
-
     );
 }
 

@@ -13,7 +13,6 @@ const Index = ({clientDetail,cartData}) => {
 
     const {token, verifymobile, otp, clientname,addresses} = clientDetail
 
-
     const mobilescreen = (verifymobile === '');
     const otpscreen = (verifymobile === 'inprocess' && otp === 'sent')
     const otherdetailscreen = (!Boolean(clientname) || (!Boolean(addresses) && Boolean(device.tableid === '0')))

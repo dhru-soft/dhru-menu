@@ -10,7 +10,7 @@ import {requestOTP} from "../../lib/functions";
 import {setClientDetail} from "../../lib/redux-store/reducer/client-detail";
 
 
-const OTPCounter = ({mobile}) => {
+const OTPCounter = ({mobile, countrycode}) => {
 
     const [date,setDate] = useState(Date.now() + 30000 )
     const counterRef = useRef()
@@ -22,7 +22,7 @@ const OTPCounter = ({mobile}) => {
                     if(completed) {
                         setDate(Date.now() + 30000)
                         counterRef.current.api.start()
-                        requestOTP(mobile)
+                        requestOTP(mobile, countrycode)
                     }
                 }}>
                     Resend OTP
@@ -38,7 +38,7 @@ const OTPCounter = ({mobile}) => {
 let otpnumber = ''
 const Index = ({clientDetail,visitorcountry}) => {
 
-    const {mobile} = clientDetail
+    const {mobile, countrycode} = clientDetail
 
     const AuthInputRef = useRef(null);
 
@@ -49,7 +49,7 @@ const Index = ({clientDetail,visitorcountry}) => {
         apiService({
             method: METHOD.POST,
             action: ACTIONS.CLIENT,
-            body: {otp: otpnumber, phone: mobile},
+            body: {otp: otpnumber, phone: mobile, countrycode},
             showalert: true,
             workspace: device.workspace,
             other: {url: urls.posUrl},
@@ -114,7 +114,7 @@ const Index = ({clientDetail,visitorcountry}) => {
 
 
                     <div className={'mt-3'}>
-                         <OTPCounter mobile={mobile}/>
+                         <OTPCounter mobile={mobile} countrycode={countrycode}/>
                     </div>
 
                     <div className={'my-4'}>
