@@ -14,7 +14,7 @@ const Index = ({clientDetail,company}) => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const {clientname, displayname, token} = clientDetail;
-    let {tablename, locationname, address1, address2, download_url, order} = getCompanyDetails();
+    let {tablename, locationname, address1, address2, download_url} = getCompanyDetails();
 
 
 
@@ -100,7 +100,7 @@ const Index = ({clientDetail,company}) => {
 
                         <div className={'text-center'}>
                             {Boolean(download_url) &&
-                                <img style={{width: 50}} className="img-fluid" src={`https://${download_url}`}/>}
+                                <img style={{width: 50}} alt={''} className="img-fluid" src={`https://${download_url}`}/>}
                         </div>
 
                     </div>

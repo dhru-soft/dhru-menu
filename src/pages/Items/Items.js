@@ -109,7 +109,7 @@ export const ItemBox = memo(({item}) => {
         setUpdateItem(item)
     }, [item])
 
-    const {itemname, itemimage, price, itemdescription, veg, itemid, addbutton} = updateItem;
+    const {itemname, itemimage, price, itemdescription, veg, addbutton} = updateItem;
 
     const diat = {
         veg: {color: '#659a4a', icon: 'leaf'},
@@ -223,6 +223,7 @@ const Items = forwardRef((props, ref) => {
                         qntbyitem[item.itemid] = 0
                     }
                     qntbyitem[item.itemid] += item.productqnt
+                    return item
                 })
 
                 invoiceitems?.map((item) => {

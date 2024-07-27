@@ -44,6 +44,8 @@ const Index = forwardRef((props, ref) => {
         // getGroups(groupList).then()
     }, [])
 
+
+
     if (isEmpty(groupList)) {
         return <></>
     }
@@ -53,7 +55,8 @@ const Index = forwardRef((props, ref) => {
             <div className="row">
                 {
                     Object.values(groupList).filter((group) => {
-                        return group?.itemgroupmid === '0'
+                        return true
+                        //return group?.itemgroupmid === '0'
                     }).map((item, index) => {
 
                         return <div key={index}

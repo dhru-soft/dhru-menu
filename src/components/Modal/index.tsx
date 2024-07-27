@@ -1,14 +1,14 @@
 import React, {Component, useState} from "react";
 
 import {Modal, ModalBody, ModalHeader} from "reactstrap";
+import {isMobile} from 'react-device-detect';
+
+import {Sheet} from 'react-modal-sheet';
 import {setModal} from "../../lib/redux-store/reducer/component";
 import {connect} from "react-redux";
-import { BrowserView, MobileView, isBrowser, isMobile } from 'react-device-detect';
-
-import Sheet from 'react-modal-sheet';
 
 const Index = (props: any) => {
-    const {component: Component, title, show,disableclose, maxWidth, className, backdrop, keyboard} = props.modal;
+    const {component: Component, title, show, disableclose, maxWidth, className, backdrop, keyboard} = props.modal;
 
     const [isOpen, setOpen] = useState(false);
 
@@ -23,36 +23,33 @@ const Index = (props: any) => {
     }
 
 
-        return (
-            <Modal isOpen={show}  toggle={handleClose} size={maxWidth ? maxWidth : 'xs'} className={`${isMobile?'mobile':'desktop'}`}
+    return (<Modal isOpen={show} toggle={handleClose} size={maxWidth ? maxWidth : 'xs'}
+                   className={`${isMobile ? 'mobile' : 'desktop'}`}
                    backdrop={backdrop ? backdrop : true} keyboard={keyboard ? keyboard : true}>
-                {!disableclose && <ModalHeader toggle={handleClose} >{title ? title : ''}</ModalHeader>}
-                {disableclose && <ModalHeader >{title ? title : ''}</ModalHeader>}
-                <ModalBody>
-                    {show && <Component/>}
-                </ModalBody>
-            </Modal>
-        )
+            {!disableclose && <ModalHeader toggle={handleClose}>{title ? title : ''}</ModalHeader>}
+            {disableclose && <ModalHeader>{title ? title : ''}</ModalHeader>}
+            <ModalBody>
+                {show && <Component/>}
+            </ModalBody>
+        </Modal>)
 
 
-    return (
-        <Sheet isOpen={show} onClose={() => handleClose()} snapPoints={[800, 400, 100, 0]} initialSnap={0} detent="content-height" >
+    return (<Sheet isOpen={show} onClose={() => handleClose()} snapPoints={[800, 400, 100, 0]} initialSnap={0}
+                   detent="content-height">
             <Sheet.Container>
-                <Sheet.Header />
+                <Sheet.Header/>
                 <Sheet.Content>
-                    <div className={'container p-4'} style={{maxWidth:500,marginBottom:100}}>
+                    <div className={'container p-4'} style={{maxWidth: 500, marginBottom: 100}}>
                         {show && <>
-                            <h4 style={{marginLeft:10}}> {title}</h4>
+                            <h4 style={{marginLeft: 10}}> {title}</h4>
                             <Component/>
                         </>}
                     </div>
                 </Sheet.Content>
             </Sheet.Container>
 
-            <Sheet.Backdrop />
-        </Sheet>
-    )
-
+            <Sheet.Backdrop/>
+        </Sheet>)
 
 
 }
@@ -66,5 +63,8 @@ const mapDispatchToProps = (dispatch: any) => ({
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Index);
+
+
+
 
 

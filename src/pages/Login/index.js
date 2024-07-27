@@ -1,5 +1,5 @@
-import React, {useEffect} from "react";
-import {connect, useDispatch} from "react-redux";
+import React from "react";
+import {connect} from "react-redux";
 import Mobile from "../Client/Mobile";
 import Otp from "../Client/Otp";
 import AddEditAddress from "../Client/AddEditAddress";
@@ -7,11 +7,10 @@ import {device} from "../../lib/static";
 import ConfirmOrder from "../Cart/ConfirmOrder";
 import {isEmpty} from "../../lib/functions";
 
-const Index = ({clientDetail,cartData}) => {
+const Index = ({clientDetail}) => {
 
-    const dispatch = useDispatch()
 
-    const {token, verifymobile, otp, clientname,addresses} = clientDetail
+    const { verifymobile, otp, clientname, addresses} = clientDetail
 
     const mobilescreen = (verifymobile === '');
     const otpscreen = (verifymobile === 'inprocess' && otp === 'sent')
@@ -19,33 +18,33 @@ const Index = ({clientDetail,cartData}) => {
 
     let Component = () => <ConfirmOrder/>
 
-    if(mobilescreen){
+    if (mobilescreen) {
         Component = () => <Mobile/>
-    }
-    else if(otpscreen){
+    } else if (otpscreen) {
         Component = () => <Otp/>
+    } else if (otherdetailscreen) {
+        Component = () => <AddEditAddress disableaddress={true}/>
     }
-    else if(otherdetailscreen){
-        Component = () => <AddEditAddress disableaddress={true} />
-    }
 
 
-
-    return (
-        <>
+    return (<>
             <section className="h-100">
                 <div className="m-auto h-100">
                     <Component/>
                 </div>
             </section>
-        </>
-    )
+        </>)
 
 }
 
 const mapStateToProps = (state) => {
     return {
-        clientDetail: !isEmpty(state?.clientDetail) ? state?.clientDetail :  {verifymobile :'', otp:'', clientname:'',address1:''},
+        clientDetail: !isEmpty(state?.clientDetail) ? state?.clientDetail : {
+            verifymobile: '',
+            otp: '',
+            clientname: '',
+            address1: ''
+        },
     }
 }
 

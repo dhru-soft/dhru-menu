@@ -1,4 +1,3 @@
-import {getType} from "@reduxjs/toolkit";
 
 export const device:any = {tablet: true, db: '', token: '', global_token: '', navigation: '',uniqueid:'',workspace:'',locationid:'',client:'',tableid:''}
 
@@ -49,7 +48,7 @@ const regExpJson = {
 
 export const required = (value:any, label:any) => {
     let message = "is required"
-    if (Boolean(label) && getType(label) === "string") {
+    if (Boolean(label) && typeof label === "string") {
         message = `${label} ${message}`
     }
     return value ? undefined : message

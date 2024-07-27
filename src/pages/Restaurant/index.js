@@ -3,7 +3,7 @@ import {connect} from "react-redux";
 
 
 import {useNavigate, useParams} from "react-router-dom";
-import {getInit, isEmpty, isStoreOpen, postQrCode} from "../../lib/functions";
+import {getInit, isEmpty, postQrCode} from "../../lib/functions";
 
 import {device} from "../../lib/static";
 
@@ -83,7 +83,7 @@ const Index = (props) => {
                                     {Boolean(legalname !== 'notfound') ? <>
                                         <div className={'text-center'}>
                                             {Boolean(logo?.download_url) &&
-                                                <img style={{borderRadius: 10, width: 100}} className="img-fluid"
+                                                <img style={{borderRadius: 10, width: 100}} alt={''} className="img-fluid"
                                                      src={`https://${logo?.download_url}`}
                                                 />}
                                         </div>
@@ -99,8 +99,9 @@ const Index = (props) => {
 
                                         <>
 
-                                            {!isEmpty(location) && <div className={'px-3'}>
+                                            {!isEmpty(location) && <div className={'px-3 d-flex justify-content-center'}>
                                                 {Object.keys(location).map((key) => {
+
                                                     return <LocationItem
                                                         key={key}
                                                         navigate={navigate}
