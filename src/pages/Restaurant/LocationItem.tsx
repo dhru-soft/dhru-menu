@@ -6,7 +6,7 @@ const LocationItem = (props:any) => {
 
     const store = useStore(location)
 
-    return <div className={'m-3 d-flex'} style={{maxWidth:'350px',height:'300px'}}>
+    return <div className={'m-3 d-flex'} style={{width:'250px'}}>
         <div className={'location-list'}
              style={{borderRadius: 5}}>
             <div onClick={() => {
@@ -21,7 +21,9 @@ const LocationItem = (props:any) => {
                      textAlign:'center'
                  }}>
                 <div>
-
+                    <div style={{height:'140px'}}>
+                        {Boolean(location?.locationlimage) &&  <img src={`https://${location?.locationlimage}`} alt={'Location Image'} style={{width:'100%'}}  />}
+                    </div>
                     <div
                          style={{fontSize: 20,padding:'10px'}}>{location?.name}</div>
                     {

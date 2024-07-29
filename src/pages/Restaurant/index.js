@@ -99,7 +99,7 @@ const Index = (props) => {
 
                                         <>
 
-                                            {!isEmpty(location) && <div className={'px-3 d-flex justify-content-center'}>
+                                            {!isEmpty(location) && <div className={'px-3 d-flex justify-content-center'} style={{flexWrap:'wrap'}}>
                                                 {Object.keys(location).map((key) => {
 
                                                     return <LocationItem
