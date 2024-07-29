@@ -24,8 +24,7 @@ const LocationItem = (props:any) => {
                     <div style={{height:'140px'}}>
                         {Boolean(location?.locationlimage) &&  <img src={`https://${location?.locationlimage}`} alt={'Location Image'} style={{width:'100%'}}  />}
                     </div>
-                    <div
-                         style={{fontSize: 20,padding:'10px'}}>{location?.name}</div>
+                    <div  style={{fontSize: 20,padding:'10px'}}>{location?.name}</div>
                     {
                         (location?.address1 || location?.address2 || location?.city) && <div  style={{fontSize: 13,marginTop:'10px'}}>
                             {location?.address1} {location?.address2} {location?.city}

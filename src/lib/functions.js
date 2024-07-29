@@ -277,7 +277,8 @@ export const getCompanyDetails = () => {
     device.order = order;
 
     setTheme(device?.order?.themecolor || '#5C933F')
-    return {download_url, locationname, address1, address2, tablename, order}
+
+    return {download_url, locationname, address1, address2, tablename, order,locationimage:location[device?.locationid]?.locationlimage}
 }
 
 export const postQrCode = async (accesscode) => {

@@ -14,8 +14,9 @@ const Index = ({clientDetail,company}) => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const {clientname, displayname, token} = clientDetail;
-    let {tablename, locationname, address1, address2, download_url} = getCompanyDetails();
 
+
+    let {tablename,locationimage, locationname, address1, address2, download_url} = getCompanyDetails();
 
 
     const showAddresses = () => {
@@ -99,8 +100,10 @@ const Index = ({clientDetail,company}) => {
                         </div>
 
                         <div className={'text-center'}>
-                            {Boolean(download_url) &&
-                                <img style={{width: 50}} alt={''} className="img-fluid" src={`https://${download_url}`}/>}
+                            {Boolean(locationimage) ?  <img src={`https://${locationimage}`} alt={'Location Image'} className="img-fluid" style={{width: 50}} /> :
+                                Boolean(download_url) ?
+                                <img style={{width: 50}} alt={''} className="img-fluid" src={`https://${download_url}`}/> : ''}
+
                         </div>
 
                     </div>
