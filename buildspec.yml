@@ -7,11 +7,11 @@ phases:
       - echo Installing dependencies...
       - npm config set "@fortawesome:registry" https://npm.fontawesome.com/
       - npm config set "//npm.fontawesome.com/:_authToken" 6732C8AA-0A3D-4BC0-8A35-94068BDBA900
-      - npm install --loglevel=error
+      - npm install --legacy-peer-deps --loglevel=error
   build:
     commands:
       - echo Building...
-      - npm run-script build --force
+      - npm run-script build
 #      - react-scripts build
 artifacts:
   files:
