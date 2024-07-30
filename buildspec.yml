@@ -11,7 +11,7 @@ phases:
   build:
     commands:
       - echo Building...
-      - npm run-script build --legacy-peer-deps
+      - npm run-script build --force
 #      - react-scripts build
 artifacts:
   files:
