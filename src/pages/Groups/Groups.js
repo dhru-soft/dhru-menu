@@ -41,8 +41,8 @@ const Index = forwardRef((props, ref) => {
     useImperativeHandle(ref,()=>({setLoader}))
 
     useEffect(() => {
-        // getGroups(groupList).then()
-    }, [])
+         getGroups().then()
+    }, [device.locationid])
 
 
 

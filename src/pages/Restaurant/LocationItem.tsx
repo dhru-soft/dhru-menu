@@ -6,7 +6,7 @@ const LocationItem = (props:any) => {
 
     const store = useStore(location)
 
-    return <div className={'col-lg-3 col-md-4 col-sm-5 col-xs-6 col-6  p-0'} style={{
+    return <div className={'col-lg-3 col-md-4 col-sm-5 col-xs-6 col-6  p-0 mb-3'} style={{
 
         textAlign:'center',
         display:'flex',

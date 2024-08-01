@@ -24,7 +24,7 @@ const SubGroups = () => {
             })
             setSubGroup(groups)
         } else {
-            await getGroups(groupList).then()
+            await getGroups().then()
             setSubGroup([])
         }
     }
