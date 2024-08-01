@@ -5,6 +5,8 @@ import {device} from "../../lib/static";
 import {getGroups, isEmpty} from "../../lib/functions";
 import {LazyLoadImage} from 'react-lazy-load-image-component';
 import {useNavigate} from "react-router-dom";
+import {Spinner} from "reactstrap";
+import Search from "../Cart/Search";
 
 
 export const GroupBox = ({item}) => {
@@ -41,26 +43,32 @@ const Index = forwardRef((props, ref) => {
     useImperativeHandle(ref,()=>({setLoader}))
 
     useEffect(() => {
-         getGroups().then()
+        setLoader(true)
+        getGroups().then((flag)=>{
+            setLoader(false)
+        })
+
     }, [device.locationid])
 
 
 
-    if (isEmpty(groupList)) {
-        return <></>
+    if (isEmpty(groupList) || loader) {
+        return <>
+            <div style={{display:'flex',justifyContent:'center',alignItems:'center',minHeight:'200px'}}><Spinner style={{width: '3rem', height: '3rem'}}/></div>
+        </>
     }
 
     return (
         <section>
-            <div className="row">
-                {
+            <div className="row p-2">
+            {
                     Object.values(groupList).filter((group) => {
                         return true
                         //return group?.itemgroupmid === '0'
                     }).map((item, index) => {
 
                         return <div key={index}
-                                    className="text-center col-sm-4 col-lg-2 col-md-3 col-6 mb-3 cursor-pointer"
+                                    className="text-center col-sm-4 col-lg-2 col-md-3 col-6 mb-0 cursor-pointer p-1"
                                     onClick={() => {
                                         dispatch(setSelected({groupids: [item?.itemgroupid]}))
                                         navigate(`/l/${device.locationid}/t/${device.tableid}/g/${item?.itemgroupid}`)
@@ -70,6 +78,11 @@ const Index = forwardRef((props, ref) => {
                     })
                 }
             </div>
+
+            <div className={'position-fixed'} style={{zIndex:999,left:10,right:10,bottom:0}}>
+                <Search/>
+            </div>
+
         </section>
     )
 

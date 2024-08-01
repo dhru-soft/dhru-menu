@@ -1164,14 +1164,15 @@ b, strong {
 }
 
 .restaurant,.retail{
-    background-image: url("../assets/images/food_bg.svg");
+   /* background-image: url("../assets/images/food_bg.svg");*/
     .location-list{
         background: var(--btn-color);
         color:white;
     }
     #root{
-        background: var(--cartTotalColor);
-        background: linear-gradient(145deg, var(--cartTotalColor) 0%, var(--cartTotalColor2) 100%);
+        background: white;
+        /*background: var(--cartTotalColor);
+        background: linear-gradient(145deg, var(--cartTotalColor) 0%, var(--cartTotalColor2) 100%);*/
     }
 }
 .retail{
@@ -1277,4 +1278,8 @@ h6, .h6,{
 
 iframe{
     display: block!important;
+}
+
+.container{
+    max-width: 100% !important;
 }

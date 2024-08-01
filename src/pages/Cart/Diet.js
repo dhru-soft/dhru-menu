@@ -34,7 +34,7 @@ const Index = (props) => {
     return (
         <div className={'col-12'}>
 
-            <div>
+            <div >
                 <div className="">
                     {<div>
                         <div className={'overflow-auto d-flex tags'}>

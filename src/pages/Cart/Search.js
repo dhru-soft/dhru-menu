@@ -3,6 +3,7 @@ import {connect, useDispatch} from "react-redux";
 import SearchBox from "../../components/SearchBox";
 import {setSelected} from "../../lib/redux-store/reducer/selected-data";
 import {isEmpty} from "../../lib/functions";
+import {Button} from "reactstrap";
 
 
 const Index = (props) => {
@@ -20,8 +21,12 @@ const Index = (props) => {
             <div>
                 <div className="">
                     <div className={'form'}>
-                        <div className="mb-3">
-                            <SearchBox handleSearch={handleSearch}/>
+                        <div className="mb-3 d-flex w-100">
+                            <div className={'flex-grow-1'}>
+                                <SearchBox handleSearch={handleSearch}/>
+                            </div>
+                            <div className={'p-2'}></div>
+                            <Button className={'border-0 px-3 '} size={'small'}> <i className={'fa fa-bars'}></i> Menu</Button>
                         </div>
                     </div>
 

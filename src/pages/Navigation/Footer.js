@@ -8,7 +8,7 @@ const Index = () => {
         return (
             <Fragment>
                  <section className="">
-                    <footer className="footer footer--s3 footer--color-dark" >
+                    <footer className="footer footer--s3 footer--color-dark"  style={{marginBottom:'100px'}}>
                         <div className="p-5">
                             <div className="container">
 

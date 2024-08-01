@@ -41,7 +41,7 @@ const Index = (props) => {
                                 <nav>
                                     <ol className="breadcrumb mb-0">
                                         <>
-                                            <li className="breadcrumb-item ps-2"><span onClick={()=>{
+                                            <li className="breadcrumb-item"><span onClick={()=>{
                                                 navigate(-1);
                                             }}><i className={'fa fa-chevron-left'}></i> Back </span></li>
                                         </>

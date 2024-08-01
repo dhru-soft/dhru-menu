@@ -12,7 +12,7 @@ const LocationItem = (props:any) => {
         display:'flex',
         alignItems:'center'
     }}>
-        <div className={'d-flex m-2 h-100 mw-100'} style={{background  : '#00000095',borderRadius: 10,
+        <div className={'d-flex m-2 h-100 mw-100'} style={{background  : '#000000',borderRadius: 10,
         }}>
             <div onClick={() => {
                 if (store?.isOpen) {

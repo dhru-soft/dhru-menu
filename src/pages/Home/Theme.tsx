@@ -5,7 +5,7 @@ import {device} from "../../lib/static";
 
 const Index = (props: any) => {
 
-    const themecolor = device?.order?.themecolor || '#5C933F'
+    const themecolor = device?.order?.themecolor || '#000000'
 
     setTheme(themecolor)
 

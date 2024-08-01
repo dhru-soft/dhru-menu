@@ -276,7 +276,7 @@ export const getCompanyDetails = () => {
     }
     device.order = order;
 
-    setTheme(device?.order?.themecolor || '#5C933F')
+    setTheme(device?.order?.themecolor || '#000000')
 
     return {download_url,location, locationname, address1, address2, tablename, order,locationimage:location[device?.locationid]?.locationlimage}
 }
@@ -876,21 +876,25 @@ export const groupBy = (arr, property) => {
 
 
 export const getGroups = async () => {
-    await apiService({
-        method: METHOD.GET,
-        action: ACTIONS.ITEMS,
-        queryString: {locationid: device.locationid},
-        hideLoader: true,
-        workspace: device.workspace,
-        other: {url: urls.posUrl},
-    }).then(async (result) => {
-        if (result.status === STATUS.SUCCESS && Boolean(result?.data)) {
-            let groupArray = Object.values(result?.data?.itemgroup);
-            store.dispatch(setGroupList(groupArray.sort(function (a, b) {
-                return a.order - b.order
-            })))
-        }
-    });
+    return new Promise(async (resolve) => {
+        await apiService({
+            method: METHOD.GET,
+            action: ACTIONS.ITEMS,
+            queryString: {locationid: device.locationid},
+            hideLoader: true,
+            workspace: device.workspace,
+            other: {url: urls.posUrl},
+        }).then(async (result) => {
+
+            if (result.status === STATUS.SUCCESS && Boolean(result?.data)) {
+                let groupArray = Object.values(result?.data?.itemgroup);
+                store.dispatch(setGroupList(groupArray.sort(function (a, b) {
+                    return a.order - b.order
+                })))
+                resolve(true)
+            }
+        });
+    })
 }
 
 
@@ -911,10 +915,10 @@ function getContrastYIQ(hexcolor) {
 
 export const setTheme = (themecolor) => {
     applyTheme({
-        '--bodyColor': `${themecolor}10`,
+        '--bodyColor': `${themecolor}05`,
         '--bs-border-color': `${themecolor}20`,
         '--cartTotalColor': `${themecolor}`,
-        '--cartTotalColor2': `${themecolor}60`,
+        '--cartTotalColor2': `${themecolor}95`,
         '--dashed-border': `${themecolor}40`,
         '--text-muted': `${themecolor}`,
         '--btn-color': `${themecolor}`,

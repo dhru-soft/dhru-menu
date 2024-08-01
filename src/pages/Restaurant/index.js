@@ -74,9 +74,9 @@ const Index = (props) => {
 
                     <div className={'h-100'}>
 
-                        <div className="container h-100">
+                        <div className="container-lg h-100">
 
-                            <div className="col-12   pt-5 pb-6">
+                            <div className="col-12    pb-6">
 
                                 <>
 
@@ -90,7 +90,7 @@ const Index = (props) => {
 
                                         <div className="section-heading section-heading--center">
                                             <h2
-                                                className="__title text-white">
+                                                className="__title">
                                                 <div>{legalname}</div>
                                             </h2>
                                             {Boolean(tablename) &&

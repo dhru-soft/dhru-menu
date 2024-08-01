@@ -42,20 +42,20 @@ const Index = (props) => {
 
                     {<div className={'mt-3'}>
                         <nav>
-                            <ol className="breadcrumb mb-0 ps-3">
+                            <ol className="breadcrumb mb-0">
                                 {Boolean(device?.groupid) && Boolean(groupids?.length) ? <>
-                                    <li className="breadcrumb-item   pt-4 pb-2"><span onClick={() => {
+                                    <li className="breadcrumb-item   pt-4"><span onClick={() => {
                                         setCurrentGroup('')
                                     }}><i className={'fa fa-chevron-left'}></i> Back </span></li>
 
                                     {groupids?.map((gid, index) => {
                                         const foundGroup = Object.values(groupList).find((groupitem) => Boolean(groupitem?.itemgroupid === gid))
-                                        return (<li key={index} className="breadcrumb-item py-4" onClick={() => {
+                                        return (<li key={index} className="breadcrumb-item pt-4" onClick={() => {
                                                 (groupids?.length - 1 !== index) && setCurrentGroup(gid)
                                             }}><span>{foundGroup?.itemgroupname} </span></li>)
                                     })}
                                 </> : <>
-                                    <li className="breadcrumb-item py-4"><span> Menu </span></li>
+                                    <li className="breadcrumb-item pt-4"><span> Menu </span></li>
                                 </>}
                             </ol>
                         </nav>

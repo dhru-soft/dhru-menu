@@ -9,6 +9,7 @@ import ItemList from "../Items/Items";
 import CartHeader from "../Cart/CartHeader";
 import BodyClassName from 'react-body-classname';
 import Theme from "../Home/Theme";
+import Search from "../Cart/Search";
 
 
 const Index = (props) => {
@@ -28,8 +29,12 @@ const Index = (props) => {
                         <div className="container">
                             <div>
                                 <CartHeader/>
+
                                 {(!Boolean(searchitem)) ? <Groups ref={refGroups} /> : <ItemList refGroups={refGroups}/>}
                             </div>
+
+
+
                             <CartTotal page={'detailview'}/>
                         </div>
                     </div>
