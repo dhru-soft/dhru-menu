@@ -2,7 +2,7 @@ import React from "react";
 
 
 import CompanyDetail from "../Navigation/CompanyDetail";
-import ItemList from "./Items";
+import ItemsbyGroupList from "./ItemsbyGroup";
 import Init from "../Home/Init";
 import CartTotal from "../Cart/CartTotal";
 import CartHeader from "../Cart/CartHeader";
@@ -17,7 +17,7 @@ const Index = (props) => {
         <BodyClassName className="items">
             <section >
              <Theme/>
-            <Init/>
+
 
             <div className="">
 
@@ -32,7 +32,7 @@ const Index = (props) => {
                             <div>
                                 <div>
                                     <CartHeader/>
-                                    <ItemList/>
+                                    <ItemsbyGroupList/>
                                 </div>
                             </div>
 

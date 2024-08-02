@@ -1,5 +1,6 @@
 import * as React from 'react';
 import {useEffect, useRef} from 'react';
+import {onFocus} from "@reduxjs/toolkit/dist/query/core/setupListeners";
 
 
 const Search = (props: any) => {
@@ -37,7 +38,7 @@ const Search = (props: any) => {
           <div className={'position-absolute p-4'}>  <i className={'fa fa-search'}></i> </div>
             <input ref={searchRf} className="textfield textfield2"    placeholder="Search for item" defaultValue={searchQuery} onSubmit={() => props?.handleSearch(searchQuery.trim())} onChange={(e)=>{
                 onChangeSearch(e)
-            }}   name="search" type="text" style={{paddingLeft:40,borderRadius:5}}/>
+            }} onFocus={props.onFocus}  name="search" type="text" style={{paddingLeft:40,borderRadius:5}}/>
 
             {Boolean(searchQuery?.length) &&  <div className={'position-absolute p-4'} onClick={()=>{
                 searchRf.current.value = "";

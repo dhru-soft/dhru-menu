@@ -23,12 +23,12 @@ const Index = (props: any) => {
     }
 
 
-    return (<Modal isOpen={show} toggle={handleClose} size={maxWidth ? maxWidth : 'xs'}
+    return (<Modal isOpen={show} autoFocus={true} toggle={handleClose} size={maxWidth ? maxWidth : 'xs'}
                    className={`${isMobile ? 'mobile' : 'desktop'}`}
                    backdrop={backdrop ? backdrop : true} keyboard={keyboard ? keyboard : true}>
             {!disableclose && <ModalHeader toggle={handleClose}>{title ? title : ''}</ModalHeader>}
-            {disableclose && <ModalHeader>{title ? title : ''}</ModalHeader>}
-            <ModalBody>
+            {(disableclose && title) && <ModalHeader>{title ? title : ''}</ModalHeader>}
+            <ModalBody  >
                 {show && <Component/>}
             </ModalBody>
         </Modal>)

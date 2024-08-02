@@ -1,15 +1,14 @@
 import React, {useRef} from "react";
 import {connect} from "react-redux";
-import Groups from "./Groups";
+import Groups from "./GroupsbyLocation";
 
 import CompanyDetail from "../Navigation/CompanyDetail";
 import Init from "../Home/Init";
 import CartTotal from "../Cart/CartTotal";
-import ItemList from "../Items/Items";
+import ItemsbyGroupList from "../Items/ItemsbyGroup";
 import CartHeader from "../Cart/CartHeader";
 import BodyClassName from 'react-body-classname';
 import Theme from "../Home/Theme";
-import Search from "../Cart/Search";
 
 
 const Index = (props) => {
@@ -21,7 +20,7 @@ const Index = (props) => {
     return (<BodyClassName className="groups">
         <section>
             <Theme/>
-            <Init/>
+
             <div className="">
                 <CompanyDetail/>
                 <div className={'col-12'}>
@@ -30,11 +29,8 @@ const Index = (props) => {
                             <div>
                                 <CartHeader/>
 
-                                {(!Boolean(searchitem)) ? <Groups ref={refGroups} /> : <ItemList refGroups={refGroups}/>}
+                                {(!Boolean(searchitem)) ? <Groups ref={refGroups} /> : <ItemsbyGroupList refGroups={refGroups}/>}
                             </div>
-
-
-
                             <CartTotal page={'detailview'}/>
                         </div>
                     </div>

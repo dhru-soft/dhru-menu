@@ -7,6 +7,7 @@ import {connect} from "react-redux";
 import Restaurant from "../Restaurant";
 import BodyClassName from 'react-body-classname';
 import Footer from "../Navigation/Footer";
+import {InitProvider} from "../../context/InitContext";
 
 const Index = (props) => {
 
@@ -37,6 +38,7 @@ const Index = (props) => {
 
 
     return (
+
         <BodyClassName className={'qrcode'}>
             <>
             <div className="position-relative   h-100">
@@ -104,6 +106,7 @@ const Index = (props) => {
 
             </>
         </BodyClassName>
+
     )
 
 

@@ -7,6 +7,11 @@ import {LazyLoadImage} from 'react-lazy-load-image-component';
 import {useNavigate} from "react-router-dom";
 import {Spinner} from "reactstrap";
 import Search from "../Cart/Search";
+import ItemsbyGroupList from "../Items/ItemsbyGroup";
+import ItemsbyGroup from "../Items/ItemsbyGroup";
+import store from "../../lib/redux-store/store";
+import {setModal} from "../../lib/redux-store/reducer/component";
+import {Element, Link} from "react-scroll";
 
 
 export const GroupBox = ({item}) => {
@@ -67,21 +72,28 @@ const Index = forwardRef((props, ref) => {
                         //return group?.itemgroupmid === '0'
                     }).map((item, index) => {
 
-                        return <div key={index}
-                                    className="text-center col-sm-4 col-lg-2 col-md-3 col-6 mb-0 cursor-pointer p-1"
-                                    onClick={() => {
-                                        dispatch(setSelected({groupids: [item?.itemgroupid]}))
-                                        navigate(`/l/${device.locationid}/t/${device.tableid}/g/${item?.itemgroupid}`)
-                                    }}>
-                            <GroupBox item={item}/>
-                        </div>
+
+
+                        return  <Link activeClass="active" className="text-center col-sm-4 col-lg-2 col-md-3 col-6 mb-0 cursor-pointer p-1" to={item?.itemgroupid} spy={true} smooth={true} duration={500}>
+                            <div key={index}
+
+                                 onClick={() => {
+                                     dispatch(setSelected({groupids: [item?.itemgroupid]}))
+
+                                     navigate(`/l/${device.locationid}/t/${device.tableid}/g/${item?.itemgroupid}`)
+
+                                     dispatch(setModal({show: false}))
+
+                                 }}>
+                                <GroupBox item={item}/>
+                            </div>
+                        </Link>
                     })
-                }
+            }
+
+
             </div>
 
-            <div className={'position-fixed'} style={{zIndex:999,left:10,right:10,bottom:0}}>
-                <Search/>
-            </div>
 
         </section>
     )

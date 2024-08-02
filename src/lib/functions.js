@@ -20,6 +20,7 @@ import 'react-confirm-alert/src/react-confirm-alert.css';
 import {setGroupList} from "./redux-store/reducer/group-list";
 import OrderDetail from "../pages/Client/OrderDetail";
 import moment from "moment";
+import {resetItemList, setItemList} from "./redux-store/reducer/item-list";
 let base64 = require('base-64');
 let utf8   = require('utf8'); // Import css
 
@@ -860,20 +861,42 @@ export const requestOTP = (mobile, countrycode, countrylabel) => {
 }
 
 
-export const groupBy = (arr, property) => {
+export const groupBy = (arr, property, fields=[],fixedreturn=false) => {
+
     try {
-        return arr.reduce(function (memo, x) {
+        return arr?.reduce(function (memo, x) {
             if (!memo[x[property]]) {
                 memo[x[property]] = [];
             }
-            memo[x[property]].push(x);
+            if(fields?.length){
+                let selectedobject = fields.map((field)=>{
+                    return {[field] : x[field]}
+                })
+                memo[x[property]].push(selectedobject[0]);
+            }
+            else if(fixedreturn){
+                memo[x[property]]= fixedreturn;
+            }
+            else {
+                memo[x[property]].push(x);
+            }
+
             return memo;
         }, {});
     } catch (e) {
-        console.log('e', e)
+        console.log('e',e)
     }
 }
 
+
+export const toArray = (object,keyto) => {
+    if(Boolean(object)) {
+        return Object.keys(object).map((key) => {
+            return {...object[key], [keyto]: key}
+        })
+    }
+    return
+}
 
 export const getGroups = async () => {
     return new Promise(async (resolve) => {
@@ -891,6 +914,10 @@ export const getGroups = async () => {
                 store.dispatch(setGroupList(groupArray.sort(function (a, b) {
                     return a.order - b.order
                 })))
+
+                const itemsarray = toArray(result?.data?.items,'id')
+                store.dispatch(resetItemList())
+                store.dispatch(setItemList(groupBy(itemsarray,'itemgroupid')))
                 resolve(true)
             }
         });

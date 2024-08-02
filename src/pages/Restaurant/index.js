@@ -10,6 +10,8 @@ import {device} from "../../lib/static";
 import BodyClassName from 'react-body-classname';
 import Theme from "../Home/Theme";
 import LocationItem from "./LocationItem";
+import {useRedux} from "../../use/useRedux";
+import useInitContext from "../../context/InitContext";
 
 
 const Index = (props) => {
@@ -17,36 +19,26 @@ const Index = (props) => {
     const params = useParams();
 
     const {accesscode} = params || {}
-    const {restaurantDetail} = props;
 
     const navigate = useNavigate();
     const {workspace} = device;
-    const [loader, setLoader] = useState(false);
+
+    const {restaurantDetail} = props
 
 
     useEffect(() => {
-        if (workspace) {
-            getInit(workspace).then(() => {
-                setLoader(true)
-            })
-        } else {
+        if (!workspace) {
+
             Boolean(accesscode) && postQrCode(accesscode).then((data) => {
                 const {workspace, tableid, locationid} = data;
                 if (locationid) {
                     window.location.href = `${window.location.protocol}//${workspace}.${window.location.host.replace('www', '')}/l/${locationid}/t/${tableid}`
-                } else {
-                    setLoader(true)
                 }
             })
         }
     }, [accesscode])
 
 
-    if (!loader) {
-        return <div className="col-12   text-center mt-5 pt-5">
-            Please Wait
-        </div>
-    }
 
     const {general: {legalname, logo}, location, tabledetail: {tablename}} = restaurantDetail;
 

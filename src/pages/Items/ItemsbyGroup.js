@@ -117,7 +117,7 @@ export const ItemBox = memo(({item}) => {
         egg: {color: 'gray', icon: 'egg'}
     }
 
-    return (<div className="col-12 col-sm-6 col-md-4  col-lg-3    item-hover  p-2 py-4">
+    return (<div className="col-12 col-sm-6 col-md-4  col-lg-3   item-hover ">
         <div className="d-flex p-2 h-100">
             <div className={'w-100'}>
 
@@ -158,7 +158,7 @@ export const ItemBox = memo(({item}) => {
 })
 
 
-const Items = forwardRef((props, ref) => {
+const ItemsbyGroup = forwardRef((props, ref) => {
 
 
     const dispatch = useDispatch()
@@ -322,6 +322,6 @@ const mapStateToProps = (state) => {
     }
 }
 
-export default connect(mapStateToProps)(Items);
+export default connect(mapStateToProps)(ItemsbyGroup);
 
 

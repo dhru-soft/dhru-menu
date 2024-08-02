@@ -6,11 +6,18 @@ import store from "../../lib/redux-store/store";
 import {setModal} from "../../lib/redux-store/reducer/component";
 import Addresses from "../Client/Addresses";
 import {device} from "../../lib/static";
-import {useNavigate} from "react-router-dom";
+import {useNavigate, useParams} from "react-router-dom";
 import Select from "react-select";
 import {Badge, Button, Dropdown, DropdownItem, DropdownMenu, DropdownToggle} from "reactstrap";
 
 const Index = ({clientDetail,company}) => {
+
+
+    const params2 = useParams()
+
+    device.tableid = params2?.tableid;
+    device.locationid = params2?.locationid;
+    device.groupid = params2?.groupid;
 
     const dispatch = useDispatch();
     const navigate = useNavigate();

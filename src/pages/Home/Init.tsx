@@ -27,7 +27,7 @@ const Index = (props: any) => {
     device.locationid = params?.locationid;
     device.groupid = params?.groupid;
 
-    const dispatch = useDispatch()
+/*    const dispatch = useDispatch()
     const legalname: any = props?.general?.legalname
 
     if (!Boolean(legalname)) {
@@ -83,7 +83,7 @@ const Index = (props: any) => {
                 store.dispatch(setAddonList(data))
             })
         }
-    }, []);
+    }, []);*/
 
 
     return (<>

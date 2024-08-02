@@ -13,6 +13,7 @@ import Items from "../pages/Items";
 import Feedback from "../pages/Feedback";
 import Addresses from "../pages/Client/Addresses";
 import MyOrders from "../pages/Client/MyOrders";
+import AllItems from "../pages/Items/AllItems";
 
 class RouterComponent extends Component {
 
@@ -25,8 +26,10 @@ class RouterComponent extends Component {
                 <Route exact path="/feedback/:feedbackid" element={<Feedback />} />
                 <Route exact path="/l/:locationid/myorders" element={<MyOrders />} />
                 <Route exact path="/l/:locationid" element={<Groups />}/>
-                <Route exact path="/l/:locationid/t/:tableid" element={<Groups />}/>
-                <Route exact path="/l/:locationid/t/:tableid/g/:groupid" element={<Items />}/>
+
+                <Route exact path="/l/:locationid/t/:tableid" element={<AllItems />}/>
+
+                <Route exact path="/l/:locationid/t/:tableid/g/:groupid" element={<AllItems />}/> {/*<Items />*/}
                 <Route exact path="/l/:locationid/t/:tableid/cartdetail" element={<CartDetail />} />
             </Routes>
         </Fragment>)

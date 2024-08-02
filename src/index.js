@@ -14,7 +14,7 @@ import './scss/index.scss';
 
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-
+import {InitConsumer, InitProvider} from "./context/InitContext";
 
 export const history = createBrowserHistory({
     basename: process.env.PUBLIC_URL
@@ -28,6 +28,7 @@ const JSX = () => {
         <Provider store={store}>
             <BrowserRouter history={history}>
 
+                <InitProvider>
                     <>
                         <div className={'min-height'}>
                             <Header location={history.location} />
@@ -37,16 +38,19 @@ const JSX = () => {
                     </>
                     <Dialog/>
                     <Loader/>
-                <ToastContainer  position="top-center"
-                                 autoClose={2000}
-                                 hideProgressBar={true}
-                                 newestOnTop={false}
-                                 closeOnClick
-                                 rtl={false}
-                                 pauseOnFocusLoss
-                                 draggable
-                                 pauseOnHover
-                                 theme="light" />
+                    <ToastContainer  position="top-center"
+                                     autoClose={2000}
+                                     hideProgressBar={true}
+                                     newestOnTop={false}
+                                     closeOnClick
+                                     rtl={false}
+                                     pauseOnFocusLoss
+                                     draggable
+                                     pauseOnHover
+                                     theme="light" />
+                </InitProvider>
+
+
             </BrowserRouter>
 
 

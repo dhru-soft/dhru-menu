@@ -6,7 +6,7 @@ import {changeCartItem, setCartData, setUpdateCart} from "../../lib/redux-store/
 import {v4 as uuid} from "uuid";
 import {setModal} from "../../lib/redux-store/reducer/component";
 import ItemDetails from "./ItemDetails";
-import {AddonAction} from "../Items/Items";
+import {AddonAction} from "../Items/ItemsbyGroup";
 import {itemTotalCalculation, resetDiscountData} from "../../lib/item-calculation";
 
 

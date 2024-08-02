@@ -26,7 +26,6 @@ const Index = (props) => {
         <BodyClassName className="cartdetail">
             <section>
 
-            <Init/>
 
             <div className="">
 

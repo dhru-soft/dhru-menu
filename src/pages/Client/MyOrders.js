@@ -2,7 +2,7 @@ import React, {useEffect, useMemo, useState} from "react";
 import {connect, useDispatch} from "react-redux";
 import CompanyDetail from "../Navigation/CompanyDetail";
 import Init from "../Home/Init";
-import {getInit, getWorkspaceName, numberFormat, orderDetail} from "../../lib/functions";
+import { numberFormat, orderDetail} from "../../lib/functions";
 import apiService from "../../lib/api-service";
 import {ACTIONS, device, METHOD, STATUS, urls} from "../../lib/static";
 

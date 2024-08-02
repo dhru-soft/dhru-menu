@@ -550,8 +550,8 @@ const DiscountCouponItem = (props: any) => {
                 invoiceitems.forEach((iItem: any) => {
 
                     if (!isEmpty(newInvoiceItems)) {
-                        let allitems = clone(newInvoiceItems?.filter((item: any) => !Boolean(item?.combokey)));
-                        let lastItem = allitems[allitems.length - 1];
+                        let ItemsbyGroup = clone(newInvoiceItems?.filter((item: any) => !Boolean(item?.combokey)));
+                        let lastItem = ItemsbyGroup[ItemsbyGroup.length - 1];
                         position = lastItem?.position;
                     }
 
@@ -693,8 +693,8 @@ const DiscountCouponItem = (props: any) => {
 
                     invoiceitems.forEach((iItem: any, index: any) => {
                         if (!isEmpty(newInvoiceItems)) {
-                            let allitems = clone(newInvoiceItems?.filter((item: any) => !Boolean(item?.combokey)));
-                            let lastItem = allitems[allitems.length - 1];
+                            let ItemsbyGroup = clone(newInvoiceItems?.filter((item: any) => !Boolean(item?.combokey)));
+                            let lastItem = ItemsbyGroup[ItemsbyGroup.length - 1];
                             position = lastItem?.position;
                         }
                         position = position + 1;

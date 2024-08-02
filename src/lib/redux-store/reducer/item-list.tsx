@@ -10,10 +10,13 @@ export const itemList = createSlice({
         ...action.payload
       }
     },
+    resetItemList: (state: any, action) => {
+      return {}
+    },
   },
 })
 
 // Action creators are generated for each case reducer function
-export const {setItemList} = itemList.actions
+export const {setItemList,resetItemList} = itemList.actions
 
 export default itemList.reducer

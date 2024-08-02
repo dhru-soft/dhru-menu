@@ -34,10 +34,10 @@ const Index = (props) => {
     return (
         <>
             <div className={'mainHeader'}  id="mainHeader" ref={stickyHeader}>
-                <div className={'supported  p-2 pt-3'}>
+                <div className={'supported  p-2'}>
                     <div className={'bg-white p-3 rounded-4'} >
                         <div>
-                            
+
                             <Diet hidetag={!Boolean(industrytype === 'foodservices')}/>
                         </div>
                     </div>

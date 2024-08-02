@@ -1,9 +1,9 @@
 import React from "react";
 import {connect} from "react-redux";
-import Groups from "../Groups/Groups";
+import Groups from "../Groups/GroupsbyLocation";
 
 import CompanyDetail from "../Navigation/CompanyDetail";
-import ItemList from "../Items/Items";
+import ItemsbyGroupList from "../Items/ItemsbyGroup";
 import Search from "./Search";
 import Bredcrumb from "./Bredcrumb";
 import Diet from "./Diet";
@@ -17,8 +17,6 @@ const Index = (props) => {
 
     return (
         <section>
-
-            <Init/>
 
             <div className="">
 
@@ -42,7 +40,7 @@ const Index = (props) => {
                                 {(!Boolean(groupids) && !Boolean(searchitem)) ? <div>
                                     <Groups/>
                                 </div> : <div>
-                                    <ItemList/>
+                                    <ItemsbyGroupList/>
                                 </div>}
 
                             </div>

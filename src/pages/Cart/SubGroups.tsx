@@ -3,7 +3,7 @@ import {useSelector} from "react-redux";
 import {useNavigate} from "react-router-dom";
 import {getGroups} from "../../lib/functions";
 import {device} from "../../lib/static";
-import {GroupBox} from "../Groups/Groups";
+import {GroupBox} from "../Groups/GroupsbyLocation";
 
 const SubGroups = () => {
 
