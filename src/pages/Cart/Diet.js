@@ -33,7 +33,7 @@ const Index = (props) => {
     }
 
     return (
-        <div >
+        <div  className={'p-3'}>
 
             <div >
                 <div className="">

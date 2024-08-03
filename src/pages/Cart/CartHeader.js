@@ -50,11 +50,11 @@ const Index = (props) => {
 
                             <h5 className={'p-3 m-0'}>
                                 <div style={{fontWeight:"normal",color:'#888'}}>{locationname}</div>
-                                Sub Group
+                                Group Name
                             </h5>
 
                         </div>
-                        <div className={'p-3'}>
+                        <div>
                             <Diet hidetag={!Boolean(industrytype === 'foodservices')}/>
                         </div>
                     </div>
