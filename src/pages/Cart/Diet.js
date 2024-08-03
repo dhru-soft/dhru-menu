@@ -28,11 +28,12 @@ const Index = (props) => {
 
     if(Boolean(tags?.length === 1)){
         const {label2,icon,color} = tags[0]
+        return <></>
         return <div> <i style={{color:color}} className={`fa fa-${icon}`}></i> {label2}</div>
     }
 
     return (
-        <div className={'col-12'}>
+        <div >
 
             <div >
                 <div className="">

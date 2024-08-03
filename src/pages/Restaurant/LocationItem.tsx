@@ -12,21 +12,20 @@ const LocationItem = (props:any) => {
         display:'flex',
         alignItems:'center'
     }}>
-        <div className={'d-flex m-2 h-100 mw-100'} style={{background  : '#000000',borderRadius: 10,
+        <div className={'d-flex m-2 h-100 mw-100'} style={{ borderRadius: 7,border:'#222 solid 1px'
         }}>
             <div onClick={() => {
                 if (store?.isOpen) {
                     navigate(`/l/${locationid}/t/0`)
                 }
             }}
-                 className={' p-4 text-white  d-flex justify-content-between  cursor-pointer h-100'} >
-                <div >
+                 className={' d-flex justify-content-between  cursor-pointer h-100 '} >
+                <div>
+                     {Boolean(location?.locationlimage) &&  <img src={`https://${location?.locationlimage}`} alt={'Location Image'} style={{width:'100%',borderRadius:'5px 5px 0 0'}}  />}
 
-                        {Boolean(location?.locationlimage) &&  <img src={`https://${location?.locationlimage}`} alt={'Location Image'} style={{width:'100%'}}  />}
-
-                    <div  style={{fontSize: 22,padding:'10px'}}>{location?.name}</div>
+                    <div  style={{fontSize: 22,padding:'10px'}}  >{location?.name}</div>
                     {
-                        (location?.address1 || location?.address2 || location?.city) && <div  style={{fontSize: 13,marginTop:'10px'}}>
+                        (location?.address1 || location?.address2 || location?.city) && <div  style={{fontSize: 13}}>
                             {location?.address1} {location?.address2} {location?.city}
                         </div>
                     }

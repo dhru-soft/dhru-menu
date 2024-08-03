@@ -68,30 +68,33 @@ const Index = (props) => {
 
                         <div className="container-lg h-100">
 
-                            <div className="col-12    pb-6">
+                            <div className="col-12">
 
                                 <>
 
                                     {Boolean(legalname !== 'notfound') ? <>
-                                        <div className={'text-center'}>
+                                        <div className={'text-center m-5 p-5'}>
                                             {Boolean(logo?.download_url) &&
-                                                <img style={{borderRadius: 10, width: 100}} alt={''} className="img-fluid"
+                                                <img style={{borderRadius: 10, width: 100}} alt={''}
+                                                     className="img-fluid"
                                                      src={`https://${logo?.download_url}`}
                                                 />}
+
+                                            <div className="section-heading section-heading--center">
+                                                <h2
+                                                    className="__title">
+                                                    <div>{legalname}</div>
+                                                </h2>
+                                                {Boolean(tablename) &&
+                                                    <h6 className="__subtitle  text-white"> {tablename} </h6>}
+                                            </div>
+
                                         </div>
 
-                                        <div className="section-heading section-heading--center">
-                                            <h2
-                                                className="__title">
-                                                <div>{legalname}</div>
-                                            </h2>
-                                            {Boolean(tablename) &&
-                                                <h6 className="__subtitle  text-white"> {tablename} </h6>}
-                                        </div>
 
                                         <>
 
-                                            {!isEmpty(location) && <div className={'row justify-content-center'}  >
+                                            {!isEmpty(location) && <div className={'row justify-content-center px-2'}>
                                                 {Object.keys(location).map((key) => {
 
                                                     return <LocationItem

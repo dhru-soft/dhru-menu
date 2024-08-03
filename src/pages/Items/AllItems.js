@@ -1,32 +1,21 @@
-import React, {forwardRef, memo, useEffect, useImperativeHandle, useState} from "react";
-import {connect, useDispatch} from "react-redux";
+import React, {forwardRef, useEffect, useImperativeHandle, useState} from "react";
+import {connect} from "react-redux";
 import {device} from "../../lib/static";
 
-import {clone, getGroups, isEmpty, numberFormat} from "../../lib/functions";
-import ReactReadMoreReadLess from "react-read-more-read-less";
+import {getGroups, isEmpty} from "../../lib/functions";
 import Loader3 from "../../components/Loader/Loader3";
-import AddButton from "../Cart/AddButton";
-import store from "../../lib/redux-store/store";
-import {itemLoadingDisabled, itemLoadingEnable, setModal} from "../../lib/redux-store/reducer/component";
-import ItemDetails from "../Cart/ItemDetails";
-import {LazyLoadImage} from "react-lazy-load-image-component";
-import {v4 as uuid} from "uuid";
 import BodyClassName from "react-body-classname";
 import Theme from "../Home/Theme";
 import CompanyDetail from "../Navigation/CompanyDetail";
 import CartTotal from "../Cart/CartTotal";
 import {useParams} from "react-router-dom";
-import {Card, CardBody} from "reactstrap";
-import CartHeader from "../Cart/CartHeader";
-import Search from "../Cart/Search";
-import Init from "../Home/Init";
+import {Card, CardBody, UncontrolledCollapse} from "reactstrap";
 import {ItemBox} from "./ItemsbyGroup";
-import { Link, DirectLink, Element, Events, animateScroll as scroll, scrollSpy, scroller } from 'react-scroll'
+import {Element, Events, scroller} from 'react-scroll'
+import CartHeader from "../Cart/CartHeader";
 
 
-
-
-export const   mergeCart = (items,invoiceitems) => {
+export const mergeCart = (items, invoiceitems) => {
 
     if (!isEmpty(items)) {
 
@@ -54,7 +43,7 @@ export const   mergeCart = (items,invoiceitems) => {
 
 const AllItems = forwardRef((props, ref) => {
 
-    const {itemList, groupList,groupids, selectedtags, searchitem, invoiceitems,search, refGroups} = props
+    const {itemList, groupList, groupids, selectedtags, searchitem, invoiceitems, options,search, refGroups} = props
 
     const params2 = useParams()
 
@@ -69,6 +58,7 @@ const AllItems = forwardRef((props, ref) => {
     const urlSearchParams = new URLSearchParams(window.location.search);
     const params = Object.fromEntries(urlSearchParams.entries());
 
+    const multioptions = Object.keys(options).length !== 1;
 
     const {tableorder, online} = device?.order || {};
 
@@ -78,9 +68,7 @@ const AllItems = forwardRef((props, ref) => {
 
     const scrollTo = () => {
         scroller.scrollTo('scroll-to-element', {
-            duration: 800,
-            delay: 0,
-            smooth: 'easeInOutQuart'
+            duration: 800, delay: 0, smooth: 'easeInOutQuart'
         })
     }
 
@@ -96,9 +84,9 @@ const AllItems = forwardRef((props, ref) => {
 
     useEffect(() => {
         //setLoader(false)
-         getGroups().then((flag) => {
-             //setLoader(true)
-         })
+        getGroups().then((flag) => {
+            //setLoader(true)
+        })
     }, [device.locationid])
 
     useEffect(() => {
@@ -109,7 +97,7 @@ const AllItems = forwardRef((props, ref) => {
         })
 
         setGroups(groups)
-        setItems(mergeCart(itemList,invoiceitems));
+        setItems(mergeCart(itemList, invoiceitems));
 
         setLoader(true)
     }, [itemList]);
@@ -124,68 +112,74 @@ const AllItems = forwardRef((props, ref) => {
         return <div className={'text-center bg-white rounded-4 text-muted p-5'}>No items found</div>
     }
 
+    const tagoptions  = selectedtags?.filter((item)=>{
+        return item.selected
+    })?.map((item)=>{
+       return item.value
+    })
+
 
     return (<BodyClassName className="groups">
         <section>
             <Theme/>
 
-            <div className="">
+            <div className="container p-0">
                 <CompanyDetail/>
 
 
-
-
-
-
-
-
-
-
-
-                <div className={'col-12 mt-3'}>
+                <div className={''}>
                     <div>
-                        <div className="container">
+                        <div>
                             <div>
-                                {/*<CartHeader/>*/}
+                                <CartHeader/>
 
                                 {Object.keys(items).filter((keys) => {
                                     return true
                                     return device.groupid ? device.groupid === keys : true
                                 }).map((key, index) => {
 
-                                    return <Card key={index} className={'mb-3'}>
-                                        <CardBody className={'pb-0'}>
+                                    return <Card key={index} className={'mb-3 border-0'}>
+                                        <CardBody  >
                                             <Element name={key}>
-                                                <div><h3> {groups[key]?.itemgroupname}</h3></div>
+                                                <div id={`toggle${key}`}>
+                                                   <div className={'d-flex justify-content-between align-items-center'}>
+                                                       <h4  className={'p-2 m-0'}> {groups[key]?.itemgroupname}</h4>
+                                                       <div className={'me-3'}><i className={'fa fa-chevron-down'}></i></div>
+                                                   </div>
+                                                </div>
                                             </Element>
-                                            <div className="row">
-                                                {items[key].map((item, indd) => {
-                                                    return <ItemBox key={indd}
-                                                                    item={{
-                                                                        ...item,
-                                                                        itemid: item.id,
-                                                                        addbutton: hasAdd
-                                                                    }}/>
-                                                })}
-                                            </div>
+
+
+                                            <UncontrolledCollapse toggler={`#toggle${key}`} defaultOpen >
+                                                <div className={'py-4'}>
+                                                    <div className="row">
+                                                        {items[key].filter((item)=>{
+                                                            return !isEmpty(tagoptions) ? tagoptions.includes(item.veg) : true
+                                                        }).map((item, indd) => {
+                                                            return <ItemBox key={indd}
+                                                                            item={{
+                                                                                ...item,
+                                                                                itemid: item.id,
+                                                                                multioptions:multioptions,
+                                                                                addbutton: hasAdd
+                                                                            }}/>
+                                                        })}
+                                                    </div>
+                                                </div>
+                                            </UncontrolledCollapse>
+
+
                                         </CardBody>
                                     </Card>
                                 })}
 
                             </div>
 
-                            <div className={'position-fixed bg-white shadow radius-5px'}
-                                 style={{zIndex: 999, left: 0, right: 0, bottom: 0}}>
-                                <div className={'px-3 pt-3 '}>
-                                    <Search/>
-                                </div>
-                            </div>
 
                             <CartTotal page={'detailview'}/>
                         </div>
                     </div>
                 </div>
-
 
 
             </div>
@@ -199,11 +193,36 @@ const mapStateToProps = (state) => {
     return {
         invoiceitems: state.cartData.invoiceitems,
         groupList: state.groupList,
-        itemList: state.itemList,
-        ...state.selectedData
+        options: state.restaurantDetail?.settings?.options,
+        itemList: state.itemList, ...state.selectedData
     }
 }
 
 export default connect(mapStateToProps)(AllItems);
 
 
+/*
+<UncontrolledAccordion
+    defaultOpen={[
+        '1',
+    ]}
+    stayOpen
+    toggle={'1'}
+>
+    <AccordionItem>
+        <AccordionHeader targetId="1">
+            Accordion Item 1
+        </AccordionHeader>
+        <AccordionBody accordionId="1">
+            <strong>
+                This is the first item's accordion body.
+            </strong>
+            You can modify any of this with custom CSS or overriding our default variables. It's also worth noting that just about any HTML can go within the{' '}
+            <code>
+                .accordion-body
+            </code>
+            , though the transition does limit overflow.
+        </AccordionBody>
+    </AccordionItem>
+
+</UncontrolledAccordion>*/

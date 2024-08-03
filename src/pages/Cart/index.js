@@ -46,7 +46,7 @@ const Index = (props) => {
                             </div>
 
 
-                            <CartTotal page={'detailview'}/>
+                            <CartTotal page={'detailview'}  />
 
                         </div>
 

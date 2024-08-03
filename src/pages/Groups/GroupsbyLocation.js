@@ -15,22 +15,17 @@ import {Element, Link} from "react-scroll";
 
 
 export const GroupBox = ({item}) => {
+
     const withimage = Boolean(item.itemgroupimage);
     return (
         <>
-            <div className={`__item __item--rounded bg-white text-center border position-relative group-box`} style={{
-                borderRadius: 10,
-                minHeight: 80,
-                height: '100%'
-            }}>
-
-                {Boolean(item?.itemgroupimage) ? <LazyLoadImage
+            {/*{Boolean(item?.itemgroupimage) ? <LazyLoadImage
                     alt={'helo'}
-                    src={`https://${item?.itemgroupimage}`}
+                    src={`https://${item?.itemgroupimage}`} /> : <div></div>}*/}
 
-                    style={{maxWidth: '100%', borderRadius: 10}}/> : <div></div>}
-
-                <h5 className={`__title text-center position-absolute ${withimage ? 'text-white' : ''} p-3`}  style={{top: 0}}>{item.itemgroupname} </h5>
+            <div className={'p-3 d-flex justify-content-between align-items-center'}>
+               <span>{item.itemgroupname}</span>
+                <span>{item.total}</span>
             </div>
         </>
     )
@@ -43,7 +38,7 @@ const Index = forwardRef((props, ref) => {
     const navigate = useNavigate()
     const [loader, setLoader] = useState(false)
 
-    const {workspace, groupList} = props;
+    const {workspace, groupList,itemList} = props;
 
     useImperativeHandle(ref,()=>({setLoader}))
 
@@ -65,7 +60,7 @@ const Index = forwardRef((props, ref) => {
 
     return (
         <section>
-            <div className="row p-2">
+            <div >
             {
                     Object.values(groupList).filter((group) => {
                         return true
@@ -74,18 +69,18 @@ const Index = forwardRef((props, ref) => {
 
 
 
-                        return  <Link activeClass="active" className="text-center col-sm-4 col-lg-2 col-md-3 col-6 mb-0 cursor-pointer p-1" to={item?.itemgroupid} spy={true} smooth={true} duration={500}>
+                        return  <Link activeClass="active" className=" cursor-pointer" to={item?.itemgroupid} spy={true} smooth={true} duration={300}>
                             <div key={index}
 
                                  onClick={() => {
                                      dispatch(setSelected({groupids: [item?.itemgroupid]}))
 
-                                     navigate(`/l/${device.locationid}/t/${device.tableid}/g/${item?.itemgroupid}`)
+                                     //navigate(`/l/${device.locationid}/t/${device.tableid}/g/${item?.itemgroupid}`)
 
                                      dispatch(setModal({show: false}))
 
                                  }}>
-                                <GroupBox item={item}/>
+                                <GroupBox item={{...item,total:itemList[item.itemgroupid]?.length}}/>
                             </div>
                         </Link>
                     })
@@ -104,6 +99,7 @@ const mapStateToProps = (state) => {
     return {
         workspace: state.restaurantDetail.workspace,
         groupList: state.groupList,
+        itemList: state.itemList,
         ...state.selectedData
     }
 }

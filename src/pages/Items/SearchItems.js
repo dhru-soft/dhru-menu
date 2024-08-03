@@ -9,6 +9,7 @@ import {ItemBox} from "./ItemsbyGroup";
 import {mergeCart} from "./AllItems";
 import store from "../../lib/redux-store/store";
 import {setModal} from "../../lib/redux-store/reducer/component";
+import {getCompanyDetails, isEmpty} from "../../lib/functions";
 
 
 const SearchItems = forwardRef((props, ref) => {
@@ -16,6 +17,8 @@ const SearchItems = forwardRef((props, ref) => {
     const {itemList, groupList, groupids, selectedtags, searchitem, invoiceitems, search, refGroups} = props
 
     const dispatch = useDispatch()
+
+    let {locationname} = getCompanyDetails();
 
     const handleSearch = (value) => {
         dispatch(setSelected({searchitem: value}))
@@ -39,7 +42,7 @@ const SearchItems = forwardRef((props, ref) => {
 
     return <>
 
-        <div className={'form'}>
+        <div className={'form mb-4'}>
             <div className="mb-3 d-flex w-100 align-items-center">
                 <div className={'p-4'} onClick={()=>{
                     store.dispatch(setModal({
@@ -49,12 +52,12 @@ const SearchItems = forwardRef((props, ref) => {
                     <i className="fa fa-chevron-down"></i>
                 </div>
                 <div className={'flex-grow-1'}>
-                    <SearchBox handleSearch={handleSearch} autoFocus={true}/>
+                    <SearchBox handleSearch={handleSearch} placeholder={`Search in ${locationname}`} autoFocus={true}/>
                 </div>
             </div>
         </div>
 
-
+     {!isEmpty(items) ? <>
         {Object.keys(items).map((keys, index) => {
             return <div key={index} >
                 <div>
@@ -69,6 +72,9 @@ const SearchItems = forwardRef((props, ref) => {
                 </div>
             </div>
         })}
+        </> : <>
+            <h5 className={'text-center'}>No any result for "{searchitem}"</h5>
+        </>}
 
     </>
 

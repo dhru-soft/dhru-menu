@@ -8,12 +8,13 @@ import 'react-confirm-alert/src/react-confirm-alert.css';
 import {useNavigate} from "react-router-dom";
 import useStore from "../../hooks/useStore";
 import {toast} from "react-toastify";
+import Search from "./Search";
 
 const Index = (props) => {
 
     const navigate = useNavigate();
 
-    const {cartData, page, cartData: {vouchertotaldisplay, invoiceitems, tableid}} = props;
+    const {cartData, page,hidesearch, cartData: {vouchertotaldisplay, invoiceitems, tableid}} = props;
 
     const store = useStore()
     const [summary, setSummary] = useState(false)
@@ -21,9 +22,7 @@ const Index = (props) => {
     ////// STORE CART
     sessionStore(createUniqueStore(), cartData).then();
 
-    if (Boolean(invoiceitems.length === 0)) {
-        return <></>
-    }
+
 
     let btnLabel = 'Next'
     if (page === 'final') {
@@ -45,11 +44,16 @@ const Index = (props) => {
 
 
 
-    return (<div className={'position-fixed '} style={{zIndex: 999, bottom: 5, left: 0, right: 0}}>
+    return (<div className={'position-fixed '} style={{zIndex: 999, bottom:  0, left: 0, right: 0}}>
 
-        <div className={'container'}>
+        <div className={''}>
 
-            <div className={'  rounded-3  p-4 cart-total company-detail'}>
+            {!hidesearch &&  <div>
+                <Search/>
+            </div>}
+
+            {Boolean(invoiceitems.length) &&  <div className={'  rounded-3  p-4 cart-total company-detail'}>
+
 
                 {summary && <CartSummary/>}
 
@@ -91,7 +95,7 @@ const Index = (props) => {
                     </div>
                 </div>
 
-            </div>
+            </div>}
 
         </div>
 

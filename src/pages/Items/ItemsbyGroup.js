@@ -109,7 +109,7 @@ export const ItemBox = memo(({item}) => {
         setUpdateItem(item)
     }, [item])
 
-    const {itemname, itemimage, price, itemdescription, veg, addbutton} = updateItem;
+    const {itemname, itemimage, price, itemdescription, veg, addbutton,multioptions} = updateItem;
 
     const diat = {
         veg: {color: '#659a4a', icon: 'leaf'},
@@ -118,35 +118,35 @@ export const ItemBox = memo(({item}) => {
     }
 
     return (<div className="col-12 col-sm-6 col-md-4  col-lg-3   item-hover ">
-        <div className="d-flex p-2 h-100">
+        <div className="d-flex p-2 py-4 h-100">
             <div className={'w-100'}>
 
-                <div className={'p-2 mt-auto '}>
+                <div className={'mt-auto '}>
                     <div className={'flex-nowrap'}>
-                        {veg && <div><i style={{color: diat[veg]?.color}} className={`fa fa-${diat[veg]?.icon}`}></i>
+                        {veg && multioptions && <div><i style={{fontSize:12,color: diat[veg]?.color}} className={`fa fa-${diat[veg]?.icon}`} ></i>
                         </div>}
-                        <h4 style={{fontSize: '1.8rem'}}>{itemname} </h4>
-                        <h6 className={'mb-2'}> {numberFormat(price)} </h6>
+                        <h5 >{itemname} </h5>
+                        <div style={{fontSize:15}}> {numberFormat(price)} </div>
                     </div>
-                    <div className={'mt-3'}>
+                    {Boolean(itemdescription) &&  <div style={{color:'#999',fontSize:14}} className={'mt-3 me-3'}>
                         <ReactReadMoreReadLess
                             charLimit={50}
                             readMoreText={"Read more"}
                             readLessText={""}
-                            readMoreStyle={{color: 'black'}}
+                            readMoreStyle={{color: '#222'}}
                         >
-                            {itemdescription}
+                           {itemdescription}
                         </ReactReadMoreReadLess>
-                    </div>
+                    </div>}
                 </div>
             </div>
-            <div className={'border-light  rounded-3 p-2'} style={{width: 150}}>
+            <div className={'border-light  rounded-3'}  >
                 <div>
 
                     {itemimage && <LazyLoadImage
                         alt={''}
                         src={`https://${itemimage}`}
-                        style={{maxWidth: '100%', borderRadius: 5}}
+                        style={{maxWidth: '100%', borderRadius: 5,backgroundColor:'#eee'}}
                     />}
                 </div>
                 {addbutton && <AddButton item={updateItem} merger={true} updateItem={setUpdateItem}/>}

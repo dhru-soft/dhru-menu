@@ -114,7 +114,7 @@ const Index = (props) => {
 
                             </div>
 
-                            <CartTotal page={'final'}/>
+                            <CartTotal page={'final'} hidesearch={true}/>
 
 
                         </div>

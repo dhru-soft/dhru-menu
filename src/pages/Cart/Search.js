@@ -2,7 +2,7 @@ import React, {Component, useEffect, useState} from "react";
 import {connect, useDispatch} from "react-redux";
 import SearchBox from "../../components/SearchBox";
 import {setSelected} from "../../lib/redux-store/reducer/selected-data";
-import {isEmpty} from "../../lib/functions";
+import {getCompanyDetails, isEmpty} from "../../lib/functions";
 import {Button} from "reactstrap";
 import store from "../../lib/redux-store/store";
 import {setModal} from "../../lib/redux-store/reducer/component";
@@ -20,6 +20,8 @@ const Index = (props) => {
         dispatch(setSelected({searchitem: value}))
     }
 
+    let {locationname} = getCompanyDetails();
+
     const handleSearchFocus = () => {
         store.dispatch(setModal({
             show: true,
@@ -34,6 +36,7 @@ const Index = (props) => {
         store.dispatch(setModal({
             show: true,
             title: '',
+            className:'menu',
             disableclose:true,
 
             component: () => <><GroupsbyLocation   /></>
@@ -44,14 +47,15 @@ const Index = (props) => {
         <div className={'col-12'}>
 
             <div>
-                <div className="">
+                <div className="p-3 bg-white shadow" style={{borderRadius:'5px 5px 0 0'}}>
                     <div className={'form'}>
-                        <div className="mb-3 d-flex w-100">
+                        <div className="d-flex w-100">
                             <div className={'flex-grow-1'} onClick={handleSearchFocus}>
-                                <SearchBox handleSearch={handleSearch} />
+                                <SearchBox handleSearch={handleSearch} placeholder={`Search in ${locationname}`} />
                             </div>
                             <div className={'p-2'}></div>
-                            <Button className={'border-0 px-3 '} size={'small'} onClick={handlemenuFocus}> <i className={'fa fa-bars'}></i> Menu</Button>
+                            <Button className={'btn border-0 px-4'} style={{background: 'black',borderRadius:12}} size={'small'}
+                                    onClick={handlemenuFocus}> <i className="fa fa-utensils me-2"></i> Menu</Button>
                         </div>
                     </div>
 

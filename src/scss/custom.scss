@@ -961,8 +961,9 @@ b, strong {
 
 
 .company-detail{
-    background: var(--cartTotalColor);
-    background: linear-gradient(145deg, var(--cartTotalColor) 0%, var(--cartTotalColor2) 100%);
+    color:black
+    /*background: var(--cartTotalColor);
+    background: linear-gradient(145deg, var(--cartTotalColor) 0%, var(--cartTotalColor2) 100%);*/
 }
 
 .btn-add{
@@ -1076,6 +1077,8 @@ b, strong {
 
 .modal{
     .modal-dialog{
+        height: 100%;
+        margin: 0;
         &.mobile {
             margin: 0;
 
@@ -1086,7 +1089,8 @@ b, strong {
         }
         .modal-content{
             height: 100%;
-            border-radius: 10px;
+            border-radius: 0;
+            border: none;
             .modal-header{
                 border: none;
                 .btn-close{
@@ -1094,6 +1098,23 @@ b, strong {
                 }
             }
         }
+        &.menu{
+            height: 400px;
+            position: fixed;
+            bottom: 100px;
+            right: 20px;
+            width: 280px;
+            overflow: auto;
+            background: white;
+            border-radius: 20px;
+            padding: 10px;
+            .modal-content{
+                border-radius: 15px;
+            }
+        }
+    }
+    & + .modal-backdrop{
+        opacity: 0.85;
     }
 }
 
@@ -1111,8 +1132,10 @@ b, strong {
 
     & .supported{
         background:var(--bodyColor);
-        padding: 8px;
         padding-bottom: 0;
+        .onscroll-show{
+            display: flex !important;
+        }
     }
 }
 
@@ -1196,6 +1219,7 @@ body{
     }
     .modal-body{
         padding-bottom: 20px;
+        background: white;
     }
     footer{
 
@@ -1280,9 +1304,7 @@ iframe{
     display: block!important;
 }
 
-.container{
-    max-width: 100% !important;
-}
+
 
 .modal-body .item-hover{
     width: 100%;

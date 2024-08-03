@@ -6,12 +6,17 @@ import Diet from "./Diet";
 import Bredcrumb from "./Bredcrumb";
 import {device} from "../../lib/static";
 import SubGroups from "./SubGroups";
+import {getCompanyDetails} from "../../lib/functions";
+import {useNavigate} from "react-router-dom";
 
 
 
 const Index = (props) => {
 
     const {industrytype} = props
+
+    let { locationname } = getCompanyDetails();
+    const navigate = useNavigate();
 
     const stickyHeader = useRef()
     useLayoutEffect(() => {
@@ -34,14 +39,26 @@ const Index = (props) => {
     return (
         <>
             <div className={'mainHeader'}  id="mainHeader" ref={stickyHeader}>
-                <div className={'supported  p-2'}>
-                    <div className={'bg-white p-3 rounded-4'} >
-                        <div>
+                <div className={'supported  shadow'}>
+                    <div className={'bg-white '}>
+                        <div className={'onscroll-show d-none align-items-center'}>
+                            <div style={{cursor: 'pointer',}} className={'p-4'} onClick={() => {
+                                navigate(`/`);
+                            }}>
+                                <i className="fa fa-arrow-left"></i>
+                            </div>
 
+                            <h5 className={'p-3 m-0'}>
+                                <div style={{fontWeight:"normal",color:'#888'}}>{locationname}</div>
+                                Sub Group
+                            </h5>
+
+                        </div>
+                        <div className={'p-3'}>
                             <Diet hidetag={!Boolean(industrytype === 'foodservices')}/>
                         </div>
                     </div>
-                    <Bredcrumb/>
+                    {/*<Bredcrumb/>*/}
                 </div>
             </div>
 
@@ -57,7 +74,7 @@ const Index = (props) => {
 const mapStateToProps = (state) => {
     return {
         cartData: state.cartData,
-        industrytype : state.restaurantDetail?.location[device.locationid]?.industrytype
+        industrytype: state.restaurantDetail?.location[device.locationid]?.industrytype
     }
 }
 
