@@ -83,9 +83,9 @@ const AllItems = forwardRef((props, ref) => {
     }, []);
 
     useEffect(() => {
-        //setLoader(false)
+        setLoader(false)
         getGroups().then((flag) => {
-            //setLoader(true)
+            setLoader(true)
         })
     }, [device.locationid])
 
@@ -99,7 +99,7 @@ const AllItems = forwardRef((props, ref) => {
         setGroups(groups)
         setItems(mergeCart(itemList, invoiceitems));
 
-        setLoader(true)
+        //setLoader(true)
     }, [itemList]);
 
 

@@ -50,7 +50,7 @@ const Index = (props) => {
 
                             <h5 className={'p-3 m-0'}>
                                 <div style={{fontWeight:"normal",color:'#888'}}>{locationname}</div>
-                                Group Name
+                                Menu
                             </h5>
 
                         </div>

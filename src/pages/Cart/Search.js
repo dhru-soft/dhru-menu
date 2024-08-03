@@ -47,7 +47,7 @@ const Index = (props) => {
         <div className={'col-12'}>
 
             <div>
-                <div className="p-3 bg-white shadow" style={{borderRadius:'5px 5px 0 0'}}>
+                <div className="p-3 bg-white" style={{boxShadow:'rgba(0, 0, 0, 0.15) 0px -2px 0.5rem'}}>
                     <div className={'form'}>
                         <div className="d-flex w-100">
                             <div className={'flex-grow-1'} onClick={handleSearchFocus}>

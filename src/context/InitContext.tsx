@@ -13,6 +13,7 @@ import {setCartData} from "../lib/redux-store/reducer/cart-data";
 import {useDispatch} from "react-redux";
 import store from "../lib/redux-store/store";
 import {setAddonList} from "../lib/redux-store/reducer/addon-list";
+import Loader3 from "../components/Loader/Loader3";
 
 
 const defaultData: any = {};
@@ -80,7 +81,7 @@ export const InitProvider = (props: any) => {
 
 
     if (!loading) {
-        return <><Spinner/></>
+        return <><Loader3/></>
     }
 
     return <Index.Provider value={{loading}}>
