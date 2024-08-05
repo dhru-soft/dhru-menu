@@ -8,9 +8,10 @@ import {setModal} from "../../lib/redux-store/reducer/component";
 import {connect} from "react-redux";
 
 const Index = (props: any) => {
-    const {component: Component, title, show, disableclose,  maxWidth, className, backdrop, keyboard} = props.modal;
+    const {component: Component, title, show, disableclose,  maxWidth, className, backdrop = true, keyboard} = props.modal;
 
     const [isOpen, setOpen] = useState(false);
+
 
     const handleClose = () => {
 
@@ -22,10 +23,14 @@ const Index = (props: any) => {
 
     }
 
+    if(!show){
+        return <></>
+    }
+
 
     return (<Modal isOpen={show} autoFocus={true} toggle={handleClose} size={maxWidth ? maxWidth : 'xs'}
                    className={`${isMobile ? 'mobile' : 'desktop'} ${className}`}
-                   backdrop={backdrop ? backdrop : true} keyboard={keyboard ? keyboard : true}>
+                   backdrop={Boolean(backdrop)} keyboard={keyboard ? keyboard : true}>
             {!disableclose && <ModalHeader toggle={handleClose}>{title ? title : ''}</ModalHeader>}
             {(disableclose && title) && <ModalHeader>{title ? title : ''}</ModalHeader>}
             <ModalBody  >

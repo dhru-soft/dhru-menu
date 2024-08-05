@@ -9,6 +9,7 @@ import {mergeCart} from "./AllItems";
 import store from "../../lib/redux-store/store";
 import {setModal} from "../../lib/redux-store/reducer/component";
 import {getCompanyDetails} from "../../lib/functions";
+import CartTotal from "../Cart/CartTotal";
 
 
 const SearchItems = forwardRef((props, ref) => {
@@ -78,6 +79,8 @@ const SearchItems = forwardRef((props, ref) => {
                                 }}/>
             })}
         </div> : <h5 className={'text-center'}>No Result Found for "{searchitem}"</h5>}
+
+        <CartTotal page={'detailview'} hidesearch={true}/>
 
     </>
 

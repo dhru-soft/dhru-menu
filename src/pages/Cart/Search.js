@@ -27,7 +27,7 @@ const Index = (props) => {
             show: true,
             title: '',
             disableclose:true,
-
+            backdrop:false,
             component: () => <><SearchItems   /></>
         }))
     }
