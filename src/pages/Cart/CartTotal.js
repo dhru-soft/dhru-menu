@@ -71,7 +71,7 @@ const Index = (props) => {
         <div className={''}>
 
             {!hidesearch &&  <div>
-                <Search/>
+                <Search  />
             </div>}
 
             {Boolean(invoiceitems.length) &&  <div className={'  rounded-3  p-4 cart-total company-detail'}>
