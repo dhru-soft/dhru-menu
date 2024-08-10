@@ -40,7 +40,7 @@ const Search = (props: any) => {
           <div className={'position-absolute'} style={{padding:12}}>  <i className={'fa fa-search'}></i> </div>
             <input ref={searchRf} className="textfield textfield2 bg-light"    placeholder={props.placeholder || 'Search'} defaultValue={searchQuery} onSubmit={() => props?.handleSearch(searchQuery.trim())} onChange={(e)=>{
                 onChangeSearch(e)
-            }}   autoFocus={true}  name="search" type="text" style={{paddingLeft:35,borderRadius:12,height:40}}  role="presentation" autoComplete="off"/>
+            }}    name="search" type="text" style={{paddingLeft:35,borderRadius:12,height:40}}  role="presentation" autoComplete="off"/>
 
             {Boolean(searchQuery?.length) &&  <div className={'position-absolute p-4'} onClick={()=>{
                 searchRf.current.value = "";
