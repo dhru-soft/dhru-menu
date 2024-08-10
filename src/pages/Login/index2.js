@@ -24,6 +24,7 @@ import Select from 'react-select';
 import {v4 as uuid} from "uuid";
 import store from "../../lib/redux-store/store";
 import {setClientDetail} from "../../lib/redux-store/reducer/client-detail";
+import {useModal} from "../../use/useModal";
 
 const Index = (props) => {
 
@@ -38,6 +39,7 @@ const Index = (props) => {
     const [otp, setOTP] = useState('')
     const [country, setCountry] = useState({label: 'India', value: '+91', code: 'IN'})
     const dispatch = useDispatch()
+    const {closeModal} = useModal()
 
     const requestOTP = () => {
         apiService({
@@ -76,7 +78,7 @@ const Index = (props) => {
                     const {clientname} = result.data || {}
 
                     if (Boolean(clientname)) {
-                        store.dispatch(setModal({show: false}))
+                        closeModal()
                     } else {
                         setOtpVerify(true);
                     }
@@ -104,7 +106,7 @@ const Index = (props) => {
                     await storeData('client', client).then(() => {
                     })
                     dispatch(setClientDetail(client));
-                    store.dispatch(setModal({show: false}))
+                    closeModal()
                 }
             });
         })

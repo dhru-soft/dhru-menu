@@ -1,6 +1,7 @@
 import {createSlice} from '@reduxjs/toolkit'
 import {v4 as uuidv4} from "uuid";
 import {device} from "../../static";
+import moment from "moment";
 
 
 export const component = createSlice({
@@ -13,14 +14,15 @@ export const component = createSlice({
                 return <></>
             }
         },
-        modal      : {
+        modal      : [{
+            modalkey:moment().unix(),
             show     : false,
             visible  : false,
             title    : '',
             component: () => {
                 return <></>
             }
-        },
+        }],
         page       : {
             visible  : false,
             title    : '',
@@ -71,8 +73,14 @@ export const component = createSlice({
             state.loader = false
             return state
         },
-        setModal      : (state: any, action: any) => {
+        setModal: (state,action) => {
             state.modal = action.payload
+            return state
+        },
+        removeModal: (state,action) => {
+            state.modal = state.modal.filter((value:any)=>{
+                return value.modalkey !== action.payload
+            })
             return state
         },
         setDialog     : (state: any, action) => {
@@ -135,6 +143,7 @@ export const {
     closePage,
     setBottomSheet,
     setModal,
+    removeModal,
     setPageSheet,
     contentLoader,
     itemLoadingEnable,

@@ -4,70 +4,50 @@ import {Modal, ModalBody, ModalHeader} from "reactstrap";
 import {isMobile} from 'react-device-detect';
 
 import {Sheet} from 'react-modal-sheet';
-import {setModal} from "../../lib/redux-store/reducer/component";
-import {connect} from "react-redux";
+
+import {useModal} from "../../use/useModal";
 
 const Index = (props: any) => {
-    const {component: Component, title, show, disableclose,  maxWidth, className, backdrop = true, keyboard} = props.modal;
 
-    const [isOpen, setOpen] = useState(false);
-
+    const {closeModal, modal} = useModal()
 
     const handleClose = () => {
-
-        const {setModal} = props;
-        setOpen(false)
-        setModal({
-            show: false,
-        });
-
-    }
-
-    if(!show){
-        return <></>
+        closeModal()
     }
 
 
-    return (<Modal isOpen={show} autoFocus={true} toggle={handleClose} size={maxWidth ? maxWidth : 'xs'}
-                   className={`${isMobile ? 'mobile' : 'desktop'} ${className}`}
-                   backdrop={Boolean(backdrop)} keyboard={keyboard ? keyboard : true}>
-            {!disableclose && <ModalHeader toggle={handleClose}>{title ? title : ''}</ModalHeader>}
-            {(disableclose && title) && <ModalHeader>{title ? title : ''}</ModalHeader>}
-            <ModalBody  >
-                {show && <Component/>}
-            </ModalBody>
-        </Modal>)
+
+    return (
+        <div>
+            {
+                modal.map((value:any)=> {
+                    const {show,visible,disableclose,backdrop, title,maxWidth,className,keyboard, action,   width, modalkey} = value;
+
+                    const Component = value?.component
+
+                    return (<Modal key={modalkey} isOpen={show} autoFocus={true} toggle={handleClose} size={maxWidth ? maxWidth : 'xs'}
+                                   className={`${isMobile ? 'mobile' : 'desktop'} ${className}`}
+                                   backdrop={Boolean(backdrop)} keyboard={keyboard ? keyboard : true}>
+                        {!disableclose && <ModalHeader toggle={handleClose}>{title ? title : ''}</ModalHeader>}
+                        {(disableclose && title) && <ModalHeader>{title ? title : ''}</ModalHeader>}
+                        <ModalBody>
+                            {show && <Component/>}
+                        </ModalBody>
+                    </Modal>)
+                })
+            }
+        </div>)
 
 
-    return (<Sheet isOpen={show} onClose={() => handleClose()} snapPoints={[800, 400, 100, 0]} initialSnap={0}
-                   detent="content-height">
-            <Sheet.Container>
-                <Sheet.Header/>
-                <Sheet.Content>
-                    <div className={'container p-4'} style={{maxWidth: 500, marginBottom: 100}}>
-                        {show && <>
-                            <h4 style={{marginLeft: 10}}> {title}</h4>
-                            <Component/>
-                        </>}
-                    </div>
-                </Sheet.Content>
-            </Sheet.Container>
 
-            <Sheet.Backdrop/>
-        </Sheet>)
 
 
 }
 
 
-const mapStateToProps = (state: any) => ({
-    modal: state.component.modal
-});
-const mapDispatchToProps = (dispatch: any) => ({
-    setModal: (modal: any) => dispatch(setModal(modal)),
-});
 
-export default connect(mapStateToProps, mapDispatchToProps)(Index);
+
+export default  (Index);
 
 
 

@@ -2,7 +2,7 @@ import React, {forwardRef, useEffect, useImperativeHandle, useState} from "react
 import {connect} from "react-redux";
 import {device} from "../../lib/static";
 
-import {getGroups, isEmpty} from "../../lib/functions";
+import {getCompanyDetails, getGroups, groupBy, isEmpty, toArray} from "../../lib/functions";
 import Loader3 from "../../components/Loader/Loader3";
 import BodyClassName from "react-body-classname";
 import Theme from "../Home/Theme";
@@ -51,7 +51,9 @@ const AllItems = forwardRef((props, ref) => {
     device.locationid = params2?.locationid;
     device.groupid = params2?.groupid;
 
-    const [items, setItems] = useState(itemList)
+    getCompanyDetails()
+
+    const [items, setItems] = useState()
     const [groups, setGroups] = useState()
     const [loader, setLoader] = useState(false)
 
@@ -95,12 +97,12 @@ const AllItems = forwardRef((props, ref) => {
         Object.values(groupList).map((item) => {
             groups[item.itemgroupid] = item
         })
+        setGroups(groups);
 
-        setGroups(groups)
-        setItems(mergeCart(itemList, invoiceitems));
+        setItems(groupBy(toArray(mergeCart(itemList, invoiceitems),'id'),'itemgroupid'))
 
         //setLoader(true)
-    }, [itemList]);
+    }, [itemList,invoiceitems]);
 
 
     if (!loader) {

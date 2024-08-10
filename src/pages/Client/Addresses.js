@@ -5,11 +5,13 @@ import AddEditAddress from "./AddEditAddress";
 import {setDefaultAddress} from "../../lib/functions";
 import store from "../../lib/redux-store/store";
 import Login from "../Login";
+import {useModal} from "../../use/useModal";
 
 const Index = ({clientDetail, cart}) => {
 
 
     const dispatch = useDispatch()
+    const {openModal,closeModal} = useModal()
 
     const {addresses} = clientDetail;
 
@@ -18,12 +20,13 @@ const Index = ({clientDetail, cart}) => {
 
     const addEditAddress = (address, key) => {
 
-        store.dispatch(setModal({
+
+        openModal({
             show: true,
             title: '',
             height: '80%',
             component: () => <><AddEditAddress address={address} addressid={key} setAddEdit={setAddEdit}/></>
-        }))
+        })
 
        // setAddEdit(true);
         //setAddress({...address, addressid: key})
@@ -114,7 +117,7 @@ const Index = ({clientDetail, cart}) => {
                     <button
                         className="w-100 custom-btn custom-btn--medium custom-btn--style-1"
                         onClick={() => {
-                            dispatch(setModal({visible: false}))
+                            closeModal()
                         }} type="button" role="button">
                         Close
                     </button>

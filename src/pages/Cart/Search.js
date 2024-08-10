@@ -5,16 +5,16 @@ import {setSelected} from "../../lib/redux-store/reducer/selected-data";
 import {getCompanyDetails, isEmpty} from "../../lib/functions";
 import {Button} from "reactstrap";
 import store from "../../lib/redux-store/store";
-import {setModal} from "../../lib/redux-store/reducer/component";
-import ItemDetails from "./ItemDetails";
-import AllItems from "../Items/AllItems";
+
 import SearchItems from "../Items/SearchItems";
 import GroupsbyLocation from "../Groups/GroupsbyLocation";
+import {useModal} from "../../use/useModal";
 
 
 const Index = (props) => {
 
     const dispatch = useDispatch()
+    const {openModal} = useModal()
 
     const handleSearch = (value) => {
         dispatch(setSelected({searchitem: value}))
@@ -23,24 +23,24 @@ const Index = (props) => {
     let {locationname} = getCompanyDetails();
 
     const handleSearchFocus = () => {
-        store.dispatch(setModal({
+        openModal({
             show: true,
             title: '',
             disableclose:true,
             backdrop:false,
             component: () => <><SearchItems   /></>
-        }))
+        })
     }
 
     const handlemenuFocus = () => {
-        store.dispatch(setModal({
+        openModal({
             show: true,
             title: '',
             className:'menu',
             disableclose:true,
-
+            backdrop:true,
             component: () => <><GroupsbyLocation   /></>
-        }))
+        })
     }
 
     return (

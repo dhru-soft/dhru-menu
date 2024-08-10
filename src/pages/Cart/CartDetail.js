@@ -13,6 +13,7 @@ import store from "../../lib/redux-store/store";
 import {setModal} from "../../lib/redux-store/reducer/component";
 import ItemDetails from "./ItemDetails";
 import BodyClassName from 'react-body-classname';
+import {useModal} from "../../use/useModal";
 
 const Index = (props) => {
 
@@ -20,6 +21,7 @@ const Index = (props) => {
     const navigate = useNavigate()
 
     const {invoiceitems} = props;
+    const {openModal} = useModal()
 
 
     return (
@@ -58,13 +60,13 @@ const Index = (props) => {
                                         return <div className="col-12    item-hover  p-2 py-4" key={uuid()}>
                                             <div className="d-flex p-2 h-100">
                                                 <div className={'w-100'}  onClick={()=>{
-                                                    store.dispatch(setModal({
+                                                    openModal({
                                                         show: true,
                                                         title: itemname,
                                                         disableclose:true,
                                                         height: '80%',
                                                         component: () => <><ItemDetails itemDetail={item} cart={true}   /></>
-                                                    }))
+                                                    })
                                                 }}>
 
                                                     <div className={'p-2 mt-auto'}>

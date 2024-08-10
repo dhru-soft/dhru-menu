@@ -8,8 +8,9 @@ import {ItemBox} from "./ItemsbyGroup";
 import {mergeCart} from "./AllItems";
 import store from "../../lib/redux-store/store";
 import {setModal} from "../../lib/redux-store/reducer/component";
-import {getCompanyDetails} from "../../lib/functions";
+import {getCompanyDetails, toArray} from "../../lib/functions";
 import CartTotal from "../Cart/CartTotal";
+import {useModal} from "../../use/useModal";
 
 
 const SearchItems = forwardRef((props, ref) => {
@@ -17,6 +18,7 @@ const SearchItems = forwardRef((props, ref) => {
     const {itemList, groupList, groupids, selectedtags, searchitem, invoiceitems, search, refGroups} = props
 
     const dispatch = useDispatch()
+    const {closeModal} = useModal()
 
     let {locationname} = getCompanyDetails();
 
@@ -24,7 +26,7 @@ const SearchItems = forwardRef((props, ref) => {
         dispatch(setSelected({searchitem: value}))
     }
 
-    const [items, setItems] = useState(itemList)
+    const [items, setItems] = useState(mergeCart(itemList, invoiceitems))
     const [filteritems, setFilteritems] = useState([])
 
     const urlSearchParams = new URLSearchParams(window.location.search);
@@ -35,23 +37,14 @@ const SearchItems = forwardRef((props, ref) => {
 
     const hasAdd = (tableorder && params.table) || ((online || tableorder) && !params.table)
 
-
     useEffect(() => {
-        setItems(mergeCart(itemList, invoiceitems));
-    }, [itemList]);
-
-    useEffect(() => {
-        let filteritems = []
-        Object.values(items).map((item)=>{
-            filteritems = [
-                ...filteritems,
-                ...item
-            ]
-        })
-        setFilteritems(filteritems.filter((item) => {
-            return searchitem ? item.itemname.toLowerCase().includes(searchitem.toLowerCase()) : true
-        }))
-    }, [items,searchitem]);
+        if (items) {
+            const itemsarray = toArray(items, 'id')
+            setFilteritems(itemsarray.filter((item) => {
+                return searchitem ? item.itemname.toLowerCase().includes(searchitem.toLowerCase()) : true
+            }))
+        }
+    }, [items, searchitem]);
 
 
     return <>
@@ -59,9 +52,7 @@ const SearchItems = forwardRef((props, ref) => {
         <div className={'form mb-4'}>
             <div className="mb-3 d-flex w-100 align-items-center">
                 <div className={'p-4'} onClick={() => {
-                    store.dispatch(setModal({
-                        show: false,
-                    }))
+                    closeModal()
                 }}>
                     <i className="fa fa-chevron-down"></i>
                 </div>

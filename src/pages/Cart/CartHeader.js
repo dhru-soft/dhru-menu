@@ -39,7 +39,7 @@ const Index = (props) => {
     return (
         <>
             <div className={'mainHeader'}  id="mainHeader" ref={stickyHeader}>
-                <div className={'supported  shadow'}>
+                <div className={'supported'}>
                     <div className={'bg-white '}>
                         <div className={'onscroll-show d-none align-items-center'}>
                             <div style={{cursor: 'pointer',}} className={'p-4'} onClick={() => {

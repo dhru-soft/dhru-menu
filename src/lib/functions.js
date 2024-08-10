@@ -13,7 +13,7 @@ import {
 } from "./redux-store/reducer/cart-data";
 import promise from "promise";
 import {getProductData, itemTotalCalculation, resetDiscountData} from "./item-calculation";
-import {setModal} from "./redux-store/reducer/component";
+
 import Login from "../pages/Login";
 import {setClientDetail} from "./redux-store/reducer/client-detail";
 import 'react-confirm-alert/src/react-confirm-alert.css';
@@ -21,6 +21,7 @@ import {setGroupList} from "./redux-store/reducer/group-list";
 import OrderDetail from "../pages/Client/OrderDetail";
 import moment from "moment";
 import {resetItemList, setItemList} from "./redux-store/reducer/item-list";
+
 let base64 = require('base-64');
 let utf8   = require('utf8'); // Import css
 
@@ -719,23 +720,7 @@ export const getFromSetting = (key) => {
 }
 
 
-export const placeOrder = () => {
-    let cartData = store.getState().cartData
-    cartData = resetDiscountData(cartData)
-    let data = itemTotalCalculation(clone(cartData), undefined, undefined, undefined, undefined, 2, 2, false, false);
-    store.dispatch(setCartData(clone(data)));
-    store.dispatch(setUpdateCart());
 
-    store.dispatch(setModal({
-        show: true, title: '', height: '80%', component: () => <><Login/></>
-    }))
-}
-
-export const orderDetail = (data) => {
-    store.dispatch(setModal({
-        show: true, title: '', height: '80%', component: () => <><OrderDetail data={data}/></>
-    }))
-}
 
 export const setDefaultAddress = (index) => {
     let clientDetail = clone(store.getState().clientDetail);
@@ -915,9 +900,8 @@ export const getGroups = async () => {
                     return a.order - b.order
                 })))
 
-                const itemsarray = toArray(result?.data?.items,'id')
                 store.dispatch(resetItemList())
-                store.dispatch(setItemList(groupBy(itemsarray,'itemgroupid')))
+                store.dispatch(setItemList(result?.data?.items))
                 resolve(true)
             }
         });

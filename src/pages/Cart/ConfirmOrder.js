@@ -15,10 +15,12 @@ import useRazorpay from "react-razorpay";
 import apiService from "../../lib/api-service";
 import CouponCode from "./CouponCode";
 import {itemTotalCalculation, resetDiscountData} from "../../lib/item-calculation";
+import {useModal} from "../../use/useModal";
 
 const Index = ({clientDetail, vouchertotaldisplay, paymentgateways, cartData, location}) => {
 
     const dispatch = useDispatch()
+    const {closeModal,openModal} = useModal()
     const [Razorpay] = useRazorpay();
     const {addresses} = clientDetail;
     const {tablename, locationname} = getCompanyDetails();
@@ -66,11 +68,11 @@ const Index = ({clientDetail, vouchertotaldisplay, paymentgateways, cartData, lo
 
 
         postOrder({...values, payments, address: defaultaddress}).then((data) => {
-            store.dispatch(setModal({show: false}))
+            closeModal()
             if (!data) {
-                store.dispatch(setModal({
+                openModal({
                     show: true, title: '', height: '80%', component: () => <><Login/></>
-                }))
+                })
             } else {
                 store.dispatch(resetCart())
             }
@@ -118,7 +120,7 @@ const Index = ({clientDetail, vouchertotaldisplay, paymentgateways, cartData, lo
 
     useEffect(() => {
         if (!cartData?.invoiceitems?.length) {
-            dispatch(setModal({visible: false}))
+            closeModal()
         }
     }, [])
 

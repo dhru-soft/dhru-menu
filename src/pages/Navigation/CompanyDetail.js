@@ -1,5 +1,5 @@
 import React, {useState} from "react";
-import {getCompanyDetails, placeOrder} from "../../lib/functions";
+import {getCompanyDetails} from "../../lib/functions";
 import {connect, useDispatch} from "react-redux";
 import {setClientDetail} from "../../lib/redux-store/reducer/client-detail";
 import store from "../../lib/redux-store/store";
@@ -9,17 +9,20 @@ import {device} from "../../lib/static";
 import {useNavigate, useParams} from "react-router-dom";
 import Select from "react-select";
 import {Badge, Button, Card, Dropdown, DropdownItem, DropdownMenu, DropdownToggle} from "reactstrap";
+import {useModal} from "../../use/useModal";
 
 const Index = ({clientDetail,company,options}) => {
 
 
     const params2 = useParams()
 
+
     device.tableid = params2?.tableid;
     device.locationid = params2?.locationid;
     device.groupid = params2?.groupid;
 
     const dispatch = useDispatch();
+    const {openModal} = useModal()
     const navigate = useNavigate();
     const {clientname, displayname, token} = clientDetail;
 
@@ -27,12 +30,12 @@ const Index = ({clientDetail,company,options}) => {
 
 
     const showAddresses = () => {
-        store.dispatch(setModal({
+        openModal({
             show: true,
             title: '',
             height: '80%',
             component: () => <><Addresses/></>
-        }))
+        })
     }
 
     const changeHandler = (item) => {

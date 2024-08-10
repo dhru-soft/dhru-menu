@@ -1,21 +1,24 @@
-import React, {useEffect, useMemo, useState} from "react";
+import React, {useEffect, useState} from "react";
 import {connect, useDispatch} from "react-redux";
 import CompanyDetail from "../Navigation/CompanyDetail";
 import Init from "../Home/Init";
-import { numberFormat, orderDetail} from "../../lib/functions";
+import {numberFormat} from "../../lib/functions";
 import apiService from "../../lib/api-service";
 import {ACTIONS, device, METHOD, STATUS, urls} from "../../lib/static";
+import OrderDetail from "./OrderDetail";
+import {useModal} from "../../use/useModal";
 
 
 const Index = ({clientDetail}) => {
 
 
     const dispatch = useDispatch()
-    const [orders,setOrders] = useState()
+    const [orders, setOrders] = useState()
+    const {openModal} = useModal()
 
     const getorders = async () => {
-        console.log('getorders')
-        if(clientDetail?.clientid) {
+
+        if (clientDetail?.clientid) {
             await apiService({
                 method: METHOD.GET,
                 action: ACTIONS.ORDER,
@@ -30,12 +33,17 @@ const Index = ({clientDetail}) => {
         }
     }
 
+    const orderDetail = (data) => {
+        openModal({
+            show: true, title: '', height: '80%', component: () => <><OrderDetail data={data}/></>
+        })
+    }
 
-    useEffect(()=>{
+    useEffect(() => {
         getorders()
-    },[clientDetail?.clientid])
+    }, [clientDetail?.clientid])
 
-    if(!Boolean(clientDetail?.clientid)){
+    if (!Boolean(clientDetail?.clientid)) {
         return <> <Init/></>
     }
 
@@ -48,38 +56,47 @@ const Index = ({clientDetail}) => {
 
             <>
                 <div className={'container'}>
-                    <div className="m-auto" >
+                    <div className="m-auto">
 
                         <div className={'mt-4'}>
-                        <h4>My Orders</h4>
+                            <h4>My Orders</h4>
 
                             <div className={'bg-white p-4 rounded-4 mt-3'}>
                                 <table className={'table table-bordered'}>
                                     <thead>
-                                        <tr>
-                                            <th>Date</th>
-                                            <th>Status</th>
-                                            <th>Order Type</th>
-                                            <th  style={{textAlign:'right'}}>Amount</th>
-                                        </tr>
+                                    <tr>
+                                        <th>Date</th>
+                                        <th>Status</th>
+                                        <th>Order Type</th>
+                                        <th style={{textAlign: 'right'}}>Amount</th>
+                                    </tr>
                                     </thead>
                                     <tbody>
-                                    {
-                                        Boolean(orders) && Object.keys(orders).map((key)=>{
+                                    {Boolean(orders) && Object.keys(orders).map((key) => {
 
-                                            const {data,date,ordertype,status} = orders[key];
-                                            const {clientname,vouchertotaldisplay,invoiceitems,payments} = data || {};
+                                        const {data, date, ordertype, status} = orders[key];
+                                        const {clientname, vouchertotaldisplay, invoiceitems, payments} = data || {};
 
-                                            return  <tr className={'cursor-pointer'} key={key} onClick={()=>{
-                                                orderDetail(data)
-                                            }}>
-                                                <td>{date}</td>
-                                                <td><div className={'badge'} style={{textTransform:'uppercase',fontWeight:'normal',backgroundColor:status==='reject'?'red':'#409df9'}}>{status}</div></td>
-                                                <td><div className={'text-capitalize'}>{ordertype}</div></td>
-                                                <td><div  style={{textAlign:'right'}}>{numberFormat(vouchertotaldisplay)}</div> </td>
-                                            </tr>
-                                        })
-                                    }
+                                        return <tr className={'cursor-pointer'} key={key} onClick={() => {
+                                            orderDetail(data)
+                                        }}>
+                                            <td>{date}</td>
+                                            <td>
+                                                <div className={'badge'} style={{
+                                                    textTransform: 'uppercase',
+                                                    fontWeight: 'normal',
+                                                    backgroundColor: status === 'reject' ? 'red' : '#409df9'
+                                                }}>{status}</div>
+                                            </td>
+                                            <td>
+                                                <div className={'text-capitalize'}>{ordertype}</div>
+                                            </td>
+                                            <td>
+                                                <div
+                                                    style={{textAlign: 'right'}}>{numberFormat(vouchertotaldisplay)}</div>
+                                            </td>
+                                        </tr>
+                                    })}
                                     </tbody>
                                 </table>
                             </div>
@@ -87,7 +104,7 @@ const Index = ({clientDetail}) => {
                     </div>
                 </div>
 
-        </>
+            </>
         </section>
 
 

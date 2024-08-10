@@ -12,16 +12,19 @@ import ItemDetails from "../Cart/ItemDetails";
 import {setItemList} from "../../lib/redux-store/reducer/item-list";
 import {LazyLoadImage} from "react-lazy-load-image-component";
 import {v4 as uuid} from "uuid";
+import {useModal} from "../../use/useModal";
 
 
 export const AddonAction = ({item, updateQnt, action}) => {
     const dispatch = useDispatch();
 
+    const {closeModal,openModal} = useModal()
     const {invoiceitems} = store.getState().cartData
 
     let filtered = invoiceitems?.filter((value, key) => {
         return item.itemid === value.itemid
     })
+
 
 
     return (<div>
@@ -69,12 +72,12 @@ export const AddonAction = ({item, updateQnt, action}) => {
             {action === 'add' && <div className={'w-100 me-3'}>
 
                 <button className="w-100 custom-btn custom-btn--medium custom-btn--style-4" onClick={() => {
-                    dispatch(setModal({
+                    openModal({
                         show: true,
                         title: item.itemname,
                         height: '80%',
                         component: () => <><ItemDetails itemDetail={{...item, productqnt: 1, key: ''}}/></>
-                    }))
+                    })
                 }} type="button" role="button">
                     Add New
                 </button>
@@ -82,7 +85,7 @@ export const AddonAction = ({item, updateQnt, action}) => {
 
             {filtered?.length > 1 && <div className={'w-100'}>
                 <button className="w-100 custom-btn custom-btn--medium custom-btn--style-2" onClick={() => {
-                    dispatch(setModal({show: false}));
+                    closeModal()
                 }} type="button" role="button">
                     Update Qnt
                 </button>
@@ -91,7 +94,7 @@ export const AddonAction = ({item, updateQnt, action}) => {
             {filtered?.length === 1 && <div className={'w-100'}>
                 <button className="w-100 custom-btn custom-btn--medium custom-btn--style-2" onClick={() => {
                     updateQnt('add', true);
-                    dispatch(setModal({show: false}));
+                    closeModal()
                 }} type="button" role="button">
                     Repeat
                 </button>
@@ -110,6 +113,7 @@ export const ItemBox = memo(({item}) => {
     }, [item])
 
     const {itemname, itemimage, price, itemdescription, veg, addbutton,multioptions} = updateItem;
+
 
     const diat = {
         veg: {color: '#659a4a', icon: 'leaf'},

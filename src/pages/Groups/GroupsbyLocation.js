@@ -12,6 +12,7 @@ import ItemsbyGroup from "../Items/ItemsbyGroup";
 import store from "../../lib/redux-store/store";
 import {setModal} from "../../lib/redux-store/reducer/component";
 import {Element, Link} from "react-scroll";
+import {useModal} from "../../use/useModal";
 
 
 export const GroupBox = ({item}) => {
@@ -35,6 +36,7 @@ const Index = forwardRef((props, ref) => {
 
 
     const dispatch = useDispatch()
+    const {closeModal} = useModal()
     const navigate = useNavigate()
     const [loader, setLoader] = useState(false)
 
@@ -76,8 +78,7 @@ const Index = forwardRef((props, ref) => {
                                      dispatch(setSelected({groupids: [item?.itemgroupid]}))
 
                                      //navigate(`/l/${device.locationid}/t/${device.tableid}/g/${item?.itemgroupid}`)
-
-                                     dispatch(setModal({show: false}))
+                                    closeModal()
 
                                  }}>
                                 <GroupBox item={{...item,total:itemList[item.itemgroupid]?.length}}/>

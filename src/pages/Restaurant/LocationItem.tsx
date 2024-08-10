@@ -1,10 +1,18 @@
-import React from "react";
-import useStore from "../../hooks/useStore";
+import React, {useEffect} from "react";
+
+import {resetCart} from "../../lib/redux-store/reducer/cart-data";
+import store from "../../lib/redux-store/store";
+import {useRestaurant} from "../../use/useRestaurant";
 
 const LocationItem = (props:any) => {
     const {location, navigate, locationid} = props;
+    const {isOpen} = useRestaurant(location)
 
-    const store = useStore(location)
+    useEffect(() => {
+        store.dispatch(resetCart())
+    }, [locationid]);
+
+
 
     return <div className={'col-lg-3 col-md-4 col-sm-5 col-xs-6 col-6  p-0 mb-3'} style={{
 
@@ -15,7 +23,7 @@ const LocationItem = (props:any) => {
         <div className={'d-flex m-2 h-100 mw-100'} style={{ borderRadius: 7,border:'#222 solid 1px'
         }}>
             <div onClick={() => {
-                if (store?.isOpen) {
+                if (isOpen) {
                     navigate(`/l/${locationid}/t/0`)
                 }
             }}
@@ -25,7 +33,7 @@ const LocationItem = (props:any) => {
 
                     <div  style={{fontSize: 22,padding:'10px'}}  >{location?.name}</div>
                     {
-                        (location?.address1 || location?.address2 || location?.city) && <div  style={{fontSize: 13}}>
+                        (location?.address1 || location?.address2 || location?.city) && <div  style={{fontSize: 13,padding:'0 10px'}}>
                             {location?.address1} {location?.address2} {location?.city}
                         </div>
                     }

@@ -5,14 +5,12 @@ import {useParams} from "react-router-dom";
 import moment from "moment";
 
 
-export default (location?: any) => {
+export const useRestaurant = (location?: any) => {
 
 
     const params: any = useParams()
 
-    if (isEmpty(location) && params?.locationid) {
-        location = useSelector((state: any) => state?.restaurantDetail?.location[params?.locationid])
-    }
+    location = useSelector((state: any) => state?.restaurantDetail?.location[params?.locationid])
 
     useEffect(() => {
         const interval = setInterval(() => setOpen(isStoreOpen), 10000);

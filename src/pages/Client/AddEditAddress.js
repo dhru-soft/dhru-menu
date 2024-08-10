@@ -11,6 +11,7 @@ import {setClientDetail} from "../../lib/redux-store/reducer/client-detail";
 import {setModal} from "../../lib/redux-store/reducer/component";
 import Select from 'react-select'
 import {clone} from "../../lib/functions";
+import {useModal} from "../../use/useModal";
 
 let countryIndex = -1;
 let stateIndex = 0;
@@ -18,6 +19,7 @@ const Index = ({clientDetail,address,visitorcountry,addressid,setAddEdit,addaddr
 
 
     const dispatch = useDispatch()
+    const {closeModal} = useModal()
 
     const tableorder = Boolean(device.tableid !== '0');
 
@@ -149,7 +151,7 @@ const Index = ({clientDetail,address,visitorcountry,addressid,setAddEdit,addaddr
                 dispatch(setClientDetail(clientDetails));
                 Boolean(setAddEdit) && setAddEdit(false);
 
-                dispatch(setModal({show: false}))
+                closeModal()
 
             }
         });
@@ -306,7 +308,7 @@ const Index = ({clientDetail,address,visitorcountry,addressid,setAddEdit,addaddr
                                 <button
                                     className="w-100 custom-btn custom-btn--medium custom-btn--style-1"
                                     onClick={() => {
-                                        dispatch(setModal({show: false}))
+                                        closeModal()
                                        // setAddEdit(false)
                                     }} type="button" role="button">
                                     Cancel

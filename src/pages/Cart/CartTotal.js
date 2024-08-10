@@ -1,23 +1,33 @@
 import React, {useEffect, useState} from "react";
-import {connect} from "react-redux";
-import {createUniqueStore, numberFormat, placeOrder, sessionStore} from "../../lib/functions";
+import {connect, useDispatch} from "react-redux";
+import {clone, createUniqueStore, numberFormat, sessionStore} from "../../lib/functions";
 
 import {device} from "../../lib/static";
 import CartSummary from "./CartSummary";
 import 'react-confirm-alert/src/react-confirm-alert.css';
 import {useNavigate} from "react-router-dom";
-import useStore from "../../hooks/useStore";
+
 import {toast} from "react-toastify";
 import Search from "./Search";
+import {useModal} from "../../use/useModal";
+import store from "../../lib/redux-store/store";
+import {itemTotalCalculation, resetDiscountData} from "../../lib/item-calculation";
+import {setCartData, setUpdateCart} from "../../lib/redux-store/reducer/cart-data";
+import Login from "../Login";
+import {useRestaurant} from "../../use/useRestaurant";
 
 const Index = (props) => {
 
     const navigate = useNavigate();
+    const {isOpen,onlineminamount,message} = useRestaurant()
 
     const {cartData, page,hidesearch, cartData: {vouchertotaldisplay, invoiceitems, tableid}} = props;
 
-    const store = useStore()
+
     const [summary, setSummary] = useState(false)
+
+
+    const {closeModal,openModal} = useModal()
 
     ////// STORE CART
     sessionStore(createUniqueStore(), cartData).then();
@@ -42,7 +52,19 @@ const Index = (props) => {
         return totalqnt
     }
 
+    const placeOrder = () => {
 
+        let cartData = props.cartData
+        cartData = resetDiscountData(cartData)
+        let data = itemTotalCalculation(clone(cartData), undefined, undefined, undefined, undefined, 2, 2, false, false);
+
+        store.dispatch(setCartData(clone(data)));
+        store.dispatch(setUpdateCart());
+
+        openModal({
+            show: true, title: '', height: '80%', component: () => <><Login/></>
+        })
+    }
 
     return (<div className={'position-fixed '} style={{zIndex: 999, bottom:  0, left: 0, right: 0}}>
 
@@ -74,22 +96,26 @@ const Index = (props) => {
                             className="w-100 custom-btn custom-btn--medium custom-btn--style-5"
                             style={{padding: 5}}
                             onClick={() => {
-                                if (store.isOpen) {
+
+                                if (isOpen) {
+
                                     if (page === 'final') {
-                                        if (+cartData?.vouchertotaldisplay < store?.onlineminamount) {
-                                            toast.error(`minimum amount should be ${numberFormat(store?.onlineminamount)}  to place online order`)
+                                        if (+cartData?.vouchertotaldisplay < onlineminamount) {
+                                            toast.error(`minimum amount should be ${numberFormat(onlineminamount)}  to place online order`)
                                         } else {
                                             placeOrder()
                                         }
                                     } else {
                                         navigate(`/l/${device.locationid}/t/${device.tableid}/cartdetail`);
                                     }
+
                                 }
+                                btnLabel === 'Next' && closeModal()
                             }}
                             type="button"
                             role="button"
                         >
-                            {store.isOpen ? btnLabel : store.message}
+                            {isOpen ? btnLabel : message}
                         </button>
 
                     </div>

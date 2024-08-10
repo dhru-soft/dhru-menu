@@ -8,6 +8,7 @@ import {setModal} from "../../lib/redux-store/reducer/component";
 import ItemDetails from "./ItemDetails";
 import {AddonAction} from "../Items/ItemsbyGroup";
 import {itemTotalCalculation, resetDiscountData} from "../../lib/item-calculation";
+import {useModal} from "../../use/useModal";
 
 
 export const updateCartItem = async (values) => {
@@ -46,6 +47,7 @@ const Index = ({item, updateItem, custom, fromCart, minqnt, merger}) => {
     const [productqnt, setQnt] = useState(item?.productqnt || 0);
     const displayqnt = merger ? item.mergeqnt : productqnt;
     const dispatch = useDispatch()
+    const {closeModal,openModal} = useModal()
 
     useEffect(() => {
         setQnt(item?.productqnt)
@@ -58,12 +60,12 @@ const Index = ({item, updateItem, custom, fromCart, minqnt, merger}) => {
         const {hasextra, itemname} = item;
 
         if (hasextra && !Boolean(item.productqnt)) {
-            store.dispatch(setModal({
+            openModal({
                 show: true,
                 title: itemname,
                 height: '80%',
                 component: () => <><ItemDetails itemDetail={item} updateListItem={updateItem}/></>
-            }))
+            })
         } else {
 
             item = {
@@ -80,8 +82,9 @@ const Index = ({item, updateItem, custom, fromCart, minqnt, merger}) => {
             })
 
             setQnt(productqnt || 1)
+
             Boolean(updateItem) && updateItem({...item});
-            dispatch(setModal({show: false}))
+
 
         }
 
@@ -92,11 +95,11 @@ const Index = ({item, updateItem, custom, fromCart, minqnt, merger}) => {
         const {hasextra, key} = item;
 
         if (hasextra && key && (!fromCart) && ((action === 'add')) && (!isRepeat)) {
-            store.dispatch(setModal({
+            openModal({
                 show: true, title: '', height: '80%', component: () => <>
                     <AddonAction item={clone(item)} action={action} updateQnt={updateQnt}/>
                 </>
-            }))
+            })
         } else {
             let qnt = productqnt;
 
@@ -125,7 +128,8 @@ const Index = ({item, updateItem, custom, fromCart, minqnt, merger}) => {
             dispatch(setCartData(clone(data)));
             dispatch(setUpdateCart());
         })
-        dispatch(setModal({show: false}))
+        closeModal()
+
     }
 
 
