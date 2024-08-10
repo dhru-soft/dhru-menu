@@ -51,7 +51,7 @@ const Index = (props) => {
                     <div className={'form'}>
                         <div className="d-flex w-100">
                             <div className={'flex-grow-1'} onClick={handleSearchFocus}>
-                                <div className={'p-3 d-flex bg-light border'} style={{borderRadius:12}}><i className={'fa fa-search'}></i> <span className={'ps-3 d-inline-block'}> {`Search in ${locationname}`}</span></div>
+                                <div className={'p-3   bg-light border'} style={{borderRadius:12}}><i className={'fa fa-search'}></i> <span className={'ps-3 d-inline-block'}> {`Search in ${locationname}`}</span></div>
                                 {/*<SearchBox handleSearch={handleSearch} placeholder={`Search in ${locationname}`}   />*/}
                             </div>
                             <div className={'p-2'}></div>

@@ -71,8 +71,8 @@ const Index = forwardRef((props, ref) => {
 
 
 
-                        return  <Link activeClass="active" className=" cursor-pointer" to={item?.itemgroupid} spy={true} smooth={true} duration={300}>
-                            <div key={index}
+                        return  <Link activeClass="active" className=" cursor-pointer" to={item?.itemgroupid} spy={true} smooth={true} duration={300}  key={index}>
+                            <div
 
                                  onClick={() => {
                                      dispatch(setSelected({groupids: [item?.itemgroupid]}))
