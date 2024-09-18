@@ -970,6 +970,6 @@ export const base64Encode = (content) => {
         content = ' ';
     }
     let bytes = utf8.encode(content);
-    console.log(bytes)
+
     return base64.encode(bytes);
 };
