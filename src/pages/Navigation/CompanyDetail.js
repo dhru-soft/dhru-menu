@@ -92,7 +92,7 @@ const Index = ({clientDetail,company,options}) => {
                                     <div className={'row justify-content-between py-4 px-2'} style={{color:'#2B3443',}}>
 
 
-                                        <div className={'col-10  '}>
+                                        <div className={'col-10'}>
                                             <div style={{
                                                 fontSize: 24,
                                                 fontWeight: 'bold',

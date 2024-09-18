@@ -965,7 +965,7 @@ export const isStoreOpen = (data) => {
 }
 
 
-export const base64Encode = (content: any) => {
+export const base64Encode = (content) => {
     if (!content) {
         content = ' ';
     }
