@@ -60,7 +60,7 @@ const Index = ({clientDetail, company, options}) => {
 
                             <div className={'d-flex justify-content-between p-3'}>
                                 <div style={{cursor: 'pointer',}} onClick={() => {
-                                    navigate(`/`);
+                                    navigate(`/`); //test
                                 }}>
                                     <i className="fa fa-arrow-left"></i>
                                 </div>
