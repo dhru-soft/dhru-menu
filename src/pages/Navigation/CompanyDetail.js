@@ -26,7 +26,7 @@ const Index = ({clientDetail,company,options}) => {
     const navigate = useNavigate();
     const {clientname, displayname, token} = clientDetail;
 
-    let {tablename,locationimage, locationname,location, address1, address2, download_url} = getCompanyDetails();
+    let {tablename,locationimage, locationname,location, address1, address2, download_url,industrytype} = getCompanyDetails();
 
 
     const showAddresses = () => {
@@ -85,7 +85,7 @@ const Index = ({clientDetail,company,options}) => {
 
                                 <div className={'mt-4'}>
 
-                                    {(Object.keys(options).length === 1) &&   <span style={{color: "#2B7B3C",background:'#EAFFF0',borderRadius:5,padding:5}}>
+                                    {(Object.keys(options).length === 1) && industrytype ==='foodservices' &&  <span style={{color: "#2B7B3C",background:'#EAFFF0',borderRadius:5,padding:5}}>
                                         <small  className={'px-2 py-1   radius-5px'}> <i className={`fa fa-leaf`}></i> Pure Veg  </small>
                                     </span>}
 

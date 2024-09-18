@@ -264,23 +264,24 @@ export const getCompanyDetails = () => {
 
     let {
         restaurantDetail: {
-            general, location, tabledetail: {tablename, locationname, address1, address2, order}
+            general, location, tabledetail: {tablename, locationname, address1, address2, order,industrytype}
         }
     } = store.getState();
     const download_url = general?.logo?.download_url || ''
 
     if (!Boolean(locationname) && Boolean(general?.legalname)) {
-        const {address1: ad1, address2: ad2, name, order: ord} = location[device?.locationid];
+        const {address1: ad1, address2: ad2, name, order: ord,industrytype:industryty} = location[device?.locationid];
         locationname = name;
         address1 = ad1;
         address2 = ad2;
         order = ord;
+        industrytype = industryty;
     }
     device.order = order;
 
     setTheme(device?.order?.themecolor || '#000000')
 
-    return {download_url,location, locationname, address1, address2, tablename, order,locationimage:location[device?.locationid]?.locationlimage}
+    return {download_url,location, locationname, address1, address2, tablename, order,industrytype,locationimage:location[device?.locationid]?.locationlimage}
 }
 
 export const postQrCode = async (accesscode) => {
@@ -302,6 +303,8 @@ export const getInit = async (workspace) => {
     return new promise(async (resolve) => {
         const urlSearchParams = new URLSearchParams(window.location.search);
         const params = Object.fromEntries(urlSearchParams.entries());
+
+
         await apiService({
             method: METHOD.GET,
             action: ACTIONS.INIT,
