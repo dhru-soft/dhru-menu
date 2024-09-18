@@ -471,7 +471,7 @@ const DiscountCouponItem = (props: any) => {
 
     const buyGetCalc = async () => {
         let coupon = couponItem;
-        let cloneInvoiceItems = clone(cartData?.invoiceitems);
+        let cloneInvoiceItems:any = clone(cartData?.invoiceitems);
 
         let invoiceitems: any = [];
         cloneInvoiceItems.forEach((item: any) => {
@@ -550,7 +550,7 @@ const DiscountCouponItem = (props: any) => {
                 invoiceitems.forEach((iItem: any) => {
 
                     if (!isEmpty(newInvoiceItems)) {
-                        let ItemsbyGroup = clone(newInvoiceItems?.filter((item: any) => !Boolean(item?.combokey)));
+                        let ItemsbyGroup:any = clone(newInvoiceItems?.filter((item: any) => !Boolean(item?.combokey)));
                         let lastItem = ItemsbyGroup[ItemsbyGroup.length - 1];
                         position = lastItem?.position;
                     }
@@ -693,7 +693,7 @@ const DiscountCouponItem = (props: any) => {
 
                     invoiceitems.forEach((iItem: any, index: any) => {
                         if (!isEmpty(newInvoiceItems)) {
-                            let ItemsbyGroup = clone(newInvoiceItems?.filter((item: any) => !Boolean(item?.combokey)));
+                            let ItemsbyGroup:any = clone(newInvoiceItems?.filter((item: any) => !Boolean(item?.combokey)));
                             let lastItem = ItemsbyGroup[ItemsbyGroup.length - 1];
                             position = lastItem?.position;
                         }
