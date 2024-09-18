@@ -1,29 +1,19 @@
 import $ from "jquery";
-import React from "react";
 import apiService from "./api-service";
 import {ACTIONS, device, localredux, METHOD, STATUS, urls} from "./static";
 import {setrestaurantData} from "./redux-store/reducer/restaurant-data";
 import store from "./redux-store/store";
-import {
-    setCartData,
-    setCartItems,
-    setUpdateCart,
-    updateCartField,
-    updateCartItems
-} from "./redux-store/reducer/cart-data";
+import {setCartItems, updateCartField, updateCartItems} from "./redux-store/reducer/cart-data";
 import promise from "promise";
-import {getProductData, itemTotalCalculation, resetDiscountData} from "./item-calculation";
-
-import Login from "../pages/Login";
+import {getProductData} from "./item-calculation";
 import {setClientDetail} from "./redux-store/reducer/client-detail";
 import 'react-confirm-alert/src/react-confirm-alert.css';
 import {setGroupList} from "./redux-store/reducer/group-list";
-import OrderDetail from "../pages/Client/OrderDetail";
 import moment from "moment";
 import {resetItemList, setItemList} from "./redux-store/reducer/item-list";
 
 let base64 = require('base-64');
-let utf8   = require('utf8'); // Import css
+let utf8 = require('utf8'); // Import css
 
 var ls = require('local-storage');
 
@@ -264,13 +254,13 @@ export const getCompanyDetails = () => {
 
     let {
         restaurantDetail: {
-            general, location, tabledetail: {tablename, locationname, address1, address2, order,industrytype}
+            general, location, tabledetail: {tablename, locationname, address1, address2, order, industrytype}
         }
     } = store.getState();
     const download_url = general?.logo?.download_url || ''
 
     if (!Boolean(locationname) && Boolean(general?.legalname)) {
-        const {address1: ad1, address2: ad2, name, order: ord,industrytype:industryty} = location[device?.locationid];
+        const {address1: ad1, address2: ad2, name, order: ord, industrytype: industryty} = location[device?.locationid];
         locationname = name;
         address1 = ad1;
         address2 = ad2;
@@ -281,14 +271,27 @@ export const getCompanyDetails = () => {
 
     setTheme(device?.order?.themecolor || '#000000')
 
-    return {download_url,location, locationname, address1, address2, tablename, order,industrytype,locationimage:location[device?.locationid]?.locationlimage}
+    return {
+        download_url,
+        location,
+        locationname,
+        address1,
+        address2,
+        tablename,
+        order,
+        industrytype,
+        locationimage: location[device?.locationid]?.locationlimage
+    }
 }
 
 export const postQrCode = async (accesscode) => {
     return new promise(async (resolve) => {
         await apiService({
-            method: METHOD.GET, action: ACTIONS.CODE, queryString: {code: accesscode},
-            workspace: 'dev', other: {url: urls.posUrl},
+            method: METHOD.GET,
+            action: ACTIONS.CODE,
+            queryString: {code: accesscode},
+            workspace: 'dev',
+            other: {url: urls.posUrl},
         }).then(async (result) => {
             if (result.status === STATUS.SUCCESS && Boolean(result?.data)) {
                 resolve(result.data)
@@ -669,7 +672,11 @@ export const addToCart = async (item) => {
 
     try {
         item = {
-            ...item, ...getdetail, added: true, hasextra: !isEmpty(getdetail?.addons), deviceid: 'browser', itemdetail: getdetail
+            ...item, ...getdetail,
+            added: true,
+            hasextra: !isEmpty(getdetail?.addons),
+            deviceid: 'browser',
+            itemdetail: getdetail
         }
 
         const itemRowData = setItemRowData(item);
@@ -721,8 +728,6 @@ export const getFromSetting = (key) => {
     }
     return {}
 }
-
-
 
 
 export const setDefaultAddress = (index) => {
@@ -838,10 +843,9 @@ export const requestOTP = (mobile, countrycode, countrylabel) => {
         clientDetail = {
             ...clientDetail, mobile: mobile, verifymobile: 'inprocess', otp: 'sent', countrycode,
         }
-        if (countrylabel){
+        if (countrylabel) {
             clientDetail = {
-                ...clientDetail,
-                countrylabel
+                ...clientDetail, countrylabel
             }
         }
         store.dispatch(setClientDetail(clientDetail))
@@ -849,41 +853,39 @@ export const requestOTP = (mobile, countrycode, countrylabel) => {
 }
 
 
-export const groupBy = (arr, property, fields=[],fixedreturn=false) => {
+export const groupBy = (arr, property, fields = [], fixedreturn = false) => {
 
     try {
         return arr?.reduce(function (memo, x) {
             if (!memo[x[property]]) {
                 memo[x[property]] = [];
             }
-            if(fields?.length){
-                let selectedobject = fields.map((field)=>{
-                    return {[field] : x[field]}
+            if (fields?.length) {
+                let selectedobject = fields.map((field) => {
+                    return {[field]: x[field]}
                 })
                 memo[x[property]].push(selectedobject[0]);
-            }
-            else if(fixedreturn){
-                memo[x[property]]= fixedreturn;
-            }
-            else {
+            } else if (fixedreturn) {
+                memo[x[property]] = fixedreturn;
+            } else {
                 memo[x[property]].push(x);
             }
 
             return memo;
         }, {});
     } catch (e) {
-        console.log('e',e)
+        console.log('e', e)
     }
 }
 
 
-export const toArray = (object,keyto) => {
-    if(Boolean(object)) {
+export const toArray = (object, keyto) => {
+    if (Boolean(object)) {
         return Object.keys(object).map((key) => {
             return {...object[key], [keyto]: key}
         })
     }
-    return
+
 }
 
 export const getGroups = async () => {

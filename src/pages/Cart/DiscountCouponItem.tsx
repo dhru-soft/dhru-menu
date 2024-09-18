@@ -52,7 +52,7 @@ const DiscountCouponItem = (props: any) => {
         if (!afterTaxDiscount) {
             return true;
         }
-        let isDiscountCoupon = currentCoupon?.campaigndetail?.campaigntype == 'coupon';
+        let isDiscountCoupon = currentCoupon?.campaigndetail?.campaigntype === 'coupon';
         if (isDiscountCoupon && isEmpty(currentCoupon?.data?.offeritems)) {
             return true;
         }
@@ -66,20 +66,20 @@ const DiscountCouponItem = (props: any) => {
             return cartItems.every((cItem: any) => {
                 let check: boolean = false;
                 couponItems.forEach((bItems: any) => {
-                    if (bItems.type == ITEM_TYPE.CATEGORY) {
+                    if (bItems.type === ITEM_TYPE.CATEGORY) {
                         if (isEmpty(bItems?.subitems)) {
-                            if (cItem?.itemgroupid == bItems.itemid) {
+                            if (cItem?.itemgroupid === bItems.itemid) {
                                 check = true;
                             }
                         } else {
                             bItems?.subitems.forEach((sbItem: any) => {
-                                if (cItem.productid == sbItem?.itemid) {
+                                if (cItem.productid === sbItem?.itemid) {
                                     check = true;
                                 }
                             });
                         }
                     } else {
-                        if (cItem.productid == bItems?.itemid) {
+                        if (cItem.productid === bItems?.itemid) {
                             check = true;
                         }
                     }
@@ -119,7 +119,7 @@ const DiscountCouponItem = (props: any) => {
             itemMatchedFound = true,
             infiniteCounter = 0,
             globalTotalQuantity: number = currentCoupon?.data?.minbuy,
-            combinationTypeOr = currentCoupon?.data?.combinationtype == 'or';
+            combinationTypeOr = currentCoupon?.data?.combinationtype === 'or';
 
         do {
             infiniteCounter++;
@@ -134,9 +134,9 @@ const DiscountCouponItem = (props: any) => {
                         copyCartItems
                             .forEach((copyItem: any, copyIndex: number) => {
                                 if (!copyItem?.itemChecked && totalItemQuantity > 0) {
-                                    if (bItems.type == ITEM_TYPE.CATEGORY) {
+                                    if (bItems.type === ITEM_TYPE.CATEGORY) {
                                         if (isEmpty(bItems?.subitems)) {
-                                            if (copyItem?.itemgroupid == bItems.itemid) {
+                                            if (copyItem?.itemgroupid === bItems.itemid) {
                                                 copyCartItems[copyIndex].itemChecked = true;
                                                 globalTotalQuantity--;
                                                 totalItemQuantity--;

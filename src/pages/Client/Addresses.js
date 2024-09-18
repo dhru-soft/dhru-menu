@@ -1,17 +1,14 @@
-import React, {useEffect, useState} from "react";
+import React, {useState} from "react";
 import {connect, useDispatch} from "react-redux";
-import {setModal} from "../../lib/redux-store/reducer/component";
 import AddEditAddress from "./AddEditAddress";
 import {setDefaultAddress} from "../../lib/functions";
-import store from "../../lib/redux-store/store";
-import Login from "../Login";
 import {useModal} from "../../use/useModal";
 
 const Index = ({clientDetail, cart}) => {
 
 
     const dispatch = useDispatch()
-    const {openModal,closeModal} = useModal()
+    const {openModal, closeModal} = useModal()
 
     const {addresses} = clientDetail;
 
@@ -28,10 +25,9 @@ const Index = ({clientDetail, cart}) => {
             component: () => <><AddEditAddress address={address} addressid={key} setAddEdit={setAddEdit}/></>
         })
 
-       // setAddEdit(true);
+        // setAddEdit(true);
         //setAddress({...address, addressid: key})
     }
-
 
 
     if (addedit) {
@@ -44,59 +40,54 @@ const Index = ({clientDetail, cart}) => {
         <>
             <div className={'container'}>
 
-                <div className={'p-3 text-danger'}>Select address </div>
+                <div className={'p-3 text-danger'}>Select address</div>
 
                 <div className={'d-flex flex-wrap 123'}>
-                    {
-                        Object.keys(addresses)?.map((key, index) => {
+                    {Object.keys(addresses)?.map((key, index) => {
 
-                            if (!Boolean(addresses[key])) {
-                                return <div key={index}></div>
-                            }
+                        if (!Boolean(addresses[key])) {
+                            return <div key={index}></div>
+                        }
 
-                            const {address1, address2, city, pin, state, country, displayname} = addresses[key];
+                        const {address1, address2, city, pin, state, country, displayname} = addresses[key];
 
-                            if (!Boolean(address1)) {
-                                return <div key={index}></div>
-                            }
+                        if (!Boolean(address1)) {
+                            return <div key={index}></div>
+                        }
 
-                            return (
-                                <div
-                                    className={`addresses position-relative border p-3 rounded-3 me-2 cursor-pointer mb-3 ${addresses[key].default ? 'selected' : ''}`}
-                                    key={index}>
+                        return (<div
+                                className={`addresses position-relative border p-3 rounded-3 me-2 cursor-pointer mb-3 ${addresses[key].default ? 'selected' : ''}`}
+                                key={index}>
 
 
-
-                                    <div onClick={() => {
-                                        setDefaultAddress(key)
-                                    }}>
-                                        <div className={'mb-2'}><strong>{displayname}</strong></div>
-                                        <div style={{opacity: 0.7}}>
-                                            <div>{address1}</div>
-                                            <div>{address2}</div>
-                                            <div>{country} {state}</div>
-                                            <div>{city} {pin}</div>
-                                        </div>
+                                <div onClick={() => {
+                                    setDefaultAddress(key)
+                                }}>
+                                    <div className={'mb-2'}><strong>{displayname}</strong></div>
+                                    <div style={{opacity: 0.7}}>
+                                        <div>{address1}</div>
+                                        <div>{address2}</div>
+                                        <div>{country} {state}</div>
+                                        <div>{city} {pin}</div>
                                     </div>
+                                </div>
 
-                                    {Boolean(addresses[key].default) &&
-                                        <div style={{marginTop: 10}} className={'text-primary'}>
-                                            Default Shipping address
-                                        </div>}
-
-                                    {!cart && <div className={'justify-content-between on-hover mt-3'}>
-                                        {<div className={'position-absolute p-3'} style={{top: 0, right: 0}}
-                                              onClick={() => {
-                                                  addEditAddress(addresses[key], key)
-                                              }}>
-                                            <i className={'fa fa-pencil'}></i>
-                                        </div>}
+                                {Boolean(addresses[key].default) &&
+                                    <div style={{marginTop: 10}} className={'text-primary'}>
+                                        Default Shipping address
                                     </div>}
 
-                                </div>
-                            )
-                        })
-                    }
+                                {!cart && <div className={'justify-content-between on-hover mt-3'}>
+                                    {<div className={'position-absolute p-3'} style={{top: 0, right: 0}}
+                                          onClick={() => {
+                                              addEditAddress(addresses[key], key)
+                                          }}>
+                                        <i className={'fa fa-pencil'}></i>
+                                    </div>}
+                                </div>}
+
+                            </div>)
+                    })}
 
                     {<div
                         className={`addresses  border p-3 rounded-3 me-2 cursor-pointer mb-3 d-flex justify-content-center align-items-center`}>
@@ -133,8 +124,7 @@ const Index = ({clientDetail, cart}) => {
 
 const mapStateToProps = (state) => {
     return {
-        clientDetail: state.clientDetail,
-        visitorcountry: state.restaurantDetail?.settings?.visitorcountry
+        clientDetail: state.clientDetail, visitorcountry: state.restaurantDetail?.settings?.visitorcountry
     }
 }
 

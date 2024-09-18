@@ -1,17 +1,13 @@
 import React, {useState} from "react";
 import {getCompanyDetails} from "../../lib/functions";
 import {connect, useDispatch} from "react-redux";
-import {setClientDetail} from "../../lib/redux-store/reducer/client-detail";
-import store from "../../lib/redux-store/store";
-import {setModal} from "../../lib/redux-store/reducer/component";
 import Addresses from "../Client/Addresses";
 import {device} from "../../lib/static";
 import {useNavigate, useParams} from "react-router-dom";
-import Select from "react-select";
-import {Badge, Button, Card, Dropdown, DropdownItem, DropdownMenu, DropdownToggle} from "reactstrap";
+import {Card} from "reactstrap";
 import {useModal} from "../../use/useModal";
 
-const Index = ({clientDetail,company,options}) => {
+const Index = ({clientDetail, company, options}) => {
 
 
     const params2 = useParams()
@@ -26,15 +22,21 @@ const Index = ({clientDetail,company,options}) => {
     const navigate = useNavigate();
     const {clientname, displayname, token} = clientDetail;
 
-    let {tablename,locationimage, locationname,location, address1, address2, download_url,industrytype} = getCompanyDetails();
+    let {
+        tablename,
+        locationimage,
+        locationname,
+        location,
+        address1,
+        address2,
+        download_url,
+        industrytype
+    } = getCompanyDetails();
 
 
     const showAddresses = () => {
         openModal({
-            show: true,
-            title: '',
-            height: '80%',
-            component: () => <><Addresses/></>
+            show: true, title: '', height: '80%', component: () => <><Addresses/></>
         })
     }
 
@@ -47,30 +49,29 @@ const Index = ({clientDetail,company,options}) => {
     const toggle = () => setDropdownOpen((prevState) => !prevState);
 
 
-    return (
-        <div  >
+    return (<div>
 
-            <Card className={'container company-detail  border-0 mb-3'} >
-                <div  >
+            <Card className={'container company-detail  border-0 mb-3'}>
+                <div>
                     <div className={'row justify-content-between align-items-center p-3'}>
 
 
                         <div className={''}>
 
                             <div className={'d-flex justify-content-between p-3'}>
-                                <div style={{cursor: 'pointer',  }} onClick={() => {
+                                <div style={{cursor: 'pointer',}} onClick={() => {
                                     navigate(`/`);
                                 }}>
                                     <i className="fa fa-arrow-left"></i>
                                 </div>
 
-                                <div style={{cursor: 'pointer',  }}>
+                                <div style={{cursor: 'pointer',}}>
                                     <i className="fa fa-phone"></i>
                                 </div>
 
                             </div>
 
-                            <div >
+                            <div>
 
 
                                 {/* <div style={{width: 150,}}>
@@ -85,20 +86,22 @@ const Index = ({clientDetail,company,options}) => {
 
                                 <div className={'mt-4'}>
 
-                                    {(Object.keys(options).length === 1) && industrytype ==='foodservices' &&  <span style={{color: "#2B7B3C",background:'#EAFFF0',borderRadius:5,padding:5}}>
-                                        <small  className={'px-2 py-1   radius-5px'}> <i className={`fa fa-leaf`}></i> Pure Veg  </small>
+                                    {(Object.keys(options).length === 1) && industrytype === 'foodservices' && <span
+                                        style={{color: "#2B7B3C", background: '#EAFFF0', borderRadius: 5, padding: 5}}>
+                                        <small className={'px-2 py-1   radius-5px'}> <i className={`fa fa-leaf`}></i> Pure Veg  </small>
                                     </span>}
 
-                                    <div className={'row justify-content-between py-4 px-2'} style={{color:'#2B3443',}}>
+                                    <div className={'row justify-content-between py-4 px-2'}
+                                         style={{color: '#2B3443',}}>
 
 
                                         <div className={'col-10'}>
                                             <div style={{
-                                                fontSize: 24,
-                                                fontWeight: 'bold',
+                                                fontSize: 24, fontWeight: 'bold',
 
                                             }}> {company || locationname} </div>
-                                            {!Boolean(company) && <div style={{fontSize:15}} className={'py-2'}>{address1} {address2}</div>}
+                                            {!Boolean(company) && <div style={{fontSize: 15}}
+                                                                       className={'py-2'}>{address1} {address2}</div>}
                                         </div>
 
                                         <div className={'col-2 text-align-right'}><span
@@ -211,16 +214,14 @@ const Index = ({clientDetail,company,options}) => {
                 </div>
             </Card>
 
-        </div>
-    );
+        </div>);
 
 }
 
 
 const mapStateToProps = (state) => {
     return {
-        clientDetail: state.clientDetail,
-        options: state.restaurantDetail?.settings?.options
+        clientDetail: state.clientDetail, options: state.restaurantDetail?.settings?.options
     }
 }
 
