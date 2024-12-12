@@ -21,6 +21,9 @@ const Index = ({clientDetail, vouchertotaldisplay, paymentgateways, cartData, lo
     const dispatch = useDispatch()
     const {closeModal,openModal} = useModal()
     const [Razorpay] = useRazorpay();
+
+
+
     const {addresses} = clientDetail;
     const {tablename, locationname} = getCompanyDetails();
     const [codlabel, setCodlabel] = useState('Cash on delivery')

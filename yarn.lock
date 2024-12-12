@@ -9502,10 +9502,10 @@ react-popper@^2.2.4:
     react-fast-compare "^3.0.1"
     warning "^4.0.2"
 
-react-razorpay@^3.0.1:
-  version "3.0.1"
-  resolved "https://registry.yarnpkg.com/react-razorpay/-/react-razorpay-3.0.1.tgz#a961f240c7d696c83042bd36497ea5d4a0bcbaa4"
-  integrity sha512-43P6VB20quinlUDN3dUdg0XlMtoClzfvhgpPWnGrLwLE6Pr570fXdA4kC+92Wqof48A/x96TXRpLnrQ/J1eXyw==
+react-razorpay@^2.0.1:
+  version "2.0.1"
+  resolved "https://registry.yarnpkg.com/react-razorpay/-/react-razorpay-2.0.1.tgz#a8b2a5ccb86c2fd92c69e9bf14b4f1f3b26cf000"
+  integrity sha512-eCVTqtAo3Ew6Ie9hjp3+a0BCJ7ZssSF4r2XNeikzXlk8WOD4W58wSSX7x/6R3OhL+yUkhCvW5zOSE8awDIGpAw==
 
 react-read-more-read-less@^1.0.7:
   version "1.0.7"
