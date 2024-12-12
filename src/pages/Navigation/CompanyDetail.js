@@ -106,7 +106,7 @@ const Index = ({clientDetail, company, options}) => {
 
                                         <div className={'col-2 text-align-right'}><span
                                             className={'px-2 py-1 text-white radius-5px'}
-                                            style={{background: '#2B7B3C'}}> 4.9 <i
+                                            style={{background: '#2B7B3C',whiteSpace:'nowrap'}}> 4.9 <i
                                             style={{fontSize: 12}}
                                             className={`fa fa-star`}></i>   </span>
                                         </div>

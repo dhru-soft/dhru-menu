@@ -141,7 +141,7 @@ export const nestedGroupList = (arr, find, mid, id, module) => {
 
 export const clone = (obj) => {
     var copy;
-    if (null == obj || "object" != typeof obj) return obj;
+    if (null === obj || "object" !== typeof obj) return obj;
     if (obj instanceof Date) {
         copy = new Date();
         copy.setTime(obj.getTime());

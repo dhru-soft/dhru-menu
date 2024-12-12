@@ -5,12 +5,17 @@ import store from "../../lib/redux-store/store";
 import {useRestaurant} from "../../use/useRestaurant";
 
 const LocationItem = (props:any) => {
+
     const {location, navigate, locationid} = props;
+
+
     const {isOpen} = useRestaurant(location)
 
     useEffect(() => {
         store.dispatch(resetCart())
     }, [locationid]);
+
+    const themecolor = location.order?.themecolor || '#222'
 
 
 
@@ -20,7 +25,7 @@ const LocationItem = (props:any) => {
         display:'flex',
         alignItems:'center'
     }}>
-        <div className={'d-flex m-2 h-100 mw-100'} style={{ borderRadius: 7,border:'#222 solid 1px'
+        <div className={'d-flex m-2 h-100 w-100 mw-100 justify-content-center'} style={{borderRadius: 7,border:`${themecolor} solid 1px`
         }}>
             <div onClick={() => {
                 if (isOpen) {

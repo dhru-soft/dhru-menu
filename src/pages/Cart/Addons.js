@@ -62,7 +62,7 @@ const Index = ({itemDetail, selectedaddon, updateItem, addonList, settings, setV
                             ...addtags.addongroupiddata, [key]: {
                                 ...addtags.addongroupiddata[key],
                                 selecteditems: Object.values(addon).filter((item: any) => {
-                                    return item?.itemgroupid == key
+                                    return item?.itemgroupid === key
                                 }).map((item) => {
                                     return {
                                         "itemid": item.itemid, productrate: item.price, productratedisplay: item.price
@@ -221,7 +221,7 @@ const Index = ({itemDetail, selectedaddon, updateItem, addonList, settings, setV
             let addon = addons?.addongroupiddata[key];
 
             let totalgroupselected = selectedAddons?.filter((s) => {
-                return (s.itemgroupid == key && Boolean(addon.minrequired)) || key === '0000'
+                return (s.itemgroupid === key && Boolean(addon.minrequired)) || key === '0000'
             })
 
             if (totalgroupselected.length >= addon.minrequired) {

@@ -6,7 +6,6 @@ import {Field, Form} from 'react-final-form';
 import {device, METHOD, STATUS, urls} from "../../lib/static";
 
 import store from "../../lib/redux-store/store";
-import {setModal} from "../../lib/redux-store/reducer/component";
 import Login from "../Login";
 import {resetCart, setCartData, setUpdateCart} from "../../lib/redux-store/reducer/cart-data";
 import Addresses from "../Client/Addresses";

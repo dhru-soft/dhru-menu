@@ -22,11 +22,11 @@ export const getProductData = (product: any, clientCurrency?: string, companyCur
             defaultCurrency = getDefaultCurrency();
         if (companyCurrency != null) {
             currency = companyCurrency;
-        } else if (defaultCurrency != null) {
+        } else if (defaultCurrency !== null) {
             currency = defaultCurrency;
         }
 
-        if (clientCurrency == null) {
+        if (clientCurrency === null) {
             clientCurrency = currency;
         }
 
@@ -77,7 +77,7 @@ export const itemTotalCalculation1 = (values: any, tds: any, tcs: any, currentCu
             values.invoiceitems = values.invoiceitems
                 .filter((item: any) => Boolean(item.productid))
                 .map((item: any, index: any) => {
-                    if (index == 0) {
+                    if (index === 0) {
                         item.change = true;
                     }
 
@@ -167,7 +167,7 @@ export const itemTotalCalculation1 = (values: any, tds: any, tcs: any, currentCu
                     }
 
                     item?.product_tax_object_display?.forEach((itemTax: any) => {
-                        const taxIndex: any = globaltax.findIndex((taxItem: any) => taxItem.taxid == itemTax.taxid);
+                        const taxIndex: any = globaltax.findIndex((taxItem: any) => taxItem.taxid === itemTax.taxid);
 
                         let typeTotal = 0;
 
@@ -934,14 +934,14 @@ const invoiceItemFilter = (item: any) => {
 };
 
 const canChargeApply = (item: any, position?: 'beforetax' | 'aftertax') => {
-    return Boolean(item?.itemdetail?.treatitem == 'charges') && Boolean(item?.itemdetail?.data_json?.position == position);
+    return Boolean(item?.itemdetail?.treatitem === 'charges') && Boolean(item?.itemdetail?.data_json?.position === position);
 };
 
 const extraChargeCalculation = (invoiceitems: any, position: 'beforetax' | 'aftertax', totalAmount: any, totalAmountForDiscountDisplay: any, totalAmountForDiscount: any, globaldiscountvalue: any, discounttype: any, vouchertaxtype: any, currentDecimalPlace: any, companyDecimalPlace: any, isDiscountAfterTax: any, totalAmountDisplay: any) => {
     invoiceitems = invoiceitems
         .map((item: any, index: any) => {
             if (canChargeApply(item, position)) {
-                if (item?.itemdetail?.data_json?.chargetype == 'percentage') {
+                if (item?.itemdetail?.data_json?.chargetype === 'percentage') {
                     let priceObject = getProductData(item?.itemdetail);
                     let amount = (+totalAmount * +priceObject.productratedisplay) / 100;
                     let amountDisplay = (+totalAmountDisplay * +priceObject.productratedisplay) / 100;
@@ -977,9 +977,9 @@ const extraChargeCalculation = (invoiceitems: any, position: 'beforetax' | 'afte
 export const filterItems = (item: any, onlyCheck?: 'change' | 'treatitem') => {
     // return Boolean(item.change) && isEmpty(item?.itemdetail?.treatitem)
 
-    if (onlyCheck == 'change') {
+    if (onlyCheck === 'change') {
         return Boolean(item.change);
-    } else if (onlyCheck == 'treatitem') {
+    } else if (onlyCheck === 'treatitem') {
         return isEmpty(item?.itemdetail?.treatitem);
     }
 
@@ -988,7 +988,7 @@ export const filterItems = (item: any, onlyCheck?: 'change' | 'treatitem') => {
 
 export const itemTotalCalculation = (values: any, tds: any, tcs: any, currentCurrency: any, companyCurrency: any, currentDecimalPlace: any, companyDecimalPlace: any, isDiscountAfterTax: any, isTypeTicket?: boolean, step: number = 0) => {
 
-    if (values?.voucherdiscountplace == 'aftertax') {
+    if (values?.voucherdiscountplace === 'aftertax') {
         isDiscountAfterTax = true;
     }
 
@@ -1012,7 +1012,7 @@ export const itemTotalCalculation = (values: any, tds: any, tcs: any, currentCur
     if (values.invoiceitems) {
 
 
-        let anyExtraCharge = values.invoiceitems?.some((item: any) => Boolean(item?.itemdetail?.treatitem == 'charges'));
+        let anyExtraCharge = values.invoiceitems?.some((item: any) => Boolean(item?.itemdetail?.treatitem === 'charges'));
 
         let total = grandTotal(values, currentDecimalPlace, companyDecimalPlace, isDiscountAfterTax);
 
@@ -1021,7 +1021,7 @@ export const itemTotalCalculation = (values: any, tds: any, tcs: any, currentCur
         values.invoiceitems = values.invoiceitems
             .filter(invoiceItemFilter)
             .map((item: any, index: any) => {
-                if (index == 0) {
+                if (index === 0) {
                     item.change = true;
                 }
                 if (filterItems(item)) {
@@ -1893,7 +1893,7 @@ export const newItemCalculation = (process: string, item: any, total_amount_disp
     return_object.productamount1 = 0;
 
     // NEW ADD FOR INCLUSIVE START
-    // if (voucher_tax_type === taxtype.inclusive && process == 'tax') {
+    // if (voucher_tax_type === taxtype.inclusive && process === 'tax') {
     //   product_taxable_amount_display               = (return_object?.productamountdisplay / product_qnt);
     //   return_object.product_taxable_amount_display = product_taxable_amount_display;
     //   return_object.product_taxable_amount         = product_taxable_amount_display;
@@ -1989,7 +1989,7 @@ export const compareInwardOutward = (data: any, taxes: any, decimalplace: any) =
         debitValue = 0,
         maxDifference = 0.05;
 
-    if (data?.vouchertaxtype == "inclusive") {
+    if (data?.vouchertaxtype === "inclusive") {
         maxDifference = 0.80;
     }
 
@@ -3494,7 +3494,7 @@ export const expenseCalculation = (values: any, tds: any, tcs: any, currentCurre
     //LIKE SET ITEM 10
     // SET 2 ITEM WITH 5 5 RATE
     // let taxMatched = true;
-    // if (step == 0) {
+    // if (step === 0) {
     //     globaltax.forEach((a: any) => {
     //         let {taxablerate, taxpercentage, taxprice} = a;
     //         const check = (taxablerate * parseFloat(taxpercentage)) / 100
