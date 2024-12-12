@@ -88,7 +88,7 @@ const Index = ({clientDetail, company, options}) => {
 
                                     {(Object.keys(options).length === 1) && industrytype === 'foodservices' && <span
                                         style={{color: "#2B7B3C", background: '#EAFFF0', borderRadius: 5, padding: 5}}>
-                                        <small className={'px-2 py-1   radius-5px'}> <i className={`fa fa-leaf`}></i> Pure Veg  </small>
+                                        <small className={'px-2 py-1   radius-5px'}> <i className={`fa fa-leaf`}></i> Pure Veg </small>
                                     </span>}
 
                                     <div className={'row justify-content-between py-4 px-2'}
