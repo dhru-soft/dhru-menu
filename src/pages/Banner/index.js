@@ -28,7 +28,7 @@ const Index = ({company}) => {
 
     return (<div>
 
-        <Carousel>
+        <Carousel autoPlay={true}>
             {
                 banners.map((banner,index)=>{
 

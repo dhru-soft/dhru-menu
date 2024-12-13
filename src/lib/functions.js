@@ -251,30 +251,36 @@ export const shortName = (str) => {
 }*/
 
 export const getCompanyDetails = () => {
-
     let {
         restaurantDetail: {
-            general, location, tabledetail: {tablename, locationname, address1, address2, order, industrytype}
+            general,
+            location,
+            tabledetail: { tablename, locationname, address1, address2, order, industrytype }
         }
     } = store.getState();
-    const download_url = general?.logo?.download_url || ''
-    let themecolor2 = ''
 
-    if (!Boolean(locationname) && Boolean(general?.legalname)) {
-        const {data,address1: ad1, address2: ad2, name, order: ord, industrytype: industryty} = location[device?.locationid];
+    const download_url = general?.logo?.download_url || '';
+    let themecolor2 = '';
+
+    // Check if location and device.locationid exist before accessing
+    if (!Boolean(locationname) && Boolean(general?.legalname) && location && device?.locationid && location[device.locationid]) {
+        const { address1: ad1, address2: ad2, name, order: ord, industrytype: industryty, data } = location[device.locationid];
+
         locationname = name;
         address1 = ad1;
         address2 = ad2;
         order = ord;
         industrytype = industryty;
-        themecolor2 = data?.themecolor
+        themecolor2 = data?.themecolor || '';
     }
 
-    setTheme(themecolor2 || device?.order?.themecolor || '#000000')
+    // Set theme with a fallback to default color
+    setTheme(themecolor2 || device?.order?.themecolor || '#000000');
 
+    // Update device order
     device.order = order;
 
-
+    // Safely return the object with proper checks
     return {
         download_url,
         location,
@@ -284,9 +290,9 @@ export const getCompanyDetails = () => {
         tablename,
         order,
         industrytype,
-        locationimage: location[device?.locationid]?.locationlimage
-    }
-}
+        locationimage: location?.[device?.locationid]?.locationlimage || ''
+    };
+};
 
 export const postQrCode = async (accesscode) => {
     return new promise(async (resolve) => {
