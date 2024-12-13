@@ -6,6 +6,7 @@ import {device} from "../../lib/static";
 import {useNavigate, useParams} from "react-router-dom";
 import {Card} from "reactstrap";
 import {useModal} from "../../use/useModal";
+import Banner from "../Banner";
 
 const Index = ({clientDetail, company, options}) => {
 
@@ -115,104 +116,18 @@ const Index = ({clientDetail, company, options}) => {
                                 </div>
 
 
-                                {/*<Dropdown isOpen={dropdownOpen} size={'xl'} group toggle={toggle}
-                                >
-                                    <DropdownToggle className={''} style={{
-                                        background: 'none',
-                                        border: 'none',
-                                        display: 'flex',
-                                        flexWrap: 'nowrap',
-                                        alignItems: 'start',
-                                        textAlign: 'left'
-                                    }}>
-
-
-                                        <div>
-
-                                        </div>
-
-                                    </DropdownToggle>
-
-                                    <DropdownMenu>
-                                        {
-                                            Object.keys(location).map((key) => {
-                                                return <DropdownItem onClick={() => {
-                                                    changeHandler(key)
-                                                }} key={key} style={{fontSize: 18}}>{location[key].name}</DropdownItem>
-
-                                            })}
-
-                                    </DropdownMenu>
-                                </Dropdown>*/}
-
 
                             </div>
-
-
-                            {/*<Select options={Object.keys(location).map((key)=>{
-                                    return {label:location[key].name,value:key}
-                                })} defaultValue={device.locationid} onChange={changeHandler} className={'react-select'}/>*/}
-
 
                         </div>
 
 
-                        {/*<div className={'col-lg-6  col-sm-12  p-3 pb-1 p-sm-4 p-md-2'}>
-
-                            {Boolean(clientname || displayname) &&
-                                <div style={{fontWeight: 'bold'}}
-                                     className={'mb-2 d-flex justify-content-lg-end'}>Welcome, {clientname || displayname} !</div>}
-
-                            {tablename &&
-                                <div className={'mt-3 mb-2 d-flex justify-content-lg-end'}> Table : {tablename} </div>}
-
-                            <div className={'d-flex justify-content-lg-end'}>
-
-                                {Boolean(token) ? <>
-
-                                        <Button className={'me-2 btn-warning'} onClick={() => {
-                                            navigate(`/l/${device.locationid}/t/${device.tableid || 0}`);
-                                        }}>
-                                            New Order
-                                        </Button>
-
-                                        <Button className={'me-2'}    onClick={() => {
-                                            navigate(`/l/${device.locationid}/myorders`);
-                                        }}>
-                                            My Orders
-                                        </Button>
-                                        <Button  className={'me-2'}   onClick={() => {
-                                            showAddresses()
-                                        }}>
-                                            Shipping Address
-                                        </Button>
-
-                                        <Button  className={'btn-danger'}  onClick={() => {
-                                            dispatch(setClientDetail({}));
-                                            navigate(`/`);
-                                        }}>
-                                            Logout
-                                        </Button>
-
-                                    </> :
-
-                                    <>
-                                        <Button  onClick={() => {
-                                            placeOrder()
-                                        }}>
-                                            Login
-                                        </Button>
-                                    </>
-
-                                }
-
-                            </div>
-
-                        </div>*/}
 
                     </div>
                 </div>
             </Card>
+
+        <Banner/>
 
         </div>);
 

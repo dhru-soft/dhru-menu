@@ -1316,3 +1316,10 @@ iframe{
         justify-content: space-between;
     }
 }
+
+.carousel {
+  & .thumbs{
+      display: flex;
+      justify-content: center;
+  }
+}

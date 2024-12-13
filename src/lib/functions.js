@@ -260,16 +260,17 @@ export const getCompanyDetails = () => {
     const download_url = general?.logo?.download_url || ''
 
     if (!Boolean(locationname) && Boolean(general?.legalname)) {
-        const {address1: ad1, address2: ad2, name, order: ord, industrytype: industryty} = location[device?.locationid];
+        const {data,address1: ad1, address2: ad2, name, order: ord, industrytype: industryty} = location[device?.locationid] ? location[device?.locationid] : {};
         locationname = name;
         address1 = ad1;
         address2 = ad2;
         order = ord;
         industrytype = industryty;
+
+        setTheme(data?.themecolor || device?.order?.themecolor || '#000000')
     }
     device.order = order;
 
-    setTheme(device?.order?.themecolor || '#000000')
 
     return {
         download_url,
