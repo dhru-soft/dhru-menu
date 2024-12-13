@@ -60,6 +60,7 @@ const Index = (props) => {
                                                         title: itemname,
                                                         disableclose: true,
                                                         height: '80%',
+                                                        backdrop:true,
                                                         component: () => <><ItemDetails itemDetail={item}
                                                                                         cart={true}/></>
                                                     })

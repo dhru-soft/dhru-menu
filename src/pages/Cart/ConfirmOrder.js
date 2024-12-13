@@ -73,7 +73,7 @@ const Index = ({clientDetail, vouchertotaldisplay, paymentgateways, cartData, lo
             closeModal()
             if (!data) {
                 openModal({
-                    show: true, title: '', height: '80%', component: () => <><Login/></>
+                    show: true, title: '',backdrop:true, height: '80%', component: () => <><Login/></>
                 })
             } else {
                 store.dispatch(resetCart())

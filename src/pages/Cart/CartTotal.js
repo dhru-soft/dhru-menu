@@ -62,7 +62,7 @@ const Index = (props) => {
         store.dispatch(setUpdateCart());
 
         openModal({
-            show: true, title: '', height: '80%', component: () => <><Login/></>
+            show: true, title: '',backdrop:true, height: '80%', component: () => <><Login/></>
         })
     }
 

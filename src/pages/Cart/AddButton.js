@@ -64,6 +64,7 @@ const Index = ({item, updateItem, custom, fromCart, minqnt, merger}) => {
                 show: true,
                 title: itemname,
                 height: '80%',
+                backdrop:true,
                 component: () => <><ItemDetails itemDetail={item} updateListItem={updateItem}/></>
             })
         } else {
@@ -96,7 +97,7 @@ const Index = ({item, updateItem, custom, fromCart, minqnt, merger}) => {
 
         if (hasextra && key && (!fromCart) && ((action === 'add')) && (!isRepeat)) {
             openModal({
-                show: true, title: '', height: '80%', component: () => <>
+                show: true, title: '',backdrop:true, height: '80%', component: () => <>
                     <AddonAction item={clone(item)} action={action} updateQnt={updateQnt}/>
                 </>
             })

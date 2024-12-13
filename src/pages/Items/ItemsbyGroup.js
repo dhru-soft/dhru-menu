@@ -76,6 +76,7 @@ export const AddonAction = ({item, updateQnt, action}) => {
                         show: true,
                         title: item.itemname,
                         height: '80%',
+                        backdrop:true,
                         component: () => <><ItemDetails itemDetail={{...item, productqnt: 1, key: ''}}/></>
                     })
                 }} type="button" role="button">

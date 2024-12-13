@@ -27,7 +27,7 @@ const Index = (props: any) => {
 
                     return (<Modal key={modalkey} isOpen={show} autoFocus={true} toggle={handleClose} size={maxWidth ? maxWidth : 'xs'}
                                    className={`${isMobile ? 'mobile' : 'desktop'} ${className}`}
-                                   backdrop={Boolean(backdrop)} keyboard={keyboard ? keyboard : true}>
+                                   backdrop={Boolean(backdrop)} keyboard={keyboard ? keyboard : true} style={{margin:'auto'}}>
                         {!disableclose && <ModalHeader toggle={handleClose}>{title ? title : ''}</ModalHeader>}
                         {(disableclose && title) && <ModalHeader>{title ? title : ''}</ModalHeader>}
                         <ModalBody>

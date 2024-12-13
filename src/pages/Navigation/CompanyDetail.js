@@ -37,7 +37,7 @@ const Index = ({clientDetail, company, options}) => {
 
     const showAddresses = () => {
         openModal({
-            show: true, title: '', height: '80%', component: () => <><Addresses/></>
+            show: true, title: '',backdrop:true, height: '80%', component: () => <><Addresses/></>
         })
     }
 

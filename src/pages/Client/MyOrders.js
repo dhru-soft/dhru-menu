@@ -35,7 +35,7 @@ const Index = ({clientDetail}) => {
 
     const orderDetail = (data) => {
         openModal({
-            show: true, title: '', height: '80%', component: () => <><OrderDetail data={data}/></>
+            show: true, title: '',backdrop:true, height: '80%', component: () => <><OrderDetail data={data}/></>
         })
     }
 

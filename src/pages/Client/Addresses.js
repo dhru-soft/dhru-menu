@@ -22,6 +22,7 @@ const Index = ({clientDetail, cart}) => {
             show: true,
             title: '',
             height: '80%',
+            backdrop:true,
             component: () => <><AddEditAddress address={address} addressid={key} setAddEdit={setAddEdit}/></>
         })
 
