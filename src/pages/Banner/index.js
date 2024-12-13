@@ -28,21 +28,17 @@ const Index = ({company}) => {
 
     return (<div>
 
-
         <Carousel>
             {
-                banners.map((banner)=>{
-                    if(!Boolean(banner?.file)){
-                        return
-                    }
+                banners.map((banner,index)=>{
+
                     return (
-                        <div>
-                            <img src={`https://${banner?.file}`}/>
+                        <div key={index}>
+                            {Boolean(banner?.file) &&  <img src={`https://${banner?.file}`}/>}
                         </div>
                     )
                 })
             }
-
         </Carousel>
 
     </div>);
