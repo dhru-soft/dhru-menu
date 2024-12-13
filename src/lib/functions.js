@@ -258,6 +258,7 @@ export const getCompanyDetails = () => {
         }
     } = store.getState();
     const download_url = general?.logo?.download_url || ''
+    let themecolor2 = ''
 
     if (!Boolean(locationname) && Boolean(general?.legalname)) {
         const {data,address1: ad1, address2: ad2, name, order: ord, industrytype: industryty} = location[device?.locationid];
@@ -266,9 +267,11 @@ export const getCompanyDetails = () => {
         address2 = ad2;
         order = ord;
         industrytype = industryty;
-
-        setTheme(data?.themecolor || device?.order?.themecolor || '#000000')
+        themecolor2 = data?.themecolor
     }
+
+    setTheme(themecolor2 || device?.order?.themecolor || '#000000')
+
     device.order = order;
 
 
