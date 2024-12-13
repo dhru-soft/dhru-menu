@@ -28,7 +28,7 @@ const Index = ({company}) => {
 
     return (<div>
 
-        <Carousel autoPlay={true}>
+        <Carousel autoPlay={true} infiniteLoop={true}>
             {
                 banners.map((banner,index)=>{
 
