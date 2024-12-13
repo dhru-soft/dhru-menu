@@ -16,6 +16,9 @@ const Index = ({company}) => {
     if(!Boolean(device?.locationid)){
         return null
     }
+    if(!Boolean(location[device?.locationid]?.data)){
+        return null
+    }
 
     const {banners} = location[device?.locationid]?.data
 

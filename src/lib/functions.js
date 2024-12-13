@@ -260,7 +260,7 @@ export const getCompanyDetails = () => {
     const download_url = general?.logo?.download_url || ''
 
     if (!Boolean(locationname) && Boolean(general?.legalname)) {
-        const {data,address1: ad1, address2: ad2, name, order: ord, industrytype: industryty} = location[device?.locationid] ? location[device?.locationid] : {};
+        const {data,address1: ad1, address2: ad2, name, order: ord, industrytype: industryty} = location[device?.locationid];
         locationname = name;
         address1 = ad1;
         address2 = ad2;
