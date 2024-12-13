@@ -9,7 +9,7 @@ const Index = ({company}) => {
 
 
     let {
-        tablename, locationimage, locationname, location, address1, address2, download_url, industrytype
+       location
     } = getCompanyDetails();
 
 
@@ -21,6 +21,10 @@ const Index = ({company}) => {
     }
 
     const {banners} = location[device?.locationid]?.data
+
+    if(!Boolean(banners)){
+        return null
+    }
 
     return (<div>
 
