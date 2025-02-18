@@ -1,7 +1,7 @@
 import React, {Fragment} from "react";
 import {connect} from "react-redux";
 import {device} from "../../lib/static";
-import {getCompanyDetails} from "../../lib/functions";
+import {getCompanyDetails, safeAtob} from "../../lib/functions";
 
 const Index = () => {
 
@@ -28,7 +28,7 @@ const Index = () => {
                         <div className="row">
                             <div className="col-12 text-center">
                                 <pre>
-                                    {atob(footercontent)}
+                                    {safeAtob(footercontent)}
                                 </pre>
                             </div>
                         </div>

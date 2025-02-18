@@ -985,3 +985,25 @@ export const base64Encode = (content) => {
 
     return base64.encode(bytes);
 };
+
+
+
+export const safeAtob = (base64String) => {
+
+    if(!isEmpty(base64String)) {
+
+        base64String = base64String?.replace(/-/g, '+')?.replace(/_/g, '/');
+        base64String = base64String?.padEnd(base64String?.length + (base64String?.length % 4), '=');
+
+
+        try {
+            return atob(base64String);
+        } catch (e) {
+            console.error('Invalid base64 string:', e);
+            return null;
+        }
+    }
+    else{
+        return null
+    }
+}
