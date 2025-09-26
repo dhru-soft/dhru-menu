@@ -100,7 +100,6 @@ const AllItems = forwardRef((props, ref) => {
         setGroups(groups);
 
         setItems(groupBy(toArray(mergeCart(itemList, invoiceitems),'id'),'itemgroupid'))
-
         //setLoader(true)
     }, [itemList,invoiceitems]);
 
@@ -135,45 +134,69 @@ const AllItems = forwardRef((props, ref) => {
                             <div>
                                 <CartHeader/>
 
-                                {Object.keys(items).filter((keys) => {
-                                    return true
-                                    return device.groupid ? device.groupid === keys : true
-                                }).map((key, index) => {
+                                {Object.keys(items)
+                                    .filter((keys) => {
+                                        return true
+                                        return device.groupid ? device.groupid === keys : true
+                                    })
+                                    .sort((a, b) => {
+                                        if (groups[a]?.itemgroupmid && groups[b]?.itemgroupmid) {
+                                            // Check first level
+                                            let comparison = groups[a].itemgroupmid.localeCompare(groups[b].itemgroupmid);
+                                            if (comparison !== 0) return comparison;
 
-                                    return <Card key={index} className={'mb-3 border-0'}>
-                                        <CardBody  >
-                                            <Element name={key}>
-                                                <div id={`toggle${key}`}>
-                                                   <div className={'d-flex justify-content-between align-items-center'}>
-                                                       <h4  className={'p-2 m-0'}> {groups[key]?.itemgroupname}</h4>
-                                                       <div className={'me-3'}><i className={'fa fa-chevron-down'}></i></div>
-                                                   </div>
-                                                </div>
-                                            </Element>
+                                            // Check second level
+                                            if (groups[groups[a].itemgroupmid]?.itemgroupmid && groups[groups[b].itemgroupmid]?.itemgroupmid) {
+                                                comparison = groups[groups[a].itemgroupmid].itemgroupmid.localeCompare(groups[groups[b].itemgroupmid].itemgroupmid);
+                                                if (comparison !== 0) return comparison;
 
-
-                                            <UncontrolledCollapse toggler={`#toggle${key}`} defaultOpen >
-                                                <div className={'py-4'}>
-                                                    <div className="row">
-                                                        {items[key].filter((item)=>{
-                                                            return !isEmpty(tagoptions) ? tagoptions.includes(item.veg) : true
-                                                        }).map((item, indd) => {
-                                                            return <ItemBox key={indd}
-                                                                            item={{
-                                                                                ...item,
-                                                                                itemid: item.id,
-                                                                                multioptions:multioptions,
-                                                                                addbutton: hasAdd
-                                                                            }}/>
-                                                        })}
+                                                // Check third level
+                                                if (groups[groups[groups[a].itemgroupmid].itemgroupmid]?.itemgroupmid &&
+                                                    groups[groups[groups[b].itemgroupmid].itemgroupmid]?.itemgroupmid) {
+                                                    return groups[groups[groups[a].itemgroupmid].itemgroupmid].itemgroupmid
+                                                        .localeCompare(groups[groups[groups[b].itemgroupmid].itemgroupmid].itemgroupmid);
+                                                }
+                                            }
+                                        }
+                                        if (groups[a]?.order || groups[b]?.order) {
+                                            return (groups[a]?.order || 0) - (groups[b]?.order || 0)
+                                        }
+                                        return 0
+                                    })
+                                    .map((key, index) => {
+                                        return <Card key={index} className={'mb-3 border-0'}>
+                                            <CardBody>
+                                                <Element name={key}>
+                                                    <div id={`toggle${key}`}>
+                                                        <div
+                                                            className={'d-flex justify-content-between align-items-center'}>
+                                                            <h4 className={'p-2 m-0'}>{groups[key]?.itemgroupname}</h4>
+                                                            <div className={'me-3'}><i
+                                                                className={'fa fa-chevron-down'}></i></div>
+                                                        </div>
                                                     </div>
-                                                </div>
-                                            </UncontrolledCollapse>
+                                                </Element>
 
-
-                                        </CardBody>
-                                    </Card>
-                                })}
+                                                <UncontrolledCollapse toggler={`#toggle${key}`} defaultOpen>
+                                                    <div className={'py-4'}>
+                                                        <div className="row">
+                                                            {items[key].filter((item) => {
+                                                                return !isEmpty(tagoptions) ? tagoptions.includes(item.veg) : true
+                                                            }).map((item, indd) => {
+                                                                return <ItemBox key={indd}
+                                                                                item={{
+                                                                                    ...item,
+                                                                                    itemid: item.id,
+                                                                                    multioptions: multioptions,
+                                                                                    addbutton: hasAdd
+                                                                                }}/>
+                                                            })}
+                                                        </div>
+                                                    </div>
+                                                </UncontrolledCollapse>
+                                            </CardBody>
+                                        </Card>
+                                    })}
 
                             </div>
 
