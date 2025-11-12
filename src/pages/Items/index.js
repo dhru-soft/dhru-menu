@@ -8,8 +8,9 @@ import CartTotal from "../Cart/CartTotal";
 import CartHeader from "../Cart/CartHeader";
 import BodyClassName from 'react-body-classname';
 import Theme from "../Home/Theme";
+import packageJson  from '../../../package.json';
 
-
+console.log('version',packageJson.version)
 const Index = (props) => {
 
 
