@@ -63,7 +63,7 @@ const JSX = () => {
 };
 
 //localStorage.clear();
-console.clear();
+//console.clear();
 
 
 export const render = () => createRoot(document.getElementById('root')).render(<JSX/>);
