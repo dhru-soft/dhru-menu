@@ -11,6 +11,7 @@ import 'react-confirm-alert/src/react-confirm-alert.css';
 import {setGroupList} from "./redux-store/reducer/group-list";
 import moment from "moment";
 import {resetItemList, setItemList} from "./redux-store/reducer/item-list";
+import {originalGroup, setOriginalGrList} from "./redux-store/reducer/original-group";
 
 let base64 = require('base-64');
 let utf8 = require('utf8'); // Import css
@@ -903,7 +904,7 @@ export const getGroups = async () => {
         await apiService({
             method: METHOD.GET,
             action: ACTIONS.ITEMS,
-            queryString: {locationid: device.locationid},
+            queryString: {locationid: device.locationid,test:'beta'},
             hideLoader: true,
             workspace: device.workspace,
             other: {url: urls.posUrl},
@@ -915,6 +916,7 @@ export const getGroups = async () => {
                     return a.order - b.order
                 })))
 
+                store.dispatch(setOriginalGrList(result?.data?.itemgroupOriginal))
                 store.dispatch(resetItemList())
                 store.dispatch(setItemList(result?.data?.items))
                 resolve(true)

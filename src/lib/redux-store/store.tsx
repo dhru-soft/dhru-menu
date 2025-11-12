@@ -12,6 +12,7 @@ import itemList from "./reducer/item-list";
 import addonList from "./reducer/addon-list";
 
 import selectedData from "./reducer/selected-data";
+import originalGroup from "./reducer/original-group";
 
 export default configureStore({
     reducer: {
@@ -22,6 +23,7 @@ export default configureStore({
         selectedData,
         cartData,
         groupList,
+        originalGroup,
         itemList,
         addonList
     },
