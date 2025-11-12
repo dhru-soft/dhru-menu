@@ -15,6 +15,8 @@ import './scss/index.scss';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import {InitConsumer, InitProvider} from "./context/InitContext";
+import "./assets/fontawesome/pro/css/all.css";
+import "./assets/fontawesome/free/css/all.css";
 
 export const history = createBrowserHistory({
     basename: process.env.PUBLIC_URL
